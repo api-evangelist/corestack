@@ -1,0 +1,1 @@
+{"resource":"https://cloud.corestack.io/mcp","authorization_servers":["https://cloud.corestack.io/mcp"],"bearer_methods_supported":["header"],"scopes_supported":["openid","email","profile"]}

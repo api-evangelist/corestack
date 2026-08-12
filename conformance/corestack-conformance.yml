@@ -1,0 +1,129 @@
+generated: '2026-08-11'
+method: derived
+source: openapi/corestack-external-api-openapi-original.json + https://docs.corestack.io/docs/corestack-api-modules
+
+note: >-
+  Two distinct things get called "compliance" around CoreStack and they must not be conflated. The
+  first is the regulatory and best-practice content CoreStack ASSESSES ITS CUSTOMERS' CLOUD ESTATES
+  against — ISO, NIST, HIPAA, PCI DSS, CIS, FedRAMP, the AWS Well-Architected Framework. That is the
+  product, and it says nothing about CoreStack's own API. The second is what CoreStack's own API and
+  company conform to. Both are recorded below, separately and labelled.
+
+standards:
+- id: oauth2
+  conforms: partial
+  evidence: >-
+    The MCP server publishes RFC 8414 authorization-server metadata with an authorization_code flow
+    and S256 PKCE. The 838-operation REST API declares no oauth2 scheme at all.
+  scope: mcp-only
+- id: oidc
+  conforms: partial
+  evidence: >-
+    The MCP OAuth server advertises openid/email/profile scopes, but /.well-known/openid-configuration
+    returns 404 on every host, so there is no OIDC discovery document.
+  scope: mcp-only
+- id: rfc7591-dynamic-client-registration
+  conforms: true
+  evidence: registration_endpoint https://cloud.corestack.io/mcp/oauth/register
+  scope: mcp-only
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: true
+  evidence: well-known/corestack-oauth-authorization-server.json (HTTP 200)
+- id: rfc9728-oauth-protected-resource-metadata
+  conforms: true
+  evidence: well-known/corestack-oauth-protected-resource.json (HTTP 200), named in the 401 challenge
+- id: mcp
+  conforms: true
+  evidence: >-
+    Hosted unified server at /mcp on five regional environments, 100 documented tools, streamable
+    HTTP transport, OAuth-protected with an RFC 9728 challenge.
+- id: openapi-3
+  conforms: false
+  evidence: >-
+    The published contract is Swagger 2.0, not OpenAPI 3.x. It is complete and well-formed — 838
+    operations, all with unique operationIds, 829 with summaries, 823 with descriptions, 2,891
+    definitions — but it is a specification version that has been superseded for nine years and
+    cannot express several things this API needs, including multiple servers and per-operation
+    callbacks for its webhook surface.
+- id: swagger-2
+  conforms: true
+  evidence: openapi/corestack-external-api-openapi-original.json, live at api.corestack.io/swagger.json
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Every 4xx/5xx response resolves to a one-field ModelError object; no application/problem+json.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: >-
+    No Sunset or Deprecation header; zero of 838 operations carry `deprecated: true`, despite a real
+    deprecation practice documented in the release notes.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 or a redirect on every CoreStack host probed.
+- id: idempotency
+  conforms: false
+  evidence: >-
+    Zero idempotency mechanism across 513 POST operations. See conventions/corestack-conventions.yml.
+- id: pagination
+  conforms: partial
+  evidence: >-
+    limit + page query parameters documented for LIST actions, but the paged response envelope is
+    undocumented and newer POST-body list operations use their own filter bodies.
+- id: rate-limit-headers
+  conforms: false
+  evidence: No RateLimit-*, X-RateLimit-* or Retry-After anywhere in the spec or the docs.
+- id: json-api
+  conforms: false
+- id: odata
+  conforms: false
+- id: scim
+  conforms: false
+  evidence: >-
+    Identity, users, groups and roles are managed through CoreStack's own API shapes, not SCIM 2.0 —
+    notable for an enterprise multi-tenant platform with SSO.
+- id: fhir
+  conforms: false
+  not_applicable: true
+- id: psd2
+  conforms: false
+  not_applicable: true
+
+company_compliance_posture:
+  note: CoreStack's own certifications, as published by CoreStack.
+  certifications:
+  - name: SOC 2 Type II
+    published: true
+    auditor: Ernst & Young
+    source: https://www.corestack.io/blog/corestack-achieves-soc-2-type-ii-certification/
+    note: >-
+      Announced on the company blog. There is no trust centre, no security page and no certification
+      index on corestack.io — the announcement post is the only public artefact, and the company
+      operates no /.well-known/security.txt and no published vulnerability disclosure programme.
+  - name: ISO 27001
+    published: false
+    note: Not found on any CoreStack-published page.
+  trust_center:
+    exists: false
+    probed:
+    - url: https://trust.corestack.io
+      status: 0
+      note: DNS does not resolve.
+    - url: https://www.corestack.io/trust/
+      status: 404
+    - url: https://www.corestack.io/security/
+      status: 404
+
+frameworks_the_product_assesses_against:
+  note: >-
+    These are governance frameworks CoreStack evaluates CUSTOMER cloud accounts against. They are a
+    product capability, NOT a CoreStack certification, and must never be read as one.
+  source: https://docs.corestack.io/docs/corestack-api-modules
+  frameworks:
+  - ISO
+  - NIST
+  - HIPAA
+  - PCI DSS
+  - CIS (AWS/Azure/GCP benchmarks)
+  - FedRAMP
+  - AWS Well-Architected Framework
+  - custom standards

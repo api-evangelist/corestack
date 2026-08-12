@@ -1,23 +1,173 @@
 aid: corestack
-name: Corestack
-description: 'Corestack is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+name: CoreStack
+x-enrichment:
+  date: '2026-08-11'
+  status: enriched
+  artifacts_added: 25
+  pass: local-v1
+description: >-
+  CoreStack is a multi-cloud governance and security platform that unifies FinOps (cost visibility,
+  budgets, anomaly detection, rightsizing and commitment optimization), CloudOps (workload lifecycle,
+  tagging, automation and self-service), SecOps/compliance (policy guardrails, posture management and
+  continuous assessment against ISO, NIST, HIPAA, PCI DSS, CIS and the AWS Well-Architected Framework),
+  and Graphion, its AI-native CNAPP layer covering SBOM, container findings and vulnerability
+  intelligence, across AWS, Microsoft Azure, Google Cloud and Oracle Cloud Infrastructure. Every one of
+  those capabilities is exposed through the CoreStack External API — a Swagger 2.0 contract of 838
+  operations across 767 paths, published live at the API host — and, since 2026, through a hosted
+  unified MCP server that surfaces 100 documented tools to AI clients over OAuth or API key headers.
 url: https://raw.githubusercontent.com/api-evangelist/corestack/refs/heads/main/apis.yml
+image: https://www.corestack.io/wp-content/uploads/Agentic-Governance-OS-Unified-Governance-Across-Cloud-SaaS-and-AI.png
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
-specificationVersion: '0.20'
+specificationVersion: '0.21'
 created: '2026-08-11'
 modified: '2026-08-11'
 tags:
-- Company
-apis: []
+- cloud-governance
+- finops
+- cloud-cost-management
+- cloud-security-posture-management
+- compliance
+- multi-cloud
+- cnapp
+- policy-as-code
+- cloudops
+- mcp
+- agent-native
+- kubernetes
+apis:
+- name: CoreStack External API
+  description: >-
+    REST API covering the whole CoreStack governance surface — authorization, identity and RBAC,
+    guardrail policies, account governance, operations and automation, security, cost and budgets,
+    access, resources, compliance assessments and self-service. Published as a live Swagger 2.0
+    document with 838 uniquely-identified operations. Authentication is a short-lived X-Auth-Token
+    minted from an Access Key / Secret Key pair, paired with an X-Auth-User header.
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - cloud-governance
+  - finops
+  - compliance
+  - multi-cloud
+  - policy-as-code
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-external-api-openapi-original.json
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+  - type: Overlay
+    url: overlays/corestack-external-api-overlay.yaml
+- name: CoreStack MCP Server
+  description: >-
+    Hosted, unified Model Context Protocol server exposing 100 documented tools across five domains —
+    Common/Auth (10), FinOps (24), Graphion (45), Assessment (15) and Workload (6) — at a single /mcp
+    endpoint on each regional environment. Streamable HTTP transport, authenticated either by OAuth 2.1
+    (authorization code + PKCE, dynamic client registration) or by X-API-Access-Key / X-API-Secret-Key
+    headers. Disabled by default and enabled per account by an Account Administrator; every tool call
+    inherits the calling user's existing CoreStack role permissions.
+  humanURL: https://docs.corestack.io/docs/mcp-tool-guide
+  baseURL: https://cloud.corestack.io/mcp
+  tags:
+  - mcp
+  - agent-native
+  - finops
+  - cnapp
+  - cloud-governance
+  properties:
+  - type: MCPServer
+    url: mcp/corestack-mcp.yml
+  - type: MCPServer
+    url: https://cloud.corestack.io/mcp
+  - type: ToolCrosswalk
+    url: mcp/corestack-tool-crosswalk.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/mcp-client-configuration
+  - type: OAuthScopes
+    url: scopes/corestack-scopes.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/corestack-domain-security.yml
 - type: Website
-  url: https://www.hiive.com/securities/corestack-stock
+  url: https://www.corestack.io/
+- type: DeveloperPortal
+  url: https://docs.corestack.io/
+- type: Documentation
+  url: https://docs.corestack.io/
+- type: APIReference
+  url: https://docs.corestack.io/reference
+- type: GettingStarted
+  url: https://docs.corestack.io/docs/corestack-api-modules
+- type: Support
+  url: https://support.corestack.io/portal/en/home
+- type: Blog
+  url: https://www.corestack.io/blog/
+- type: Pricing
+  url: https://www.corestack.io/solutions/pricing/
+- type: SignUp
+  url: https://www.corestack.io/contact-us/
+- type: Login
+  url: https://cloud.corestack.io/auth/login
+- type: TermsOfService
+  url: https://www.corestack.io/terms-of-service/
+- type: PrivacyPolicy
+  url: https://www.corestack.io/privacy-policy/
+- type: StatusPage
+  url: https://corestack.statuspage.io/
+- type: ChangeLog
+  url: https://docs.corestack.io/changelog
+- type: ChangeLog
+  url: changelog/corestack-changelog.yml
+- type: Roadmap
+  url: https://docs.corestack.io/docs/external-apis-62-2603
+- type: Compliance
+  url: https://www.corestack.io/blog/corestack-achieves-soc-2-type-ii-certification/
+- type: LLMsTxt
+  url: llms/corestack-llms.txt
+- type: WellKnown
+  url: well-known/corestack-well-known.yml
+- type: MCPServer
+  url: mcp/corestack-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/corestack-tool-crosswalk.yml
+- type: Authentication
+  url: authentication/corestack-authentication.yml
+- type: OAuthScopes
+  url: scopes/corestack-scopes.yml
+- type: Conventions
+  url: conventions/corestack-conventions.yml
+- type: ErrorCatalog
+  url: errors/corestack-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/corestack-lifecycle.yml
+- type: Conformance
+  url: conformance/corestack-conformance.yml
+- type: DataModel
+  url: data-model/corestack-data-model.yml
+- type: Plans
+  url: plans/corestack-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/corestack-rate-limits.yml
+- type: Webhooks
+  url: asyncapi/corestack-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Overlay
+  url: overlays/corestack-external-api-overlay.yaml
+- type: Packages
+  url: packages/corestack-packages.yml

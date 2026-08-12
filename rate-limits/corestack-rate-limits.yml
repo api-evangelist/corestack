@@ -1,0 +1,52 @@
+generated: '2026-08-11'
+method: searched
+source: https://docs.corestack.io/docs/corestack-api-modules
+limit_count: 0
+documented: false
+
+note: >-
+  CoreStack publishes NO API rate limits. The External APIs guide covers authentication, HTTP verbs,
+  response codes, data types and pagination but says nothing about throttling. A full-text search of
+  the documentation index (1,132 entries, every guide and every one of the 800+ reference pages) turns
+  up no rate limit, throttling, quota or 429 page. The published 2.3MB specification declares 429 on
+  zero of its 838 operations and declares no RateLimit-*, X-RateLimit-* or Retry-After response header
+  anywhere. An integrator therefore has no published ceiling and, more importantly, no runtime signal:
+  there is no header to read, no documented status code to catch, and no back-off guidance. Combined
+  with the absence of idempotency (see conventions/), this leaves a client with no safe retry story at
+  all — it cannot tell that it is being throttled, and it cannot safely retry the write if it is.
+
+limits: []
+
+response_headers:
+  ratelimit_standard: false
+  x_ratelimit: false
+  retry_after: false
+  observed: []
+  note: No rate-limit headers observed on live unauthenticated responses from api.corestack.io.
+
+exhaustion_status: undocumented
+
+adjacent_documented_limits:
+  note: >-
+    The only numeric ceilings CoreStack publishes are feature limits, not API rate limits. Recorded
+    here because they are the closest thing an integrator will find.
+  limits:
+  - scope: policy schedule notification configuration
+    limit: 10 webhooks per schedule
+    source: https://docs.corestack.io/docs/webhook-integration-for-policy-schedules
+  - scope: policy schedule notification configuration
+    limit: 25 email recipients per schedule
+    source: https://docs.corestack.io/docs/webhook-integration-for-policy-schedules
+  - scope: SBOM version vulnerability batch request
+    limit: 1000 vulnerability IDs per request
+    source: https://docs.corestack.io/reference/sbomversionvulnerabilitybatch
+
+x-evidence:
+  fetched: '2026-08-11'
+  probes:
+  - url: https://docs.corestack.io/llms.txt
+    http_status: 200
+    finding: No rate limit, throttling, quota or 429 entry across 1,132 indexed pages.
+  - url: https://api.corestack.io/swagger.json
+    http_status: 200
+    finding: Zero occurrences of RateLimit, X-RateLimit or Retry-After; 429 declared on 0 operations.

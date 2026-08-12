@@ -1,0 +1,119 @@
+generated: '2026-08-11'
+method: searched
+source: https://docs.corestack.io/changelog
+docs:
+  platform_changelog: https://docs.corestack.io/changelog
+  api_changelog_latest: https://docs.corestack.io/docs/external-apis-62-2603
+  deprecation_notice_archive: https://docs.corestack.io/docs/whats-deprecated
+
+scheme:
+  style: numbered platform releases with a build number
+  format: '<major>.<minor> (<build>)'
+  example: 6.2 (2603)
+  cadence: roughly every one to three months
+  note: >-
+    CoreStack runs TWO parallel changelogs and the distinction matters. "Release Notes <version>"
+    covers the product and the console. "External APIs <version>" is a separate, per-release document
+    written for API consumers, and it is unusually specific: every added, changed, decommissioned and
+    deprecated operation is listed by METHOD + PATH + summary, and every changed operation itemises
+    the individual request parameters and response fields added or removed. That is a materially
+    better API changelog than most enterprise platforms publish, and it is the strongest single
+    artifact in CoreStack's developer surface.
+
+current:
+  version: '6.2'
+  build: '2603'
+  released: '2026-07'
+  api_changelog: https://docs.corestack.io/docs/external-apis-62-2603
+  page_updated: '2026-07-07'
+
+sections_per_api_release:
+- What's New
+- What's Decommissioned
+- What's Changed
+- What's Coming in the Next Release?
+
+forward_looking:
+  published: true
+  section: What's Coming in the Next Release?
+  note: >-
+    Each External APIs release note ends with the NEXT build's planned additions and changes, named
+    to the operation and to the individual field. 6.2 (2603) names three new service-account
+    operations and twenty changing operations planned for 2604. This is a published API roadmap in
+    all but name, and it gives an integrator advance notice at field granularity.
+
+entries:
+- version: '6.2'
+  build: '2603'
+  date: '2026-07'
+  url: https://docs.corestack.io/docs/external-apis-62-2603
+  added: 12
+  changed: 36
+  decommissioned: 0
+  breaking: false
+  highlights:
+  - GET /tenants/{tenant_id}/name_change_history — tenant name change history
+  - POST /v1/agent/action/confirm — confirm or deny a pending AI-agent action
+  - POST /v1/ai_governance/metrics/aggregate — AI governance metric aggregation
+  - POST /v1/copilot_stats/org_metrics and /user_metrics — Microsoft Copilot governance stats
+  - Five executive-dashboard saved-view operations (create/get/update/delete/list)
+  - POST /v2/savings_plans/{tenant_id}/purchased/details and /utilization
+  next_release_preview: '2604'
+- version: '6.1'
+  build: '2602'
+  date: '2026-06'
+  url: https://docs.corestack.io/docs/external-apis-61-2602
+  added: 20
+  changed: 23
+  decommissioned: 0
+  breaking: false
+- version: '6.0'
+  build: '2601'
+  date: '2026-05'
+  url: https://docs.corestack.io/docs/external-apis-60-2601
+  note: Platform release notes dated April 2026; the External APIs note is dated May 2026.
+- version: '5.4'
+  build: '2504.1'
+  date: '2026-03'
+  url: https://docs.corestack.io/docs/external-apis-54-25041
+- version: '5.3'
+  build: '2504'
+  date: '2025-12'
+  url: https://docs.corestack.io/docs/external-apis-53-2504
+- version: '5.2'
+  build: '2503'
+  date: '2025-09'
+  url: https://docs.corestack.io/docs/external-apis-52-2503
+- version: '5.1'
+  build: '2502'
+  date: '2025-07'
+  url: https://docs.corestack.io/docs/external-apis-51-2502
+- version: '5.0'
+  build: '2501'
+  date: '2025-04'
+  url: https://docs.corestack.io/docs/external-apis-50-2501
+
+deprecation_history:
+  documented: true
+  example_release: '4.3 (2401)'
+  url: https://docs.corestack.io/docs/whats-deprecated
+  note: >-
+    The 4.3 (2401) release published a dedicated "What's Deprecated" page listing roughly thirty
+    operations struck through by method and path — alert configuration, compliance control mapping,
+    cost savings account/tenant summaries, the entire /governance/account cloud-account family, and
+    the /operations/anomaly_detector family. Later releases fold the equivalent information into a
+    "What's Decommissioned" section of the External APIs note; 6.1 and 6.2 both record "None".
+
+archive_depth:
+  earliest_release_notes: '3.4'
+  earliest_dated: 3.5 — 19 January 2022
+  releases_documented: 24
+  note: Four years of dated release history is retained and publicly linkable.
+
+x-evidence:
+  fetched: '2026-08-11'
+  probes:
+  - url: https://docs.corestack.io/docs/external-apis-62-2603.md
+    http_status: 200
+  - url: https://docs.corestack.io/docs/whats-deprecated.md
+    http_status: 200

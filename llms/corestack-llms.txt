@@ -1,0 +1,1132 @@
+# CoreStack Documentation Documentation
+
+> Documentation for CoreStack Documentation
+
+## Guides
+- [CoreStack Platform Overview](https://docs.corestack.io/docs/product-overview-20.md): A comprehensive guide to the CoreStack Cloud Governance and Security Platform.
+- [Setting up your Account](https://docs.corestack.io/docs/setting-up-your-corestack-account.md)
+- [Set Up an Organizational Hierarchy](https://docs.corestack.io/docs/organizational-hierarchy.md): Understand what options you have for setting up your organization structure in the platform.
+- [Naming Updates - OSCAR to FinOps/SecOps/CloudOps](https://docs.corestack.io/docs/naming-updates-oscar-to-finopssecopscloudops.md)
+- [Product Bundles](https://docs.corestack.io/docs/product-bundles.md): This document explains about the different products and bundles that are available in this cloud governance platform.
+- [Cloud Accounts](https://docs.corestack.io/docs/account-governance-cloud-accounts.md)
+- [Tools](https://docs.corestack.io/docs/account-governance-integrated-tools.md)
+- [AI Services Accounts](https://docs.corestack.io/docs/ai-services-accounts.md): Learn how to onboard, monitor, and manage OpenAI and Anthropic accounts in CoreStack's AI Services dashboard with summary cards, quick actions, and credential management.
+- [Data Services Accounts](https://docs.corestack.io/docs/data-services-accounts.md): Learn how to onboard, monitor, and manage Databricks and Snowflake accounts in CoreStack's Data Services dashboard with summary cards, quick actions, and storage configuration.
+- [Other Services Accounts](https://docs.corestack.io/docs/other-services-accounts.md): Learn how to onboard, monitor, and manage Other Services accounts in CoreStack including 12 supported tools and Custom Tools, with summary cards and quick actions.
+- [Policies](https://docs.corestack.io/docs/guardrails-policies.md)
+- [Permissions for Platform GCP Policies](https://docs.corestack.io/docs/permissions-for-gcp-policies.md)
+- [Policy Changes as per Release](https://docs.corestack.io/docs/policy-changes-as-per-release.md)
+- [Policy Exclusions](https://docs.corestack.io/docs/policy-exclusions.md)
+- [Webhook Integration for Policy Schedules](https://docs.corestack.io/docs/webhook-integration-for-policy-schedules.md)
+- [Recommendations](https://docs.corestack.io/docs/recommendations.md)
+- [FinOps Overview](https://docs.corestack.io/docs/finops-overview.md): Get the most value out of your cloud environments through improved visibility, optimized infrastructure consumption, and a culture of financial accountability.
+- [FinOps Dashboard](https://docs.corestack.io/docs/cost-dashboard.md)
+- [Create, Edit, and Delete Dashboards](https://docs.corestack.io/docs/create-edit-and-delete-dashboards.md)
+- [Clone Dashboard](https://docs.corestack.io/docs/clone-dashboard.md)
+- [Add, Edit, and Remove Dashboard Permissions](https://docs.corestack.io/docs/add-edit-remove-dashboard-permissions.md)
+- [Create, Share, and Delete Dashboard Views ](https://docs.corestack.io/docs/create-delete-dashboard-view.md)
+- [Query-Based Filters in Dashboard](https://docs.corestack.io/docs/query-based-filters-in-dashboard.md)
+- [FinOps Widget Framework](https://docs.corestack.io/docs/widget-framework.md)
+- [FinOps Widget Capabilities](https://docs.corestack.io/docs/finops-widget-capabilities.md)
+- [Budget Cost Trend Forecast](https://docs.corestack.io/docs/budget-cost-trend-forecast.md): This guide explains how to use the Budget Cost Trend Forecast widget in CoreStack FinOps to monitor actual cloud spend against budgets and view forward-looking cost projections.
+- [Cost Forecasting](https://docs.corestack.io/docs/cost-forecasting.md)
+- [Subscribe, Edit, and Unsubscribe Dashboard Email](https://docs.corestack.io/docs/subscribe-edit-and-unsubscribe-dashboard-email.md)
+- [Multi-Cloud Kubernetes Cost Dashboard](https://docs.corestack.io/docs/kubernetes-cost-dashboard.md): This guide will take you through the various widgets for Kubernetes (K8s) Cost Dashboard in CoreStack.
+- [SaaS Dashboard - Cost Support](https://docs.corestack.io/docs/saas-dashboard-cost-support.md): This user guide takes you through the SaaS dashboard that supports cost analysis within CoreStack.
+- [OCI Cost Explorer Dashboard](https://docs.corestack.io/docs/oci-cost-explorer-dashboard.md): Learn how to navigate and analyze OCI cloud costs in CoreStack FinOps using the OCI Cost Explorer Dashboard, including cost summary widgets, trend analysis, GroupBy filtering, and drilldown.
+- [Budget](https://docs.corestack.io/docs/budget.md)
+- [Managing a Budget](https://docs.corestack.io/docs/creating-and-managing-a-budget.md)
+- [Budget Creation (Cost Metrics)](https://docs.corestack.io/docs/budget-creation-cost-metrics.md): The budget creation feature in the platform empowers organizations to streamline their financial planning and control their spend.
+- [Budget - Page View](https://docs.corestack.io/docs/budget-page-view.md): Learn how to efficiently manage Budget Page Views within the FinOps module.
+- [Anomaly Dashboard](https://docs.corestack.io/docs/cost-anomaly-dashboard.md): Cost Anomaly Summary and Cost Anomaly Details Overview
+- [Configuring Cost Anomaly Settings](https://docs.corestack.io/docs/configuring-cost-anomaly-settings.md): Learn how to configure Cost Anomaly thresholds and notification channels in CoreStack FinOps at the cloud account and tenant levels to detect and alert on spending anomalies.
+- [Cost Anomaly Widgets in Dashboard](https://docs.corestack.io/docs/cost-anomaly-widgets-in-dashboard.md)
+- [Cost Anomaly Dashboard Deep Dive](https://docs.corestack.io/docs/cost-anomaly-dashboard-deep-dive.md)
+- [Cost Anomaly Details Deep Dive](https://docs.corestack.io/docs/how-to-leverage-cost-anomaly-details.md)
+- [Reject Cost Anomaly](https://docs.corestack.io/docs/reject-cost-anomaly.md)
+- [Dimension Support for Cost Anomaly](https://docs.corestack.io/docs/dimension-support-for-cost-anomaly.md): This user guide takes you through Dimension Anomaly Summary dashboard in CoreStack.
+- [Cost Anomaly - Remediation Workflow](https://docs.corestack.io/docs/cost-anomaly-remediation-workflow.md)
+- [Anomaly Dashboard](https://docs.corestack.io/docs/anomaly-dashboard-1.md): Learn how to use the CoreStack FinOps Anomaly Dashboard to detect, review, and analyze unexpected cloud cost spikes across accounts, providers, and resource categories.
+- [Markups and Discounts](https://docs.corestack.io/docs/markups-and-discounts.md)
+- [Cost Optimizer](https://docs.corestack.io/docs/cost-optimizer.md)
+- [Optimization Dashboard](https://docs.corestack.io/docs/optimization-dashboard.md)
+- [Optimize Usage - Rightsizing](https://docs.corestack.io/docs/optimize-usage-rightsizing.md)
+- [Optimize Usage - Optimize Configuration](https://docs.corestack.io/docs/optimize-usage-optimize-configuration.md)
+- [Optimize Usage - Schedule Recommendations](https://docs.corestack.io/docs/optimize-usage-schedule-recommendations.md)
+- [Optimize Usage - Idle](https://docs.corestack.io/docs/optimize-usage-idle.md)
+- [Optimize Usage - Orphaned](https://docs.corestack.io/docs/optimize-usage-orphaned.md)
+- [Optimize Rate - Long Term Savings](https://docs.corestack.io/docs/optimize-rate-long-term-savings.md)
+- [Optimize Rate - Savings Plan](https://docs.corestack.io/docs/optimize-rate-savings-plan.md)
+- [Optimize Rate - License Benefits](https://docs.corestack.io/docs/optimize-rate-license-benefits.md)
+- [Optimize Actions](https://docs.corestack.io/docs/optimize-actions.md)
+- [FinOps Glossary of Terms](https://docs.corestack.io/docs/finops-glossary-of-terms.md)
+- [Billing Inventory](https://docs.corestack.io/docs/billing-inventory.md): Use CoreStack Billing Inventory to analyze resource-level cloud costs across AWS, Azure, GCP, and OCI with advanced filtering, cost drilldown, and resource tag visibility.
+- [BillOps](https://docs.corestack.io/docs/billops.md)
+- [Billing Plans](https://docs.corestack.io/docs/billing-plans.md): This guide will walk you through setting up Billing Plans in the platform.
+- [Adding Billing Plans](https://docs.corestack.io/docs/adding-billing-plans.md): This guide provides more detailed instructions on how to add a new Billing Plan in the platform.
+- [Margin Analysis Dashboard](https://docs.corestack.io/docs/margin-analysis-dashboard.md)
+- [Dimensions - Tenant Level Settings](https://docs.corestack.io/docs/dimensions-tenant-level-settings.md): This guide helps you configure Dimension settings at the tenant level in CoreStack.
+- [NextGen FinOps Report](https://docs.corestack.io/docs/nextgen-finops-report.md): CoreStack NextGen FinOps Report guide: analyze cloud spend with rate, quantity & UOM data, apply filters, group costs, and export or schedule reports.
+- [FinOps Rate Optimization Agent](https://docs.corestack.io/docs/finops-rate-optimization-agent.md): Use the CoreStack FinOps Rate Optimization Agent to analyze commitment waste, assess portfolio health, and build recovery plans across AWS and Azure.
+- [Portfolio Health Assessment](https://docs.corestack.io/docs/portfolio-health-assessment.md): Learn how to read the Portfolio Health Assessment in CoreStack's FinOps Rate Optimization Agent, covering KPI summary, Agentic Insights, utilization analysis, and commitment health.
+- [Waste Optimisation Dashboard](https://docs.corestack.io/docs/waste-optimisation-dashboard.md): Learn how to read the Waste Optimisation Dashboard in CoreStack's FinOps Rate Optimization Agent, covering waste KPI summary, commitment waste analysis, root cause breakdown, and recovery planning.
+- [SecOps Overview](https://docs.corestack.io/docs/secops-overview.md): Use cloud-native tools and custom APIs to create security and compliance guardrails that keep your cloud assets secure and compliant.
+- [SecOps Dashboard](https://docs.corestack.io/docs/security-dashboard.md)
+- [SecOps Widget Framework](https://docs.corestack.io/docs/secops-widget-framework.md)
+- [SecOps Widget Capabilities](https://docs.corestack.io/docs/secops-widget-capabilities.md)
+- [SecOps Posture](https://docs.corestack.io/docs/security-posture.md)
+- [Compliance Posture](https://docs.corestack.io/docs/compliance-posture.md)
+- [Access Posture](https://docs.corestack.io/docs/access-posture.md)
+- [Compliance Standards](https://docs.corestack.io/docs/compliance-standards.md)
+- [My Standards](https://docs.corestack.io/docs/my-standards.md)
+- [AWS Security Hub](https://docs.corestack.io/docs/aws-security-hub.md)
+- [List of Policy Name Changes](https://docs.corestack.io/docs/list-of-policy-name-changes.md)
+- [Real-Time Threat Configuration for AWS](https://docs.corestack.io/docs/real-time-threat-configuration-for-aws.md)
+- [Real-Time Threat Configuration for Azure](https://docs.corestack.io/docs/real-time-threat-configuration-for-azure.md)
+- [Azure Security Center Vulnerability Assessment](https://docs.corestack.io/docs/azure-security-center-vulnerability-assessment.md)
+- [SecOps Maturity Assessment](https://docs.corestack.io/docs/secops-maturity-assessment.md)
+- [Compliance Assessment Report](https://docs.corestack.io/docs/compliance-assessment-report.md)
+- [CloudOps Overview](https://docs.corestack.io/docs/cloudops-overview.md): Harness the full potential of the cloud with tools that help you optimize cloud operations and cost management.
+- [CloudOps Posture](https://docs.corestack.io/docs/operations-posture.md)
+- [Templates](https://docs.corestack.io/docs/templates.md)
+- [Multiple Template Selection for Tenant](https://docs.corestack.io/docs/multiple-template-selection-for-tenants.md)
+- [Blueprints](https://docs.corestack.io/docs/blueprints.md)
+- [AWS SSM Documents](https://docs.corestack.io/docs/aws-ssm-documents.md)
+- [Activity](https://docs.corestack.io/docs/activity-notifications.md)
+- [AWS Activity Help](https://docs.corestack.io/docs/activity-help-guide.md)
+- [Monitoring and Alerts](https://docs.corestack.io/docs/monitoring-and-alerts.md)
+- [CloudWatch Agent](https://docs.corestack.io/docs/cloudwatch-agent.md)
+- [System Metrics](https://docs.corestack.io/docs/system-metrics.md)
+- [Resource Posture](https://docs.corestack.io/docs/resource-posture.md)
+- [Inventory](https://docs.corestack.io/docs/inventory.md)
+- [Locks](https://docs.corestack.io/docs/locks.md)
+- [Tag Governance](https://docs.corestack.io/docs/tag-governance.md)
+- [Service Resource Tag List](https://docs.corestack.io/docs/service-resource-tag-list.md): A comprehensive overview of resources that aid in the discovery and remediation of tagging across all cloud providers.
+- [Workloads](https://docs.corestack.io/docs/setup-and-manage-workloads.md): Learn how to create and manage workloads for Assessments.
+- [Assessments Overview](https://docs.corestack.io/docs/corestack-assessments-overview.md): Continuously assess the state of your cloud workloads against high-performing frameworks to manage risk and embrace best practices.
+- [Out-of-the-Box Frameworks](https://docs.corestack.io/docs/out-of-the-box-frameworks.md): Learn more about the out-of-the-box frameworks available in the platform for Assessments.
+- [Custom Frameworks](https://docs.corestack.io/docs/custom-frameworks.md): Learn how to create a custom framework to use when running Assesments against your cloud accounts/workloads.
+- [Onboard Cloud Accounts for Assessments](https://docs.corestack.io/docs/onboard-cloud-accounts-for-corestack-assessments.md): Learn how to onboard cloud accounts for Assessments.
+- [AWS Prerequisites for Assessments](https://docs.corestack.io/docs/aws-prerequisites-for-corestack-assessments.md): Learn about the onboarding prerequesites for onboarding AWS cloud accounts for Assessments.
+- [Azure Prerequisites for Assessments](https://docs.corestack.io/docs/azure-prerequisites-for-corestack-assessments.md): Learn about the onboarding prerequesites for onboarding Azure cloud accounts for Assessments.
+- [GCP Prerequisites for Assessments](https://docs.corestack.io/docs/gcp-prerequisites-for-corestack-assessments.md): Learn about the onboarding prerequesites for onboarding GCP cloud accounts for Assessments.
+- [AWS Onboarding for Assessments](https://docs.corestack.io/docs/aws-onboarding-for-corestack-assessments.md): Learn how to onboard your AWS cloud accounts to be compatible with Assessments.
+- [Azure Onboarding for Assessments](https://docs.corestack.io/docs/azure-onboarding-for-corestack-assessments.md): Learn how to onboard your Azure cloud accounts to be compatible with Assessments.
+- [GCP Onboarding for Assessments](https://docs.corestack.io/docs/gcp-onboarding-for-corestack-assessments.md): Learn how to onboard your GCP cloud accounts to be compatible with Assessments.
+- [Receive the Initial Automated Assessments](https://docs.corestack.io/docs/receive-initial-corestack-assessment-post-onboarding.md): Learn about the automated Assessments triggered by CoreStack after you onboard a new cloud account.
+- [Start Your First Platform Assessment](https://docs.corestack.io/docs/start-your-first-corestack-assessment.md): Learn how to run an assessment for a workload in Assessments.
+- [Understanding Key Elements of Assessments](https://docs.corestack.io/docs/understanding-key-elements-of-assessments.md): Learn about the automated assessment triggered by after you first onboard a new cloud account.
+- [Role-Based Access Control (RBAC) for Assessments](https://docs.corestack.io/docs/role-based-access-control-rbac-for-assessments.md)
+- [Assessment Reports](https://docs.corestack.io/docs/assessment-reports.md)
+- [Assessment Agent](https://docs.corestack.io/docs/assessment-agent-v2.md): This guide directs you through utilizing the Assessment Agent feature in CoreStack.
+- [Graphion Overview](https://docs.corestack.io/docs/graphion-overview.md)
+- [Graphion Dashboard Overview](https://docs.corestack.io/docs/graphion-dashboard-overview.md)
+- [Graphion Widget Framework](https://docs.corestack.io/docs/graphion-widget-framework.md)
+- [Supply Chain Security](https://docs.corestack.io/docs/graphion-dashboard.md): The Supply Chain Security Dashboard feature is designed for security professionals seeking to enhance their application security management.
+- [Cloud Security ](https://docs.corestack.io/docs/graphion-infrastructure-dashboard.md): This user guide helps the users learn how to access and navigate the CoreStack Graphion Infrastructure Dashboard — a unified view of your cloud security posture across vulnerabilities, threats, and misconfigurations.
+- [Infrastructure Explorers](https://docs.corestack.io/docs/infrastructure-explorers.md): This user guide will help the users to learn how to view, search, filter, and investigate vulnerabilities, threats, and misconfigurations across your cloud infrastructure using the CoreStack Graphio Infrastructure Explorers.
+- [Open Infrastructure Issues – Trend](https://docs.corestack.io/docs/infrastructure-dashboard-open-infrastructure-issues-trend.md): This user guide helps the users learn how to use the Open Infrastructure Issues – Trend widget in CoreStack Graphion to monitor and investigate vulnerabilities, threats, and misconfigurations over time.
+- [ Infrastructure Issues - by Severity and Account](https://docs.corestack.io/docs/infrastructure-issues-by-severity-and-account.md): This user guide provides step-by-step instructions to investigate cloud security issues by account using CoreStack Graphion Infrastructure Dashboard.
+- [Infrastructure Issues - By Region](https://docs.corestack.io/docs/infrastructure-issues-by-region.md): In this user guide, users can identify and investigate regional cloud security hotspots across AWS, Azure, OCI and GCP using an interactive world map on the Graphion Infrastructure Dashboard.
+- [Infrastructure Resources: By Resource Category](https://docs.corestack.io/docs/infrastructure-resources-by-resource-category.md): This user guide provides users with step-by-step instructions to monitor, filter, and analyze resource changes in CoreStack's Infrastructure Dashboard.
+- [Infrastructure Resources and Issues – Flow](https://docs.corestack.io/docs/infrastructure-resources-and-issues-flow.md): The user guide helps the users to visualize how security issues flow across cloud providers, resource categories, and issue types using the interactive Sankey chart on the Graphion Infrastructure Dashboard.
+- [Infrastructure Resources - Inventory Overview](https://docs.corestack.io/docs/infrastructure-dashboard-vulnerabilities-treemap.md): This user guide provides step-by-step instructions to explore cloud resource vulnerabilities using the Infrastructure Resources: Inventory Overview in CoreStack Graphion.
+- [Vulnerability Graph](https://docs.corestack.io/docs/vulnerability-graph.md)
+- [Graphion - App Onboarding](https://docs.corestack.io/docs/graphion-app-onboarding.md): Learn how to onboard apps in CoreStack's Graphion module — create Portfolios, Applications, and Projects, configure BCS weights, and manage supply chain security.
+- [SBOM](https://docs.corestack.io/docs/s-bom.md): This guide will walk you through the steps to view, upload, and update SBOM using CoreStack.
+- [Graphion Agent](https://docs.corestack.io/docs/graphion-agent.md): This guide directs you through utilizing the Graphion Agent feature in CoreStack.
+- [Self-Service Dashboard](https://docs.corestack.io/docs/self-service-dashboard.md)
+- [Self-Service Catalogs](https://docs.corestack.io/docs/self-service-catalogs.md)
+- [Order Management](https://docs.corestack.io/docs/order-management.md)
+- [Workspace](https://docs.corestack.io/docs/workspace-1.md)
+- [Reports Overview](https://docs.corestack.io/docs/reports-overview.md)
+- [Reports Classification](https://docs.corestack.io/docs/bundle-wise-reports.md)
+- [FinOps Reports](https://docs.corestack.io/docs/cost-reports.md)
+- [SecOps Reports](https://docs.corestack.io/docs/security-reports.md)
+- [CloudOps Reports](https://docs.corestack.io/docs/cloudops-reports.md)
+- [Navigating within Reports](https://docs.corestack.io/docs/reports-navigation.md)
+- [Report Features](https://docs.corestack.io/docs/report-features.md)
+- [Generate Reports](https://docs.corestack.io/docs/generate-reports.md)
+- [Save Views](https://docs.corestack.io/docs/save-views.md)
+- [Share Saved View](https://docs.corestack.io/docs/share-saved-view.md)
+- [Export Reports](https://docs.corestack.io/docs/export-reports.md)
+- [Share Reports](https://docs.corestack.io/docs/share-reports.md)
+- [Schedule/Subscribe Reports](https://docs.corestack.io/docs/schedule-subscribe-reports.md)
+- [Subscribe vs Share Report](https://docs.corestack.io/docs/subscribe-vs-share-report.md)
+- [Apply Filters](https://docs.corestack.io/docs/apply-filters.md)
+- [Report Properties](https://docs.corestack.io/docs/report-properties.md)
+- [Pre-Onboarding Overview](https://docs.corestack.io/docs/pre-onboarding-overview.md)
+- [AWS Permissions](https://docs.corestack.io/docs/aws-permissions.md)
+- [Onboarding Permissions for AWS - Read-Only](https://docs.corestack.io/docs/onboarding-permissions-for-aws-read-only.md)
+- [Onboarding Permissions for AWS - Read-Write](https://docs.corestack.io/docs/onboarding-permissions-for-aws-read-write.md)
+- [AWS Pre-Onboarding Guides](https://docs.corestack.io/docs/aws-pre-onboarding-guides.md)
+- [Pre-Onboarding for AWS Management Accounts](https://docs.corestack.io/docs/pre-onboarding-for-aws-management-accounts.md)
+- [Pre-Onboarding for AWS Member Accounts](https://docs.corestack.io/docs/pre-onboarding-for-aws-member-accounts.md)
+- [Onboarding Multiple AWS Member Accounts from a Management Account using AWS StackSets](https://docs.corestack.io/docs/onboarding-multiple-aws-member-accounts-from-a-management-account-using-aws-stacksets.md): Save time and streamline your onboarding process for multiple AWS cloud accounts by setting things up for bulk onboarding.
+- [Azure Permissions](https://docs.corestack.io/docs/azure-permissions.md)
+- [Onboarding Permissions for Azure - Read-Only](https://docs.corestack.io/docs/onboarding-permissions-for-azure-read-only.md)
+- [Onboarding Permissions for Azure - Read-Write](https://docs.corestack.io/docs/onboarding-permissions-for-azure-read-write.md)
+- [Azure Pre-Onboarding Guides](https://docs.corestack.io/docs/azure-pre-onboarding-guides.md)
+- [Pre-Onboarding for Azure Subscriptions (PayG, CSP Indirect)](https://docs.corestack.io/docs/pre-onboarding-for-azure-subscriptions.md)
+- [Pre-Onboarding for Azure Enterprise Agreements (EA)](https://docs.corestack.io/docs/pre-onboarding-for-azure-enterprise-agreements-ea.md)
+- [Pre-Onboarding for Azure CSP Direct Accounts](https://docs.corestack.io/docs/pre-onboarding-for-azure-csp-direct-accounts.md)
+- [Pre-Onboarding for Azure Microsoft Customer Agreement (MCA)](https://docs.corestack.io/docs/pre-onboarding-for-azure-microsoft-customer-agreement-mca.md)
+- [GCP Permissions](https://docs.corestack.io/docs/gcp-permissions.md)
+- [Onboarding Permissions for GCP - Read-Only](https://docs.corestack.io/docs/onboarding-permissions-for-gcp-read-only.md)
+- [Onboarding Permissions for GCP - Read-Write](https://docs.corestack.io/docs/onboarding-permissions-for-gcp-read-write.md)
+- [GCP Pre-Onboarding Guides](https://docs.corestack.io/docs/gcp-pre-onboarding-guides.md)
+- [Pre-Onboarding for GCP Billing Accounts](https://docs.corestack.io/docs/pre-onboarding-for-gcp-billing-accounts.md)
+- [Pre-Onboarding for GCP Linked Project Accounts](https://docs.corestack.io/docs/pre-onboarding-for-gcp-linked-project-accounts.md)
+- [Pre-Onboarding for GCP Parent Billing Accounts](https://docs.corestack.io/docs/pre-onboarding-for-gcp-parent-billing-accounts.md)
+- [Onboarding a GCP Billing Account with Terraform](https://docs.corestack.io/docs/onboarding-a-gcp-billing-account-with-terraform.md)
+- [Pre-Onboarding for GCP Organization Accounts (Read/Read-Write)](https://docs.corestack.io/docs/pre-onboarding-for-gcp-organization-accounts-read-read-write.md)
+- [OAuth Credentials for GCP Billing Account Onboarding](https://docs.corestack.io/docs/oauth-credentials-for-gcp-billing-account-onboarding.md)
+- [OCI Permissions](https://docs.corestack.io/docs/oci-permissions.md)
+- [Onboarding Permissions for OCI - Read-Only](https://docs.corestack.io/docs/onboarding-permissions-for-oci-read-only.md)
+- [Onboarding Permissions for OCI - Read-Write](https://docs.corestack.io/docs/onboarding-permissions-for-oci-read-write.md)
+- [OCI Pre-Onboarding Guides](https://docs.corestack.io/docs/oci-pre-onboarding-guides.md)
+- [Pre-Onboarding for OCI Tenancies](https://docs.corestack.io/docs/pre-onboarding-for-oci-tenancies.md)
+- [Onboard Accounts](https://docs.corestack.io/docs/onboarding.md)
+- [AWS Onboarding](https://docs.corestack.io/docs/aws-onboarding.md)
+- [Onboarding for AWS Management Accounts](https://docs.corestack.io/docs/onboarding-for-aws-management-accounts.md)
+- [Onboarding for AWS Member Accounts](https://docs.corestack.io/docs/onboarding-for-aws-member-accounts.md)
+- [AWS Management Account Onboarding - EDP/PPA Commit Configuration](https://docs.corestack.io/docs/aws-management-account-onboarding-edpppa-commit-configuration.md)
+- [Onboarding AWS Government Cloud Account with FinOps Support](https://docs.corestack.io/docs/onboarding-aws-government-cloud-account-with-finops-support.md): Learn how to onboard and govern your AWS Government Cloud accounts effectively using CoreStack.
+- [Azure Onboarding](https://docs.corestack.io/docs/azure-onboarding.md)
+- [Onboarding for Azure Subscriptions (PayG, CSP Indirect)](https://docs.corestack.io/docs/onboarding-for-azure-subscriptions.md)
+- [Onboarding for Azure Enterprise Agreements (EA)](https://docs.corestack.io/docs/onboarding-for-azure-enterprise-agreements-ea.md)
+- [Onboarding for Microsoft Partner Agreements (Azure CSP Direct)](https://docs.corestack.io/docs/onboarding-for-azure-microsoft-partner-agreements-csp-direct-accounts.md)
+- [CSP Customer to Tenant Access](https://docs.corestack.io/docs/customer-to-tenant.md)
+- [Onboarding for Azure MCA ](https://docs.corestack.io/docs/onboarding-for-azure-mca.md): This user guide takes you through the process of onboarding an Azure Microsoft Customer Agreement (MCA) cloud account using CoreStack.
+- [GCP Onboarding](https://docs.corestack.io/docs/gcp-onboarding.md)
+- [Onboarding for GCP Cloud Billing Accounts](https://docs.corestack.io/docs/onboarding-for-gcp-cloud-billing-accounts.md)
+- [Onboarding for GCP Linked Project Accounts](https://docs.corestack.io/docs/onboarding-for-gcp-linked-project-accounts.md)
+- [Onboarding for GCP Parent Cloud Billing Accounts](https://docs.corestack.io/docs/onboarding-for-gcp-parent-cloud-billing-accounts.md)
+- [OCI Onboarding](https://docs.corestack.io/docs/oci-onboarding.md)
+- [Onboarding for OCI Tenancies](https://docs.corestack.io/docs/onboarding-for-oci-tenancies.md)
+- [Kubernetes (K8S) Cluster Onboarding - Ingestion & Storage (Agent Based)](https://docs.corestack.io/docs/kubernetes-k8s-cluster-onboarding-ingestion-storage-agent-based.md): This tutorial guides you through onboarding your Kubernetes cluster.
+- [SaaS Onboarding](https://docs.corestack.io/docs/saas-onboarding.md)
+- [Onboarding All Service Account](https://docs.corestack.io/docs/onboarding-service-accounts.md): This onboarding user guide is explained using an example of an Anthropic AI Service Account within CoreStack.
+- [Onboarding SaaS Custom Tool Account](https://docs.corestack.io/docs/onboarding-saas-custom-tool-account.md): This video guides you through onboarding a custom tool account within the CoreStack platform.
+- [Kubernetes (K8S) Cluster Onboarding](https://docs.corestack.io/docs/kubernetes-k8s-cluster-onboarding.md): Onboard Kubernetes clusters (EKS, AKS, GKE) to CoreStack FinOps for workload-level cost visibility, governance, and automated cost allocation.
+- [AWS (Amazon EKS) Cluster Onboarding](https://docs.corestack.io/docs/aws-amazon-eks-cluster-onboarding.md): Onboard Amazon EKS clusters to CoreStack FinOps with the Kubernetes Agent
+- [Azure (AKS) Cluster Onboarding](https://docs.corestack.io/docs/azure-aks-cluster-onboarding.md): Onboard Azure AKS clusters to CoreStack FinOps with the Kubernetes Agent
+- [Post-Onboarding Overview](https://docs.corestack.io/docs/post-onboarding.md): This section covers how to validate your cloud accounts and configurations after onboarding.
+- [Cloud Account Status & Configurations Dashboard](https://docs.corestack.io/docs/cloud-account-status-configurations-dashboard.md)
+- [Cloud Account Offboarding](https://docs.corestack.io/docs/cloud-account-offboarding.md)
+- [Integrate Tools](https://docs.corestack.io/docs/integrating-tool-accounts.md)
+- [Azure DevOps](https://docs.corestack.io/docs/pipelines-dashboard-integration.md): Access and manage your DevOps pipelines from within CoreStack, making it easier than ever to build and deploy code in the cloud.
+- [Tenable Nessus](https://docs.corestack.io/docs/nessus.md)
+- [Azure Application Insights](https://docs.corestack.io/docs/azure-application-insights.md)
+- [Zoho ServiceDesk](https://docs.corestack.io/docs/zoho-servicedesk.md)
+- [ServiceNow](https://docs.corestack.io/docs/servicenow.md): This guide walks you through integrating ServiceNow Incident, Change, Configuration Management with CoreStack.
+- [Webhooks for Microsoft Teams](https://docs.corestack.io/docs/creation-of-webhook-and-integration-for-notifications.md): Learn how to create a webhook in CoreStack and integrate it with Microsoft Teams to send alert notifications to a specified Teams group.
+- [JIRA Service Management](https://docs.corestack.io/docs/jira-service-management.md)
+- [JIRA Service Management - Configure Tenant Level Settings](https://docs.corestack.io/docs/jira-service-management-configure-tenant-level-settings.md)
+- [JIRA SM - Change Management Configuration](https://docs.corestack.io/docs/jira-sm-change-management-configuration.md)
+- [JIRA Service Management Tool Account Validate Details and Configure Project(s)](https://docs.corestack.io/docs/jira-service-management-tool-account-validate-details-and-configure-projects.md): This guide will walk you through the essential steps to validate details and configure projects in JIRA Service Management tool.
+- [JIRA Service Management Tool Account Onboarding](https://docs.corestack.io/docs/jira-service-management-tool-account-onboarding.md)
+- [GitHub - Proactive Governance Scanner](https://docs.corestack.io/docs/github-proactive-governance-scanner.md): This user guide will take you through configuring the proactive governance scanner in CoreStack.
+- [Account Management](https://docs.corestack.io/docs/account-management.md): This user guide will show you how to navigate the core account management sections in the platform settings.
+- [Tags at Account Master/Tenant/Cloud Account](https://docs.corestack.io/docs/tags-at-account-master-tenant-cloud-account.md)
+- [Fiscal Year Settings](https://docs.corestack.io/docs/fiscal-year-settings.md)
+- [Agent Usage](https://docs.corestack.io/docs/agent-usage.md): This user guide explains how to manage agent usage and review account balances within CoreStack.
+- [Tenant Management](https://docs.corestack.io/docs/tenant-admin.md): Learn how to create and manage tenants in CoreStack, assign administrators, configure notifications, and enable Azure credential expiry alerts.
+- [Global Tenant Filter](https://docs.corestack.io/docs/global-tenant-filter.md)
+- [Users](https://docs.corestack.io/docs/user-management.md)
+- [User Groups](https://docs.corestack.io/docs/user-groups.md)
+- [User Delegation](https://docs.corestack.io/docs/user-delegation.md): Learn how to delegate access rights and responsibilities from one account master to another account master.
+- [Roles (RBAC)](https://docs.corestack.io/docs/role-based-access-control-rbac.md)
+- [Authorization](https://docs.corestack.io/docs/authorization.md)
+- [Setting Up Okta SSO ](https://docs.corestack.io/docs/setting-up-okta-sso.md): Learn how to set up Single Sign-On (SSO) between Okta and CoreStack.
+- [Cost Metrics](https://docs.corestack.io/docs/cost-metrics.md)
+- [Audit Log](https://docs.corestack.io/docs/audit-logs.md)
+- [Currency Exchange Plans](https://docs.corestack.io/docs/currency-exchange-plans.md)
+- [Dimensions](https://docs.corestack.io/docs/dimensions.md): Explore how to effectively manage Dimensions in CoreStack.
+- [Dimension Configuration](https://docs.corestack.io/docs/dimension-configuration.md)
+- [My Profile](https://docs.corestack.io/docs/my-profile.md)
+- [MCP Client Configuration ](https://docs.corestack.io/docs/mcp-client-configuration.md): This guide provides the step-by-step instructions for connecting the CoreStack MCP server to Claude (Chat, Cowork, and Code), Visual Studio Code, n8n, and ChatGPT — including authentication setup, server configuration, and validation.
+- [MCP Tool Guide](https://docs.corestack.io/docs/mcp-tool-guide.md): Learn how to authenticate, discover, and call the tools CoreStack’s MCP server exposes across FinOps, Graphion, Assessment, and Workload domains.
+- [Frequently Asked Questions](https://docs.corestack.io/docs/frequently-asked-questions.md): Review some of the most commonly asked questions about the platform.
+- [Product Tours](https://docs.corestack.io/docs/product-tours.md): A reference list of all available and upcoming product tours in CoreStack.
+- [Runbooks](https://docs.corestack.io/docs/runbooks.md)
+- [CoreStack External APIs](https://docs.corestack.io/docs/corestack-api-modules.md): Learn the basics of CoreStack's APIs and how you can get started using them.
+- [Terms for Dedicated Setup](https://docs.corestack.io/docs/terms-for-dedicated-set-up.md)
+- [SaaS Terms and Conditions (EULA)](https://docs.corestack.io/docs/saas-terms-and-conditions-eula.md)
+- [Data Privacy](https://docs.corestack.io/docs/data-privacy.md)
+- [Support](https://docs.corestack.io/docs/support.md)
+- [Release Notes 6.2 (2603)](https://docs.corestack.io/docs/release-notes-62-2603.md): July 2026
+- [External APIs 6.2 (2603)](https://docs.corestack.io/docs/external-apis-62-2603.md): Released - July 2026
+- [Release Notes 6.1 (2602)](https://docs.corestack.io/docs/release-notes-61.md): June 2026
+- [External APIs 6.1 (2602)](https://docs.corestack.io/docs/external-apis-61-2602.md): Released - June 2026
+- [Release Notes 6.0 (2601)](https://docs.corestack.io/docs/release-notes-60-2601.md): April 2026
+- [External APIs 6.0 (2601)](https://docs.corestack.io/docs/external-apis-60-2601.md): Released - May 2026
+- [Release Notes 5.4 (2504.1)](https://docs.corestack.io/docs/release-notes-53-25041.md): March 2026
+- [External APIs 5.4 (2504.1)](https://docs.corestack.io/docs/external-apis-54-25041.md)
+- [Release Notes 5.3 (2504)](https://docs.corestack.io/docs/release-notes-53-2504.md): December 2025
+- [External APIs 5.3 (2504)](https://docs.corestack.io/docs/external-apis-53-2504.md)
+- [Release Notes 5.2 (2503)](https://docs.corestack.io/docs/release-notes-52-2503.md): September 2025
+- [External APIs 5.2 (2503)](https://docs.corestack.io/docs/external-apis-52-2503.md)
+- [Release Notes 5.1 (2502)](https://docs.corestack.io/docs/release-notes-51-2502.md): July 2025
+- [External APIs 5.1 (2502)](https://docs.corestack.io/docs/external-apis-51-2502.md)
+- [Release Notes 5.0 (2501)](https://docs.corestack.io/docs/release-notes-50-2501.md): April 2025
+- [External APIs 5.0 (2501)](https://docs.corestack.io/docs/external-apis-50-2501.md): April 2025
+- [Release Notes 4.5 (2404.1)](https://docs.corestack.io/docs/release-notes-45-24041.md): March 2025
+- [External APIs 4.5 (2404.1)](https://docs.corestack.io/docs/external-apis-45-24041.md): Released March 2025
+- [Release Notes 4.5 (2404)](https://docs.corestack.io/docs/release-notes-45-2404.md): February 2025
+- [External APIs 4.5 (2404)](https://docs.corestack.io/docs/external-apis-45-2404.md): Released February 2025
+- [Release Notes 4.4 (2403)](https://docs.corestack.io/docs/release-notes-44-2403.md): December 2024
+- [External APIs 4.4 (2403)](https://docs.corestack.io/docs/external-apis-44-2403.md): Released - December 2024
+- [Release Notes 4.4 (2402)](https://docs.corestack.io/docs/release-notes-44-2402.md): November 2024
+- [External APIs 4.4 (2402)](https://docs.corestack.io/docs/external-apis-44-2402.md): Released - October 2024
+- [List of Service Integrations (v4.4 - 2402)](https://docs.corestack.io/docs/list-of-service-integrations-v44-2402.md): Below is a comprehensive list of service integrations supported as of release v4.4 (2402), organized by what specific changes were applied in this release.
+- [Release Notes 4.3 (2401 + 2401.1)](https://docs.corestack.io/docs/release-notes-43-2401.md): August 2024
+- [External APIs 4.3 (2401) - What's New](https://docs.corestack.io/docs/whats-new.md)
+- [External APIs 4.3 (2401) - What's Deprecated](https://docs.corestack.io/docs/whats-deprecated.md)
+- [External APIs 4.3 (2401) - What's Changed Part-I](https://docs.corestack.io/docs/whats-changed-part-i.md)
+- [External APIs 4.3 (2401) - What's Changed Part-II](https://docs.corestack.io/docs/whats-changed-part-ii.md)
+- [External APIs 4.3 (2401) - What's Changed Part-III](https://docs.corestack.io/docs/whats-changed-part-iii.md)
+- [External APIs 4.3 (2401) - What's Coming Next](https://docs.corestack.io/docs/external-apis-43-2401-whats-coming-next.md)
+- [Release Notes 4.2 (2307)](https://docs.corestack.io/docs/release-notes-42-2307.md): Released February 16, 2024
+- [Release Notes 4.2 (2306)](https://docs.corestack.io/docs/release-notes-42-2306.md): Released November 22, 2023
+- [External APIs 4.2 (2306)](https://docs.corestack.io/docs/external-apis-42-2306.md): Released November 22, 2023
+- [Release Notes 4.2 (2305)](https://docs.corestack.io/docs/release-notes-42-2305.md): Released October 4, 2023
+- [External APIs 4.2 (2305)](https://docs.corestack.io/docs/external-apis-42-2305.md): Released October 4, 2023
+- [Release Notes 4.1 (2303-2304)](https://docs.corestack.io/docs/release-notes-41-2303-2304.md): Released August 9, 2023
+- [External APIs 4.1 (2303 - 2304)](https://docs.corestack.io/docs/external-apis-41-2303-2304.md): Released August 9, 2023
+- [Release Notes 4.0 (2302)](https://docs.corestack.io/docs/release-notes-40-2302.md): Released May 13, 2023
+- [External APIs 4.0 (2302)](https://docs.corestack.io/docs/external-apis-40-2302.md)
+- [Release Notes 4.0 (2301)](https://docs.corestack.io/docs/release-notes-40.md): Released February 04, 2023
+- [External APIs 4.0 (2301)](https://docs.corestack.io/docs/external-apis-40.md)
+- [Release Notes 3.9.2](https://docs.corestack.io/docs/release-notes-392.md)
+- [External APIs 3.9.2](https://docs.corestack.io/docs/external-apis-392.md)
+- [Release Notes 3.9.1](https://docs.corestack.io/docs/release-notes-391.md)
+- [Release Notes 3.9](https://docs.corestack.io/docs/release-notes-39.md)
+- [Release Notes 3.8](https://docs.corestack.io/docs/release-notes-38.md)
+- [Release Notes 3.7](https://docs.corestack.io/docs/release-notes-37.md)
+- [Release Notes 3.6](https://docs.corestack.io/docs/release-notes-36.md): Release Date: 9 April, 2022
+- [Release Notes 3.5](https://docs.corestack.io/docs/release-notes-35.md): Release Date: 19 January, 2022
+- [Release Notes 3.4](https://docs.corestack.io/docs/release-notes-34.md)
+
+## API Reference
+- [Batch Document versions](https://docs.corestack.io/reference/documentversionsbatch.md): List document version batches
+- [List Document versions](https://docs.corestack.io/reference/documentversionslist.md): List all document versions
+- [List document filters](https://docs.corestack.io/reference/listdocumentfilters.md): List Document Filters
+- [Batch SSM Documents](https://docs.corestack.io/reference/documentbatch.md): List all SSM document batches
+- [Batch executions](https://docs.corestack.io/reference/executionbatch.md): List all document execution batches
+- [List executions](https://docs.corestack.io/reference/executionlist.md): List all document executions
+- [List Documents](https://docs.corestack.io/reference/documentlist.md): List all SSM Documents
+- [Manual document sync](https://docs.corestack.io/reference/documentsync.md): Sync SSM Documents for mentioned cloud accounts
+- [List execution filters](https://docs.corestack.io/reference/listexecutionfilters.md): List Execution Filters
+- [Batch execution job groups](https://docs.corestack.io/reference/executiongroupsbatch.md): List all document execution group batches
+- [List execution job groups](https://docs.corestack.io/reference/executiongroupslist.md): List all document execution groups
+- [Execute automation document](https://docs.corestack.io/reference/automationexecute.md): Execute a automation document with all required parameters
+- [Cancel Automation Execution](https://docs.corestack.io/reference/cancelautomation.md): Cancel a specific automation document execution
+- [Batch execution steps](https://docs.corestack.io/reference/executionstepbatch.md): List all document execution steps batch
+- [List execution steps](https://docs.corestack.io/reference/executionsteplist.md): List all document execution Steps
+- [Execute command document](https://docs.corestack.io/reference/commandexecute.md): Execute a command document with all required parameters
+- [Cancel command execution](https://docs.corestack.io/reference/cancelcommand.md): Cancel a specific command document execution
+- [Batch execution instances](https://docs.corestack.io/reference/executioninstancebatch.md): List all document execution Instance batch
+- [List execution instances](https://docs.corestack.io/reference/executioninstancelist.md): List all document execution Instances
+- [List the available logs associated with build in AzureDevops](https://docs.corestack.io/reference/listbuildlogs.md): List the available logs associated with build in AzureDevops
+- [List the available builds under pipelines in AzureDevops](https://docs.corestack.io/reference/listbuilds.md): List the available builds under pipelines in AzureDevops
+- [List the available workitems associated with build in AzureDevops](https://docs.corestack.io/reference/listbuildworkitems.md): List the available workitems associated with build in AzureDevops
+- [List the available projects under account in AzureDevops](https://docs.corestack.io/reference/listpipelines.md): List the available projects under account in AzureDevops
+- [List the available project under AzureDevops](https://docs.corestack.io/reference/listprojects.md): List the available projects under account in AzureDevops
+- [List Operation Posture Details For Mobile Site](https://docs.corestack.io/reference/operationposturedashboard.md): Operation posture dashboard
+- [List Operation Posture Details](https://docs.corestack.io/reference/listoperationopsposture.md): operation posture dashboard
+- [List Operation Visibility Details](https://docs.corestack.io/reference/listoperationopsvisibility.md): operation visibility dashboard
+- [Get Operations Resource Details](https://docs.corestack.io/reference/getresourcedetails.md): Get the resource details for the specified cloud service name
+- [List Operations Activity Details by Resource & Resource Type](https://docs.corestack.io/reference/listactivityoperations.md): List the operations based on resource and resource_type specified
+- [Azure Patch Management Report Trigger](https://docs.corestack.io/reference/azurepatchmanagementreporttrigger.md): Trigger Azure Patch Management report
+- [Apply Operations Alert Configuration](https://docs.corestack.io/reference/applytemplate.md): Apply Template
+- [List Operations Alert Configuration by Cloud Account](https://docs.corestack.io/reference/listcloudaccountconfigurations.md): List cloud account configurations
+- [Get Service Details For Operations Alert Configuration](https://docs.corestack.io/reference/getservicedetails.md): Get Service Details
+- [View Applied Operations Alert Configuration](https://docs.corestack.io/reference/viewapplied.md): View what is applied
+- [Clone Operations Alert Configuration Templates](https://docs.corestack.io/reference/clonetemplate.md): Clone Template
+- [Create Operations Alert Configuration Templates](https://docs.corestack.io/reference/operationsalertconfigurationcreatetemplate.md): Create Template
+- [Update Operations Alert Configuration Template](https://docs.corestack.io/reference/edittemplate.md): Edit Template
+- [Update Operations Alert Configuration Template Name](https://docs.corestack.io/reference/edittemplatename.md): Edit Template Name
+- [Set Default Options Operations Alert Configuration](https://docs.corestack.io/reference/setdefaultoptions.md): Option to Set Template as Default
+- [List Operations Alert Configuration Templates](https://docs.corestack.io/reference/listalerttemplates.md): List Alert templates
+- [List Operations Resource Metric Hierarchy Configuration](https://docs.corestack.io/reference/resourcemetrichierarchyconfiguration.md): resource metric hierarchy configuration listing
+- [View Operations Configuration Details](https://docs.corestack.io/reference/viewconfiguration.md): view configuration listing
+- [Batch Utilization Data](https://docs.corestack.io/reference/utilizationaggregatedata.md): Retrieve the Utilization Data for the specified Resource ids
+- [List KPI statistics for Utilization Dashboard](https://docs.corestack.io/reference/listoverallstatisticsforutilization.md): Retrieve the Over all statistics for the vm utilization.
+- [Utilization metric aggregate trend endpoint](https://docs.corestack.io/reference/utilizationmetricaggregatetrend.md): Retrieve the Utilization metric Data for the given period of time in the granularity provided.
+- [Getting the resources cloud account details based on the tenant](https://docs.corestack.io/reference/filtercloudaccount.md): Getting the resources cloud account details based on the tenant
+- [Get Inventory Count](https://docs.corestack.io/reference/getinventorycount.md): Get inventory category count based on the cloud and cloud account will list categories & Get inventory resource count based on the cloud and cloud account will list all resources with resource_category, resource_type, resource and will list only the count on number of resources available in particular category
+- [List Inventory Filters](https://docs.corestack.io/reference/listinventoryfilters.md): Get all the available filters for the corresponding cloud.Listing filter attributes will help us in getting resource details with the filters listed can be applied on the resource details call and this api is only to list filtersfor ex: AWS will have regions and tags as filters available and Azure will have resource groups and tags as filters
+- [Get Resource Listing](https://docs.corestack.io/reference/getresourcelist.md): Listing the Resource details
+- [Get Inventory Details](https://docs.corestack.io/reference/getinventorydetails.md): Get resource details based on the cloud accounts, category, component, resource and filters can be applied based on the cloud and cloud account for ex: AWS will have regions in filters and Azure will have resource group as filters for listing resources.
+- [List Resource Lock Config Rules](https://docs.corestack.io/reference/listconfigrules.md): Resource posture dashboard
+- [Delete Resource Lock Config Rule](https://docs.corestack.io/reference/deletelockconfigrule.md): Delete a lock config rule under a CoreStack
+- [Create Resource Lock Config Rule](https://docs.corestack.io/reference/createlockconfigrule.md): Creates a new lock config rule under a CoreStack
+- [List Resource Visibility Count](https://docs.corestack.io/reference/listvisibilitycount.md): Resource visibility dashboard
+- [List Resource Visibility Details](https://docs.corestack.io/reference/listresourcevisibility.md): Resource Visibility dashboard
+- [List Resource Posture Details](https://docs.corestack.io/reference/listresourceposture.md): Resource posture dashboard
+- [List Resource Lock Config Rule Filters](https://docs.corestack.io/reference/listconfigrulefilters.md): Resource lock
+- [Disable Alert Rule](https://docs.corestack.io/reference/disablealerts.md): Disable Alert Rule.
+- [Enable Alert Rule](https://docs.corestack.io/reference/enablealerts.md): Enable the Azure Alert Rule.
+- [List of infra resource details captured for given summary filters](https://docs.corestack.io/reference/listinfraresourcetrendsummary.md): List of infra resource IDs captured for given trend summary.
+- [Retrieves trend summary of infrastructure resources](https://docs.corestack.io/reference/infraresourcetrendsummary.md): Retrieves trend summary of infrastructure resources
+- [Get GCP sku details for the given resource](https://docs.corestack.io/reference/gcpskudetailsforresource.md): Fetch sku details for the given GCP account
+- [Get ServiceResourceInventory Details](https://docs.corestack.io/reference/get_get_service_resource_inventory.md): Get resource details from the ServiceResourceInventory
+- [Lookup ServiceResourceInventory Service Accounts](https://docs.corestack.io/reference/post_service_resource_inventory_lookup.md): List resource Service Account from ServiceResourceInventory
+- [List of Log Analytics Workspaces at Tenant Level](https://docs.corestack.io/reference/listloganalyticsworkspaces.md): List Log Analytics Workspaces
+- [Get unit price of smallest sku for a specific region](https://docs.corestack.io/reference/smallestskuregion.md): Fetch unit price of smallest sku for a specific region
+- [Create Bulk Resource Tag Remediation](https://docs.corestack.io/reference/createbulktagremediation.md): Create Bulk Tag Remediation
+- [Return bulk Resource Tag Remediation Status](https://docs.corestack.io/reference/checkbulktagremediationstatus.md): Bulk Tag Remediation Status
+- [Create Resource Tag Remediation](https://docs.corestack.io/reference/createremediation.md): Create Tag Remediation
+- [Get unit price for list of resources](https://docs.corestack.io/reference/unitpriceforresources.md): Fetch unit price for list of resources
+- [Batch VM Agents Details](https://docs.corestack.io/reference/batchvirtualmachineagentsdetails.md): Batch VM Agents Details.
+- [List VM Agents Details](https://docs.corestack.io/reference/listvirtualmachineagentsdetails.md): List VM Agents Details.
+- [Batch Service Resource Details](https://docs.corestack.io/reference/batchserviceresource.md): Retrieve the Service Resource details for the specified ids
+- [List Service Resources](https://docs.corestack.io/reference/listserviceresources.md): Retrieve the ids of service resources matching the filtering criteria
+- [Fetch all dependent resources](https://docs.corestack.io/reference/clouddependentresources.md): Fetch all Dependent Resources.
+- [Retrieves resource detail view (overview and configuration)](https://docs.corestack.io/reference/infraresourcedetail.md): Retrieves detail view of a single infrastructure resource including identity, lifecycle metadata, and canonical configuration.
+- [Retrieves resource activity timeline or event attribute details](https://docs.corestack.io/reference/infraresourceactivity.md): Retrieves activity timeline or event details for a single infrastructure resource. Mode 1 (no event_ids): paginated timeline. Mode 2 (with event_ids): changed attribute details for diff.
+- [Self Service Customer Dashboard](https://docs.corestack.io/reference/customerdashboard.md): CustomerDashboard
+- [Self Service Order History](https://docs.corestack.io/reference/orderhistory.md): OrderHistory
+- [Create Resource Catalog](https://docs.corestack.io/reference/resourcecatalogcreate.md): Resource Catalog Create
+- [List Resource Catalog](https://docs.corestack.io/reference/resourcecataloglist.md): Resource Catalog list
+- [Delete Resource Catalog](https://docs.corestack.io/reference/resourcecatalogdelete.md): Resource Catalog Delete
+- [Update Resource Catalog](https://docs.corestack.io/reference/resourcecatalogmodify.md): Resource Catalog Modify
+- [List Workspaces](https://docs.corestack.io/reference/workspace.md): WorkSpace
+- [Delete Service Catalog](https://docs.corestack.io/reference/servicecatalogdelete.md): Service Catalog list
+- [Create Service Catalog](https://docs.corestack.io/reference/servicecatalogcreate.md): Get Service Catalog
+- [View Self Service Catalog Hierarchy](https://docs.corestack.io/reference/viewselfservicecataloghierarchy.md): View Self Service Catalog Hierarchy
+- [View Self Service Request Attributes](https://docs.corestack.io/reference/viewselfservicerequestattributesforaction.md): View Self Service Request Attributes for Action
+- [View Self Service Request Action Attributes](https://docs.corestack.io/reference/viewselfservicerequestactionattributes.md): View Self Service Request Action Attributes
+- [Batch Stacks Marketplace Products](https://docs.corestack.io/reference/batchproduct.md): Batch Stacks Marketplace Products.
+- [Create Stacks Marketplace Product](https://docs.corestack.io/reference/createproduct.md): Create a new Stacks Marketplace Product.
+- [Delete Stacks Marketplace Product](https://docs.corestack.io/reference/deleteproduct.md): Delete Stacks Marketplace Product.
+- [Get Stacks Marketplace Product](https://docs.corestack.io/reference/getproduct.md): Get Stacks Marketplace Product.
+- [Update Stacks Marketplace Product](https://docs.corestack.io/reference/updateproduct.md): Update Stacks Marketplace Product.
+- [List Stacks Marketplace Products](https://docs.corestack.io/reference/listproduct.md): List Stacks Marketplace Products.
+- [Batch Stacks Marketplace Stack Definitions](https://docs.corestack.io/reference/batchstackdefinition.md): Batch Stacks Marketplace Stack Definitions.
+- [Create Stacks Marketplace Stack Definition](https://docs.corestack.io/reference/createstackdefinition.md): Create a new Stacks Marketplace Stack Definition.
+- [Get Stacks Marketplace Stack Definition](https://docs.corestack.io/reference/getstackdefinition.md): Get Stacks Marketplace Stack Definition.
+- [Get Stacks Marketplace Stack Definition History](https://docs.corestack.io/reference/getstackdefinitionhistory.md): Get Stacks Marketplace Stack Definition History.
+- [Set Stacks Marketplace Stack Definition State](https://docs.corestack.io/reference/setstackdefinitionstate.md): Set Stacks Marketplace Stack Definition State.
+- [List Stacks Marketplace Stack Definitions](https://docs.corestack.io/reference/liststackdefinition.md): List Stacks Marketplace Stack Definitions.
+- [Batch Stacks Marketplace Stack Definition Versions](https://docs.corestack.io/reference/batchstackdefinitionversion.md): Batch Stacks Marketplace Stack Definition Versions.
+- [Create Stacks Marketplace Stack Definition Version](https://docs.corestack.io/reference/createstackdefinitionversion.md): Create a new Stacks Marketplace Stack Definition Version.
+- [Get Stacks Marketplace Stack Definition Version](https://docs.corestack.io/reference/getstackdefinitionversion.md): Get Stacks Marketplace Stack Definition Version.
+- [Initiates the cost estimation of a deployment run that could happen on a service account](https://docs.corestack.io/reference/initiatestackversiondeploymentcostestimation.md): Initiate cost estimation of a deployment run that could happen on a service account
+- [Gets the cost estimation of a deployment run that could happen on a service account](https://docs.corestack.io/reference/getstackversiondeploymentcostestimation.md): Gets Estimated cost of a deployment run that could happen on a service account
+- [Make Stacks Marketplace Stack Definition Version Head](https://docs.corestack.io/reference/makestackdefinitionversionhead.md): Make Stacks Marketplace Stack Definition Version Head.
+- [Make Stacks Marketplace Stack Definition Version Release](https://docs.corestack.io/reference/makestackdefinitionversionrelease.md): Make Stacks Marketplace Stack Definition Version Release.
+- [Get Stacks Marketplace Stack Definitions Version Publishing History](https://docs.corestack.io/reference/getstackpublishinghistory.md): Get Stacks Marketplace Stack Definitions Version publishing log for a Master Account.
+- [Get State for Stacks Marketplace Stack Definition Version Publishing](https://docs.corestack.io/reference/getstackpublishingstate.md): GetState for the stack definition version publishing state.
+- [Set State for Stacks Marketplace Stack Definition Version Publishing](https://docs.corestack.io/reference/setstackpublishingstate.md): SetState for the stack definition version publishing state.
+- [Set Stacks Marketplace Stack Definition Version State](https://docs.corestack.io/reference/setstackdefinitionversionstate.md): Set Stacks Marketplace Stack Definition Version State.
+- [Batch Stacks Marketplace Stack Deployments](https://docs.corestack.io/reference/batchstackdeployment.md): Batch Stacks Marketplace Stack Deployments.
+- [Create Stacks Marketplace Stack Deployment](https://docs.corestack.io/reference/createstackdeployment.md): Create a new Stacks Marketplace Stack Deployment
+- [Batch Stacks Marketplace Stack Deployment History](https://docs.corestack.io/reference/batchstackdeploymenthistory.md): Batch Stacks Marketplace Stack Deployment History.
+- [Get Stacks Marketplace Stack Deployment](https://docs.corestack.io/reference/getstackdeployment.md): Get Stacks Marketplace Stack Deployment.
+- [Execute Stacks Marketplace Stack Deployment](https://docs.corestack.io/reference/executestackdeployment.md): Execute Stacks Marketplace Stack Deployment.
+- [Get Stacks Marketplace Stack Deployment History](https://docs.corestack.io/reference/getstackdeploymenthistory.md): Get Stacks Marketplace Stack Deployment History IDs.
+- [List Stacks Marketplace Stack Deployments](https://docs.corestack.io/reference/liststackdeployment.md): List Stacks Marketplace Stack Deployments.
+- [Get Dashboard Versions](https://docs.corestack.io/reference/batch7.md): Batch Tag Baseline versions
+- [Create new Tag Baseline Definition Version](https://docs.corestack.io/reference/create8.md): Create a Tag Baseline Definition Version. This will create and link a new version to the given definition id.
+- [Get Tag Baseline Definition Version](https://docs.corestack.io/reference/get7.md): Get a Tag Baseline Definition Version by id.
+- [Make Tag Baseline Definition Version the Head version](https://docs.corestack.io/reference/make-head3.md): Mark this version as the 'head' version.
+- [Make Tag Baseline Definition Version the Release version](https://docs.corestack.io/reference/make-release3.md): Mark this version as the release version. The release version will be used for posture generation
+- [Parse Tag Baseline Definition Version](https://docs.corestack.io/reference/parse-import3.md): Parse and validate a raw json string to be used for importing a Tag Baseline Definition Version
+- [Get all Tag Baseline Definitions](https://docs.corestack.io/reference/get-all2.md): Get a list of all Tag Baseline Definitions that are viewable to the user.
+- [Get Baselines](https://docs.corestack.io/reference/batch6.md): Batch Tag Baseline definitions
+- [Create new Tag Baseline](https://docs.corestack.io/reference/create7.md): Create a new Tag Baseline Definition. The definition is used to manage a set of versions. This request takes no body
+- [Delete Tag Baseline Definition](https://docs.corestack.io/reference/remove4.md): Delete a Tag Baseline Definition and all associated versions. Returns 'true' if the operation was successful.
+- [Get Tag Baseline Definition](https://docs.corestack.io/reference/get6.md): Get a Tag Baseline Definition by id.
+- [Get the history of a Tag Baseline Definition](https://docs.corestack.io/reference/get-history3.md): Get a list of all versions for a Tag Baseline Definition.
+- [Set state of Tag Baseline Definition](https://docs.corestack.io/reference/set-state2.md): Set the Active state for a Tag Baseline Definition. When the state is true, the baseline will be used in posture generation.
+- [Returns a batch of AvailableTag](https://docs.corestack.io/reference/availabletagsbatch.md): Get all tag values for the tag keys passed in the request.
+- [Returns a list of AvailableTags ids](https://docs.corestack.io/reference/availabletagslist.md): Get a list of all available tag keys found on resources that the user can view.
+- [Get enhanced tags from the user's tags](https://docs.corestack.io/reference/enhancetags.md): Get enhanced tags from the user's tags.
+- [Returns Generated Tags](https://docs.corestack.io/reference/generateaitags.md): Get AI-recommended tags from the user's prompt.
+- [Returns a batch of TagPostureSnapshot](https://docs.corestack.io/reference/snapshotbatch.md): Get details for the snapshot ids passed in the request
+- [Returns a TagPostureSnapshot](https://docs.corestack.io/reference/snapshotcreate.md): Create a new snapshot. This will generate the tag posture with the currently active baselines. Old snapshots will be cleaned up based on the 'keep' parameter
+- [Returns a batch of TagPostureResources](https://docs.corestack.io/reference/resourcebatch.md): For a given snapshot, get the details of the requested resources
+- [Returns a TagPostureResource based on input filters](https://docs.corestack.io/reference/resourceget.md): Get posture details for a particular resource.
+- [Summarize the tag posture matching the filtering criteria returning resource coverage counts](https://docs.corestack.io/reference/resourcesummary.md): For a given snapshot, list all of the posture summaries for resources. Allows filtering and sorting based on the request
+- [Returns a batch of TagPostureCloudAccountSummary](https://docs.corestack.io/reference/cloudaccountsummarybatch.md): For a given snapshot, get the details of the requested cloud account posture summaries
+- [Returns a list of TagPostureCloudAccountSummary identifiers based on input filters](https://docs.corestack.io/reference/cloudaccountsummarylist.md): For a given snapshot, list all of the posture summaries for cloud accounts. Allows filtering and sorting based on the request
+- [Returns a batch of TagPostureResourceSummary](https://docs.corestack.io/reference/resourcesummarybatch.md): For a given snapshot, get the details of the requested resource posture summaries
+- [Returns a list of TagPostureResourceSummary identifiers based on input filters](https://docs.corestack.io/reference/resourcesummarylist.md): For a given snapshot, list all of the posture summaries for resources. Allows filtering and sorting based on the request
+- [Get a TagPostureSummary for Workload](https://docs.corestack.io/reference/tagpostureworkloadsummary.md): For a given snapshot, get the details of the requested workload cloud posture summaries
+- [Returns a batch of TagPostureWorkloadResourceSummary](https://docs.corestack.io/reference/workloadresourcesummarylist.md): For a given snapshot, get the details of the requested workload resource posture summaries
+- [Returns a list of TagPostureSnapshot ids](https://docs.corestack.io/reference/snapshotlist.md): Get the list of all Tag Posture Snapshot. Each snapshot represents the tag posture generated at a particular time with a set of baselines.
+- [Assessment Validation](https://docs.corestack.io/reference/assessmentvalidation.md): Analyse the access requirements for the given cloud account.
+- [Assessment Compliance Validation](https://docs.corestack.io/reference/assessmentcompliancevalidation.md): Creates a Assessment Validation list for compliance under the tenant.
+- [Aggregate costs based on input criteria](https://docs.corestack.io/reference/getcostaggregation.md): Generate cost aggregation.
+- [Aggregate costs based on input criteria](https://docs.corestack.io/reference/getcostaggregationbatch.md): Generate cost aggregations in a batch.
+- [Aggregate costs in a trend based on input criteria](https://docs.corestack.io/reference/getcostaggregationtrend.md): Generate cost aggregation trend.
+- [Retrieves the aggregated trend of usage, rate and cost over a specified time period](https://docs.corestack.io/reference/costandusageaggregationtrend.md): Generate cost and usage aggregation trend.
+- [Get description trend results](https://docs.corestack.io/reference/getdescriptiontrend.md): Generate description trend.
+- [List extra keys used in service accounts](https://docs.corestack.io/reference/getextrakeysbyserviceaccounts.md): List extra keys for service accounts.
+- [List values for group_by key used in service accounts](https://docs.corestack.io/reference/getlineitemsummary.md): List values for group_by keys.
+- [List tag keys used in service accounts](https://docs.corestack.io/reference/getplatformserviceaccounttagsdetails.md): List tag keys values and kind for platform service accounts.
+- [Aggregate rate in a trend based on input criteria](https://docs.corestack.io/reference/getrateaggregationtrend.md): Generate Rate aggregation trend.
+- [List tag keys used in service accounts](https://docs.corestack.io/reference/gettagkeysbyserviceaccounts.md): List tag keys for service accounts.
+- [Aggregate usage in a trend based on input criteria](https://docs.corestack.io/reference/getusageaggregationtrend.md): Generate usage aggregation trend.
+- [Fetch Billing Information](https://docs.corestack.io/reference/batchbillinginfobyserviceaccount.md): Fetch Billing Info.
+- [Return distinct billing line-item identities including tags, without time-series data](https://docs.corestack.io/reference/getbillingidentities.md): Return distinct line-item identities (with tags) matching the request, without timestamps or cost values.
+- [Get billing commitment details](https://docs.corestack.io/reference/getbillingcommitment.md): Retrieve billing commitment details for Azure, supported only for EA account types.
+- [List all billing commitment events](https://docs.corestack.io/reference/listbillingcommitmentevents.md): List all billing commitment events for the cloud account, supported only for Azure EA account types.
+- [Batch of Billing Metric Access](https://docs.corestack.io/reference/billingmetricbatch.md): Get a Batch of Billing Metric Access
+- [Create new Billing Metric Access](https://docs.corestack.io/reference/billingmetricaccesscreate.md): Create Billing Metric Access.
+- [Delete Billing Metric Access](https://docs.corestack.io/reference/billingmetricsaccessdelete.md): Deletes a billing metric.
+- [Update Billing Metric Access](https://docs.corestack.io/reference/billingmetricsaccessupdate.md): Update Billing Metrics.
+- [List Billing Metric Access](https://docs.corestack.io/reference/billingmetricaccesslist.md): List Billing Metric Access.
+- [Batch of Billing Metrics](https://docs.corestack.io/reference/billingmetricsbatch.md): Get a Batch of Billing Metrics
+- [Create new Billing Metrics](https://docs.corestack.io/reference/billingmetricscreate.md): Create Billing Metrics.
+- [Delete Billing Metrics](https://docs.corestack.io/reference/billingmetricsdelete.md): Deletes a billing metric.
+- [Update Billing Metrics](https://docs.corestack.io/reference/billingmetricsupdate.md): Update Billing Metrics.
+- [List Billing Metrics](https://docs.corestack.io/reference/billingmetricslist.md): List Billing Metrics.
+- [Fetch Billing Plan versions by ids](https://docs.corestack.io/reference/batch3.md): Fetch Billing Plan versions by ids
+- [Create a new version of a Billing Plan](https://docs.corestack.io/reference/create3.md): Create a new version of a Billing Plan
+- [Parse Billing Plan Version](https://docs.corestack.io/reference/parse-import.md): Parse and validate a raw json string to be used for importing a Billing Plan version
+- [Get Billing Plan version details by version_id](https://docs.corestack.io/reference/get3.md): Get Billing Plan version details by version_id
+- [Make a Billing Plan version the head version](https://docs.corestack.io/reference/make-head.md): Make a Billing Plan version the head version
+- [Make a Billing Plan version the release version](https://docs.corestack.io/reference/make-release.md): Make a Billing Plan version the release version
+- [Fetch all Billing Plan definitions](https://docs.corestack.io/reference/batch2.md): Fetch all Billing Plan definitions
+- [Create a new Billing Plan definition](https://docs.corestack.io/reference/create2.md): Create a new Billing Plan definition
+- [Fetch all Billing Plan definitions for the user](https://docs.corestack.io/reference/list.md): Fetch all Billing Plan definitions for the user
+- [Delete Billing Plan by plan_id](https://docs.corestack.io/reference/remove.md): Delete Billing Plan by plan_id
+- [Get Billing Plan definition by id](https://docs.corestack.io/reference/get2.md): Get Billing Plan definition by id
+- [Get Billing Plan definition history by definition id](https://docs.corestack.io/reference/get-history.md): Get Billing Plan definition history by definition id
+- [Set the state of a Billing Plan definition](https://docs.corestack.io/reference/set-state.md): Set the state of a Billing Plan definition
+- [Create Budget](https://docs.corestack.io/reference/budgetcreate.md): Budget Create
+- [View Count Budget Alert Exceeds Summary](https://docs.corestack.io/reference/budgetalertexceedsdata.md): Budget Alert Exceed Count
+- [View Count Budget Summary](https://docs.corestack.io/reference/budgetsummary.md): Budget Summary Count
+- [View Budget Dashboard](https://docs.corestack.io/reference/listbudget.md): List Budget Management
+- [View Create Budget Advanced Filters](https://docs.corestack.io/reference/listbudgetconstraints.md): Filter Budget Management
+- [Delete Budget](https://docs.corestack.io/reference/delete-budget.md): Delete Budget
+- [Update Budget](https://docs.corestack.io/reference/budgetupdate.md): Budget Update
+- [List Budget History](https://docs.corestack.io/reference/budgethistory.md): Budget History
+- [List Budget Detail](https://docs.corestack.io/reference/viewbudget.md): View Budget
+- [Update Budget Threshold Alerts](https://docs.corestack.io/reference/thresholdalertupdate.md): ThresholdAlert Update
+- [View Budget Threshold Alerts](https://docs.corestack.io/reference/thresholdalertlist.md): ThresholdAlert View
+- [List Cost Saving Recommendation](https://docs.corestack.io/reference/costsavinglistrecommendation.md): list recommendation
+- [View Cost Saving Recommendation](https://docs.corestack.io/reference/costsavingviewrecommendation.md): view recommendation
+- [List Cost Saving Recommendations](https://docs.corestack.io/reference/listcostsavingrecommendations.md): view cost saving recommendation
+- [List Cost Saving Recommendation by Tenant](https://docs.corestack.io/reference/costsavinglistrecommendationtenant.md): list recommendation tenant
+- [Resolve Cost Savings Recommendations](https://docs.corestack.io/reference/resolvecostsavingsrecommendation.md): Resolve cost savings recommendation
+- [License Benefit Hub Discounts](https://docs.corestack.io/reference/licensebenefithubdiscounts.md): License Benefit
+- [License Benefit Cost Savings Summary](https://docs.corestack.io/reference/licensebenefitsavingsummary.md): License Benefit
+- [Tenant Details](https://docs.corestack.io/reference/tenantdetails.md): Under cost optimization Tenant ID and Tenant details
+- [Overall Cloud Account Summary](https://docs.corestack.io/reference/costoptimizationcloudaccountsummary.md): cost optimization overall cloud account summary
+- [Cloud Account Details](https://docs.corestack.io/reference/costoptimizationcloudaccounttype.md): fetch cloud account details
+- [View Cloud Account_ID and Cloud Account Name](https://docs.corestack.io/reference/costoptimizationcloudaccounts.md): fetch cloud account_id and cloud account name
+- [View Tenant Wise Currency's Or Cloud Account Type](https://docs.corestack.io/reference/tenantservicesfilter.md): view tenant wise currency or cloud account type
+- [Tenant Wise Cost Summary](https://docs.corestack.io/reference/tenantcostsummary.md): under cost optimization tenant wise summary
+- [View Resource Wise Cost Details Under Cloud Account ID](https://docs.corestack.io/reference/costoptimizationtoprecommendations.md): Fetch Cost Optimization Top Recommendation as per resource IDs
+- [Resource Wise Recommendation(Savings) Data](https://docs.corestack.io/reference/costoptimizationviewrecommendations.md): Cost Optimization Resource wise Recommendation(saving) data
+- [Get Actual or Forecast Budget Drift](https://docs.corestack.io/reference/budgetdrift.md): View Current or Forecast budget drift.
+- [Get Cost Spend By Cloud and Resource Category](https://docs.corestack.io/reference/costanomaliesbycloud.md): View Cost Anomalies By Cloud.
+- [cost optimization by optimization type](https://docs.corestack.io/reference/costoptimizationbyoptimizationtypes.md): View Cost Optimization By Optimization Types.
+- [Get cost optimization trend](https://docs.corestack.io/reference/getcostoptimizationtrend.md): View cost optimization trend.
+- [geo coordinates for regions](https://docs.corestack.io/reference/geocoordinatesforregions.md): View Geo Coordinates For Regions.
+- [Get Tagged and Untagged Resources Cost By Product Category](https://docs.corestack.io/reference/taggeduntaggedresources.md): View Tagged and Untagged Resources By Product Category.
+- [Get Top Budget By Tenant](https://docs.corestack.io/reference/topbudgetbytenant.md): View Top Budget By Tenant.
+- [Create Cost Markup Rule](https://docs.corestack.io/reference/createmarkuprule.md): create Markup rule
+- [Delete Cost Markup Rule](https://docs.corestack.io/reference/deletemarkuprule.md): delete Markup rule
+- [List Cost Markup Rules](https://docs.corestack.io/reference/listmarkuprules.md): list Markup rules
+- [Update Cost Markup Rule](https://docs.corestack.io/reference/updatemarkuprule.md): update Markup rule
+- [List Recommendations](https://docs.corestack.io/reference/rirecommendationsreservations.md): View RI Recommendations Reservations
+- [List Cost Reservations & Utilization](https://docs.corestack.io/reference/listreservationsutilization.md): list reservation utilization
+- [List Cost Reservations & Utilization by Cloud Account](https://docs.corestack.io/reference/listreservationsutilizationcloudaccount.md): list reservation utilization cloud account wise
+- [Saving Summary for Recommended Reservations](https://docs.corestack.io/reference/recommendedreservationssavingssummary.md): Recommended Reservations Savings Summary
+- [Finops Assessment Trigger](https://docs.corestack.io/reference/finopsassessmenttrigger.md): Trigger FinOps Assessment
+- [Finops Assessment Trigger History](https://docs.corestack.io/reference/finopsassessmenttriggerhistory.md): History of Triggered FinOps Assessment in Desc order
+- [Finops Assessment Trigger Status](https://docs.corestack.io/reference/finopsassessmenttriggerstatus.md): Status of Triggered FinOps Assessment
+- [Returns a batch of CostTag](https://docs.corestack.io/reference/costtagbatch.md): Batch Tags
+- [Returns a list of CostTag ids](https://docs.corestack.io/reference/costtaglist.md): List Tags
+- [Get Account wise daily Billing Cost Anomaly](https://docs.corestack.io/reference/costanomalysummary.md): View Billing Cost Anomaly Data.
+- [Get Account wise daily Billing Cost Anomaly Resources](https://docs.corestack.io/reference/costanomalyresources.md): View Billing Cost Anomaly Resources.
+- [Reject Billing Cost Anomaly](https://docs.corestack.io/reference/rejectanomaly.md): Reject Anomaly
+- [Trigger cost anomaly detection for a dimension, optionally filtered by grouping rules](https://docs.corestack.io/reference/triggercostanomalydetectionfordimension.md): Trigger cost anomaly detection for a dimension, using grouping rules as filters.
+- [Reject Billing Cost Anomaly for Grouping Rule](https://docs.corestack.io/reference/rejectanomalydimensiongroupingrule.md): Reject Anomaly Grouping Rule
+- [Get grouping rule–wise daily cost anomalies](https://docs.corestack.io/reference/getgroupingrulecostanomalies.md): Retrieve grouping rule–wise cost anomalies.
+- [Batch Currency Exchange Configuration](https://docs.corestack.io/reference/batchcurrencyexchangeconfiguration.md): Batch Currency Exchange Configuration.
+- [Create Currency Exchange Configuration](https://docs.corestack.io/reference/createcurrencyexchangeconfiguration.md): Create Currency Exchange Configuration.
+- [Delete Currency Exchange Configuration](https://docs.corestack.io/reference/deletecurrencyexchangeconfiguration.md): Delete Currency Exchange Configuration.
+- [Get Currency Exchange Configuration](https://docs.corestack.io/reference/getcurrencyexchangeconfiguration.md): Get Currency Exchange Configuration.
+- [Update Currency Exchange Configuration](https://docs.corestack.io/reference/updatecurrencyexchangeconfiguration.md): Update Currency Exchange Configuration.
+- [List Currency Exchange Configuration](https://docs.corestack.io/reference/listcurrencyexchangeconfiguration.md): List Currency Exchange Configuration.
+- [Master Account Billing Summary](https://docs.corestack.io/reference/masteraccountbillingsummary.md): Billing summary of the master account
+- [Record a transaction and Update the balance for the master account](https://docs.corestack.io/reference/masteraccountbillingtransaction.md): Update the balance for the master account
+- [Master Account Billing Balance Validate](https://docs.corestack.io/reference/masteraccountbillingbalancevalidate.md): Validate Billing Balance of the master account
+- [Batch billing transactions](https://docs.corestack.io/reference/billingtransactionsbatch.md): List all billing transactions batches
+- [List billing transactions](https://docs.corestack.io/reference/billingtransactionslist.md): List all Billing Transactions
+- [Schedule Recommendations Filters](https://docs.corestack.io/reference/schedulerecommendationsfilters.md): Schedule Recommendations Filters
+- [Schedule Recommendations Resource Schedule List](https://docs.corestack.io/reference/schedulerecommendationslistresourceschedule.md): Schedule Recommendations Resource Schedule List
+- [Schedule Recommendations Schedule List](https://docs.corestack.io/reference/schedulerecommendationslistschedules.md): Schedule Recommendations Schedule List
+- [Schedule Recommendations Overview](https://docs.corestack.io/reference/schedulerecommendationsoverview.md): Schedule Recommendations Overview
+- [Postpone Schedule Recommendation](https://docs.corestack.io/reference/schedulerecommendationspostpone.md): Postpone Schedule Recommendations
+- [Reactivate Schedule Recommendation](https://docs.corestack.io/reference/schedulerecommendationsreactivate.md): Reactivate Schedule Recommendations
+- [Reject Schedule Recommendation](https://docs.corestack.io/reference/schedulerecommendationsreject.md): Reject Schedule Recommendations
+- [Remediate Schedule Recommendation](https://docs.corestack.io/reference/schedulerecommendationsremediate.md): Remediate Schedule Recommendations
+- [Schedule Recommendations Resource Details](https://docs.corestack.io/reference/schedulerecommendationsresourcedetails.md): Schedule Recommendations Resource Details
+- [Schedule Recommendations Summary](https://docs.corestack.io/reference/schedulerecommendationssummary.md): Schedule Recommendations Summary
+- [Trigger Cost Savings Calculation Schedule Recommendation](https://docs.corestack.io/reference/schedulerecommendationstriggercostsavingscalculation.md): Trigger Cost Savings Calculations for Schedule Recommendations
+- [Schedule Recommendations Utilization Definitions](https://docs.corestack.io/reference/schedulerecommendationsutilizationdefinitions.md): Schedule Recommendations Utilization Definitions
+- [Schedule Recommendations Utilization Metrics](https://docs.corestack.io/reference/schedulerecommendationsutilizationmetrics.md): Schedule Recommendations Utilization Metrics
+- [Batch Chat Details](https://docs.corestack.io/reference/batchchats.md): Retrieve the chat details for the specified ids
+- [Update the conversation of the chat](https://docs.corestack.io/reference/conversationupdate.md): Update the conversation of the chat.
+- [Create a new chat](https://docs.corestack.io/reference/createchat.md): Create a new Chat
+- [Delete the Chat and the conversations associated with it](https://docs.corestack.io/reference/deletechats.md): Delete the chat for the specified ids
+- [Get chat details](https://docs.corestack.io/reference/getchat.md): Retrieve the current details of the chat.
+- [Update the details of the chat](https://docs.corestack.io/reference/updatechatname.md): Update the details of the chat.
+- [/v1/agent/chat/item/{chat_id}/suggestions](https://docs.corestack.io/reference/listchatsuggestions.md): Get the chat suggestions
+- [List chats](https://docs.corestack.io/reference/listchats.md): Retrieve the ids of chats matching the filtering criteria
+- [Batch conversations Details](https://docs.corestack.io/reference/batchconversations.md): Retrieve the conversations details for the specified ids
+- [Interrupt the processing conversation of the chat](https://docs.corestack.io/reference/interruptconversation.md): Interrupt the processing conversation of the chat.
+- [Stream the conversation response for the specified conversation ID](https://docs.corestack.io/reference/streamqueryresponse.md): Stream the conversation response for the specified conversation ID using Server-Sent Events (SSE). Returns an SSE stream with real-time data chunks.
+- [Retrieves the conversations for the specified chat based on the given filter](https://docs.corestack.io/reference/listconversations.md): Fetch the conversations for the specified chat based on the given filter.
+- [Submit a new query for the specific agent and retrieve the agent's response for the given feed query](https://docs.corestack.io/reference/agenticfeed.md): Submit a new query for the specific agent and retrieve the agent's response for the given feed query.
+- [Retrieve the saved prompt details for the specified ids](https://docs.corestack.io/reference/batchsavedprompts.md): Retrieve the saved prompt details for the specified ids
+- [List the filters for the specified agent id and prompt type](https://docs.corestack.io/reference/listpromptfilters.md): Retrieve the filters for the specified agent id and prompt type.
+- [Delete a particular custom prompt](https://docs.corestack.io/reference/deleteprompt.md): Delete the custom prompt.
+- [List saved prompts](https://docs.corestack.io/reference/listsavedprompts.md): Retrieve the ids of saved prompts matching the filtering criteria
+- [Saves the prompt](https://docs.corestack.io/reference/saveprompt.md): Saves the prompt.
+- [Submit a new query for the specified chat and retrieve the agent's response](https://docs.corestack.io/reference/submitnewquery.md): Submit a new query for the specified chat and retrieve the agent's response.
+- [Schedule the generation of a report for Ai agent](https://docs.corestack.io/reference/report-create.md): Generate a report for an Ai agent
+- [Fetch an Ai agent report by ID](https://docs.corestack.io/reference/report-get.md): Get a report for an agent.
+- [List the available agents types](https://docs.corestack.io/reference/agenttypes.md): List of Agent types.
+- [Delete MCP server](https://docs.corestack.io/reference/deletemcpserver.md): Delete a registered MCP server.
+- [Get MCP server details](https://docs.corestack.io/reference/getmcpserver.md): Retrieve details of a specific MCP server.
+- [Update an MCP server's configuration](https://docs.corestack.io/reference/updatemcpserver.md): Update a registered MCP server.
+- [Enable or disable an MCP server post-registration](https://docs.corestack.io/reference/setmcpserverenabled.md): Enable or disable a registered MCP server without modifying its configuration.
+- [List MCP servers for the current tenant](https://docs.corestack.io/reference/listmcpservers.md): List all MCP servers registered for the current tenant.
+- [Register a new MCP server for the current tenant](https://docs.corestack.io/reference/registermcpserver.md): Register a new MCP server for the tenant.
+- [Get MCP tools available for a tenant and business agent](https://docs.corestack.io/reference/getmcptools.md): Retrieve MCP tool metadata scoped by tenant and business agent.
+- [Confirm or deny a pending agent action](https://docs.corestack.io/reference/confirmagentaction.md): Confirm or deny a pending agent action. On confirm, the agent executes the action (workload creation, policy execution, etc.). On deny, the action is cancelled with no execution.
+- [Config Validation Details](https://docs.corestack.io/reference/cloudaccountconfigvalidation.md): Config validation based on the policy engine
+- [Assessment Validation Details](https://docs.corestack.io/reference/assessmentvalidationdetails.md): Assessment validation for Operations, Cost, Security, Access and Resource.
+- [Assessment Re-Validation](https://docs.corestack.io/reference/assessmentrevalidation.md): Assessment revalidation for Operations, Cost, Security, Access and Resource.
+- [Assessment Results](https://docs.corestack.io/reference/assessmentresults.md): Displays the results of assessment with summary and history of the cloud account for OSCAR
+- [Get Attachments](https://docs.corestack.io/reference/batch.md): Fetch a batch of Attachments
+- [Create new Attachment](https://docs.corestack.io/reference/create.md): Create a new Attachment
+- [Get an Attachment](https://docs.corestack.io/reference/get.md): Get an Attachment
+- [Update an Attachment](https://docs.corestack.io/reference/update.md): Update an Attachment
+- [Upload an Attachment](https://docs.corestack.io/reference/upload.md): Upload an Attachment
+- [Download an Attachment](https://docs.corestack.io/reference/download.md): Download an Attachment
+- [Audit Detail](https://docs.corestack.io/reference/auditlogbatch.md): List all Audit Log document batches
+- [Audit List](https://docs.corestack.io/reference/auditloglist.md): Audit Log List
+- [Get Access Token](https://docs.corestack.io/reference/authtoken.md): CoreStack requires Auth token to be passed in all the API headers. Auth token has to be generated and it is valid only for an hour. New token can be generated using this API. Extract Auth-token, Tenant Id & Account Id from the response. This will be required in most of the API calls
+- [Get Refresh Token](https://docs.corestack.io/reference/refreshtoken.md): Token generated in authToken API will be valid for an hour. Post that access_token will automatically expire. When the access_token is expired, there are two options. 1) use the authToken API to generate a new token 2) use refreshToken API to extend the validity of the current token.The refreshed token will also expire after an hour, refer to expires_at in the response for the validity of the token. When the refreshed token also expires, call again the refreshToken API to extend it further. Like wise a token can extended 3 times, refer to refresh_count in the response. After 3 refresh attempts, token will expire and cannot be extended any further. Need to use authToken API to generate a new token.
+- [Returns SSO Redirected url](https://docs.corestack.io/reference/ssoredirecturl.md): SSO Redirected url
+- [Switch Master Account](https://docs.corestack.io/reference/switchmasteraccount.md): Switching Master AccountsAuth token has to be generated and it is valid only for an hour. New token can be generated using this API. Extract Auth-token.
+- [Get User session and roles details](https://docs.corestack.io/reference/usersessiondetails.md): User access details provided a valid token 1) use the authToken API to generate a new token The refreshed token will also expire after an hour, refer to expires_at in the response for the validity of the token. When the refreshed token also expires, call again the refreshToken API to extend it further. Like wise a token can extended 3 times, refer to refresh_count in the response. After 3 refresh attempts, token will expire and cannot be extended any further. Need to use authToken API to generate a new token.
+- [List Scripts](https://docs.corestack.io/reference/listscripts.md): List all the scripts. Global Scripts - All user will have access to Corestack's Marketplace Scripts (Can view and execute). Account - All users under that account will have access (Can view and execute). Only Account admins can update/delete. Tenant - Users with access to the specific tenant will have access scripts (Can view and execute). Tenant admins can update/delete. Private - User who created will only have access.
+- [Create Script](https://docs.corestack.io/reference/createscript.md): Creates a new script under the tenant. However the script will be accessible based on its scope. Global Scripts - All user will have access to Corestack's Marketplace Scripts (Can view and execute). Account - All users under that account will have access (Can view and execute). Only Account admins can update/delete. Tenant - Users with access to the specific tenant will have access scripts (Can view and execute). Tenant admins can update/delete. Private - User who created will only have access.
+- [Execute Script](https://docs.corestack.io/reference/executescript.md): Execute scripts. Ansible script supports executing single script in multiple machines. Chef/Puppet/Shell executing multiple scripts against multiple target machines.
+- [Describe Script Job](https://docs.corestack.io/reference/describescriptjob.md): View script job details.
+- [List Script Jobs](https://docs.corestack.io/reference/listscriptjobs.md): This API will list all script jobs initiated by the logged in user.
+- [Scan Script](https://docs.corestack.io/reference/scanscript.md): Scans a script to check if all dependencies(if any) are satisfied. This API will also return parameters available in script for chef and parameter & hosts available in the script for ansible
+- [View Template Job](https://docs.corestack.io/reference/viewtemplatejob.md): View Template job details
+- [List Templates Jobs](https://docs.corestack.io/reference/listtemplatesjobs.md): Jobs represent an instance of a Template or Script. Every time a Template or Script is executed, a Job is created. Jobs provide a reference of the execution, during and any time after it.
+- [List Templates](https://docs.corestack.io/reference/listtemplates.md): List all the Templates. Global Scope - All the users will have access to view and execute CoreStack Marketplace Templates will not have access to update/delete the templates. Account Scope - All users under account scope will have access to view and execute the templates, only Account admins can update/delete the templates. Tenant Scope - Users having access to the specific tenant can view or execute templates. Tenant admins can only have the access toupdate/delete the templates. Private Scope - Templates created by the user will only have access for the templates under private scope.
+- [Create Template](https://docs.corestack.io/reference/createtemplate.md): Creates a new Template under the tenant. However the script will be accessible based on its scope. Global Templates - All user will have access to CoreStack's Marketplace Templates (Can view and execute). Account - All users under that account will have access (Can view and execute). Only Account admins can update/delete. Tenant - Users with access to the specific tenant will have access template (Can view and execute). Tenant admins can update/delete. Private - User who created will only have access.
+- [Delete Script](https://docs.corestack.io/reference/deletescript.md): Deletes a script. Cannot undo this action, so be cautious when performing this operation. Use updateScript to make the script as inactive if required
+- [Describe Script](https://docs.corestack.io/reference/describescript.md): This API will provide detailed information about the script.
+- [Update Script](https://docs.corestack.io/reference/updatescript.md): Updates script details such as name, script path, dependencies etc.,
+- [Delete Template](https://docs.corestack.io/reference/deletetemplate.md): Delete a Template which is no more required
+- [Describe Template](https://docs.corestack.io/reference/describetemplate.md): Describe the already created Templates
+- [Update Template](https://docs.corestack.io/reference/updatetemplate.md): Update Template details if required after creation using the api, the update by a user depends on the scope of the template created check create template docs for more details on the scope
+- [Execute Template](https://docs.corestack.io/reference/executetemplate.md): Execute template will return a unique job id the status of the template can be checked  using the Job details api where you can pass the unique id generated to get the details or errors if any on execution
+- [Get Template Params](https://docs.corestack.io/reference/gettemplateparams.md): Get the parameters required to execute a template
+- [Validate Template](https://docs.corestack.io/reference/validatetemplate.md): Validates the Cloud Account and the input parameters provided for a template before executing the template
+- [Create Blueprints](https://docs.corestack.io/reference/createblueprints.md): create blueprints
+- [Delete Blueprints](https://docs.corestack.io/reference/deleteblueprints.md): delete blueprints
+- [View Blueprints](https://docs.corestack.io/reference/viewblueprints.md): view blueprints
+- [List Blueprints](https://docs.corestack.io/reference/listblueprints.md): list blueprints
+- [Update Blueprints](https://docs.corestack.io/reference/updateblueprints.md): update blueprints
+- [Create Script Schedules](https://docs.corestack.io/reference/createscriptschedules.md): create script schedules
+- [Update Script Schedules](https://docs.corestack.io/reference/updatescriptschedules.md): update script schedules
+- [Create Template Schedules](https://docs.corestack.io/reference/createtemplateschedules.md): create template schedules
+- [Update Template Schedules](https://docs.corestack.io/reference/updatetemplateschedules.md): update template schedules
+- [Delete Template and Script Schedules](https://docs.corestack.io/reference/deletetemplateandscriptschedules.md): delete template and script schedules
+- [View Template and Script Schedules](https://docs.corestack.io/reference/viewtemplateandscriptschedules.md): view template and script schedules
+- [List Template and Script Schedules](https://docs.corestack.io/reference/listtemplateandscriptschedules.md): list template and script schedules
+- [Template List Batch](https://docs.corestack.io/reference/batchtemplate.md): Batch the templates
+- [Template List](https://docs.corestack.io/reference/listtemplatesv2.md): List the Templates
+- [Get Template Parameter Schema](https://docs.corestack.io/reference/gettemplateparameterschema.md): Get the list of input and output parameters schema available in a template.
+- [Validate parameters for a given template](https://docs.corestack.io/reference/validatetemplateparameters.md): Validate a set of parameters for a given template
+- [Sets the next activation time for the Background Job](https://docs.corestack.io/reference/backgroundjobactivation.md): Changes the activation of a Background Job
+- [Returns a batch of BackgroundJobs](https://docs.corestack.io/reference/backgroundjobbatch.md): Get details for the Background Job ids passed in the request
+- [Requests the cancellation of a job](https://docs.corestack.io/reference/backgroundjobcancel.md): Request a Background Job to stop processing as soon as possible
+- [Internal](https://docs.corestack.io/reference/backgroundjobforwardingcheck.md): Verify federation route
+- [/v1/admin/background_job/invalidation](https://docs.corestack.io/reference/backgroundjobinvalidation.md): Request a Background Job to stop processing as soon as possible
+- [Returns a list of BackgroundJobs ids](https://docs.corestack.io/reference/backgroundjoblist.md): Get the list of all Background Jobs.
+- [Returns a batch of log entries for BackgroundJob](https://docs.corestack.io/reference/backgroundjoblog.md): Get log entries for the Background Job passed in the request
+- [Sets the level of a logger](https://docs.corestack.io/reference/backgroundjobloggerset.md): Set the level of a logger for Background Jobs workers.
+- [Returns a list of BackgroundJobs threads](https://docs.corestack.io/reference/backgroundjobloggers.md): Get loggers from all Background Jobs workers.
+- [Sets the priority on Background Job](https://docs.corestack.io/reference/backgroundjobpriority.md): Changes the priority of a Background Job
+- [Queues a Background Job](https://docs.corestack.io/reference/backgroundjobqueue.md): Queue a Background Job
+- [Returns the frames for the executing BackgroundJob](https://docs.corestack.io/reference/backgroundjobstacktrace.md): Get the stack trace for the executing Background Job passed in the request
+- [Returns statistics about the selected executors](https://docs.corestack.io/reference/backgroundjobstats.md): Get statistics from all Background Jobs workers.
+- [Returns a list of BackgroundJobs threads](https://docs.corestack.io/reference/backgroundjobthreads.md): Get threads from all Background Jobs workers.
+- [Fetch the configuration of a Background Job Handler](https://docs.corestack.io/reference/getbackgroundjobhandlerconfiguration.md): Request the configuration for a Background Job Handler
+- [Update the configuration of a Background Job Handler](https://docs.corestack.io/reference/updatebackgroundjobhandlerconfiguration.md): Update the configuration for a Background Job Handler
+- [Lists the active Background Job Handlers](https://docs.corestack.io/reference/listbackgroundjobhandlers.md): List the active Background Job Handlers
+- [Create Custom Metric Configuration](https://docs.corestack.io/reference/custommetricconfigurationcreate.md): Create Custom Metric configuration Request
+- [Batch of Custom Metric Configuration](https://docs.corestack.io/reference/custommetricconfigurationbatch.md): List all custom metric configuration as batches
+- [Delete Custom Metric Configuration](https://docs.corestack.io/reference/custommetricconfigurationdelete.md): Deletes a specific custom metric configuration for a cloud account.
+- [Update Custom Metric Configuration](https://docs.corestack.io/reference/custommetricconfigurationupdate.md): Update Custom Metric Configuration is used to update the already created custom metrics for a cloud account.
+- [List Custom Metric Configuration](https://docs.corestack.io/reference/custommetricconfigurationlist.md): List Custom Metric Configuration.
+- [Manual Sync Custom Metric Configuration](https://docs.corestack.io/reference/custommetricconfigurationsync.md): Sync custom metric Configuration for mentioned cloud accounts
+- [Delete CustomTags by Master Account](https://docs.corestack.io/reference/deletemasteraccountcustomtags.md): This delete method is used to delete the CustomTags for a specific MasterAccount
+- [List CustomTags by Master Account](https://docs.corestack.io/reference/getmasteraccountcustomtags.md): This GET method is used to retrieve the list of CustomTags available for a specific MasterAccount.
+- [Set CustomTags by Master Account](https://docs.corestack.io/reference/setmasteraccountcustomtags.md): This Post method is used to update the list of CustomTags for a specific MasterAccount.
+- [Delete CustomTags by Tenant](https://docs.corestack.io/reference/deletetenantcustomtags.md): This Delete method is used to delete the CustomTags for a specific Tenant.
+- [List CustomTags by Tenant](https://docs.corestack.io/reference/gettenantcustomtags.md): This GET method is used to retrieve the list of CustomTags available for a specific Tenant.
+- [Set CustomTags by Tenant](https://docs.corestack.io/reference/settenantcustomtags.md): This Post method is used to update the list of CustomTags for a specific Tenant.
+- [Get Dashboard Versions](https://docs.corestack.io/reference/batch5.md): Batch Executive Dashboard versions
+- [Create new Dashboard Definition Version](https://docs.corestack.io/reference/create5.md): Create Executive Dashboard version
+- [Get Dashboard Definition Version](https://docs.corestack.io/reference/get5.md)
+- [Make Dashboard Definition Version the Head version](https://docs.corestack.io/reference/make-head2.md)
+- [Make Dashboard Definition Version the Release version](https://docs.corestack.io/reference/make-release2.md)
+- [Parse Dashboard Definition Version](https://docs.corestack.io/reference/parse-import2.md): Validate Executive Dashboard version
+- [Get Active Dashboard Definition](https://docs.corestack.io/reference/get-active.md): Get active Executive Dashboard
+- [Set Active Dashboard Definition](https://docs.corestack.io/reference/set-active.md)
+- [Get all Dashboard Definitions](https://docs.corestack.io/reference/get-all.md)
+- [Get Dashboard Definitions](https://docs.corestack.io/reference/batch4.md): Batch Executive Dashboard definitions
+- [Create new Dashboard Definition](https://docs.corestack.io/reference/create4.md): Create Executive Dashboard definition
+- [Delete Dashboard Definition](https://docs.corestack.io/reference/remove2.md)
+- [Get Dashboard Definition](https://docs.corestack.io/reference/get4.md)
+- [Delete Dashboard Definition](https://docs.corestack.io/reference/removeacl.md)
+- [Get Dashboard Definition ACL](https://docs.corestack.io/reference/getacl.md)
+- [Update Dashboard Definition ACL](https://docs.corestack.io/reference/putacl.md)
+- [Evaluate Dashboard Definition ACL context](https://docs.corestack.io/reference/contextacl.md)
+- [Evaluate Dashboard Definition ACL](https://docs.corestack.io/reference/evalacl.md)
+- [Get the history of a Dashboard Definition](https://docs.corestack.io/reference/get-history2.md)
+- [List all accessible portals](https://docs.corestack.io/reference/list-portals.md): List portals
+- [Resolve a portal path to its Dashboard Definition version](https://docs.corestack.io/reference/resolve-portal.md)
+- [Schedule the generation of a report for a dashboard](https://docs.corestack.io/reference/dashboard-report-create.md): Create a report for a dashboard
+- [Fetch a report by ID](https://docs.corestack.io/reference/dashboard-report-get.md): Get a report for a dashboard
+- [Batch Dimensions](https://docs.corestack.io/reference/batchdimension.md): Retrieve the Dimension details for the specified ids
+- [Create a Dimension](https://docs.corestack.io/reference/createdimension.md): Create Dimension.
+- [Delete a Dimension](https://docs.corestack.io/reference/deletedimension.md): Delete Dimension.
+- [Get a Dimension](https://docs.corestack.io/reference/getdimension.md): Get Dimension.
+- [Get Dimension History](https://docs.corestack.io/reference/getdimensiondefinitionhistory.md): Get Dimension Definition History.
+- [List Dimensions](https://docs.corestack.io/reference/listdimensions.md): Retrieve the ids of dimensions matching the filtering criteria
+- [Set Dimension State](https://docs.corestack.io/reference/setdimensionstate.md): Set Dimension State.
+- [Batch Dimension Versions](https://docs.corestack.io/reference/batchdimensionbatchdefinitionversion.md): Batch Dimension Definition Versions.
+- [Create Dimension Version](https://docs.corestack.io/reference/createdimensiondefinitionversion.md): Create a New Dimension Definition Version.
+- [Get Dimension Version](https://docs.corestack.io/reference/getdimensiondefinitionversion.md): Get Dimension Definition Version.
+- [Make Dimension Version Head](https://docs.corestack.io/reference/makedimensiondefinitionversionhead.md): Make Dimensions Definition Version Head.
+- [Make Dimension Version Release](https://docs.corestack.io/reference/makedimensiondefinitionversionrelease.md): Make Dimension Definition Version Release.
+- [List Departments accessible by the user](https://docs.corestack.io/reference/listdepartments.md): Retrieve the departments accessible by the user.
+- [Creates a new FreshService Ticket](https://docs.corestack.io/reference/createticket.md): Creates a ticket in FreshService
+- [Freshservice Ticket Filters](https://docs.corestack.io/reference/freshserviceticketfilters.md): Freshservice Ticket Filters
+- [Get FreshService Ticket details](https://docs.corestack.io/reference/getticket.md): Retrieve the current details of ticket
+- [List FreshService Tickets](https://docs.corestack.io/reference/listtickets.md): List FreshService Tickets
+- [List Tenant](https://docs.corestack.io/reference/listtenant.md): There can be multiple tenants within a CoreStack account. List all tenants the user is mapped under a CoreStack account. If there are 3 tenants and user performing this operation has access to only 2 tenants then only those 2 tenants will be returned.
+- [Create Tenant](https://docs.corestack.io/reference/createtenant.md): Creates a new tenant under a CoreStack account. There can be multiple tenants within a CoreStack account.
+- [Delete Tenant](https://docs.corestack.io/reference/deletetenant.md): Delete a tenant by its Id. Cannot undo this action, so be cautious when performing this operation. Use updateTenant to make the tenant as suspended if required.
+- [Get Tenant](https://docs.corestack.io/reference/gettenant.md): Retrieve a tenant by its Id.  If you're unsure of the tenant_id, use listTenant operation to list all tenants under a CoreStack account and fetch the needed tenant_id.
+- [Update Tenant](https://docs.corestack.io/reference/updatetenant.md): Update a tenant's status, description & metadata using its id. No operation can be performed when a tenant is made suspended.
+- [List Roles by Tenant](https://docs.corestack.io/reference/listroles.md): This GET method is used to retrieve the list of Roles available within a specific tenant.
+- [List Users by Tenant](https://docs.corestack.io/reference/listtenantuser.md): List all users within a tenant.
+- [Change Password](https://docs.corestack.io/reference/changepassword.md): Update the password of the user. This password will be used for login to portal and it will not affect the Access Key / Secret Key associated with the user. Cannot update password of another user within the same CoreStack account. Can be updated for the user associated with Access Key / Secret Key
+- [Change Timezone](https://docs.corestack.io/reference/changetimezone.md): Update the timezone settings of the user. In CoreStack portal, wherever the datatime is shown it is converted to the timezone set to the user. Cannot update timezone of another user within the same CoreStack account. Can be updated for the user associated with Access Key / Secret Key
+- [Create User](https://docs.corestack.io/reference/createuser.md): Creates an user within a CoreStack account and assign different roles for different tenants. There can be multiple tenants within a CoreStack account. User will be created at the account level and mapped to multiple tenants as needed.
+- [Delete User](https://docs.corestack.io/reference/deleteuser.md): Deletes the User from CoreStack system. This operation cannot be undone.
+- [List Users](https://docs.corestack.io/reference/listuserfilteroptions.md): List all tenants, cloud providers and cloud accounts available within a CoreStack account.
+- [Forget Password](https://docs.corestack.io/reference/forgetpassword.md): Forget the password of the user. This password will be used for login to portal and it will not affect the Access Key / Secret Key associated with the user
+- [List Users](https://docs.corestack.io/reference/listuser.md): List all users within a CoreStack account.
+- [Check notification status](https://docs.corestack.io/reference/countusernotifications.md): Check Notification status for user
+- [Update active tenant for a user](https://docs.corestack.io/reference/userprofileactivetenant.md): Sets the active tenant for the user
+- [View User Profile](https://docs.corestack.io/reference/userprofile.md): Describes an User by ID. This provides detailed information about a user profile
+- [Resend User Token for Activation](https://docs.corestack.io/reference/resendtokenuser.md): Resend User Activation Link
+- [Reset Password](https://docs.corestack.io/reference/usersresetpassword.md): Reset the password of the user.This password will be used for login to portal and it will not affect the Access Key / Secret Key associated with the user
+- [User Batch](https://docs.corestack.io/reference/usersummarybatch.md): User Summary Batch
+- [Update User](https://docs.corestack.io/reference/updateuser.md): Updates a user and their role assignment in multiple tenants.
+- [Describe User](https://docs.corestack.io/reference/describeuser.md): Describes an User by ID. This provides detailed information about a user
+- [List notification message](https://docs.corestack.io/reference/notificationmessageresource.md): This GET method is used to retrieve the Notification, Message a specific tenant.
+- [Activate User](https://docs.corestack.io/reference/authactivateuser.md): Activate user using auth token
+- [Verify User](https://docs.corestack.io/reference/authverifyuser.md): Verify user using auth token
+- [List Roles by Master Account](https://docs.corestack.io/reference/rolelistbymasteraccount.md): Role List By Master Account
+- [Tenant List by Master Account](https://docs.corestack.io/reference/tenantlistbymasteraccount.md): Tenant List by Master Account
+- [Role Batch](https://docs.corestack.io/reference/rolebatch.md): Role Batch
+- [Auth0 User Verification](https://docs.corestack.io/reference/userverify.md): User Verify
+- [Reset Password for Auth0 User](https://docs.corestack.io/reference/resetpassword.md): Reset Password for the Auth0 User
+- [Create User Delegation](https://docs.corestack.io/reference/createuserdelegation.md): Creates a new user delegation
+- [Batch User Delegation](https://docs.corestack.io/reference/batchuserdelegation.md): Batch User Delegation
+- [Delete User Delegation](https://docs.corestack.io/reference/deleteuserdelegation.md): Delete user delegation
+- [Update User Delegation](https://docs.corestack.io/reference/updateuserdelegation.md): Update user delegation
+- [List User Delegation](https://docs.corestack.io/reference/listuserdelegation.md): List user delegation
+- [Refresh User Delegation](https://docs.corestack.io/reference/refreshuserdelegation.md): Refresh User Delegation
+- [Get User Delegation Report](https://docs.corestack.io/reference/getuserdelegationreport.md): Get user delegation report
+- [Invite User](https://docs.corestack.io/reference/inviteuser.md): Invite user
+- [Send notification report email](https://docs.corestack.io/reference/notificationreport.md): Send a notification email for a shared report
+- [Get Tenant Name Change History](https://docs.corestack.io/reference/gettenantnamechangehistory.md): Retrieve the name change history for a tenant.
+- [List Users](https://docs.corestack.io/reference/listuserfilteroptionslight.md): List all tenants with limited details within a CoreStack account.
+- [List Jira Service Management Project Fields](https://docs.corestack.io/reference/listjirafields.md): Retrieve the list of Jira project fields for the service account
+- [Complete the Multiple Parts upload for the Kubernetes agent](https://docs.corestack.io/reference/completepartpresignedurlforforkubernetesagent.md): Complete the Multiple Parts of a kubernetes agent upload to the bucket
+- [Get the Presigned url and other details for the Kubernetes agent](https://docs.corestack.io/reference/generatepresignedurlforkubernetesagent.md): Generate Presigned_Url for Kubernetes agent to access the bucket
+- [Get the attachment ID for the Kubernetes deployment configuration based on the given service account id](https://docs.corestack.io/reference/generatekubernetesmanifest.md): Generate a Kubernetes manifest for the provided Kubernetes cluster account.
+- [Get the Job Sync Status of Kubernetes Cluster](https://docs.corestack.io/reference/getjobsyncstatusforkubernetesagent.md): Get the Job Sync Status of Kubernetes Cluster
+- [Update the Sync Status of Kubernetes Cluster](https://docs.corestack.io/reference/updatesyncstatusforkubernetesagent.md): Update the Sync Status of Kubernetes Cluster
+- [Get the current configuration of the Kubernetes Agent](https://docs.corestack.io/reference/getconfigurationforkubernetesagent.md): Retrieve the current configuration of the Kubernetes Agent
+- [List Master data](https://docs.corestack.io/reference/listmasterdatacategories.md): List Master Data Categories
+- [/v1/master_accounts](https://docs.corestack.io/reference/createmasteraccount.md): Creates a new master account under a CoreStack account. There can be multiple tenants within a CoreStack account.
+- [/v1/master_accounts/batch](https://docs.corestack.io/reference/masteraccountbatch.md): Master Account Batch
+- [Master Account Delete](https://docs.corestack.io/reference/masteraccountdelete.md): Delete the master account
+- [Master Account View](https://docs.corestack.io/reference/masteraccountview.md): View the master account
+- [Master Account Update](https://docs.corestack.io/reference/masteraccountupdate.md): Update the master account
+- [/v1/master_accounts/list](https://docs.corestack.io/reference/listmasteraccount.md): List master account
+- [Create a NextGen report](https://docs.corestack.io/reference/createreport.md): Create a report
+- [Fetch a report by ID](https://docs.corestack.io/reference/getreport.md): Get a report by ID
+- [Assign Platform Task to Service Account](https://docs.corestack.io/reference/platformtaskassign.md): Assign platform related background tasks to service accounts
+- [Send Logs from Platform Agent for Service Account](https://docs.corestack.io/reference/platformlogs.md): Send the logs from the platform agent for a service account
+- [Check Assigned Platform Task for Service Account](https://docs.corestack.io/reference/platformtaskcheck.md): Check assigned platform related background tasks for a service account
+- [Update Assigned Platform Task for Service Account](https://docs.corestack.io/reference/platformtaskupdate.md): Update assigned platform related background tasks for a service account
+- [List Feature requirements](https://docs.corestack.io/reference/listfeaturerequirements.md): List all Feature requirements within CoreStack product.
+- [List Product Bundles](https://docs.corestack.io/reference/listproductbundles.md): List all product bundles within CoreStack.
+- [List Products](https://docs.corestack.io/reference/listproducts.md): List all product within CoreStack.
+- [List Role Templates](https://docs.corestack.io/reference/listroletemplates.md): List all Role templates within CoreStack.
+- [Resolve Definition Recommendation](https://docs.corestack.io/reference/resolvedefrecommendations.md): Resolve definition recommendations
+- [Resolve Recommendation Action Preexecute](https://docs.corestack.io/reference/resolveactionrecommendationexecute.md): Resolve recommendations
+- [List Recommendations by Account](https://docs.corestack.io/reference/listrecommendationsbyaccount.md): List recommendations by account
+- [List Recommendations by Category](https://docs.corestack.io/reference/listrecommendationsbycategory.md): list recommendations by category
+- [List Recommendations](https://docs.corestack.io/reference/listsrecommendations.md): List recommendations
+- [Resolve Recommendation](https://docs.corestack.io/reference/resolverecommendation.md): Resolve recommendations
+- [Resolve PreExecute Recommendation](https://docs.corestack.io/reference/resolverecommendationexecute.md): Execute resolve recommendations
+- [List Recommendations by Cloud Account](https://docs.corestack.io/reference/listrecommendationsbycloudaccount.md): List recommendations by cloud account
+- [Get the List of Recommendation Details](https://docs.corestack.io/reference/batchrecommendations.md): Fetch a List of Recommendation Details
+- [Apply all the Recommendation Exclusion Rules which are available/applicable/provided in the tenant](https://docs.corestack.io/reference/applyexclusionrule.md): Apply all Recommendation Exclusion Rule
+- [Fetch a Recommendation Exclusion Rule Details](https://docs.corestack.io/reference/batchexclusionrules.md): Get Recommendation Exclusion rules
+- [Creates a Recommendation Exclusion Rule](https://docs.corestack.io/reference/createexclusionrule.md): Create a Recommendation Exclusion Rule
+- [Delete Recommendation Exclusion Rule](https://docs.corestack.io/reference/deleteexclusionrule.md): Delete given rule ID
+- [Get Recommendation Exclusion Rule](https://docs.corestack.io/reference/getexclusionrule.md): Get a Particular Recommendation Exclusion Rule
+- [Update Recommendation Exclusion Rule](https://docs.corestack.io/reference/updateexclusionrule.md): Update Recommendation Exclusion Rule
+- [List of Recommendation Exclusion Rules](https://docs.corestack.io/reference/listexclusionrules.md): List Recommendation Exclusion rules.
+- [List of Recommendations](https://docs.corestack.io/reference/listrecommendations.md): Fetch a List of Recommendation
+- [List of Resource Recommendation Details](https://docs.corestack.io/reference/batchresourcerecommendations.md): List of resource recommendations details
+- [Fetch a List of Resource Recommendation](https://docs.corestack.io/reference/listresourcerecommendations.md): List of resource recommendations
+- [Backup Report](https://docs.corestack.io/reference/createbackupreport.md): Fetch the backup report based on cloud account usage
+- [Patch Compliance Report](https://docs.corestack.io/reference/patchcompliancereports.md): Fetch the patch compliance report based on cloud account usage
+- [RecoveryService Report](https://docs.corestack.io/reference/recoveryservicereports.md): Fetch the recovery service report based on cloud account usage
+- [SecureScore Mapping Report](https://docs.corestack.io/reference/getsecurescores.md)
+- [Create pinned report](https://docs.corestack.io/reference/pinreport.md): Pin Report
+- [List pinned report](https://docs.corestack.io/reference/getpinnedreports.md): List of pinned report
+- [Delete pinned report](https://docs.corestack.io/reference/unpinreport.md): Unpin Report
+- [Create view of the report](https://docs.corestack.io/reference/createreportsuserview.md): Create view of the report
+- [Delete view of the report](https://docs.corestack.io/reference/deletereportsuserview.md): Delete view of the report
+- [List of user report views](https://docs.corestack.io/reference/listreportsuserview.md): List views of the report
+- [Update view of the report](https://docs.corestack.io/reference/updatereportsuserview.md): Update view of the report
+- [Returns a batch of RequestAuditEntries](https://docs.corestack.io/reference/requestauditbatch.md): Get details for the request audit ids passed in the request
+- [Clears the caching layer](https://docs.corestack.io/reference/requestauditflushcache.md): Clears caching layer
+- [Returns a list of endpoints active in the target executor](https://docs.corestack.io/reference/requestauditdescribe.md): Describe active endpoints
+- [Returns a list of BackgroundJobs ids](https://docs.corestack.io/reference/requestauditlist.md): Filter request audits
+- [Streams the profiler's result for a request audit](https://docs.corestack.io/reference/requestauditprofiledownload.md): Download a profile results
+- [Configures the parameters for auto triggering the collection of profiling data](https://docs.corestack.io/reference/requestauditprofileautotrigger.md): Configure profiling auto trigger
+- [Requests to profile a endpoint or resource path](https://docs.corestack.io/reference/requestauditprofile.md): Requests to profile endpoints
+- [Get the list of endpoints currently profiled](https://docs.corestack.io/reference/requestauditprofiledescribe.md): Lists currently profiled endpoints
+- [Returns hit counts for an endpoint or path in the target executor](https://docs.corestack.io/reference/requestauditendpointstatistics.md): Reports usage statistics for an endpoint or path
+- [Fetch a batch of schedules](https://docs.corestack.io/reference/schedulesbatch.md): Fetch a batch of schedules
+- [Creates a Schedule](https://docs.corestack.io/reference/createschedule.md): Creates a Schedule
+- [Delete Schedule](https://docs.corestack.io/reference/scheduledelete.md): Delete given schedule
+- [Retrieve Schedule](https://docs.corestack.io/reference/scheduleget.md): Retrieve details of given schedule
+- [Updates a Schedule](https://docs.corestack.io/reference/scheduleupdate.md): Update schedule
+- [Set Next Execution of a Schedule](https://docs.corestack.io/reference/setnextexecutionschedule.md): Set Next Execution of a Schedule
+- [Skip next execution of a Schedule](https://docs.corestack.io/reference/skipnextexecutionschedule.md): Skip next execution of a Schedule
+- [List Schedules of given category](https://docs.corestack.io/reference/schedulelist.md): List schedules of given Category
+- [Batch Service Account Details](https://docs.corestack.io/reference/batchserviceaccount.md): Retrieve the Service Account details for the specified ids
+- [Create a new Service Account](https://docs.corestack.io/reference/createserviceaccount.md): Creates a new Service Account
+- [Delete Service Account details](https://docs.corestack.io/reference/deleteserviceaccount.md): Delete the service account
+- [Get Service Account details](https://docs.corestack.io/reference/getserviceaccount.md): Retrieve the current details of the service account
+- [Update Service Account details](https://docs.corestack.io/reference/updateserviceaccount.md): Update the details of the service account
+- [List of Available OCI Compartments](https://docs.corestack.io/reference/listavailablecompartments.md): List the available compartments for the cloud account
+- [Validate Service Account Credentials](https://docs.corestack.io/reference/performserviceaccountcredentialsvalidation.md): Performs validation of credentials associated with the service account
+- [Validate update of Service Account details](https://docs.corestack.io/reference/updateserviceaccountdryrun.md): Validate if the details can be applied to the service account
+- [Validate update of Service Account details and check if the Governance Configuration can be accepted by the Cloud/Tool provider](https://docs.corestack.io/reference/updateserviceaccountextendeddryrun.md): Validate if the details can be applied to the service account and the Governance Configuration is acceptable by the Cloud/Tool provider
+- [List Available Locations](https://docs.corestack.io/reference/listavailablelocations.md): List the available location for the cloud account
+- [List Available Azure Resource Groups](https://docs.corestack.io/reference/listavailableresourcegroups.md): List the available resource groups for the cloud account
+- [Get Current Sync Status](https://docs.corestack.io/reference/getserviceaccountsyncstatus.md): Retrieve the current sync status of the service account
+- [Trigger refresh of Sync Status](https://docs.corestack.io/reference/triggerserviceaccountsync.md): Trigger the refresh of the sync status of the service account
+- [Get Sync Status History](https://docs.corestack.io/reference/getserviceaccountsyncstatushistory.md): Retrieve the historical sync status of the service account
+- [List Service Accounts](https://docs.corestack.io/reference/listserviceaccounts.md): Retrieve the ids of service accounts matching the filtering criteria
+- [Summarize Service Accounts](https://docs.corestack.io/reference/serviceaccountssummary.md): Summarize the service accounts matching the filtering criteria returning counts for each group
+- [Fetch Service Account Cloud Tags](https://docs.corestack.io/reference/fetchserviceaccountcloudtags.md): Fetch the cloud tags for the service account
+- [Threat Validation for GCP Services](https://docs.corestack.io/reference/threatvalidationforgcp.md): Security Threat Validation for GCP
+- [Threat Validation for OCI services](https://docs.corestack.io/reference/threatvalidationforoci.md): Security Threat Validation for OCI
+- [Vulnerability Validation for GCP Services](https://docs.corestack.io/reference/vulnerabilityvalidationforgcp.md): Security Vulnerability Validation for GCP
+- [Vulnerability Validation for OCI services](https://docs.corestack.io/reference/vulnerabilityvalidationforoci.md): Security Vulnerability Validation for OCI
+- [List Available AWS S3 Buckets](https://docs.corestack.io/reference/listavailableawsbuckets.md): List the available AWS S3 buckets for the cloud account
+- [List Available AWS CloudTrail By Region](https://docs.corestack.io/reference/listavailableawstrailsbyregion.md): List the AWS CloudTrail of a region on cloud account
+- [List Available Azure Action Groups](https://docs.corestack.io/reference/listavailableazureactiongroups.md): List the available Azure action groups for the cloud account
+- [List Available Azure Activity Log Alerts](https://docs.corestack.io/reference/listavailableazureactivitylogalerts.md): List the available Azure activity log alerts for the cloud account
+- [List Available Azure Log Analytics Workspaces](https://docs.corestack.io/reference/listavailableazureloganalyticsworkspaces.md): List the available Azure log analytics workspaces for the cloud account
+- [List Available Azure Subscriptions](https://docs.corestack.io/reference/listavailableazuresubscriptions.md): List the available Azure subscriptions for the cloud account
+- [List billing metrics for a cloud account](https://docs.corestack.io/reference/listbillingmetricsforanaccount.md): List the billing metrics for an account
+- [List Available GCS Buckets](https://docs.corestack.io/reference/listavailablegcsbuckets.md): List the available GCS buckets for the cloud account
+- [List the repositories in a gitHub account](https://docs.corestack.io/reference/listgithubrepositories.md): List the repositories for a github account
+- [Create ServiceNow CMDB Configuration](https://docs.corestack.io/reference/create6.md): Create ServiceNowCMDBConfiguration
+- [Delete ServiceNow CMDB Configuration](https://docs.corestack.io/reference/remove3.md): Delete ServiceNowCMDBConfiguration
+- [List ServiceNow CMDB Configurations](https://docs.corestack.io/reference/list2.md): List ServiceNow CMDB Configuration
+- [List ServiceNow CMDB CI Class Attributes](https://docs.corestack.io/reference/viewcmdbciclassattributes.md): View CMDB CI Class Attributes
+- [List ServiceNow CMDB CI Classes](https://docs.corestack.io/reference/viewcmdbciclasses.md): View CMDB CI Class List
+- [List Inventory Attributes for Resource](https://docs.corestack.io/reference/viewinventoryschema.md): View Resource Inventory Schema
+- [Update ServiceNow CMDB Configuration](https://docs.corestack.io/reference/update2.md): Update ServiceNowCMDBConfiguration
+- [View ServiceNow CMDB Configuration](https://docs.corestack.io/reference/view.md): View ServiceNowCMDBConfiguration
+- [View Cloud Schema Hierarchy](https://docs.corestack.io/reference/viewservicehierarchy.md): View Cloud Hierarchy
+- [Returns a batch of CMDB Sync Logs](https://docs.corestack.io/reference/servicenowcmdbsynclogsbatch.md): Get AWS Security hub findings for all ids passed in the request.
+- [Returns a list CMDB Sync Log Ids](https://docs.corestack.io/reference/servicenowcmdbsynclogslist.md): List CMDB Sync Log Ids
+- [Cmdb Sync Progress](https://docs.corestack.io/reference/progress.md): CMDB Sync Progress
+- [List ServiceNow User Groups](https://docs.corestack.io/reference/listservicenowcmdblistassignmentgroups.md): List ServiceNow User Groups
+- [List ServiceNow Incident Custom Attributes](https://docs.corestack.io/reference/listservicenowincidentcustomreferenceattributes.md): List Custom reference attributes of ServiceNow Incident
+- [List ServiceNow Request Attributes](https://docs.corestack.io/reference/viewservicerequestattributes.md): View Service Request Attributes
+- [View ServiceNow Service Catalog Hierarchy](https://docs.corestack.io/reference/viewservicecataloghierarchy.md): View Service Catalog Hierarchy
+- [List ServiceNow Table Rows](https://docs.corestack.io/reference/listservicenowtablerows.md): List ServiceNow Table Rows
+- [Get cloud-wise cost usage and top resource consumption data for the service accounts in a tenant](https://docs.corestack.io/reference/cloudwiseusage.md): Get cloud-wise cost usage and top resource consumption data for the service accounts in a tenant
+- [User Group List By Master Account](https://docs.corestack.io/reference/usergrouplistbymasteraccount.md): User Group List By Master Account
+- [Create UserGroup](https://docs.corestack.io/reference/createusergroup.md): Creates a user group within a CoreStack tenant and assign different set of roles to different users.There can be multiple user groups within a CoreStack tenant. User group will be created at the tenant level
+- [User Group Batch](https://docs.corestack.io/reference/usergroupbatch.md): User Group Batch
+- [Delete UserGroup](https://docs.corestack.io/reference/deleteusergroup.md): Delete User Group by ID
+- [Get UserGroup](https://docs.corestack.io/reference/getusergroup.md): Get User Group by ID
+- [Update UserGroup](https://docs.corestack.io/reference/updateusergroup.md): user group update within a CoreStack tenant and assign different set of roles to different users.There can be multiple user groups within a CoreStack tenant. User group will be updated at the tenant level
+- [User Group List](https://docs.corestack.io/reference/listusergroups.md): List User Groups
+- [List all subkeys of user preferences](https://docs.corestack.io/reference/listsubkeys.md): Get a list of all the subkeys for user preferences that are viewable to the user under the certain path.
+- [User Preference Delete](https://docs.corestack.io/reference/delete.md): Delete a user preference
+- [Get details of the user preference](https://docs.corestack.io/reference/get8.md): Get user preference by id.
+- [List all user preferences](https://docs.corestack.io/reference/listvalues.md): Get a list of all the user preferences that are viewable to the user under the certain path.
+- [Create a new user preference](https://docs.corestack.io/reference/set.md): Create/Update a user preference
+- [Update updated_at time for user preference](https://docs.corestack.io/reference/markasused.md): Update user preference updated_at time
+- [List Zoho ServiceDesk Sites](https://docs.corestack.io/reference/listzohoservicedesksites.md): List Zoho ServiceDesk Sites
+- [List Zoho ServiceDesk Users](https://docs.corestack.io/reference/listzohoservicedeskusers.md): List Zoho ServiceDesk Users
+- [Returns a batch of Findings](https://docs.corestack.io/reference/getfindingsbatch.md): Get AWS Security hub findings for all ids passed in the request.
+- [Returns a list AWS Security Hub Findings ids](https://docs.corestack.io/reference/listfindings.md): List AWS Security Hub Finding Ids
+- [Returns list of AWS securityhub finding product names with all possible filter values for the given tenant](https://docs.corestack.io/reference/fetchfindingsfiltersproductname.md): Fetch all the product names filter values for the given tenant id
+- [Returns list of AWS securityhub finding record state with all possible filter values for the given tenant](https://docs.corestack.io/reference/fetchfindingfiltersrecordstate.md): Fetch all the record state filter values for the given tenant id
+- [Returns list of AWS securityhub finding Region with all possible filter values for the given cloud accounts](https://docs.corestack.io/reference/fetchfindingsfiltersregion.md): Fetch all the region filter values for the given tenant id
+- [Returns list of AWS securityhub finding resource with all possible filter values for the given tenant](https://docs.corestack.io/reference/fetchfindingsfiltersresource.md): Fetch all the region filter values for the given tenant id
+- [Returns list of AWS securityhub finding severity with all possible filter values for the given tenant](https://docs.corestack.io/reference/fetchfindingsfiltersseverity.md): Fetch all the severity filter values for the given tenant id
+- [Get AWS Security Hub Region Validation Results](https://docs.corestack.io/reference/getregionresults.md): Get AWS SecurityHub Region Results
+- [Get Access Summary Count](https://docs.corestack.io/reference/accesssummarycount.md): Displays the summary of the violations based on the cloud provider
+- [Get Access Summary Dashboard Count](https://docs.corestack.io/reference/accesssummarydashboardcount.md): Displays the summary of the violations
+- [Get Access Violations](https://docs.corestack.io/reference/accessviolations.md): Displays the violations based on the cloud provider
+- [Get Access Detail](https://docs.corestack.io/reference/accessdetails.md): Displays the details of individual violation
+- [Get Access Visibility Filter](https://docs.corestack.io/reference/accessvisibilityfilters.md): Displays the filters by tenants, cloud accounts, guardrail
+- [List of application details](https://docs.corestack.io/reference/batchapplication.md): Details of the given batch of application IDs. Supports a maximum of 1000 IDs per request.
+- [Creates an application](https://docs.corestack.io/reference/createapplication.md): Creates an application
+- [Get the application details](https://docs.corestack.io/reference/getapplication.md): Get details of a given application.
+- [Update an application](https://docs.corestack.io/reference/updateapplication.md): Update details of the given application.
+- [List of Applications](https://docs.corestack.io/reference/listapplication.md): List of applications
+- [List of container finding details](https://docs.corestack.io/reference/batchcontainerfindings.md): Details of the given batch of container finding IDs. Supports a maximum of 1000 IDs per request.
+- [Ingest container security findings from external tools](https://docs.corestack.io/reference/ingestcontainerfindings.md): Ingest container security findings from tools like Dockle and Hadolint
+- [List of container security findings with filtering and pagination support](https://docs.corestack.io/reference/listcontainerfindings.md): List of container security findings with filtering and pagination support
+- [List all Portfolios along with its associated applications and projects](https://docs.corestack.io/reference/portfoliohierarchy.md): List of portfolio details and associated applications and projects
+- [List of all SBOMs along with its associated components](https://docs.corestack.io/reference/summarysbomcomponents.md): List of SBOM details along with associated components
+- [List of all SBOM vulnerabilities](https://docs.corestack.io/reference/summarysbomvulnerabilities.md): List of SBOM vulnerabilities
+- [Summary of differences in vulnerability and component counts compared to the previous SBOM build](https://docs.corestack.io/reference/sbombuilddifferencetrend.md): Retrieve the difference in vulnerability and component counts compared to the previous SBOM build.
+- [List top (x) actionable issues including vulnerabilities, threats and config violations](https://docs.corestack.io/reference/topactionableissues.md): List Top actionable issues including vulnerabilities, threats and config violations
+- [List of aggregated vulnerability count by component properties](https://docs.corestack.io/reference/vulnerabilitybycomponent.md): Aggregated vulnerability count by component properties
+- [List of vulnerabilities count by severity](https://docs.corestack.io/reference/vulnerabilitytrendbyseverity.md): List of vulnerabilities count by severity
+- [List of portfolio details](https://docs.corestack.io/reference/batchportfolio.md): Details of the given batch of portfolio IDs. Supports a maximum of 1000 IDs per request.
+- [Creates a portfolio](https://docs.corestack.io/reference/createportfolio.md): Creates a portfolio
+- [Get the portfolio details](https://docs.corestack.io/reference/getportfolio.md): Get details of a given portfolio.
+- [Update the portfolio details](https://docs.corestack.io/reference/updateportfolio.md): Updates the given portfolio details.
+- [List of portfolios](https://docs.corestack.io/reference/listportfolio.md): List of portfolios
+- [List of project details](https://docs.corestack.io/reference/batchproject.md): Details of the given batch of project IDs. Supports a maximum of 1000 IDs per request.
+- [Creates a project](https://docs.corestack.io/reference/createproject.md): Creates a project
+- [Get the project details](https://docs.corestack.io/reference/getproject.md): Get details for given project ID
+- [Update the project details](https://docs.corestack.io/reference/updateproject.md): Update the project details for given project ID
+- [List of projects](https://docs.corestack.io/reference/listproject.md): List of projects
+- [List of sbom component details](https://docs.corestack.io/reference/batchsbomcomponents.md): Details of the given batch of SBOM component IDs. Supports a maximum of 1000 IDs per request.
+- [List of SBOM definition details](https://docs.corestack.io/reference/batchsbomdefinitions.md): Details of the given batch of SBOM definition IDs. Supports a maximum of 1000 IDs per request.
+- [Creates a SBOM definition](https://docs.corestack.io/reference/createsbomdefinition.md): Create a SBOM definition
+- [Get SBOM definition details](https://docs.corestack.io/reference/getsbomdefinition.md): Get a particular SBOM definition details for given SBOM definition ID
+- [Update SBOM definition details](https://docs.corestack.io/reference/updatesbomdefinition.md): Update the SBOM definition details for given SBOM definition ID
+- [List of versions for a SBOM definition](https://docs.corestack.io/reference/listsbomversions.md): List of SBOM versions for a given SBOM definition ID
+- [List of SBOM definitions](https://docs.corestack.io/reference/listsbomdefinitions.md): List of SBOM definitions
+- [List of SBOM version details](https://docs.corestack.io/reference/batchsbomversions.md): Details of the given batch of SBOM version IDs. Supports a maximum of 1000 IDs per request.
+- [Creates a SBOM Version](https://docs.corestack.io/reference/createsbomversion.md): Create a SBOM Version
+- [List of SBOM version difference details between the given SBOM version IDs and its corresponding predecessor version IDs](https://docs.corestack.io/reference/batchsbomversiondifference.md): List of SBOM version difference details for the given SBOM version IDs and predecessor version ID. Supports a maximum of 1000 IDs per request.
+- [Delete SBOM version](https://docs.corestack.io/reference/deletesbomversion.md): Deletes given SBOM version
+- [Get SBOM version details](https://docs.corestack.io/reference/getsbomversion.md): Get a particular SBOM version for given SBOM version ID
+- [Update SBOM version details](https://docs.corestack.io/reference/updatesbomversion.md): Update SBOM version details (Build ID) for given SBOM Version ID
+- [Fetch SBOM version component and vulnerability difference details](https://docs.corestack.io/reference/sbomversiondifference.md): Retrieve the difference in vulnerability and component IDs compared from the given SBOM version to requested SBOM version. If compare version ID is not passed, fetch for previous SBOM version
+- [Make SBOM version as the Release version](https://docs.corestack.io/reference/makesbomreleaseversion.md): Mark this version as the release version
+- [List of SBOM version vulnerabilities details](https://docs.corestack.io/reference/sbomversionvulnerabilitybatch.md): Vulnerabilities details of the given batch of SBOM version Vulnerability ID(s). SBOM version vulnerability IDs can be obtained from the List SBOM Vulnerabilities API. Supports a maximum of 1000 IDs per request.
+- [List of organization(s) details where the vulnerabilities are prevalent](https://docs.corestack.io/reference/organizationalvulnerabilityprevalence.md): List of Organizational entities (portfolio, application and project) where the provided vulnerability is prevalent
+- [List of vulnerability details](https://docs.corestack.io/reference/batchvulnerabilities.md): Details of the given batch of vulnerability IDs. Supports a maximum of 1000 IDs per request.
+- [Create a new BCS answer version](https://docs.corestack.io/reference/bcsanswerversioncreate.md): Create a new BCS answer version
+- [Paginated history of BCS answer versions](https://docs.corestack.io/reference/bcsanswerversionhistory.md): Paginated history of BCS answer versions
+- [List of BCS questions](https://docs.corestack.io/reference/listbcsquestions.md): List of BCS questions
+- [Create an application with BCS scoring](https://docs.corestack.io/reference/createbcsapplicationv2.md): Create an application with BCS scoring
+- [Get application details with BCS scoring](https://docs.corestack.io/reference/getbcsapplicationv2.md): Get application details with BCS scoring
+- [Update application with BCS scoring](https://docs.corestack.io/reference/updatebcsapplicationv2.md): Update application with BCS scoring
+- [Get compliance assessment summary by assessment job number](https://docs.corestack.io/reference/compliancemappingsummary.md): To get the summary of compliance assessment for the given assessment job number.
+- [Compliance Security Dashboard Summary](https://docs.corestack.io/reference/securitydashboardbycompliance.md): Security Dashboard Compliance
+- [Compliance Control Health by Control Categories](https://docs.corestack.io/reference/compliancecontrolhealth.md): Compliance Control Health
+- [Compliance Risks By Cloud Accounts](https://docs.corestack.io/reference/complianceriskbycloudaccounts.md): Compliance Risk by Cloud Accounts
+- [Get Compliance assessment posture Summary](https://docs.corestack.io/reference/complianceassessmentposturesummarylist.md): objective is to return the compliance assessment posture summary of all the applicable tenants
+- [List Compliance Control Assessment History](https://docs.corestack.io/reference/assessmenthistorylist.md): objective is to return all of the compliance assessment triggered in the tenant
+- [List compliance control mapping, get_assessment_job_details](https://docs.corestack.io/reference/policyjobexecutionstatus.md): objective is to return Policy Job execution status  for given, the tenant,assessment job number, policy id as input
+- [List compliance control mapping, get_on_audit_entries](https://docs.corestack.io/reference/compliancemapping.md): objective is to return all of the compliance Mapping get_on_audit_entries given, the tenant,assessment job number as input
+- [Compliance On Demand Control_execute](https://docs.corestack.io/reference/complianceondemandcontrol.md): Compliance On Demand Control_execute
+- [Compliance On Demand Standard_execute](https://docs.corestack.io/reference/complianceondemandstandard.md): Compliance On Demand Standard_execute
+- [List Compliance Controls](https://docs.corestack.io/reference/listcontrols.md): Objective is to return all of the compliance controls given, the tenant and compliance standard as input
+- [List Compliance Control Mappings](https://docs.corestack.io/reference/listcontrolmappings.md): objective is to return all of the compliance control mappings given, the tenant and compliance standard as input
+- [List Compliance Standards](https://docs.corestack.io/reference/liststandards.md): Objective is to return all of the compliance standards given, the tenant as input
+- [List Compliance Visibility](https://docs.corestack.io/reference/compliancevisibility.md): objective is to return all of the compliance visibility given, the tenant as input
+- [List Compliance posture DetailsForPolicies](https://docs.corestack.io/reference/detailsforpolicies.md): Objective is to return all of the compliance posture DetailsForPolicies
+- [List Compliance Filter](https://docs.corestack.io/reference/listfilter.md): objective is to return all of the compliance Filter given, the tenant as input
+- [List Compliance Filter For Heatstack](https://docs.corestack.io/reference/complianceposturefilter.md): Objective is to return all of the compliance Filter given, the tenant as input
+- [List Compliance Filter_Policy](https://docs.corestack.io/reference/complianceposturefilterpolicy.md): Objective is to return all of the compliance Filter Policy given, the tenant as input
+- [List compliance_posture summary_by_accounts](https://docs.corestack.io/reference/compliancesummarybyaccounts.md): objective is to return all of the compliance summary_by_accounts
+- [List Compliance posture SummaryByPolicies](https://docs.corestack.io/reference/summarybypolicies.md): Objective is to return all of the compliance posture SummaryByPolicies
+- [Clean Up Unmapped Policy Data](https://docs.corestack.io/reference/cleanupcompliancepolicydata.md): Cleanup the data in compliance that was created by deprecated policy
+- [Get compliance standard assessments](https://docs.corestack.io/reference/compliancecontrolmapping.md): Objective is to return all of the compliance control mapping, the tenant as input
+- [compliance posture visibility](https://docs.corestack.io/reference/complianceposturevisibility.md): Objective is to return all of the compliance Visibility
+- [compliance visibility trend](https://docs.corestack.io/reference/compliancevisibilitytrend.md): Objective is to return all of the compliance VisibilityTrend
+- [List of policy details fetched for given policy uris or policy ids](https://docs.corestack.io/reference/batchpoliciesusingids.md): Fetch policy details for given policy uris or policy ids. Supports a maximum of 1000 results per request Supports a maximum of 1000 results per request
+- [Create Policy Schedules](https://docs.corestack.io/reference/createpolicyschedules.md): create policy schedules
+- [Delete Policy Schedules](https://docs.corestack.io/reference/deletepolicyschedules.md): Delete policy schedules
+- [View Policy Schedules](https://docs.corestack.io/reference/viewpolicyschedules.md): view policy schedules
+- [List Policy Schedules](https://docs.corestack.io/reference/listpolicyschedules.md): list policy schedules
+- [Update Policy Schedules](https://docs.corestack.io/reference/updatepolicyschedules.md): update policy schedules
+- [Create Policy](https://docs.corestack.io/reference/createpolicy.md): Creates a new policy under the tenant which will generate a unique policy id in the response this is can be used to describe details about the policy, update policy, execute or delete policy. However the policy will be accessible based on its scope  Account scope - All users under that account will have access to describe and execute. Only Account admins can update/delete. Tenant - Users with access to the specific tenant will have access scripts to describe and execute. Tenant admins can update/delete. Private - User who created will only have access.
+- [List of policy details fetched for given policy uris](https://docs.corestack.io/reference/policies-batch.md): Fetch policy details for given policy uris
+- [List Policies](https://docs.corestack.io/reference/listpolicies.md): List all the policies. Global Policies Scope- All user will have access to Corestack Marketplace Policies these policies cannot be updated and deleted can be only describe and executed. Account Scope:- All users under that account will have access to view and execute Only Account admins can update/delete the policies.Tenant Scope - Users with access to the specific tenant will have access to policies who can describe or execute policies. Tenant admins can  only update/delete. Private Scope - User who created will only have access
+- [Validate parameters for a given policy](https://docs.corestack.io/reference/policies-validate-parameters.md): Validate a set of parameters for a given policy
+- [Delete Policy](https://docs.corestack.io/reference/deletepolicy.md): Delete a policy which is no more required
+- [Describe Policy](https://docs.corestack.io/reference/describepolicy.md): Describe the already created Polices
+- [Update Policy](https://docs.corestack.io/reference/updatepolicy.md): Update Policy details if required after creation using the api, the update by a user depends on the scope of the policy created check create policy docs for more details on the scope
+- [Execute Policy](https://docs.corestack.io/reference/executepolicy.md): Execute policy will return a unique job id the status of the policy can be checked using the Job details api where you can pass the unique id generated to get the details or errors if any on execution
+- [Describe Policy Job Details](https://docs.corestack.io/reference/jobdetails.md): Retrieve policy job details using the unique job id, this can be used to check the status of the policy execution or any failure :param tenant_id: :param job_id: :return:
+- [List Policy Recommendations](https://docs.corestack.io/reference/policyrecommendations.md): Policy recommendations are the guide line to the users to solve a policy violation by executing the recommendations the this can be a instruction or a combination of multipleinstructions defined to solve a problem
+- [Describe Policy Recommendations](https://docs.corestack.io/reference/describepolicyrecommendations.md): This is the api to view the recommendation associated with the policy and the resources which will get effected on execution of the recommendations. We can also get a idea on the actions which can be performed
+- [Execute Policy Recommendation](https://docs.corestack.io/reference/executerecommendation.md): This is the api to execute recommendations for a policy violation, The recommended steps to resolve the violations can be executed with the help of data like action_name, resource_recommendation_id, will be available in Recommendation View API. The Recommendations can be executed with dynamic parameter which may or may not be passed in the input
+- [List of policy job details](https://docs.corestack.io/reference/batchpolicyjob.md): Returns a list of job execution details for given policy job ids
+- [List accounts for policy configuration](https://docs.corestack.io/reference/listserviceaccountpolicyconfiguration.md): Get list of cloud accounts that are configured for policy.
+- [Delete Policy parameter configuration Account](https://docs.corestack.io/reference/deleteserviceaccountpolicyconfiguration.md): Delete Policy configuration parameters for a cloud account level
+- [Get Policy parameter configuration Account](https://docs.corestack.io/reference/getserviceaccountpolicyconfiguration.md): Fetch the Policy parameters configuration for a cloud account level
+- [Update Policy parameter configuration Account](https://docs.corestack.io/reference/setserviceaccountpolicyconfiguration.md): Update Policy configuration parameters for a cloud account level
+- [Get account policy configuration batch](https://docs.corestack.io/reference/batchaccountpolicyconfiguration.md): Get policy configurations for cloud accounts batch.
+- [Delete Policy parameter configuration Tenant](https://docs.corestack.io/reference/deletetenantpolicyconfiguration.md): Delete the policy configuration parameters for a tenant level
+- [Get Policy parameter configuration tenant](https://docs.corestack.io/reference/gettenantpolicyconfiguration.md): Fetch the configured Policy parameters configuration for a tenant
+- [Update Policy parameter configuration Tenant](https://docs.corestack.io/reference/settenantpolicyconfiguration.md): Update Policy configuration parameters for a tenant
+- [Delete Policy parameter configuration Master Account](https://docs.corestack.io/reference/deletemasteraccountpolicyconfiguration.md): Delete Policy configuration parameters for a master account level
+- [Get Policy parameter configuration Master Account](https://docs.corestack.io/reference/getmasteraccountpolicyconfiguration.md): Fetch the Policy parameters configuration for a master account level
+- [Update Policy parameter configuration Master Account](https://docs.corestack.io/reference/setmasteraccountpolicyconfiguration.md): Update Policy configuration parameters for a master account level
+- [List the governance scanner rules for a GitHub account](https://docs.corestack.io/reference/listgovernancescannermasterrules.md): List the master rules for a scanner configuration
+- [Get Threat by Cloud Accounts](https://docs.corestack.io/reference/threatbyaccounts.md): Security Dashboard Threats by Accounts
+- [Get Threat by Region](https://docs.corestack.io/reference/threatbyregion.md): Security Dashboard Threat by Region
+- [Get Threat by Resource Category](https://docs.corestack.io/reference/threatbyresourcecategory.md): Security Dashboard Threat by Resource Category
+- [Get Threats by Trend](https://docs.corestack.io/reference/threatbytrend.md): Security Dashboard Threats by Trend
+- [Get Config Violation by Cloud Account](https://docs.corestack.io/reference/violationsbycloudaccount.md): Security Dashboard Violations by Cloud Accounts
+- [Get Config Violation By Region](https://docs.corestack.io/reference/violationsbyregion.md): Security Dashboard Violations by Region
+- [Get Config Violation by Resource Category](https://docs.corestack.io/reference/violationsbyresourcecategory.md): Security Dashboard Violation by Resource Category
+- [Get Config Violation trend by severity](https://docs.corestack.io/reference/violationstrend.md): Security Dashboard Config Violation by Trend
+- [Get Vulnerability by Cloud Account](https://docs.corestack.io/reference/vulnerabilitybyaccount.md): SecOps Dashboard Vulnerabilities by Cloud Account
+- [Get Vulnerability by Region](https://docs.corestack.io/reference/vulnerabilitybyregion.md): SecOps Dashboard Vulnerabilities by Region
+- [Get Vulnerability by Trend](https://docs.corestack.io/reference/vulnerabilitybytrend.md): SecOps Dashboard Vulnerabilities by Trend
+- [List Security Vulnerability Details](https://docs.corestack.io/reference/securityvulnerability.md): Security Vulnerability for tenant or cloud account
+- [List Security Visibility Details](https://docs.corestack.io/reference/securityvisibility.md): Security threat and guardrails details for tenant or cloud account
+- [Get Security Posture Details By Tenant](https://docs.corestack.io/reference/securityposturebytenant.md): Security posture By Tenant
+- [Get Security Posture Details by Cloud Account & Cloud Service Provider](https://docs.corestack.io/reference/securityposture.md): Security posture by Cloud and Cloud Accounts
+- [Get summary of infra mis-configurations aggregated by region, resource category, or account for a given tenant](https://docs.corestack.io/reference/inframisconfigsummary.md): Get summary of infra mis-configurations aggregated by region, resource category, or account for a given tenant.
+- [Get summary of infra mis-configurations aggregated by resource(s) for a given tenant](https://docs.corestack.io/reference/inframisconfigsummarybyresource.md): Get summary of infra mis-configurations aggregated by region, resource category, or account for a given tenant.
+- [List of infra misconfigurations IDs captured for given summary filters](https://docs.corestack.io/reference/listinframisconfigurationstrendsummary.md): List of infra misconfigurations IDs captured for given trend summary.
+- [Retrieves trend summary of infrastructure misconfigurations](https://docs.corestack.io/reference/inframisconfigurationstrendsummary.md): Retrieves trend summary of infrastructure misconfigurations
+- [Get summary of infra threats aggregated by region, resource category, or account for a given tenant](https://docs.corestack.io/reference/infrathreatsummary.md): Get summary of infra threats aggregated by region, resource category, or account for a given tenant.
+- [Get summary of infra threats aggregated by resource(s) for a given tenant](https://docs.corestack.io/reference/infrathreatsummarybyresource.md): Get summary of infra threats aggregated by resource(s) for a given tenant
+- [List of infra threat IDs captured for given summary filters](https://docs.corestack.io/reference/listinfrathreatstrendsummary.md): List of infra threat IDs captured for given trend summary.
+- [Retrieves trend summary of infrastructure threats](https://docs.corestack.io/reference/infrathreatstrendsummary.md): Retrieves trend summary of infrastructure threats
+- [Get summary of infra vulnerabilities aggregated by region, resource category, or account for a given tenant](https://docs.corestack.io/reference/infravulnerabilitysummary.md): Get summary of infra vulnerabilities aggregated by region/account/resource category for a given tenant.
+- [Get summary of infra vulnerabilities aggregated by resource(s) for a given tenant](https://docs.corestack.io/reference/infravulnerabilitysummarybyresource.md): Get summary of infra vulnerabilities aggregated by aggregated by resource(s) for a given tenant
+- [List of infra vulnerability IDs captured for given summary filters](https://docs.corestack.io/reference/listinfravulnerabilitiestrendsummary.md): List of infra vulnerability IDs captured for given trend summary.
+- [Retrieves trend summary of infrastructure vulnerabilities](https://docs.corestack.io/reference/infravulnerabilitiestrendsummary.md): Retrieves trend summary of infrastructure vulnerabilities
+- [Details of the given batch of threat IDs](https://docs.corestack.io/reference/batchthreats.md): Details of the given batch of threat IDs. Supports a maximum of 1000 IDs per request.
+- [Lists of threat IDs captured for cloud resources](https://docs.corestack.io/reference/listthreats.md): List of threat IDs captured for cloud resources.
+- [Details of the given batch of vulnerability IDs](https://docs.corestack.io/reference/batchvulnerabilities2.md): Details of the given batch of vulnerability IDs. Supports a maximum of 1000 IDs per request.
+- [List of vulnerability IDs captured for cloud resources](https://docs.corestack.io/reference/listvulnerabilities.md): List of vulnerability IDs captured for cloud resources.
+- [List Compliance summary by service accounts](https://docs.corestack.io/reference/complianceserviceaccountsummary.md): Compliance summary at Service Account level
+- [List Compliance summary by tenants](https://docs.corestack.io/reference/compliancetenantsummary.md): Compliance summary at tenant level
+- [Get Access Violation by Cloud Account](https://docs.corestack.io/reference/accessviolationsbycloudaccount.md): Security Dashboard Access Violations by Cloud Accounts
+- [Get Access Violation By Region](https://docs.corestack.io/reference/accessviolationsbyregion.md): Security Dashboard Access Violations by Region
+- [Get Access Violation trend by severity](https://docs.corestack.io/reference/accessviolationstrend.md): Security Dashboard Access Violation by Trend
+- [Get Assessment Versions](https://docs.corestack.io/reference/batch9.md): Fetch a batch of Assessment Versions
+- [Create new Assessment Definition Version](https://docs.corestack.io/reference/create10.md): Create a Assessment Definition Version. This will create and link a new version to the given definition id.
+- [Get Assessment Definition Version](https://docs.corestack.io/reference/get10.md): Get a Assessment Definition Version by id.
+- [Make Assessment Definition Version the Head version](https://docs.corestack.io/reference/make-head4.md): Mark this version as the 'head' version.
+- [Make Assessment Definition Version the Release version](https://docs.corestack.io/reference/make-release4.md): Mark this version as the release version. The release version will be used for posture generation
+- [Set state of Assessment Definition Version](https://docs.corestack.io/reference/set-state4.md): Set the version state for a Assessment Definition Version. This is used to approve or reject a draft version
+- [Parse Assessment Definition Version](https://docs.corestack.io/reference/parse-import4.md): Parse and validate a raw json string to be used for importing a Assessment Definition Version
+- [Get Dashboard Versions](https://docs.corestack.io/reference/batch8.md): Fetch a batch of Assessment Definitions
+- [Create new Assessment](https://docs.corestack.io/reference/create9.md): Create a new Assessment Definition. The definition is used to manage a set of versions. This request takes no body
+- [Delete Assessment Definition](https://docs.corestack.io/reference/remove5.md): Delete a Assessment Definition and all associated versions. Returns 'true' if the operation was successful.
+- [Get Assessment Definition](https://docs.corestack.io/reference/get9.md): Get a Assessment Definition by id.
+- [Get the history of an Assessment Definition](https://docs.corestack.io/reference/get-history4.md): Get a list of all versions for a Assessment Definition.
+- [Set state of Assessment Definition](https://docs.corestack.io/reference/set-state3.md): Set the Active state for a Assessment Definition. When the state is true, the Assessment will be used in resource selection.
+- [Filter Assessment Definitions](https://docs.corestack.io/reference/list3.md): Get a list of all Assessment Definitions that are viewable to the user.
+- [Get a batch of Assessment Run History details](https://docs.corestack.io/reference/history-batch.md): Get a batch of Assessment Run History details.
+- [Get a list of RecordIdentity for resources that have violated the given policy job](https://docs.corestack.io/reference/violations-list.md): Get a list of resources that have violated the given policy job
+- [Get the history IDs for the given filters](https://docs.corestack.io/reference/history-list.md): Get the history IDs for the given filters.
+- [Get a batch of Assessment Run History Question details](https://docs.corestack.io/reference/question-batch.md): Get a batch of Assessment Run History Question details.
+- [Get the Question IDs for the given filters](https://docs.corestack.io/reference/question-list.md): Get the Question IDs for the given filters.
+- [Get a batch of assessment run details](https://docs.corestack.io/reference/batch10.md): Get a batch of assessment run
+- [Start an assessment run for the assessment definition](https://docs.corestack.io/reference/create11.md): Create an assessment run for a given Assessment Definition
+- [Fetch the details for an assessment run by ID](https://docs.corestack.io/reference/get11.md): Get an assessment run by ID
+- [Answer a question or best practice](https://docs.corestack.io/reference/answer.md): Answer a question or best practice Allows adding attachments, comments, and setting state for best practice or question
+- [Create a milestone - take snapshot of the current state of assessment run including state of questions, best practices, comments and attachments associated alongside](https://docs.corestack.io/reference/milestone.md): Create a milestone on the Assessment Run.
+- [Start a scan for an assessment run using the given context](https://docs.corestack.io/reference/scan.md): Start a scan for an assessment run using the given context
+- [Set the state for an assessment run](https://docs.corestack.io/reference/set-state5.md): Set the state for an assessment run. Used to complete or abandon the run Used to complete or abandon the run
+- [Get all assessment run IDs for the given filters](https://docs.corestack.io/reference/list4.md): Get all assessment run identities for the given filters
+- [List of assessment run report details](https://docs.corestack.io/reference/report-batch.md): List of assessment run report details
+- [Schedule the generation of a report for an assessment run](https://docs.corestack.io/reference/report-create2.md): Create a report for an assessment
+- [Fetch an assessment run report by ID](https://docs.corestack.io/reference/report-get2.md): Get a report for an assessment
+- [Get a list of assessment run report ids for given filters](https://docs.corestack.io/reference/report-list.md): Get a list of assessment run report ids for given filters
+- [Framework Best Practice Delete](https://docs.corestack.io/reference/best-practice-delete.md): Delete a Well-Architected Framework Best practice
+- [Sync Framework from AWS or To AWS](https://docs.corestack.io/reference/framework-sync.md): Sync Well-Architected Framework from CS or from AWS
+- [Framework Pillar Delete](https://docs.corestack.io/reference/pillar-delete.md): Delete a Well-Architected Framework Pillar
+- [Framework Question Delete](https://docs.corestack.io/reference/question-delete.md): Delete a Well-Architected Framework Question
+- [Batch Best Practices](https://docs.corestack.io/reference/best-practice-batch.md): Get a batch of best practices for tenant specified
+- [Best practices Create](https://docs.corestack.io/reference/best-practice-create.md): Add Best Practices to a Well-Architected Framework Question
+- [Best practice Update](https://docs.corestack.io/reference/best-practice-update.md): Update Best Practice for a Well-Architected Framework Question
+- [Batch Frameworks](https://docs.corestack.io/reference/framework-batch.md): Get a batch of Frameworks
+- [Framework Create](https://docs.corestack.io/reference/framework-create.md): Create a Well-Architected Framework
+- [List Frameworks](https://docs.corestack.io/reference/framework-list.md): List all Frameworks for the specified tenant
+- [Framework Update](https://docs.corestack.io/reference/framework-update.md): Update a Well-Architected Framework
+- [Framework Delete](https://docs.corestack.io/reference/framework-delete.md): Delete a Well-Architected Framework
+- [Add pillars to a framework](https://docs.corestack.io/reference/pillars-create.md): Add pillars to a Well-Architected Framework
+- [Pillar update](https://docs.corestack.io/reference/pillar-update.md): Update a pillar of a Well-Architected Framework
+- [Batch Questions](https://docs.corestack.io/reference/question-batch2.md): Get a batch of questions for tenant specified
+- [Create Questions for a pillar of a framework](https://docs.corestack.io/reference/question-create.md): Add Questions to a Well-Architected Framework
+- [Question Update](https://docs.corestack.io/reference/questions-update.md): Update a Question in a  Well-Architected Framework
+- [Get Workload Versions](https://docs.corestack.io/reference/batch12.md): Fetch a batch of Workload Versions
+- [Create new Workload Definition Version](https://docs.corestack.io/reference/create13.md): Create a Workload Definition Version. This will create and link a new version to the given definition id.
+- [Get Workload Definition Version](https://docs.corestack.io/reference/get13.md): Get a Workload Definition Version by id.
+- [Make Workload Definition Version the Head version](https://docs.corestack.io/reference/make-head5.md): Mark this version as the 'head' version.
+- [Make Workload Definition Version the Release version](https://docs.corestack.io/reference/make-release5.md): Mark this version as the release version. The release version will be used for posture generation
+- [Parse Workload Definition Version](https://docs.corestack.io/reference/parse-import5.md): Parse and validate a raw json string to be used for importing a Workload Definition Version
+- [Get Dashboard Versions](https://docs.corestack.io/reference/batch11.md): Fetch a batch of Workload Definitions
+- [Create new Workload](https://docs.corestack.io/reference/create12.md): Create a new Workload Definition. The definition is used to manage a set of versions. This request takes no body
+- [Delete Workload Definition](https://docs.corestack.io/reference/remove6.md): Delete a Workload Definition and all associated versions. Returns 'true' if the operation was successful.
+- [Get Workload Definition](https://docs.corestack.io/reference/get12.md): Get a Workload Definition by id.
+- [Get the history of a Workload Definition](https://docs.corestack.io/reference/get-history5.md): Get a list of all versions for a Workload Definition.
+- [Set state of Workload Definition](https://docs.corestack.io/reference/set-state6.md): Set the Active state for a Workload Definition. When the state is true, the Workload will be used in resource selection.
+- [Filter Workload Definitions](https://docs.corestack.io/reference/list5.md): Get a list of all Workload Definitions that are viewable to the user.
+- [Set state in Bulk for Workload Definition](https://docs.corestack.io/reference/set-state-bulk.md): Set State of a list of workload definitions in bulk
+- [Returns a list of Resource identifiers based on input query](https://docs.corestack.io/reference/execute.md): Execute a query against the ServiceResourceInventory collection given a WorkloadTierConfiguration
+- [Returns a list of ServiceResourceInventory](https://docs.corestack.io/reference/resource-batch.md): Fetch a batch of resources from the ServiceResourceInventory collection
+- [Returns list of WorkloadServiceResourceRegion with all possible filter values for the given cloud accounts](https://docs.corestack.io/reference/resource-filters-region.md): Fetch all the region filter values for the given cloud accounts
+- [Returns list of WorkloadServiceResource with all possible filter values for the given cloud accounts](https://docs.corestack.io/reference/resource-filters-service-resource.md): Fetch all the ServiceResource filter values
+
+## Changelog
+- [Release Notes 6.2 (2603)](https://docs.corestack.io/changelog/release-notes-62-2603.md)
+- [Release Notes 6.1 (2602)](https://docs.corestack.io/changelog/release-notes-61-2602.md)
+- [Release Notes 6.0 (2601)](https://docs.corestack.io/changelog/release-notes-60-2601.md)
+- [Release Notes 5.4 (2504.1)](https://docs.corestack.io/changelog/release-notes-54-25041.md)
+- [Release Notes 5.3 (2504)](https://docs.corestack.io/changelog/release-notes-53-2504.md)
+- [Release Notes 5.2 (2503)](https://docs.corestack.io/changelog/release-notes-52-2503.md)
+- [Release Notes 5.1 (2502)](https://docs.corestack.io/changelog/release-notes-51-2502.md)
+- [Release Notes 5.0 (2501)](https://docs.corestack.io/changelog/release-notes-50-2501.md)
+- [Release Notes 4.5 (2404.1)](https://docs.corestack.io/changelog/release-notes-45-24041.md)
+- [Release Notes 4.5 (2404)](https://docs.corestack.io/changelog/release-notes-45-2404.md)

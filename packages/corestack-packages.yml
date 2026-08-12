@@ -1,0 +1,106 @@
+generated: '2026-08-11'
+method: searched
+source: registry search across npm, PyPI, RubyGems, crates.io, Go module proxy, plus the CoreStack docs
+
+note: >-
+  CoreStack ships an 838-operation REST API and publishes code snippets for Java, Python, JavaScript
+  and PHP in its reference, but it does NOT ship a maintained client library in any language. Exactly
+  one first-party package exists on any public registry: a Python CLI published to PyPI as `corestack`
+  under the company's former name, CloudEnablers. It has a single release, 0.2, uploaded on
+  2017-12-05. That is eight and a half years before release 6.2 of the API it wraps, and 838
+  operations later. Nothing on npm, RubyGems, crates.io, Maven Central, NuGet or the Go module proxy
+  is first-party. The MCP integration path leans on a third-party bridge (`mcp-remote`) rather than
+  anything CoreStack publishes.
+
+official_count: 1
+official_maintained_count: 0
+
+packages:
+- language: python
+  registry: pypi
+  name: corestack
+  url: https://pypi.org/project/corestack/
+  install: pip install corestack
+  official: true
+  version: '0.2'
+  published: '2017-12-05'
+  releases_total: 1
+  summary: Corestack Command Line Interface
+  author: CoreStack
+  author_email: customer-success@cloudenablers.com
+  maintained: false
+  note: >-
+    First-party by attribution — CloudEnablers Inc is CoreStack's former corporate name. Built on
+    the OpenStack `cliff` framework; its declared homepage still points at github.com/openstack/cliff
+    rather than at anything CoreStack owns. One release, never updated. It is not referenced anywhere
+    in the current documentation, which describes no CLI at all. Recorded here as the strongest
+    available decay signal on this provider's developer surface: a first-party distribution
+    abandoned nine years ago while the API behind it shipped twenty-four numbered releases.
+
+third_party_or_unrelated:
+- registry: npm
+  name: core-stack-sdk
+  version: 0.4.9-alpha.10
+  published: '2019-10-22'
+  official: false
+  reason: >-
+    Description reads "CoreStack SDK" and the name is close enough to mislead a search, but the
+    package author is a ConsenSys engineer and it carries no CoreStack repository, homepage or
+    organisation. Not CoreStack's.
+- registry: npm
+  name: corestack-ui
+  version: 0.2.2
+  published: '2026-02-15'
+  official: false
+  reason: An unrelated React + TypeScript component library that shares the name.
+- registry: npm
+  name: core-stack
+  version: 0.2.0
+  published: '2021-08-15'
+  official: false
+  reason: Unrelated plugin-system base object.
+
+registries_checked:
+- registry: npm
+  first_party_found: false
+- registry: pypi
+  first_party_found: true
+- registry: rubygems
+  first_party_found: false
+  probe_status: 404
+- registry: crates.io
+  first_party_found: false
+- registry: go-proxy
+  first_party_found: false
+  probe_status: 404
+- registry: maven-central
+  first_party_found: false
+- registry: nuget
+  first_party_found: false
+
+github:
+  organisation: https://github.com/CoreStack
+  public_repos: 0
+  note: >-
+    The GitHub organisation exists and is claimed, but publishes zero public repositories. There is
+    no SDK source, no examples repo, no Terraform provider and no Postman collection published there.
+    A separate user account, github.com/CoreStackio, holds one repository and is not the company
+    organisation.
+
+documented_language_support:
+  note: >-
+    The API reference renders per-operation code snippets in cURL, Java, Python, JavaScript, PHP and
+    others. Those are generated request examples, not a client library — they give a developer a
+    copyable call, not an installable, versioned, typed integration surface.
+  source: https://docs.corestack.io/docs/corestack-api-modules
+
+x-evidence:
+  fetched: '2026-08-11'
+  probes:
+  - url: https://pypi.org/pypi/corestack/json
+    http_status: 200
+  - url: https://registry.npmjs.org/-/v1/search?text=corestack
+    http_status: 200
+  - url: https://api.github.com/users/CoreStack
+    http_status: 200
+    finding: 'type: Organization, public_repos: 0'

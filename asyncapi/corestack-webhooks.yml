@@ -1,0 +1,75 @@
+generated: '2026-08-11'
+method: searched
+source: https://docs.corestack.io/docs/webhook-integration-for-policy-schedules
+asyncapi_published: false
+
+note: >-
+  CoreStack has an outbound webhook surface, but it is a notification fan-out rather than a
+  first-class event API. Webhooks are configured as a delivery target inside a policy execution
+  schedule or a cloud-account alert configuration, alongside email recipients — there is no event
+  catalog, no event type registry, no payload schema, no subscription API, no delivery-retry policy
+  and no signature verification scheme documented anywhere. There is no AsyncAPI document (probed
+  /asyncapi.yaml and /asyncapi.json on the API and docs hosts; both 404) and no streaming surface.
+  The provider's own note that "Webhook is not currently shown in the user interface" tells you where
+  this sits on their roadmap: it is API- and schedule-configurable, and undersurfaced.
+
+surfaces:
+- name: Policy schedule notifications
+  docs: https://docs.corestack.io/docs/webhook-integration-for-policy-schedules
+  direction: outbound
+  trigger: Completion of a scheduled guardrail policy execution.
+  configuration:
+    via: Schedule Create API
+    attribute: notification_configuration
+    fields:
+    - email_recipients
+    - webhooks
+    persisted_in: the schedule collection
+  limits:
+    max_webhooks_per_schedule: 10
+    max_email_recipients_per_schedule: 25
+  known_consumers:
+  - Slack
+  payload_schema: not published
+  signing: not documented
+  retry_policy: not documented
+  ui_support: false
+  ui_note: The provider states webhooks are not currently shown in the user interface.
+- name: Cloud account alert notifications
+  docs: https://docs.corestack.io/docs/creation-of-webhook-and-integration-for-notifications
+  direction: outbound
+  trigger: Cloud-account alert conditions configured under Account Governance > Governance Configuration > Alerts.
+  configuration:
+    via: console
+    flow: >-
+      A permissions validation step ("Create Sample Alert") must pass green before a webhook alert
+      can be created, then the destination webhook URL is supplied.
+  known_consumers:
+  - Microsoft Teams
+  payload_schema: not published
+  signing: not documented
+  retry_policy: not documented
+
+event_catalog: []
+event_count: 0
+
+gaps:
+- No AsyncAPI document — /asyncapi.yaml and /asyncapi.json return 404 on both api. and docs. hosts.
+- No published event type list; a consumer cannot know what events exist before wiring a receiver.
+- No payload schema for any webhook, so a receiver cannot be written against a contract.
+- No signature or shared-secret verification documented — a receiver cannot authenticate the sender.
+- No delivery guarantees, retry policy, or replay/backfill mechanism documented.
+- No webhook management API (register/list/rotate/delete); webhooks exist only inside a schedule or
+  an alert configuration.
+
+x-evidence:
+  fetched: '2026-08-11'
+  probes:
+  - url: https://docs.corestack.io/docs/webhook-integration-for-policy-schedules.md
+    http_status: 200
+  - url: https://docs.corestack.io/docs/creation-of-webhook-and-integration-for-notifications.md
+    http_status: 200
+  - url: https://api.corestack.io/asyncapi.yaml
+    http_status: 404
+  - url: https://api.corestack.io/asyncapi.json
+    http_status: 404

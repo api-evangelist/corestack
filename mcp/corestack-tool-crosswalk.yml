@@ -1,0 +1,573 @@
+generated: '2026-08-11'
+method: derived
+source: mcp/corestack-mcp.yml + openapi/corestack-external-api-openapi-original.json
+note: >-
+  CoreStack ships two overlapping-but-non-identical projections of one governance core: a 838-operation
+  Swagger 2.0 REST contract published live at api.corestack.io/swagger.json, and a 100-tool unified MCP
+  server at /mcp. Neither is a superset. The MCP server is a curated read-mostly agent surface over
+  roughly a tenth of the REST estate, and it adds four composite/AI-agent tools plus a session model
+  (authenticate / set_active_tenant / set_master_account) that has no direct REST equivalent. Because
+  live tools/list is auth-gated (401), bindings below are mapped by name and semantics against the
+  published REST contract, and confidence is stated honestly per row. `high` means the provider's own
+  tool guide names the backing endpoint or the operation is an exact one-to-one match on path and verb;
+  `medium` means the capability is unambiguous but the exact backing operation may be one of a small
+  family; `low` means the REST family is identifiable but the specific operation is not determinable
+  from public material.
+
+surfaces:
+  openapi:
+    file: openapi/corestack-external-api-openapi-original.json
+    version: swagger 2.0
+    host: https://api.corestack.io
+    alias_host: https://api-discover.corestack.io
+    operations: 838
+    paths: 767
+    gated: false
+    note: The specification document itself is anonymous; calling it requires X-Auth-User + X-Auth-Token.
+  mcp:
+    url: https://cloud.corestack.io/mcp
+    tools_documented: 100
+    gated: true
+    note: tools/list returns 401 with an OAuth challenge; enabled per account by an administrator.
+  graphql:
+    present: false
+
+crosswalk:
+- tool: get_cost_aggregation
+  category: finops-billing
+  rest:
+  - GetCostAggregation
+  binding: rest
+  confidence: high
+  note: Provider guide names the backing endpoint explicitly — POST /v2/billing/aggregation.
+- tool: get_cost_aggregation_trend
+  category: finops-billing
+  rest:
+  - GetCostAggregationTrend
+  binding: rest
+  confidence: high
+  note: POST /v2/billing/aggregation/trend — the trend sibling of the endpoint named above.
+- tool: query_workload_resources
+  category: workload
+  rest: []
+  binding: undocumented-endpoint
+  confidence: low
+  documented_endpoints:
+  - POST /v1/workload-query/execute
+  - POST /v1/workload-query/resource/batch
+  note: >-
+    The provider's tool guide names this chain explicitly, but NEITHER path is present in the
+    published swagger.json — so there is no operationId to bind to. This is a genuine REST/MCP
+    divergence: the MCP server calls endpoints the public contract does not describe. Recorded
+    rather than smoothed over.
+- tool: get_billing_metrics
+  category: finops-billing
+  rest:
+  - BillingMetricsBatch
+  - BillingMetricAccessList
+  binding: rest
+  confidence: medium
+  note: Backed by the /v2/billing_metrics family; exact operation not named in the guide.
+- tool: get_budgets
+  category: finops-budget
+  rest:
+  - ListBudget
+  binding: rest
+  confidence: high
+  note: POST /budget/dashboard/list_budgets — the budget dashboard listing the tool describes.
+- tool: get_budget_detail
+  category: finops-budget
+  rest:
+  - ViewBudget
+  - BudgetHistory
+  binding: rest
+  confidence: medium
+  note: Tool merges view, alerts and history; ViewBudget is the primary operation.
+- tool: get_ri_recommendations
+  category: finops-commitment
+  rest:
+  - RIRecommendationsReservations
+  binding: rest
+  confidence: high
+- tool: get_ri_reservations
+  category: finops-commitment
+  rest:
+  - ListReservationsUtilization
+  - ListReservationsUtilizationV2
+  binding: rest
+  confidence: medium
+- tool: get_ri_reservation_utilization
+  category: finops-commitment
+  rest:
+  - ListReservationsUtilizationCloudAccount
+  binding: rest
+  confidence: medium
+- tool: get_ri_reservation_coverage
+  category: finops-commitment
+  rest: []
+  binding: unmapped
+  confidence: low
+  note: No RI coverage operation is discoverable in the published spec by path or summary.
+- tool: get_savings_plans_details
+  category: finops-commitment
+  rest:
+  - ListSavingsPlanDetails
+  binding: rest
+  confidence: high
+  note: POST /v2/savings_plans/{tenant_id}/purchased/details.
+- tool: get_savings_plans_utilization
+  category: finops-commitment
+  rest:
+  - GetSavingsPlanUtilization
+  binding: rest
+  confidence: high
+  note: POST /v2/savings_plans/{tenant_id}/purchased/utilization.
+- tool: get_savings_plans_coverage
+  category: finops-commitment
+  rest:
+  - ListSavingsPlanDetails
+  binding: composite
+  confidence: low
+  note: Described as a computed portfolio-wide summary, so it aggregates rather than proxies.
+- tool: get_savings_summary
+  category: finops-optimization
+  rest:
+  - RecommendedReservationsSavingsSummary
+  - ListCostSavingRecommendations
+  binding: composite
+  confidence: medium
+  note: Tool combines RI recommendation savings with cost saved to date — two REST families.
+- tool: get_cost_optimization_by_types
+  category: finops-optimization
+  rest:
+  - CostOptimizationViewRecommendations
+  binding: rest
+  confidence: low
+  note: Guide names an "executive-dashboard cost-optimization-by-types endpoint"; nearest spec match.
+- tool: get_right_sizing_recommendations
+  category: finops-optimization
+  rest:
+  - CostOptimizationViewRecommendations
+  - CostOptimizationTopRecommendations
+  binding: rest
+  confidence: low
+- tool: get_recommendation_resources
+  category: finops-optimization
+  rest:
+  - CostSavingViewRecommendation
+  binding: rest
+  confidence: medium
+- tool: get_anomalies
+  category: finops-anomaly
+  rest:
+  - CostAnomalySummary
+  binding: rest
+  confidence: high
+  note: POST /cost_anomaly/billing_cost_anomaly.
+- tool: get_anomaly_resources
+  category: finops-anomaly
+  rest:
+  - CostAnomalyResources
+  binding: rest
+  confidence: high
+  note: POST /cost_anomaly/billing_cost_anomaly_resources.
+- tool: get_anomaly_dimension_grouping
+  category: finops-anomaly
+  rest:
+  - GetGroupingRuleCostAnomalies
+  binding: rest
+  confidence: high
+  note: POST /v2/cost_anomaly/dimension_grouping_rule_view.
+- tool: get_dimensions
+  category: finops-dimensions
+  rest:
+  - ListDimensions
+  binding: rest
+  confidence: high
+  note: POST /v1/dimensions/list.
+- tool: get_cloud_accounts
+  category: account-discovery
+  rest:
+  - FilterCloudAccount
+  binding: rest
+  confidence: medium
+- tool: cloud_accounts_list
+  category: account-discovery
+  rest:
+  - FilterCloudAccount
+  binding: rest
+  confidence: medium
+  note: Graphion-domain duplicate of the FinOps get_cloud_accounts tool — an MCP-side redundancy.
+- tool: service_account_list_and_retrieval
+  category: account-discovery
+  rest:
+  - FilterCloudAccount
+  binding: rest
+  confidence: low
+- tool: portfolio_list_and_retrieval
+  category: graphion-hierarchy
+  rest:
+  - ListPortfolio
+  - BatchPortfolio
+  binding: rest
+  confidence: high
+  note: POST /v1/appsecops/portfolios/list and /batch.
+- tool: portfolio_get_details
+  category: graphion-hierarchy
+  rest:
+  - GetPortfolio
+  binding: rest
+  confidence: high
+- tool: application_list_and_retrieval
+  category: graphion-hierarchy
+  rest:
+  - ListApplication
+  - BatchApplication
+  binding: rest
+  confidence: high
+- tool: application_get_details
+  category: graphion-hierarchy
+  rest:
+  - GetApplication
+  binding: rest
+  confidence: high
+- tool: project_list_and_retrieval
+  category: graphion-hierarchy
+  rest:
+  - ListProject
+  - BatchProject
+  binding: rest
+  confidence: high
+- tool: project_get_details
+  category: graphion-hierarchy
+  rest:
+  - GetProject
+  binding: rest
+  confidence: high
+- tool: dashboard_portfolio_hierarchy
+  category: graphion-dashboard
+  rest:
+  - PortfolioHierarchy
+  binding: rest
+  confidence: high
+  note: POST /v1/appsecops/dashboard/summary/portfolio_hierarchy.
+- tool: dashboard_sbom_components_summary
+  category: graphion-dashboard
+  rest:
+  - SummarySbomComponents
+  binding: rest
+  confidence: high
+- tool: dashboard_sbom_vulnerabilities_summary
+  category: graphion-dashboard
+  rest:
+  - SummarySbomVulnerabilities
+  binding: rest
+  confidence: high
+- tool: dashboard_top_actionable_issues
+  category: graphion-dashboard
+  rest:
+  - TopActionableIssues
+  binding: rest
+  confidence: high
+  note: POST /v1/appsecops/dashboard/top_actionable_issues.
+- tool: dashboard_vulnerabilities_by_component
+  category: graphion-dashboard
+  rest:
+  - VulnerabilityByComponent
+  binding: rest
+  confidence: high
+- tool: dashboard_sbom_build_difference_trend
+  category: graphion-dashboard
+  rest:
+  - SbomBuildDifferenceTrend
+  binding: rest
+  confidence: high
+- tool: sbom_definition_list_and_retrieval
+  category: graphion-sbom
+  rest:
+  - BatchSbomDefinitions
+  binding: rest
+  confidence: high
+- tool: sbom_definition_get_batch
+  category: graphion-sbom
+  rest:
+  - BatchSbomDefinitions
+  binding: rest
+  confidence: high
+- tool: sbom_get_details
+  category: graphion-sbom
+  rest:
+  - GetSbomDefinition
+  binding: rest
+  confidence: high
+- tool: sbom_components_get_batch
+  category: graphion-sbom
+  rest:
+  - BatchSbomComponents
+  binding: rest
+  confidence: high
+- tool: container_findings_list_and_retrieval
+  category: graphion-container
+  rest:
+  - ListContainerFindings
+  binding: rest
+  confidence: high
+  note: POST /v1/appsecops/container/findings/list.
+- tool: container_findings_get_batch
+  category: graphion-container
+  rest:
+  - BatchContainerFindings
+  binding: rest
+  confidence: high
+- tool: vulnerability_get_prevalence
+  category: graphion-vulnerability
+  rest:
+  - OrganizationalVulnerabilityPrevalence
+  binding: rest
+  confidence: high
+  note: POST /v1/appsecops/vulnerabilities/prevalence/organization.
+- tool: resource_inventory_list
+  category: resource-inventory
+  rest:
+  - GetInventoryDetails
+  - GetResourceList
+  binding: rest
+  confidence: high
+  note: POST /resource/inventory/{tenant_id}/resources.
+- tool: resource_inventory_count
+  category: resource-inventory
+  rest:
+  - GetInventoryCount
+  binding: rest
+  confidence: high
+- tool: list_resource_filters
+  category: resource-inventory
+  rest:
+  - ListInventoryFilters
+  binding: rest
+  confidence: high
+  note: POST /resource/inventory/{tenant_id}/filters.
+- tool: get_resource_batch
+  category: resource-inventory
+  rest:
+  - get_get_service_resource_inventory
+  binding: rest
+  confidence: medium
+- tool: resource_activity_timeline
+  category: resource-inventory
+  rest:
+  - InfraResourceActivity
+  binding: rest
+  confidence: medium
+  note: POST /v1/resource/dashboard/detail/activity — retrieves activity timeline or event details.
+- tool: resource_activity_event_details
+  category: resource-inventory
+  rest:
+  - InfraResourceActivity
+  binding: rest
+  confidence: medium
+  note: Same REST operation as resource_activity_timeline; the tools split one endpoint's two modes.
+- tool: get_kubernetes_pod_resources
+  category: resource-inventory
+  rest:
+  - GetInventoryDetails
+  binding: rest
+  confidence: low
+- tool: policy_list_and_retrieval
+  category: governance-policy
+  rest:
+  - BatchPoliciesUsingIds
+  binding: rest
+  confidence: high
+  note: POST /governance/guardrails/policies/batch.
+- tool: list_policy_descriptions
+  category: governance-policy
+  rest:
+  - BatchPoliciesUsingIds
+  binding: rest
+  confidence: high
+  note: Assessment-domain duplicate of policy_list_and_retrieval.
+- tool: policy_job_list_and_retrieval
+  category: governance-policy
+  rest:
+  - PolicyJobExecutionStatus
+  binding: rest
+  confidence: medium
+- tool: get_policy_jobs
+  category: governance-policy
+  rest:
+  - PolicyJobExecutionStatus
+  binding: rest
+  confidence: medium
+- tool: list_frameworks
+  category: assessment
+  rest:
+  - framework-sync
+  binding: rest
+  confidence: low
+  note: >-
+    The /v1/waf-frameworks and /v1/well-architected-framework families back this, but the spec's
+    operationIds in that area are auto-generated placeholders (batch@@@8, get@@@9, remove@@@5),
+    which makes a precise binding impossible from the published contract alone.
+- tool: list_assessment_definitions
+  category: assessment
+  rest:
+  - batch@@@8
+  binding: rest
+  confidence: low
+  note: POST /v1/well-architected-framework/assessment-definition/batch — placeholder operationId.
+- tool: get_related_policies
+  category: assessment
+  rest:
+  - BatchPoliciesUsingIds
+  binding: composite
+  confidence: medium
+  note: Guide describes a framework -> questions -> policies traversal, i.e. a server-side composite.
+- tool: resource_violation_summary
+  category: security-posture
+  rest:
+  - DetailsForPolicies
+  binding: rest
+  confidence: low
+- tool: resource_vulnerability_summary
+  category: security-posture
+  rest:
+  - SecurityVulnerability
+  - VulnerabilityByAccount
+  binding: rest
+  confidence: medium
+- tool: resource_threat_summary
+  category: security-posture
+  rest:
+  - VulnerabilityByTrend
+  binding: rest
+  confidence: low
+- tool: list_chats
+  category: ai-agent
+  rest:
+  - BatchChats
+  binding: rest
+  confidence: high
+  note: POST /v1/agent/chat/batch.
+- tool: list_conversations
+  category: ai-agent
+  rest:
+  - ConversationUpdate
+  binding: rest
+  confidence: low
+  note: The /v1/agent/chat/conversations family backs this; the read operation is not clearly named.
+- tool: send_agent_query
+  category: ai-agent
+  rest:
+  - CreateChat
+  - ConfirmAgentAction
+  binding: composite
+  confidence: low
+  destructive: true
+
+mcp_only:
+- tool: authenticate
+  reason: >-
+    Establishes the MCP session and auto-selects the caller's last-used master account and tenant.
+    The REST equivalent is authToken (POST /v1/auth/tokens), but the MCP tool returns session state
+    (master_account_id, tenant_id, available_master_account_ids) rather than a bearer token, so it
+    is a transport-layer concept, not a proxied operation.
+- tool: set_active_tenant
+  reason: MCP session state mutation; REST carries tenant_id as a path/body parameter per call.
+- tool: set_master_account
+  reason: MCP session state mutation; the REST analogue SwitchMasterAccount mints a NEW token instead.
+- tool: check_connection
+  reason: Session introspection with no REST counterpart.
+- tool: build_filter_query
+  reason: >-
+    Client-side query builder that composes a QueryOperator filter tree from up to 34 dimensions.
+    It calls nothing — it exists because the REST billing endpoints take an opaque nested filter
+    object that an agent cannot construct reliably from the spec alone. This is the clearest single
+    piece of evidence that the MCP surface is a designed agent affordance rather than a REST proxy.
+- tool: list_agent_types
+  reason: AI Agent surface; no matching published REST operation.
+- tool: list_system_prompts
+  reason: AI Agent surface; no matching published REST operation.
+- tool: file_bug
+  reason: Support/ticketing action with no public REST operation.
+  destructive: true
+- tool: dashboard_infrastructure_summary
+  reason: Server-side composite joining org hierarchy with infrastructure inventory.
+- tool: resource_dependency_get
+  reason: >-
+    Graph traversal over the resource inventory (given a VPC, return dependents). Backed by
+    CoreStack's knowledge-graph layer, not by a single published REST operation.
+- tool: resource_change_list
+  reason: Change-history query requiring the GraphDB tenant feature; no public REST equivalent.
+- tool: resource_list_by_schema
+  reason: Schema-path (category/component) resource listing with no matching REST operation.
+- tool: sbom_version_compare_builds
+  reason: Composite build-diff over two SBOM versions.
+- tool: sbom_version_diff_get_batch
+  reason: Batch diff retrieval; the REST surface exposes version_diff only as a dashboard summary.
+- tool: infra_threat_list_and_details
+  reason: Chained list-then-detail composite, explicitly described as a two-step chain in the guide.
+- tool: submit_assessment_answer
+  reason: >-
+    Writes an answer against a Well-Architected best practice. The REST assessment-definition family
+    carries only auto-generated placeholder operationIds, so no verifiable binding exists.
+  destructive: true
+- tool: create_workload
+  reason: >-
+    Creates a workload definition. The REST family (/v1/workload-definition/create) exists but
+    carries the placeholder operationId create@@@12, so the binding is not verifiable by id.
+  destructive: true
+
+rest_only:
+- capability: Identity, users, roles and RBAC
+  note: >-
+    User creation, user groups, delegation, role management, SSO configuration and password flows are
+    entirely REST. No MCP tool touches identity — a deliberate and correct exclusion for an agent
+    surface, and worth stating rather than reading as a gap.
+- capability: Policy authoring and execution
+  note: >-
+    CreatePolicySchedules, ExecutePolicy, ExecuteRecommendation, DeletePolicySchedules and the whole
+    guardrail write path are REST-only. The MCP server reads policy metadata and job results but
+    cannot execute a policy or apply a remediation.
+- capability: Cloud account onboarding
+  note: >-
+    Onboarding AWS/Azure/GCP/OCI accounts and billing accounts is REST-only; the tool guide states
+    plainly that MCP tools "don't onboard new accounts".
+- capability: Budget writes
+  note: BudgetCreate, BudgetUpdate and Delete Budget are REST-only; MCP exposes budgets read-only.
+- capability: Automation, templates, scripts and jobs
+  note: >-
+    ExecuteTemplate, ScanScript, DescribeScript, ListScriptJobs, AwsSsm command and automation
+    families, Azure DevOps pipeline dashboards — none are surfaced as MCP tools.
+- capability: ITSM and notification integrations
+  note: ServiceNow, Jira Service Management, Freshservice and Zoho ServiceDesk operations are REST-only.
+- capability: Dashboards, widgets and reports
+  note: >-
+    Dashboard definitions, saved views, dashboard versions, NextGen Reports and report subscriptions
+    are REST-only. The MCP server returns data, not dashboard configuration.
+- capability: Kubernetes agent lifecycle
+  note: >-
+    Manifest generation, presigned upload URLs and agent sync status are REST-only; MCP only queries
+    pod resources from the inventory.
+- capability: Billing plan definitions, pricing, markups and currency
+  note: >-
+    BillingPlanDefinitions, BillingPlanDefinitionVersions, Pricing, markups/discounts and
+    CurrencyExchangeConfiguration are REST-only — the partner/MSP monetization surface.
+
+coverage:
+  tools_documented: 100
+  tools_bound_to_rest: 63
+  tools_mcp_only: 17
+  tools_unmapped: 20
+  rest_operations_total: 838
+  rest_operations_with_a_tool_estimate: 70
+  note: >-
+    The 20 unmapped tools are Graphion SBOM/vulnerability variants (sbom_version_get_details,
+    sbom_version_list_for_definition, sbom_version_get_batch, vulnerability_get_details_batch,
+    dashboard_vulnerability_trend_by_severity, service_account_get_details,
+    service_account_list_resource_groups) and Assessment run/question tools (list_assessment_runs,
+    list_assessment_run_history, list_assessment_questions, get_pillar_scores, get_question_risk,
+    get_framework_questions, get_best_practices, get_policy_violations, get_policy_job,
+    list_workload_definitions, get_workload_version) whose REST families exist but expose either no
+    matching path or only auto-generated placeholder operationIds. They are recorded as unmapped
+    rather than guessed. Roughly 8% of the REST estate has an MCP tool.

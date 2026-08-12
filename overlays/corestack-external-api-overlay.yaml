@@ -1,0 +1,115 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the CoreStack External API
+  version: 1.0.0
+extends: openapi/corestack-external-api-openapi-original.json
+x-generated: '2026-08-11'
+x-method: generated
+x-source: >-
+  Derived from the live Swagger 2.0 document at https://api.corestack.io/swagger.json plus the
+  provider's published API guide. The original is never mutated; every enhancement below is an
+  additive action against it.
+actions:
+- target: $.info
+  description: >-
+    Record the API Evangelist provenance, the real host the specification is served from, and the
+    facts the document itself omits.
+  update:
+    x-apievangelist-profile: https://apis.io/providers/corestack/
+    x-spec-source: https://api.corestack.io/swagger.json
+    x-spec-alias-source: https://api-discover.corestack.io/swagger.json
+    x-operations: 838
+    x-paths: 767
+    x-definitions: 2891
+- target: $
+  description: >-
+    The published document declares `basePath: /` with NO `host` and NO `schemes`, so it is not
+    directly callable as harvested — a client must know the host out of band. Both hosts below serve
+    a byte-comparable document and both answer POST /v1/auth/tokens.
+  update:
+    x-servers:
+    - url: https://api.corestack.io
+      description: Primary API host; serves /swagger.json.
+    - url: https://api-discover.corestack.io
+      description: >-
+        The host used in every cURL example in the provider's API guide. Serves the same document
+        (one path differs). Per the docs, the API URL is delivered per user by email at key issuance,
+        so a tenant may be pointed at a regional host instead.
+    x-regional-environments:
+    - cloud
+    - portal
+    - mea
+    - in
+    - us3
+- target: $.securityDefinitions
+  description: >-
+    The spec declares only X-Auth-Token. The documentation states X-Auth-User is required on every
+    operation except the token endpoints. Recorded as an additive note rather than a schema edit,
+    because adding a securityDefinition the provider did not publish would misrepresent the contract.
+  update:
+    x-undeclared-required-header:
+      name: X-Auth-User
+      description: Username of the tenant. Required on all operations except AuthToken and RefreshToken.
+      source: https://docs.corestack.io/docs/corestack-api-modules
+- target: $.info
+  description: Runtime semantics the specification cannot express, captured for agent consumers.
+  update:
+    x-conventions: conventions/corestack-conventions.yml
+    x-error-catalog: errors/corestack-problem-types.yml
+    x-authentication: authentication/corestack-authentication.yml
+    x-lifecycle: lifecycle/corestack-lifecycle.yml
+    x-rate-limits: rate-limits/corestack-rate-limits.yml
+    x-data-model: data-model/corestack-data-model.yml
+    x-tool-crosswalk: mcp/corestack-tool-crosswalk.yml
+- target: $.info
+  description: >-
+    Agent-safety annotations. 513 of 838 operations are POST, and the provider's own guide states
+    POST is used both to create resources AND to fetch resources with complex parameters — so an
+    agent cannot infer safety from the HTTP method. There is no idempotency mechanism, so a retried
+    write has no defined behaviour.
+  update:
+    x-agent-safety:
+      method-implies-safety: false
+      post_operations: 513
+      idempotency: none
+      retry_guidance: >-
+        Do not blind-retry a POST. Where the operation is a query (aggregation, list, batch, filter,
+        summary), retry is safe. Where it creates, executes or remediates (create, execute, resolve,
+        onboard, trigger, ingest, reject, confirm), a retry may duplicate the effect and there is no
+        idempotency key to prevent it.
+      destructive_families:
+      - ExecutePolicy / ExecuteRecommendation — applies changes to live cloud resources
+      - ExecuteTemplate — runs automation against cloud accounts
+      - BudgetCreate / BudgetUpdate / Delete Budget
+      - Cloud account onboarding and deletion under /governance/account
+      - IngestContainerFindings — writes security findings
+- target: $.info
+  description: >-
+    Specification-quality findings recorded for the provider. These are observations about the
+    published document, not changes to it.
+  update:
+    x-spec-quality:
+      operations_with_operation_id: 838
+      unique_operation_ids: 838
+      operations_with_summary: 829
+      operations_with_description: 823
+      operations_declaring_400: 836
+      operations_declaring_401: 838
+      operations_declaring_500: 838
+      findings:
+      - >-
+        Excellent identifier and response coverage — every operation has a unique operationId and
+        declares 401/500, which is rare at this size.
+      - >-
+        Placeholder operationIds in several families (batch@@@11, get@@@12, create@@@9, remove@@@5,
+        set-state@@@6) and one containing a space ("Delete Budget"). Unique, but not usable as stable
+        client symbols and not valid identifiers in most generated SDKs.
+      - >-
+        Every error response resolves to a single-field ModelError {message}. Only 5 operations
+        return the structured ValidationResults shape.
+      - >-
+        A typo in a published response description: "lInternal Server Error".
+      - >-
+        Swagger 2.0 in 2026. Migrating to OpenAPI 3.1 would let the document express its multiple
+        hosts, its webhook callbacks and its per-operation examples.
+      - No operation is marked `deprecated: true`, despite a documented deprecation practice.

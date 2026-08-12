@@ -1,0 +1,136 @@
+generated: '2026-08-11'
+method: searched
+source: https://docs.corestack.io/docs/corestack-api-modules
+docs:
+  rest: https://docs.corestack.io/docs/corestack-api-modules
+  auth_token_operation: https://docs.corestack.io/reference/authtoken
+  refresh_token_operation: https://docs.corestack.io/reference/refreshtoken
+  mcp: https://docs.corestack.io/docs/mcp-client-configuration
+  rbac: https://docs.corestack.io/docs/role-based-access-control-rbac
+  sso: https://docs.corestack.io/docs/setting-up-okta-sso
+spec_source: openapi/corestack-external-api-openapi-original.json
+
+summary:
+  types:
+  - apiKey
+  - oauth2
+  api_key_in:
+  - header
+  note: >-
+    Two distinct authentication systems, one per surface. The REST API uses a custom two-header
+    key-plus-token scheme with no OAuth anywhere in the 838-operation contract. The MCP server, added
+    later, uses either an OAuth 2.1 authorization-code + PKCE flow with RFC 7591 dynamic client
+    registration, or a separate pair of API access/secret key headers. The two surfaces do not share
+    credentials or header names.
+
+schemes:
+- name: auth_token
+  surface: rest
+  type: apiKey
+  in: header
+  parameter: X-Auth-Token
+  sources:
+  - openapi/corestack-external-api-openapi-original.json
+  note: >-
+    The only securityDefinition declared in the published Swagger 2.0 document. The spec declares
+    it but does NOT declare the companion X-Auth-User header, which the docs state is required on
+    every call except the token operations — a real gap between the contract and the documentation.
+- name: auth_user
+  surface: rest
+  type: apiKey
+  in: header
+  parameter: X-Auth-User
+  sources:
+  - https://docs.corestack.io/docs/corestack-api-modules
+  documented_only: true
+  note: Username of the tenant. Required on all operations except the AuthToken API. Not in the spec.
+- name: mcp_oauth
+  surface: mcp
+  type: oauth2
+  flow: authorizationCode
+  pkce: S256
+  dynamic_client_registration: true
+  issuer: https://cloud.corestack.io/mcp
+  authorizationUrl: https://cloud.corestack.io/mcp/oauth/authorize
+  tokenUrl: https://cloud.corestack.io/mcp/oauth/token
+  registrationUrl: https://cloud.corestack.io/mcp/oauth/register
+  scopes:
+  - openid
+  - email
+  - profile
+  sources:
+  - well-known/corestack-oauth-authorization-server.json
+  - well-known/corestack-oauth-protected-resource.json
+- name: mcp_api_keys
+  surface: mcp
+  type: apiKey
+  in: header
+  parameter: X-API-Access-Key
+  companion_parameter: X-API-Secret-Key
+  sources:
+  - https://docs.corestack.io/docs/mcp-client-configuration
+
+credential_lifecycle:
+  long_lived:
+    name: Access Key + Secret Key
+    issued_by: Account Administrator, per user, via Identity and Access Management > Users
+    delivery: email
+    expiry: none stated — valid until manually revoked or regenerated
+    revocation: >-
+      Regenerating overwrites and immediately invalidates the previous pair. Keys stop working when
+      the user is terminated or suspended; for SSO users, suspension in the org LDAP ends platform
+      access but the platform Access Key must be deleted separately.
+  short_lived:
+    name: Auth Token
+    minted_by: POST /v1/auth/tokens with {access_key, secret_key}
+    max_validity: 6 hours
+    documented_default: 1 hour, per the AuthToken reference page
+    refresh:
+      operation: POST /v1/auth/tokens/refresh
+      max_refreshes: 3
+      note: >-
+        Each refresh extends validity by another hour and increments refresh_count. After the third
+        refresh the token cannot be extended and a new AuthToken call is required.
+    expired_signal: 401 Unauthorized
+  note: >-
+    The docs carry two different validity numbers for the same token — "valid only for an hour" on
+    the AuthToken reference page and a "maximum of 6 hours" token-expiration policy table on the API
+    guide. Both are the provider's own published figures; recorded as-is rather than reconciled.
+
+sso:
+  supported: true
+  documented_provider: Okta
+  operation: SsoRedirectUrl (POST /v1/sso_auth/tokens/{sso_name})
+  note: LDAP-backed identity; users are provisioned in CoreStack but authenticated by the org IdP.
+
+authorization_model:
+  style: RBAC
+  scoping:
+  - master account
+  - tenant
+  - user group
+  - role
+  note: >-
+    Multi-tenant by design. Most operations require a tenant_id in the path, and many also require
+    an account ID; both are returned in the AuthToken response. Roles determine which modules and
+    APIs a user can reach. The MCP server explicitly inherits the caller's role — it grants nothing
+    additional.
+
+gaps:
+- The spec declares only X-Auth-Token; X-Auth-User is documented but absent from securityDefinitions.
+- No OAuth 2.0 on the REST surface at all, despite an enterprise, multi-tenant, RBAC-scoped API.
+- No scope model on REST — authorization is role-based and invisible to the contract.
+- Token validity is documented inconsistently (1 hour vs 6 hours) across two provider pages.
+
+x-evidence:
+  fetched: '2026-08-11'
+  probes:
+  - url: https://api.corestack.io/v1/auth/tokens
+    method: POST
+    http_status: 400
+    body: '{"message": "Please Provide Username/Password or AccessKey/SecretKey"}'
+    note: Confirms the token endpoint is live and names the two accepted credential shapes.
+  - url: https://cloud.corestack.io/mcp
+    method: POST
+    http_status: 401
+    note: OAuth challenge naming the RFC 9728 resource metadata document.

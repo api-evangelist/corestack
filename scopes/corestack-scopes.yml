@@ -1,0 +1,56 @@
+generated: '2026-08-11'
+method: probed
+source: https://cloud.corestack.io/.well-known/oauth-authorization-server
+note: >-
+  CoreStack's 838-operation REST contract declares NO oauth2 security scheme — it is key-and-token
+  only, and authorization is role-based rather than scope-based, so there is no REST scope surface to
+  derive. The only OAuth surface on the estate is the one the unified MCP server stood up, and it
+  advertises exactly three OIDC-standard scopes. Those scopes carry identity, not capability: what a
+  caller may actually do is decided entirely by their CoreStack RBAC role, not by the token's scope.
+
+schemes:
+- name: mcp_oauth
+  surface: mcp
+  source: well-known/corestack-oauth-authorization-server.json
+  issuer: https://cloud.corestack.io/mcp
+  protected_resource: https://cloud.corestack.io/mcp
+  bearer_methods_supported:
+  - header
+  dynamic_client_registration: true
+  registration_endpoint: https://cloud.corestack.io/mcp/oauth/register
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://cloud.corestack.io/mcp/oauth/authorize
+    tokenUrl: https://cloud.corestack.io/mcp/oauth/token
+    pkce: S256
+    response_types:
+    - code
+    grant_types:
+    - authorization_code
+
+scopes:
+- name: openid
+  description: OIDC authentication — issues an ID token identifying the CoreStack user.
+  spec: OpenID Connect Core 1.0
+- name: email
+  description: Releases the authenticated user's email address claim.
+  spec: OpenID Connect Core 1.0
+- name: profile
+  description: Releases the authenticated user's basic profile claims.
+  spec: OpenID Connect Core 1.0
+
+scope_count: 3
+
+authorization_note: >-
+  There is no per-tool, per-domain or per-operation scope. An agent authorized against this server
+  can reach every one of the 100 MCP tools its user's role permits, including the four tools the
+  provider marks Destructive (submit_assessment_answer, create_workload, send_agent_query, file_bug).
+  Consent at the token layer is therefore all-or-nothing: the user cannot grant read-only FinOps
+  access to an agent without also granting whatever else their role allows. Narrowing this would mean
+  either scoping the OAuth server by domain or issuing a reduced-privilege service account.
+
+x-evidence:
+  fetched: '2026-08-11'
+  url: https://cloud.corestack.io/.well-known/oauth-authorization-server
+  http_status: 200
+  content_type: application/json

@@ -1,0 +1,114 @@
+generated: '2026-08-11'
+method: probed
+source: https://cloud.corestack.io/.well-known/
+note: >-
+  Probed the RFC 8615 discovery surface on every CoreStack host that carries an API or a docs
+  presence. The apex marketing host (www.corestack.io, WordPress), the ReadMe-hosted docs host
+  (docs.corestack.io) and the REST API host (api.corestack.io) return 404 on every well-known path.
+  The console host cloud.corestack.io DOES serve two real documents — RFC 9728 OAuth protected
+  resource metadata and RFC 8414 authorization server metadata — but only because the unified MCP
+  server advertises them in its 401 WWW-Authenticate challenge. There is no security.txt, no
+  api-catalog, no openid-configuration and no ai-plugin.json anywhere on the estate.
+
+hosts:
+- host: https://cloud.corestack.io
+  documents:
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    content_type: application/json
+    file: corestack-oauth-protected-resource.json
+    spec: RFC 9728
+    note: >-
+      Also served at /mcp/.well-known/oauth-protected-resource, which is the exact URL named in the
+      `resource_metadata` parameter of the MCP endpoint's 401 WWW-Authenticate header.
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: corestack-oauth-authorization-server.json
+    spec: RFC 8414
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 302
+    note: SPA catch-all redirect, not a document.
+  - path: /.well-known/agent.json
+    status: 302
+    note: SPA catch-all redirect, not a document.
+  - path: /.well-known/security.txt
+    status: 302
+    note: SPA catch-all redirect, not a document.
+  - path: /.well-known/api-catalog
+    status: 302
+    note: SPA catch-all redirect, not a document.
+- host: https://api.corestack.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://www.corestack.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://docs.corestack.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+
+regional_parity:
+  note: >-
+    The MCP protected-resource document is served identically on every published regional
+    environment, confirming the unified /mcp endpoint is deployed estate-wide rather than only in
+    the default US environment.
+  probed:
+  - host: https://portal.corestack.io
+    path: /mcp/.well-known/oauth-protected-resource
+    status: 200
+  - host: https://us3.corestack.io
+    path: /mcp/.well-known/oauth-protected-resource
+    status: 200
+  - host: https://in.corestack.io
+    path: /mcp/.well-known/oauth-protected-resource
+    status: 200
+  - host: https://mea.corestack.io
+    path: /mcp/.well-known/oauth-protected-resource
+    status: 200
+
+x-evidence:
+  fetched: '2026-08-11'
+  hits: 2
+  misses: 26

@@ -1,0 +1,144 @@
+generated: '2026-08-11'
+method: searched
+source: https://docs.corestack.io/docs/corestack-api-modules
+spec_source: openapi/corestack-external-api-openapi-original.json
+
+auth:
+  style: two-header key + short-lived token
+  headers:
+  - name: X-Auth-User
+    value: username of the tenant
+  - name: X-Auth-Token
+    value: token minted by POST /v1/auth/tokens from an Access Key / Secret Key pair
+  - name: Content-Type
+    value: application/json
+  exempt: The AuthToken and RefreshToken operations themselves.
+  detail: authentication/corestack-authentication.yml
+
+idempotency:
+  supported: false
+  evidence: >-
+    Zero occurrences of "Idempotency", "Idempotency-Key" or any idempotency wording across the entire
+    2.3MB published specification, and no idempotency section anywhere in the documentation. This
+    matters more here than on a read-mostly API: 513 of 838 operations are POST, and a large share of
+    them are writes — policy execution, budget creation, workload creation, remediation execution,
+    account onboarding. A client that retries a timed-out ExecutePolicy or BudgetCreate has no
+    published mechanism for making that retry safe.
+
+pagination:
+  style: page-number
+  applies_to: LIST actions only (ListTenants, ListUsers and similar)
+  request_params:
+  - name: limit
+    in: query
+    description: Number of records in the response.
+  - name: page
+    in: query
+    description: Page number.
+  example: 'http://<list_api_endpoint>?limit=25&page=2'
+  response_fields: not documented
+  note: >-
+    The docs state the two parameters and give one sample URL, but do not document the response
+    envelope for a paged result — no total count, no next-page token, no link header is described.
+    An agent cannot tell from the docs how to know it has reached the last page. Some newer POST-body
+    list operations (Graphion/AppSecOps) carry their own filter+pagination bodies instead.
+
+versioning:
+  scheme: uri-path
+  versions_in_use:
+  - v1
+  - v2
+  path_distribution:
+    /v1: 457
+    /v2: 105
+    unversioned: 205
+  note: >-
+    A third of the published paths carry no version segment at all — /budget/*, /cost/*, /compliance/*,
+    /governance/*, /operations/*, /security/*, /resource/*, /users/* and others sit at the root. There
+    is no published policy describing what v1 and v2 mean, when an unversioned path might change, or
+    how a v3 would be introduced.
+  product_release_line: >-
+    Separately from URI versioning, the platform ships numbered releases (6.2 / build 2603, July 2026)
+    documented as release notes. Release numbers and API path versions are unrelated.
+
+error_envelope:
+  format: custom JSON object
+  observed_shape: '{"message": "<human-readable string>"}'
+  observed_at:
+    url: https://api.corestack.io/v1/auth/tokens
+    method: POST
+    http_status: 400
+  problem_json: false
+  rfc9457: false
+  machine_readable_code: false
+  note: >-
+    There is no error code field, no error type URI and no application/problem+json. The published
+    envelope is a single human-readable `message` string, which an agent can display but cannot
+    branch on. Detail in errors/corestack-problem-types.yml.
+
+rate_limits:
+  documented: false
+  detail: rate-limits/corestack-rate-limits.yml
+
+request_id_tracing:
+  supported: unknown
+  note: >-
+    No request-id or correlation-id header is documented, and none appears as a declared parameter or
+    response header in the specification. There is an Audit Log product feature and a Request Audit
+    tag in the API, but no per-request trace identifier a client can capture and quote to support.
+
+http_verbs:
+  GET: List all resources or get a specific resource. Request body not supported.
+  POST: >-
+    Create a new resource — and, per the provider's own note, also used for fetching resources with
+    complex parameters that cannot be carried in a GET. This is why 513 of 838 operations are POST
+    and why safe reads are not identifiable from the method alone.
+  PUT: Update properties of an existing resource; also used to perform actions on one.
+  DELETE: Delete one or more existing resources.
+  PATCH: Present on 5 operations but not described in the documented verb table.
+
+data_types:
+  query_parameters:
+  - String
+  - Integer
+  - Long
+  - Boolean
+  - Date (ISO-8601 with time, e.g. 2013-04-03T23:45Z)
+  body:
+  - String
+  - Integer
+  - Long
+  - Boolean
+  - Date (ISO-8601)
+  note: >-
+    The docs state that a Boolean query parameter given any value other than true/false is treated as
+    a string and returns "405 – Bad request" — a documented mismatch, since 405 is Method Not Allowed
+    and 400 is Bad Request.
+
+multi_tenancy:
+  required: true
+  note: >-
+    Most operations take tenant_id in the path and some also require an account ID. Both are returned
+    in the AuthToken response. A single CoreStack account can hold many tenants, so a client must
+    resolve and carry tenant context on nearly every call — this is the dominant integration
+    convention of the API and the reason the MCP server exposes explicit session-switching tools.
+
+not_supported_via_api:
+- CloudAccount API actions for Azure
+
+expansion_and_sparse_fields:
+  supported: false
+  note: No field-expansion, sparse-fieldset or include/exclude convention is documented.
+
+metadata:
+  supported: partially
+  note: >-
+    Custom Tags, Dimensions and Custom Metric Configuration are first-class product concepts with
+    their own API families, but there is no generic per-object `metadata` bag convention.
+
+cross_links:
+  errors: errors/corestack-problem-types.yml
+  lifecycle: lifecycle/corestack-lifecycle.yml
+  authentication: authentication/corestack-authentication.yml
+  rate_limits: rate-limits/corestack-rate-limits.yml
+  scopes: scopes/corestack-scopes.yml

@@ -1,0 +1,239 @@
+generated: '2026-08-11'
+method: derived
+source: openapi/corestack-external-api-openapi-original.json
+definitions_in_spec: 2891
+operations: 838
+
+note: >-
+  Derived from the id-reference fields and path parameters of the published Swagger 2.0 contract. The
+  spec carries 2,891 definitions, most of them per-operation request/response envelopes rather than
+  domain entities, so the graph below is the entity spine the identifiers reveal rather than a
+  transcription of every schema. The single dominant fact about CoreStack's data model is that almost
+  everything hangs off `tenant_id`: it appears in 163 of 767 paths and on 119 definitions, more than
+  twice as often as any other identifier. Nothing in this API is reachable without first resolving
+  tenancy.
+
+id_prefixes:
+  published: false
+  note: >-
+    CoreStack does not publish typed, prefixed identifiers (the stripe `cus_` / `ch_` pattern). Ids
+    are opaque and untyped, so an agent holding a bare id cannot tell which entity it belongs to and
+    must track provenance itself.
+
+root_entities:
+- name: MasterAccount
+  identifier: master_account_id
+  path_occurrences: 17
+  description: >-
+    Top of the hierarchy. A CoreStack subscription. A user may have access to several and switches
+    between them with SwitchMasterAccount (REST) or set_master_account (MCP).
+- name: Tenant
+  identifier: tenant_id
+  path_occurrences: 163
+  definition_occurrences: 119
+  description: >-
+    The isolation boundary — a department, business unit or team. Mandatory on most operations. A
+    master account holds many tenants; a user may be granted access to several with different roles
+    in each.
+- name: User
+  identifier: user_id
+  path_occurrences: 19
+  description: Platform identity, optionally federated via SSO/LDAP, holding roles and API keys.
+- name: ServiceAccount
+  identifier: service_account_id
+  path_occurrences: 43
+  definition_occurrences: 64
+  description: >-
+    An onboarded cloud account (AWS/Azure/GCP/OCI). The API uses `service_account_id` and
+    `cloud_account_id` for what is largely the same concept in different subsystems — a real naming
+    inconsistency in the contract, not an artefact of this derivation.
+
+relationships:
+- from: MasterAccount
+  to: Tenant
+  type: has_many
+  via: tenant_id
+- from: Tenant
+  to: ServiceAccount
+  type: has_many
+  via: service_account_id
+- from: Tenant
+  to: User
+  type: has_many
+  via: user_id
+  note: Many-to-many in practice — a user can hold roles in several tenants.
+- from: User
+  to: Role
+  type: has_many
+  via: role_ids
+- from: ServiceAccount
+  to: Resource
+  type: has_many
+  via: resource_id
+- from: Tenant
+  to: Budget
+  type: has_many
+  via: budget_id
+- from: Budget
+  to: Dimension
+  type: has_many
+  via: dimension_id
+  note: Budgets and cost anomaly detection are both scoped by cost dimensions.
+- from: Tenant
+  to: Policy
+  type: has_many
+  via: policy_id
+- from: Policy
+  to: PolicyJob
+  type: has_many
+  via: job_id
+- from: Policy
+  to: Schedule
+  type: has_many
+  via: schedule_id
+  note: >-
+    A schedule carries the notification_configuration that holds webhooks and email recipients —
+    see asyncapi/corestack-webhooks.yml.
+- from: PolicyJob
+  to: Recommendation
+  type: has_many
+  via: recommendation_id
+- from: Recommendation
+  to: Resource
+  type: has_many
+  via: resource_id
+- from: Tenant
+  to: Portfolio
+  type: has_many
+  via: portfolio_id
+  domain: graphion
+- from: Portfolio
+  to: Application
+  type: has_many
+  via: application_id
+  domain: graphion
+- from: Application
+  to: Project
+  type: has_many
+  via: project_id
+  domain: graphion
+- from: Project
+  to: SbomDefinition
+  type: has_many
+  via: sbom_id
+  domain: graphion
+- from: SbomDefinition
+  to: SbomVersion
+  type: has_many
+  via: version_id
+  domain: graphion
+- from: SbomVersion
+  to: SbomComponent
+  type: has_many
+  domain: graphion
+- from: SbomComponent
+  to: Vulnerability
+  type: has_many
+  via: vulnerability_id
+  domain: graphion
+- from: SbomVersion
+  to: Build
+  type: belongs_to
+  via: build_id
+  domain: graphion
+- from: Tenant
+  to: Framework
+  type: has_many
+  via: framework_id
+  domain: assessment
+- from: Framework
+  to: Pillar
+  type: has_many
+  via: pillar_id
+  domain: assessment
+- from: Pillar
+  to: Question
+  type: has_many
+  via: question_id
+  domain: assessment
+- from: Framework
+  to: AssessmentRun
+  type: has_many
+  via: assessment_run_id
+  domain: assessment
+- from: Tenant
+  to: WorkloadDefinition
+  type: has_many
+  via: workload_id
+  domain: workload
+- from: WorkloadDefinition
+  to: WorkloadDefinitionVersion
+  type: has_many
+  via: version_id
+  domain: workload
+- from: Tenant
+  to: Dashboard
+  type: has_many
+  via: dashboard_id
+- from: Dashboard
+  to: DashboardVersion
+  type: has_many
+  via: version_id
+- from: Tenant
+  to: Report
+  type: has_many
+  via: report_id
+- from: Tenant
+  to: Template
+  type: has_many
+  via: template_id
+- from: Template
+  to: Execution
+  type: has_many
+  via: execution_id
+- from: Tenant
+  to: Chat
+  type: has_many
+  via: chat_id
+  domain: ai-agent
+- from: Chat
+  to: Conversation
+  type: has_many
+  via: conversation_id
+  domain: ai-agent
+- from: ServiceAccount
+  to: Attachment
+  type: has_many
+  via: attachment_id
+
+versioned_entities:
+  note: >-
+    A distinct and unusually consistent pattern: several definition-type entities carry an explicit
+    version sub-resource with its own id, history endpoint and set-state endpoint. `version_id`
+    appears in 19 paths.
+  entities:
+  - WorkloadDefinition
+  - AssessmentDefinition
+  - DashboardDefinition
+  - DimensionDefinition
+  - BillingPlanDefinition
+  - StackDefinition
+  - SbomDefinition
+
+naming_inconsistencies:
+- issue: service_account_id vs cloud_account_id
+  detail: >-
+    Both refer to an onboarded cloud account. Newer subsystems (v2 service_account, Graphion) use
+    service_account_id; older governance and cost paths use cloud_account_id. The MCP server exposes
+    both `get_cloud_accounts` and `service_account_list_and_retrieval` for the same thing.
+- issue: sys_id
+  detail: >-
+    Appears on 17 definitions — a ServiceNow-native identifier leaking into CoreStack's own schemas
+    through the ITSM integration surface rather than being namespaced.
+- issue: placeholder operationIds
+  detail: >-
+    The WorkloadDefinitions, WafAssessmentDefinitions and related families carry auto-generated
+    operationIds such as `batch@@@11`, `get@@@12`, `create@@@9`, `remove@@@5`, `set-state@@@6`, and
+    one operation is literally named `Delete Budget` with a space. These are still unique, so the
+    spec validates, but they are not usable as stable client-facing symbols and they are the reason
+    several MCP tools in mcp/corestack-tool-crosswalk.yml could not be bound with confidence.

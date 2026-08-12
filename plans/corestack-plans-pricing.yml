@@ -1,0 +1,100 @@
+generated: '2026-08-11'
+method: searched
+source: https://www.corestack.io/solutions/pricing/
+plan_count: 6
+
+note: >-
+  CoreStack's own pricing page names its products and its Graphion tiers but publishes no prices at
+  all — it routes every buyer to a cloud marketplace or to Contact Sales. The only place CoreStack
+  publishes an actual number is the AWS Marketplace listing, where three pricing dimensions carry
+  real 36-month contract prices. Both are recorded below and each entry says which is which, because
+  a reader needs to know that four of the six named plans have no published price anywhere.
+
+pricing_pages:
+- url: https://www.corestack.io/solutions/pricing/
+  publishes_prices: false
+- url: https://aws.amazon.com/marketplace/pp/prodview-eenhk77mfzog4
+  publishes_prices: true
+- url: https://console.cloud.google.com/marketplace/product/corestack-public/corestack-cloud-governance
+  publishes_prices: unknown
+
+plans:
+- name: CoreStack FinOps
+  source: aws-marketplace
+  price: 30000.00
+  currency: USD
+  billing_period: 36-month contract
+  included: Governance of up to $500k annual cloud spend
+  overage: >-
+    Incremental — additional units must be purchased when governed annual spend exceeds each $500k
+    tier.
+  note: Sold as an independent module; buyers may take one module or several.
+- name: CoreStack SecOps
+  source: aws-marketplace
+  price: 30000.00
+  currency: USD
+  billing_period: 36-month contract
+  included: Governance of up to $500k annual cloud spend
+  overage: Incremental per $500k tier of governed annual spend.
+- name: CoreStack Governance
+  source: aws-marketplace
+  price: 90000.00
+  currency: USD
+  billing_period: 36-month contract
+  included: Governance of up to $500k annual cloud spend
+  overage: Incremental per $500k tier of governed annual spend.
+  note: The combined bundle; priced at the sum of the two module dimensions plus CloudOps.
+- name: CoreStack Graphion Bronze
+  source: vendor-pricing-page
+  price: null
+  currency: null
+  billing_period: null
+  included: >-
+    Scales on builds, cloud resources, data retention and bundled Graphion AI Agent token allocation.
+  note: Tier is named on the vendor pricing page; no quantities and no price are published.
+- name: CoreStack Graphion Silver
+  source: vendor-pricing-page
+  price: null
+  currency: null
+  billing_period: null
+  included: Higher build, resource, retention and AI-token allocations than Bronze.
+  note: Named tier, no published quantities or price.
+- name: CoreStack Graphion Gold
+  source: vendor-pricing-page
+  price: null
+  currency: null
+  billing_period: null
+  included: Highest build, resource, retention and AI-token allocations.
+  note: Named tier, no published quantities or price.
+
+purchase_channels:
+- AWS Marketplace
+- Microsoft Azure Marketplace
+- Google Cloud Marketplace
+- Direct (contact sales) — required for OCI, Google Cloud Assessments, custom bundles and partners
+
+assessments_pricing:
+  published: false
+  model: >-
+    Four purchase options are described — a single assessment, multi-packs, unlimited packages, or a
+    bundle with Governance modules — plus a token-based usage model for the AI Agent. No token price,
+    no pack size and no price per assessment is published.
+
+free_tier: false
+trial: not published
+self_serve: false
+api_metering:
+  note: >-
+    Pricing is metered on governed annual cloud spend, not on API calls. There is no per-request or
+    per-seat API pricing, and no published API quota attached to any tier — consistent with
+    rate-limits/corestack-rate-limits.yml recording zero published limits.
+
+x-evidence:
+  fetched: '2026-08-11'
+  probes:
+  - url: https://www.corestack.io/solutions/pricing/
+    http_status: 200
+    finding: Products and Graphion tier names published; no prices.
+  - url: https://aws.amazon.com/marketplace/pp/prodview-eenhk77mfzog4
+    http_status: 200
+    finding: Three pricing dimensions with 36-month contract prices in USD.

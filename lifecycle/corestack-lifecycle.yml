@@ -1,0 +1,100 @@
+generated: '2026-08-11'
+method: searched
+source: https://docs.corestack.io/changelog
+
+versioning:
+  scheme: uri-path
+  versions_in_use:
+  - v1
+  - v2
+  current: mixed — v1 and v2 coexist and 205 of 767 paths carry no version segment at all
+  policy_published: false
+  docs: https://docs.corestack.io/docs/corestack-api-modules
+  note: >-
+    There is no written versioning policy. What v1 means, what promotes a path to v2, and what
+    stability guarantee an unversioned path carries are all undocumented. In practice v2 appears to
+    be where newer subsystems land (billing aggregation, savings plans, cost anomaly dimensions,
+    billing metrics, service accounts) while v1 and the unversioned root carry the older estate.
+
+release_line:
+  scheme: '<major>.<minor> (<build>)'
+  current: 6.2 (2603)
+  released: '2026-07'
+  cadence: one to three months
+  detail: changelog/corestack-changelog.yml
+
+deprecation:
+  policy_url: null
+  policy_published: false
+  practice_documented: true
+  practice_url: https://docs.corestack.io/docs/whats-deprecated
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    CoreStack has a real deprecation PRACTICE without a deprecation POLICY. Every External APIs
+    release note carries a "What's Decommissioned" section, and release 4.3 (2401) published a
+    dedicated "What's Deprecated" page listing roughly thirty operations struck through by method
+    and path. What is missing is the contract around it: no stated notice period, no minimum support
+    window, no migration guarantee, and no runtime signal. The published specification marks ZERO of
+    its 838 operations `deprecated: true`, and the API emits neither an RFC 8594 `Sunset` header nor
+    a `Deprecation` header, so a running integration learns nothing at call time — the only warning
+    channel is reading the release notes.
+
+deprecated_operations_in_spec: []
+deprecated_operations_count: 0
+
+roadmap:
+  published: true
+  url: https://docs.corestack.io/docs/external-apis-62-2603
+  form: >-
+    A "What's Coming in the Next Release?" section at the end of every External APIs release note,
+    naming the next build's new operations and changing operations down to the individual request
+    parameter and response field.
+  note: >-
+    Not a marketing roadmap page — an operation-level change forecast for the next build. For an API
+    consumer this is more useful than a themed roadmap, and it is the reason a Roadmap pointer is
+    warranted here despite there being no page titled "roadmap".
+
+status_page:
+  url: https://corestack.statuspage.io/
+  provider: Atlassian Statuspage
+  api: https://corestack.statuspage.io/api/v2/status.json
+  observed_status: All Systems Operational
+  page_last_updated: '2023-09-04'
+  note: >-
+    The status page is live and exposes the standard Statuspage v2 JSON API, but its own
+    `updated_at` timestamp is September 2023 — nearly three years stale. It is not linked from the
+    documentation, the API guide or the support portal; it was found by probing the conventional
+    Statuspage subdomain. A status page nobody links to and nobody has touched in three years
+    signals a channel that exists but is not operated.
+
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No public SLA or uptime commitment. Terms for Dedicated Setup and the SaaS Terms and Conditions
+    (EULA) are published in the docs, but neither surfaces an availability target in public form.
+
+support:
+  portal: https://support.corestack.io/portal/en/home
+  docs: https://docs.corestack.io/docs/support
+
+legal:
+  terms_of_service: https://www.corestack.io/terms-of-service/
+  eula: https://docs.corestack.io/docs/saas-terms-and-conditions-eula
+  dedicated_setup_terms: https://docs.corestack.io/docs/terms-for-dedicated-set-up
+  privacy_policy: https://www.corestack.io/privacy-policy/
+  data_privacy: https://docs.corestack.io/docs/data-privacy
+  cookie_policy: https://www.corestack.io/cookie-policy/
+
+x-evidence:
+  fetched: '2026-08-11'
+  probes:
+  - url: https://corestack.statuspage.io/api/v2/status.json
+    http_status: 200
+  - url: https://docs.corestack.io/docs/whats-deprecated.md
+    http_status: 200
+  - url: https://status.corestack.io/
+    http_status: 0
+    note: DNS does not resolve — the conventional vanity subdomain is not configured.

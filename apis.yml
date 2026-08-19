@@ -19,7 +19,7 @@ url: https://raw.githubusercontent.com/api-evangelist/corestack/refs/heads/main/
 image: https://www.corestack.io/wp-content/uploads/Agentic-Governance-OS-Unified-Governance-Across-Cloud-SaaS-and-AI.png
 x-type: company
 x-source: harvest:secondary-market
-specificationVersion: '0.21'
+specificationVersion: '0.23'
 created: '2026-08-11'
 modified: '2026-08-11'
 tags:

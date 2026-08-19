@@ -16,11 +16,10 @@ server:
   - mea
   - in
   - us3
-  note: >-
-    CoreStack consolidated what were previously separate FinOps / Assessment / Graphion MCP servers
-    into a single unified /mcp endpoint. The server is DISABLED BY DEFAULT and must be switched on
-    per account by an Account Administrator (Settings > Account Management > Account Info > Advanced
-    Settings > MCP Server), so a tools/list probe from outside a tenant cannot enumerate it.
+  note: CoreStack consolidated what were previously separate FinOps / Assessment / Graphion MCP servers
+    into a single unified /mcp endpoint. The server is DISABLED BY DEFAULT and must be switched on per
+    account by an Account Administrator (Settings > Account Management > Account Info > Advanced Settings
+    > MCP Server), so a tools/list probe from outside a tenant cannot enumerate it.
 authentication:
   methods:
   - type: oauth2
@@ -37,15 +36,13 @@ authentication:
     headers:
     - X-API-Access-Key
     - X-API-Secret-Key
-    note: >-
-      Access/secret key pairs are generated per user by an Account Administrator from Identity and
+    note: Access/secret key pairs are generated per user by an Account Administrator from Identity and
       Access Management > Users > Generate Key, and are delivered by email.
-  session_model: >-
-    The MCP client must call the `authenticate` tool first. CoreStack then establishes a session
-    scoped to the caller's last-used master account and tenant, and every subsequent tool call
-    reuses that session's implicit auth context. `set_active_tenant` / `set_master_account` switch
-    it. Every tool call runs inside the caller's existing CoreStack RBAC role — the server grants
-    no access beyond what the user already has.
+  session_model: The MCP client must call the `authenticate` tool first. CoreStack then establishes a
+    session scoped to the caller's last-used master account and tenant, and every subsequent tool call
+    reuses that session's implicit auth context. `set_active_tenant` / `set_master_account` switch it.
+    Every tool call runs inside the caller's existing CoreStack RBAC role — the server grants no access
+    beyond what the user already has.
 response_envelope:
   shape: '{Summary, Output}'
   note: Exact keys vary by tool; some use lowercase {summary, output}.
@@ -54,13 +51,11 @@ probe:
   method: POST
   body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
   http_status: 401
-  www_authenticate: 'Bearer realm="CoreStack MCP", resource_metadata="https://cloud.corestack.io/mcp/.well-known/oauth-protected-resource"'
-  note: >-
-    Live tools/list is auth-gated, so the tool inventory below is transcribed from the provider's
-    own published MCP Tool Guide (names, domains, destructive markers and descriptions are
-    verbatim-derived from that page). Per-tool inputSchema requires authenticated introspection and
-    is NOT recorded here — the parameter tables in the provider's guide are the human-readable
-    substitute.
+  www_authenticate: Bearer realm="CoreStack MCP", resource_metadata="https://cloud.corestack.io/mcp/.well-known/oauth-protected-resource"
+  note: Live tools/list is auth-gated, so the tool inventory below is transcribed from the provider's
+    own published MCP Tool Guide (names, domains, destructive markers and descriptions are verbatim-derived
+    from that page). Per-tool inputSchema requires authenticated introspection and is NOT recorded here
+    — the parameter tables in the provider's guide are the human-readable substitute.
 coverage:
   tools_documented: 100
   domains:
@@ -71,445 +66,452 @@ coverage:
     Workload: 6
   destructive: 4
 tools:
-  - name: get_cost_aggregation
-    domain: FinOps
-    destructive: false
-    description: Retrieve snapshot cost aggregation totals grouped by dimensions for a time period (POST
-      /v2/billing/aggregation) — a single aggregated snapshot, not a time series.
-  - name: get_billing_metrics
-    domain: FinOps
-    destructive: false
-    description: Return the billing metrics (cost types) available for the given cloud accounts, with frontend-friendly
-      display names (including virtual Margin metrics).
-  - name: get_cost_aggregation_trend
-    domain: FinOps
-    destructive: false
-    description: Low-level passthrough tool for parameterized billing queries against the cost aggregation
-      layer — an escape hatch for any cost/usage question not covered by higher-level tools. Returns a time
-      series (not a single snapshot).
-  - name: get_billing_usage_trend
-    domain: FinOps
-    destructive: false
-    description: Retrieves billing usage trends over time — resource consumption (GB, hours, API calls),
-      not cost.
-  - name: get_billing_rate_trend
-    domain: FinOps
-    destructive: false
-    description: Retrieves billing rate trends over time — per-unit cost ($/GB, $/hour), computed as cost
-      ÷ usage. Zero usage yields None rates.
-  - name: build_filter_query
-    domain: FinOps
-    destructive: false
-    description: Build a QueryOperator filter tree from up to 34 structured filter dimensions, composed
-      via AND/OR/NOT. Must always be called first in FinOps billing workflows; rejects an empty {}.
-  - name: get_cloud_accounts
-    domain: FinOps
-    destructive: false
-    description: Discover cloud accounts (service accounts) for one or more tenants — the primary account-discovery
-      tool. Call before any cost/billing tool that needs service_account_ids.
-  - name: get_budgets
-    domain: FinOps
-    destructive: false
-    description: Lists all budgets with aggregated summary and health indicators. Filters by status, provider,
-      scope, frequency; calculates health percentages and over-budget items.
-  - name: get_budget_detail
-    domain: FinOps
-    destructive: false
-    description: Retrieves detailed configuration and metrics for a single budget by ID (merges view, alerts,
-      and history into one response). Auxiliary calls (alerts/history) fail open.
-  - name: get_ri_recommendations
-    domain: FinOps
-    destructive: false
-    description: Get Reserved Instance (RI) purchase recommendations to reduce costs.
-  - name: get_ri_reservation_coverage
-    domain: FinOps
-    destructive: false
-    description: Get reservation coverage for a specific RI — the percentage of eligible usage covered.
-  - name: get_ri_reservation_utilization
-    domain: FinOps
-    destructive: false
-    description: Get utilization metrics for a specific RI — how much of the purchased capacity is actually
-      used.
-  - name: get_ri_reservations
-    domain: FinOps
-    destructive: false
-    description: List Reserved Instance reservations to discover reservation IDs and basic details.
-  - name: get_cost_optimization_by_types
-    domain: FinOps
-    destructive: false
-    description: Fetch cost optimization data from the executive-dashboard cost-optimization-by-types endpoint.
-  - name: get_right_sizing_recommendations
-    domain: FinOps
-    destructive: false
-    description: Fetch detailed right-sizing recommendations for a specific cloud account — current vs.
-      recommended SKU per resource.
-  - name: get_recommendation_resources
-    domain: FinOps
-    destructive: false
-    description: Retrieve resource-level details for usage optimization recommendations — drill-down of
-      a recommendation's underlying resources with current vs. recommended config.
-  - name: get_savings_summary
-    domain: FinOps
-    destructive: false
-    description: 'Get a combined savings overview: RI recommendation savings + cost saved to date.'
-  - name: get_savings_plans_details
-    domain: FinOps
-    destructive: false
-    description: List purchased savings plans with details, excluding utilization time-series.
-  - name: get_savings_plans_utilization
-    domain: FinOps
-    destructive: false
-    description: Fetch paginated utilization time-series for a single purchased savings plan.
-  - name: get_savings_plans_coverage
-    domain: FinOps
-    destructive: false
-    description: 'Compute portfolio-wide savings plans coverage summary: active vs. inactive counts, commitment
-      totals, average utilization, breakdowns, and plans expiring soon.'
-  - name: get_anomalies
-    domain: FinOps
-    destructive: false
-    description: Detect and summarize billing cost anomalies (mirrors the UI Anomaly Summary/Details page).
-      Scopes to active accounts and category-level, above-threshold anomalies with positive cost impact.
-  - name: get_anomaly_resources
-    domain: FinOps
-    destructive: false
-    description: Drill down to resource-level anomaly details.
-  - name: get_anomaly_dimension_grouping
-    domain: FinOps
-    destructive: false
-    description: Retrieve grouping-rule-wise cost anomalies for cost dimensions (the UI "Group" view).
-  - name: get_dimensions
-    domain: FinOps
-    destructive: false
-    description: Retrieve cost dimensions used for grouping and filtering FinOps data.
-  - name: portfolio_list_and_retrieval
-    domain: Graphion
-    destructive: false
-    description: List and retrieve portfolios for the selected tenant.
-  - name: portfolio_get_details
-    domain: Graphion
-    destructive: false
-    description: Retrieve detailed information for a specific portfolio.
-  - name: application_list_and_retrieval
-    domain: Graphion
-    destructive: false
-    description: List and retrieve applications for the selected tenant.
-  - name: application_get_details
-    domain: Graphion
-    destructive: false
-    description: Retrieve detailed information for a specific application.
-  - name: project_list_and_retrieval
-    domain: Graphion
-    destructive: false
-    description: List and retrieve projects for the selected tenant.
-  - name: project_get_details
-    domain: Graphion
-    destructive: false
-    description: Retrieve detailed information for a specific project.
-  - name: sbom_definition_get_batch
-    domain: Graphion
-    destructive: false
-    description: Batch retrieve detailed information for multiple SBOM definitions by their IDs.
-  - name: sbom_definition_list_and_retrieval
-    domain: Graphion
-    destructive: false
-    description: List and retrieve SBOM definitions for the selected tenant.
-  - name: sbom_get_details
-    domain: Graphion
-    destructive: false
-    description: Retrieve detailed information for a specific SBOM definition.
-  - name: sbom_version_get_details
-    domain: Graphion
-    destructive: false
-    description: Retrieve detailed information for a specific SBOM version.
-  - name: sbom_version_list_for_definition
-    domain: Graphion
-    destructive: false
-    description: List all versions for a specific SBOM definition.
-  - name: container_findings_list_and_retrieval
-    domain: Graphion
-    destructive: false
-    description: List and retrieve container security findings for the selected tenant.
-  - name: container_findings_get_batch
-    domain: Graphion
-    destructive: false
-    description: Get detailed information for multiple container findings by their IDs.
-  - name: dashboard_portfolio_hierarchy
-    domain: Graphion
-    destructive: false
-    description: Get portfolio hierarchy summary showing organizational structure.
-  - name: dashboard_sbom_components_summary
-    domain: Graphion
-    destructive: false
-    description: Get SBOM components summary with details of all SBOMs and their associated components.
-  - name: dashboard_sbom_vulnerabilities_summary
-    domain: Graphion
-    destructive: false
-    description: Get SBOM vulnerabilities summary with details of all SBOM vulnerabilities.
-  - name: dashboard_top_actionable_issues
-    domain: Graphion
-    destructive: false
-    description: Get top 10 risk-prioritized actionable issues in the current context.
-  - name: dashboard_vulnerabilities_by_component
-    domain: Graphion
-    destructive: false
-    description: Get aggregated vulnerability counts grouped by component properties.
-  - name: dashboard_vulnerability_trend_by_severity
-    domain: Graphion
-    destructive: false
-    description: Get vulnerability trend data grouped by severity over time.
-  - name: dashboard_sbom_build_difference_trend
-    domain: Graphion
-    destructive: false
-    description: Get trend of build differences showing new and resolved vulnerabilities/components.
-  - name: sbom_version_compare_builds
-    domain: Graphion
-    destructive: false
-    description: Compare two SBOM builds to see differences in components and vulnerabilities.
-  - name: sbom_components_get_batch
-    domain: Graphion
-    destructive: false
-    description: Batch retrieve detailed information for multiple SBOM components by their IDs.
-  - name: sbom_version_get_batch
-    domain: Graphion
-    destructive: false
-    description: Batch retrieve detailed information for multiple SBOM versions by their IDs.
-  - name: sbom_version_diff_get_batch
-    domain: Graphion
-    destructive: false
-    description: Batch retrieve diff information for multiple SBOM versions showing changes from predecessor
-      versions.
-  - name: vulnerability_get_prevalence
-    domain: Graphion
-    destructive: false
-    description: Get organizational prevalence data for specific vulnerabilities.
-  - name: vulnerability_get_details_batch
-    domain: Graphion
-    destructive: false
-    description: Get detailed information for multiple vulnerabilities by their IDs.
-  - name: service_account_list_and_retrieval
-    domain: Graphion
-    destructive: false
-    description: List and retrieve cloud accounts (service accounts) for the selected tenant.
-  - name: service_account_get_details
-    domain: Graphion
-    destructive: false
-    description: Retrieve detailed information for a specific cloud account (service account).
-  - name: service_account_list_resource_groups
-    domain: Graphion
-    destructive: false
-    description: List available Azure resource groups for a cloud account. Azure-only — raises if the account
-      isn't Azure.
-  - name: resource_inventory_list
-    domain: Graphion
-    destructive: false
-    description: List cloud resources with rich filtering (e.g. "what resources are in this resource group").
-  - name: resource_inventory_count
-    domain: Graphion
-    destructive: false
-    description: Get total resource count with optional filters (e.g. "how many resources are in this resource
-      group?").
-  - name: resource_change_list
-    domain: Graphion
-    destructive: false
-    description: List cloud resources whose configuration changed within a date window — change history,
-      not current inventory. Requires GraphDB + tenant feature flag REIN_2601_B_RESOURCE_CHANGES_TREND.
-  - name: resource_activity_timeline
-    domain: Graphion
-    destructive: false
-    description: Get the paginated change-history timeline for a single resource. Requires GraphDB + tenant
-      feature flag REIN_2602_A_RESOURCE_DETAIL_VIEW.
-  - name: resource_activity_event_details
-    domain: Graphion
-    destructive: false
-    description: Get attribute-level details for 1 or 2 history events on a single resource (used to diff
-      two events).
-  - name: get_kubernetes_pod_resources
-    domain: Graphion
-    destructive: false
-    description: Query Kubernetes pod resources (EKS, AKS, GKE) from the resource inventory. Container image
-      digests can be used to look up SBOM definitions via Graphion.
-  - name: resource_dependency_get
-    domain: Graphion
-    destructive: false
-    description: Given a resource (e.g., a VPC), return all dependent/related resources by traversing the
-      inventory's metadata graph.
-  - name: resource_list_by_schema
-    domain: Graphion
-    destructive: false
-    description: List resources of a specific type under a cloud account using the schema path category/component/resource
-      (e.g. Network/VPC/VPC, Compute/EC2/Instances, Storage/S3/Buckets).
-  - name: cloud_accounts_list
-    domain: Graphion
-    destructive: false
-    description: List all cloud accounts (service accounts) available in the current tenant.
-  - name: dashboard_infrastructure_summary
-    domain: Graphion
-    destructive: false
-    description: High-level summary combining org hierarchy with infrastructure — given a portfolio or application,
-      returns associated projects, cloud accounts, and resource counts.
-  - name: policy_list_and_retrieval
-    domain: Graphion
-    destructive: false
-    description: Retrieve policy descriptions and metadata for given policy URIs.
-  - name: policy_job_list_and_retrieval
-    domain: Graphion
-    destructive: false
-    description: Retrieve policy job execution details for specific policy job IDs.
-  - name: resource_violation_summary
-    domain: Graphion
-    destructive: false
-    description: Get a summary of infrastructure misconfiguration violations (guardrail policy violations),
-      grouped by severity.
-  - name: resource_vulnerability_summary
-    domain: Graphion
-    destructive: false
-    description: Get a summary of infrastructure vulnerabilities — counts and severity distribution.
-  - name: resource_threat_summary
-    domain: Graphion
-    destructive: false
-    description: Get a summary of infrastructure security threats — real-time alerts, anomalous activity,
-      posture findings.
-  - name: infra_threat_list_and_details
-    domain: Graphion
-    destructive: false
-    description: List infrastructure threats for a cloud account and retrieve full details (list step chained
-      internally to a batch-detail call).
-  - name: list_assessment_runs
-    domain: Assessment
-    destructive: false
-    description: Fetch and list details of assessment runs for specified assessment definitions.
-  - name: list_assessment_run_history
-    domain: Assessment
-    destructive: false
-    description: Fetch the details of history_ids of specified assessment runs by their IDs.
-  - name: get_policy_violations
-    domain: Assessment
-    destructive: false
-    description: Get a list of RecordIdentity objects for resources that have violated the given policy
-      job.
-  - name: list_assessment_questions
-    domain: Assessment
-    destructive: false
-    description: Get all the details of questions for the selected assessment runs history ids.
-  - name: get_pillar_scores
-    domain: Assessment
-    destructive: false
-    description: Calculate the Well-Architected Framework scores for each pillar in a given assessment run.
-  - name: submit_assessment_answer
-    domain: Assessment
-    destructive: true
-    description: Answer a question or best practice — allows adding attachments, comments, and setting state.
-  - name: get_question_risk
-    domain: Assessment
-    destructive: false
-    description: Get the question-level risks of a specific assessment run.
-  - name: list_assessment_definitions
-    domain: Assessment
-    destructive: false
-    description: Fetch one page of assessment definitions for the selected tenant (default page size 10).
-      Results are paginated — the tool always tells the user how many were returned and offers to fetch
-      the next page.
-  - name: list_frameworks
-    domain: Assessment
-    destructive: false
-    description: Retrieve the frameworks and details for the selected tenant.
-  - name: get_framework_questions
-    domain: Assessment
-    destructive: false
-    description: Retrieve questions for given question IDs.
-  - name: get_best_practices
-    domain: Assessment
-    destructive: false
-    description: Fetch best practices for given system IDs.
-  - name: list_policy_descriptions
-    domain: Assessment
-    destructive: false
-    description: Retrieve policy descriptions for given policy URIs.
-  - name: get_related_policies
-    domain: Assessment
-    destructive: false
-    description: Retrieve and summarize all policies associated with a given framework (framework → questions
-      → best practices → policies → policy descriptions).
-  - name: get_policy_jobs
-    domain: Assessment
-    destructive: false
-    description: Retrieve policy job execution details for given policy job IDs.
-  - name: get_policy_job
-    domain: Assessment
-    destructive: false
-    description: Retrieve detailed execution information for a single policy job.
-  - name: query_workload_resources
-    domain: Workload
-    destructive: false
-    description: Execute a query against the ServiceResourceInventory collection given a WorkloadTierConfiguration
-      (POST /v1/workload-query/execute then POST /v1/workload-query/resource/batch).
-  - name: list_workload_definitions
-    domain: Workload
-    destructive: false
-    description: Get a list of workload definitions for the selected tenant.
-  - name: create_workload
-    domain: Workload
-    destructive: true
-    description: Create a workload definition for the selected tenant (creates the definition, sets its
-      state, creates a workload version, promotes it to a release version).
-  - name: get_workload_version
-    domain: Workload
-    destructive: false
-    description: Get details on a specific Workload Definition Version by id.
-  - name: get_resource_batch
-    domain: Workload
-    destructive: false
-    description: Batch-fetch full resource inventory details for one or more resource IDs — the canonical
-      batch resource fetch (supersedes the former GET-by-id tool).
-  - name: list_resource_filters
-    domain: Workload
-    destructive: false
-    description: Retrieve resource filter data for given service account IDs.
-  - name: authenticate
-    domain: Common
-    destructive: false
-    description: Establish an authenticated CoreStack session. MUST be called before any other tool. Auto-selects
-      the master account and tenant based on the user's last-used values.
-  - name: set_active_tenant
-    domain: Common
-    destructive: false
-    description: Switch the active tenant for all subsequent API calls. Requires authenticate to have run
-      first.
-  - name: set_master_account
-    domain: Common
-    destructive: false
-    description: Switch the active master account for all subsequent API calls. Only MCP-enabled master
-      accounts are accepted.
-  - name: check_connection
-    domain: Common
-    destructive: false
-    description: Return the current CoreStack session state without raising errors. Safe to call at any
-      time, including before authenticate.
-  - name: list_agent_types
-    domain: Common
-    destructive: false
-    description: Get agent types available to the given tenant.
-  - name: list_chats
-    domain: Common
-    destructive: false
-    description: Get chat details based on the provided filtering criteria.
-  - name: list_conversations
-    domain: Common
-    destructive: false
-    description: Fetch the details of conversations for the specified chat based on the given filters.
-  - name: send_agent_query
-    domain: Common
-    destructive: true
-    description: Send a query to a CoreStack agent and return its response. Automatically creates a new
-      chat for each request.
-  - name: list_system_prompts
-    domain: Common
-    destructive: false
-    description: Retrieve the details of saved prompts matching the filtering criteria.
-  - name: file_bug
-    domain: Common
-    destructive: true
-    description: File a Bug Report so the CoreStack team (or an AI fixer) can resolve it. Auto-attaches
-      environment, request ID, tenant, master account, and user. Requires explicit user confirmation before
-      filing.
+- name: get_cost_aggregation
+  domain: FinOps
+  destructive: false
+  description: Retrieve snapshot cost aggregation totals grouped by dimensions for a time period (POST
+    /v2/billing/aggregation) — a single aggregated snapshot, not a time series.
+- name: get_billing_metrics
+  domain: FinOps
+  destructive: false
+  description: Return the billing metrics (cost types) available for the given cloud accounts, with frontend-friendly
+    display names (including virtual Margin metrics).
+- name: get_cost_aggregation_trend
+  domain: FinOps
+  destructive: false
+  description: Low-level passthrough tool for parameterized billing queries against the cost aggregation
+    layer — an escape hatch for any cost/usage question not covered by higher-level tools. Returns a time
+    series (not a single snapshot).
+- name: get_billing_usage_trend
+  domain: FinOps
+  destructive: false
+  description: Retrieves billing usage trends over time — resource consumption (GB, hours, API calls),
+    not cost.
+- name: get_billing_rate_trend
+  domain: FinOps
+  destructive: false
+  description: Retrieves billing rate trends over time — per-unit cost ($/GB, $/hour), computed as cost
+    ÷ usage. Zero usage yields None rates.
+- name: build_filter_query
+  domain: FinOps
+  destructive: false
+  description: Build a QueryOperator filter tree from up to 34 structured filter dimensions, composed
+    via AND/OR/NOT. Must always be called first in FinOps billing workflows; rejects an empty {}.
+- name: get_cloud_accounts
+  domain: FinOps
+  destructive: false
+  description: Discover cloud accounts (service accounts) for one or more tenants — the primary account-discovery
+    tool. Call before any cost/billing tool that needs service_account_ids.
+- name: get_budgets
+  domain: FinOps
+  destructive: false
+  description: Lists all budgets with aggregated summary and health indicators. Filters by status, provider,
+    scope, frequency; calculates health percentages and over-budget items.
+- name: get_budget_detail
+  domain: FinOps
+  destructive: false
+  description: Retrieves detailed configuration and metrics for a single budget by ID (merges view, alerts,
+    and history into one response). Auxiliary calls (alerts/history) fail open.
+- name: get_ri_recommendations
+  domain: FinOps
+  destructive: false
+  description: Get Reserved Instance (RI) purchase recommendations to reduce costs.
+- name: get_ri_reservation_coverage
+  domain: FinOps
+  destructive: false
+  description: Get reservation coverage for a specific RI — the percentage of eligible usage covered.
+- name: get_ri_reservation_utilization
+  domain: FinOps
+  destructive: false
+  description: Get utilization metrics for a specific RI — how much of the purchased capacity is actually
+    used.
+- name: get_ri_reservations
+  domain: FinOps
+  destructive: false
+  description: List Reserved Instance reservations to discover reservation IDs and basic details.
+- name: get_cost_optimization_by_types
+  domain: FinOps
+  destructive: false
+  description: Fetch cost optimization data from the executive-dashboard cost-optimization-by-types endpoint.
+- name: get_right_sizing_recommendations
+  domain: FinOps
+  destructive: false
+  description: Fetch detailed right-sizing recommendations for a specific cloud account — current vs.
+    recommended SKU per resource.
+- name: get_recommendation_resources
+  domain: FinOps
+  destructive: false
+  description: Retrieve resource-level details for usage optimization recommendations — drill-down of
+    a recommendation's underlying resources with current vs. recommended config.
+- name: get_savings_summary
+  domain: FinOps
+  destructive: false
+  description: 'Get a combined savings overview: RI recommendation savings + cost saved to date.'
+- name: get_savings_plans_details
+  domain: FinOps
+  destructive: false
+  description: List purchased savings plans with details, excluding utilization time-series.
+- name: get_savings_plans_utilization
+  domain: FinOps
+  destructive: false
+  description: Fetch paginated utilization time-series for a single purchased savings plan.
+- name: get_savings_plans_coverage
+  domain: FinOps
+  destructive: false
+  description: 'Compute portfolio-wide savings plans coverage summary: active vs. inactive counts, commitment
+    totals, average utilization, breakdowns, and plans expiring soon.'
+- name: get_anomalies
+  domain: FinOps
+  destructive: false
+  description: Detect and summarize billing cost anomalies (mirrors the UI Anomaly Summary/Details page).
+    Scopes to active accounts and category-level, above-threshold anomalies with positive cost impact.
+- name: get_anomaly_resources
+  domain: FinOps
+  destructive: false
+  description: Drill down to resource-level anomaly details.
+- name: get_anomaly_dimension_grouping
+  domain: FinOps
+  destructive: false
+  description: Retrieve grouping-rule-wise cost anomalies for cost dimensions (the UI "Group" view).
+- name: get_dimensions
+  domain: FinOps
+  destructive: false
+  description: Retrieve cost dimensions used for grouping and filtering FinOps data.
+- name: portfolio_list_and_retrieval
+  domain: Graphion
+  destructive: false
+  description: List and retrieve portfolios for the selected tenant.
+- name: portfolio_get_details
+  domain: Graphion
+  destructive: false
+  description: Retrieve detailed information for a specific portfolio.
+- name: application_list_and_retrieval
+  domain: Graphion
+  destructive: false
+  description: List and retrieve applications for the selected tenant.
+- name: application_get_details
+  domain: Graphion
+  destructive: false
+  description: Retrieve detailed information for a specific application.
+- name: project_list_and_retrieval
+  domain: Graphion
+  destructive: false
+  description: List and retrieve projects for the selected tenant.
+- name: project_get_details
+  domain: Graphion
+  destructive: false
+  description: Retrieve detailed information for a specific project.
+- name: sbom_definition_get_batch
+  domain: Graphion
+  destructive: false
+  description: Batch retrieve detailed information for multiple SBOM definitions by their IDs.
+- name: sbom_definition_list_and_retrieval
+  domain: Graphion
+  destructive: false
+  description: List and retrieve SBOM definitions for the selected tenant.
+- name: sbom_get_details
+  domain: Graphion
+  destructive: false
+  description: Retrieve detailed information for a specific SBOM definition.
+- name: sbom_version_get_details
+  domain: Graphion
+  destructive: false
+  description: Retrieve detailed information for a specific SBOM version.
+- name: sbom_version_list_for_definition
+  domain: Graphion
+  destructive: false
+  description: List all versions for a specific SBOM definition.
+- name: container_findings_list_and_retrieval
+  domain: Graphion
+  destructive: false
+  description: List and retrieve container security findings for the selected tenant.
+- name: container_findings_get_batch
+  domain: Graphion
+  destructive: false
+  description: Get detailed information for multiple container findings by their IDs.
+- name: dashboard_portfolio_hierarchy
+  domain: Graphion
+  destructive: false
+  description: Get portfolio hierarchy summary showing organizational structure.
+- name: dashboard_sbom_components_summary
+  domain: Graphion
+  destructive: false
+  description: Get SBOM components summary with details of all SBOMs and their associated components.
+- name: dashboard_sbom_vulnerabilities_summary
+  domain: Graphion
+  destructive: false
+  description: Get SBOM vulnerabilities summary with details of all SBOM vulnerabilities.
+- name: dashboard_top_actionable_issues
+  domain: Graphion
+  destructive: false
+  description: Get top 10 risk-prioritized actionable issues in the current context.
+- name: dashboard_vulnerabilities_by_component
+  domain: Graphion
+  destructive: false
+  description: Get aggregated vulnerability counts grouped by component properties.
+- name: dashboard_vulnerability_trend_by_severity
+  domain: Graphion
+  destructive: false
+  description: Get vulnerability trend data grouped by severity over time.
+- name: dashboard_sbom_build_difference_trend
+  domain: Graphion
+  destructive: false
+  description: Get trend of build differences showing new and resolved vulnerabilities/components.
+- name: sbom_version_compare_builds
+  domain: Graphion
+  destructive: false
+  description: Compare two SBOM builds to see differences in components and vulnerabilities.
+- name: sbom_components_get_batch
+  domain: Graphion
+  destructive: false
+  description: Batch retrieve detailed information for multiple SBOM components by their IDs.
+- name: sbom_version_get_batch
+  domain: Graphion
+  destructive: false
+  description: Batch retrieve detailed information for multiple SBOM versions by their IDs.
+- name: sbom_version_diff_get_batch
+  domain: Graphion
+  destructive: false
+  description: Batch retrieve diff information for multiple SBOM versions showing changes from predecessor
+    versions.
+- name: vulnerability_get_prevalence
+  domain: Graphion
+  destructive: false
+  description: Get organizational prevalence data for specific vulnerabilities.
+- name: vulnerability_get_details_batch
+  domain: Graphion
+  destructive: false
+  description: Get detailed information for multiple vulnerabilities by their IDs.
+- name: service_account_list_and_retrieval
+  domain: Graphion
+  destructive: false
+  description: List and retrieve cloud accounts (service accounts) for the selected tenant.
+- name: service_account_get_details
+  domain: Graphion
+  destructive: false
+  description: Retrieve detailed information for a specific cloud account (service account).
+- name: service_account_list_resource_groups
+  domain: Graphion
+  destructive: false
+  description: List available Azure resource groups for a cloud account. Azure-only — raises if the account
+    isn't Azure.
+- name: resource_inventory_list
+  domain: Graphion
+  destructive: false
+  description: List cloud resources with rich filtering (e.g. "what resources are in this resource group").
+- name: resource_inventory_count
+  domain: Graphion
+  destructive: false
+  description: Get total resource count with optional filters (e.g. "how many resources are in this resource
+    group?").
+- name: resource_change_list
+  domain: Graphion
+  destructive: false
+  description: List cloud resources whose configuration changed within a date window — change history,
+    not current inventory. Requires GraphDB + tenant feature flag REIN_2601_B_RESOURCE_CHANGES_TREND.
+- name: resource_activity_timeline
+  domain: Graphion
+  destructive: false
+  description: Get the paginated change-history timeline for a single resource. Requires GraphDB + tenant
+    feature flag REIN_2602_A_RESOURCE_DETAIL_VIEW.
+- name: resource_activity_event_details
+  domain: Graphion
+  destructive: false
+  description: Get attribute-level details for 1 or 2 history events on a single resource (used to diff
+    two events).
+- name: get_kubernetes_pod_resources
+  domain: Graphion
+  destructive: false
+  description: Query Kubernetes pod resources (EKS, AKS, GKE) from the resource inventory. Container image
+    digests can be used to look up SBOM definitions via Graphion.
+- name: resource_dependency_get
+  domain: Graphion
+  destructive: false
+  description: Given a resource (e.g., a VPC), return all dependent/related resources by traversing the
+    inventory's metadata graph.
+- name: resource_list_by_schema
+  domain: Graphion
+  destructive: false
+  description: List resources of a specific type under a cloud account using the schema path category/component/resource
+    (e.g. Network/VPC/VPC, Compute/EC2/Instances, Storage/S3/Buckets).
+- name: cloud_accounts_list
+  domain: Graphion
+  destructive: false
+  description: List all cloud accounts (service accounts) available in the current tenant.
+- name: dashboard_infrastructure_summary
+  domain: Graphion
+  destructive: false
+  description: High-level summary combining org hierarchy with infrastructure — given a portfolio or application,
+    returns associated projects, cloud accounts, and resource counts.
+- name: policy_list_and_retrieval
+  domain: Graphion
+  destructive: false
+  description: Retrieve policy descriptions and metadata for given policy URIs.
+- name: policy_job_list_and_retrieval
+  domain: Graphion
+  destructive: false
+  description: Retrieve policy job execution details for specific policy job IDs.
+- name: resource_violation_summary
+  domain: Graphion
+  destructive: false
+  description: Get a summary of infrastructure misconfiguration violations (guardrail policy violations),
+    grouped by severity.
+- name: resource_vulnerability_summary
+  domain: Graphion
+  destructive: false
+  description: Get a summary of infrastructure vulnerabilities — counts and severity distribution.
+- name: resource_threat_summary
+  domain: Graphion
+  destructive: false
+  description: Get a summary of infrastructure security threats — real-time alerts, anomalous activity,
+    posture findings.
+- name: infra_threat_list_and_details
+  domain: Graphion
+  destructive: false
+  description: List infrastructure threats for a cloud account and retrieve full details (list step chained
+    internally to a batch-detail call).
+- name: list_assessment_runs
+  domain: Assessment
+  destructive: false
+  description: Fetch and list details of assessment runs for specified assessment definitions.
+- name: list_assessment_run_history
+  domain: Assessment
+  destructive: false
+  description: Fetch the details of history_ids of specified assessment runs by their IDs.
+- name: get_policy_violations
+  domain: Assessment
+  destructive: false
+  description: Get a list of RecordIdentity objects for resources that have violated the given policy
+    job.
+- name: list_assessment_questions
+  domain: Assessment
+  destructive: false
+  description: Get all the details of questions for the selected assessment runs history ids.
+- name: get_pillar_scores
+  domain: Assessment
+  destructive: false
+  description: Calculate the Well-Architected Framework scores for each pillar in a given assessment run.
+- name: submit_assessment_answer
+  domain: Assessment
+  destructive: true
+  description: Answer a question or best practice — allows adding attachments, comments, and setting state.
+- name: get_question_risk
+  domain: Assessment
+  destructive: false
+  description: Get the question-level risks of a specific assessment run.
+- name: list_assessment_definitions
+  domain: Assessment
+  destructive: false
+  description: Fetch one page of assessment definitions for the selected tenant (default page size 10).
+    Results are paginated — the tool always tells the user how many were returned and offers to fetch
+    the next page.
+- name: list_frameworks
+  domain: Assessment
+  destructive: false
+  description: Retrieve the frameworks and details for the selected tenant.
+- name: get_framework_questions
+  domain: Assessment
+  destructive: false
+  description: Retrieve questions for given question IDs.
+- name: get_best_practices
+  domain: Assessment
+  destructive: false
+  description: Fetch best practices for given system IDs.
+- name: list_policy_descriptions
+  domain: Assessment
+  destructive: false
+  description: Retrieve policy descriptions for given policy URIs.
+- name: get_related_policies
+  domain: Assessment
+  destructive: false
+  description: Retrieve and summarize all policies associated with a given framework (framework → questions
+    → best practices → policies → policy descriptions).
+- name: get_policy_jobs
+  domain: Assessment
+  destructive: false
+  description: Retrieve policy job execution details for given policy job IDs.
+- name: get_policy_job
+  domain: Assessment
+  destructive: false
+  description: Retrieve detailed execution information for a single policy job.
+- name: query_workload_resources
+  domain: Workload
+  destructive: false
+  description: Execute a query against the ServiceResourceInventory collection given a WorkloadTierConfiguration
+    (POST /v1/workload-query/execute then POST /v1/workload-query/resource/batch).
+- name: list_workload_definitions
+  domain: Workload
+  destructive: false
+  description: Get a list of workload definitions for the selected tenant.
+- name: create_workload
+  domain: Workload
+  destructive: true
+  description: Create a workload definition for the selected tenant (creates the definition, sets its
+    state, creates a workload version, promotes it to a release version).
+- name: get_workload_version
+  domain: Workload
+  destructive: false
+  description: Get details on a specific Workload Definition Version by id.
+- name: get_resource_batch
+  domain: Workload
+  destructive: false
+  description: Batch-fetch full resource inventory details for one or more resource IDs — the canonical
+    batch resource fetch (supersedes the former GET-by-id tool).
+- name: list_resource_filters
+  domain: Workload
+  destructive: false
+  description: Retrieve resource filter data for given service account IDs.
+- name: authenticate
+  domain: Common
+  destructive: false
+  description: Establish an authenticated CoreStack session. MUST be called before any other tool. Auto-selects
+    the master account and tenant based on the user's last-used values.
+- name: set_active_tenant
+  domain: Common
+  destructive: false
+  description: Switch the active tenant for all subsequent API calls. Requires authenticate to have run
+    first.
+- name: set_master_account
+  domain: Common
+  destructive: false
+  description: Switch the active master account for all subsequent API calls. Only MCP-enabled master
+    accounts are accepted.
+- name: check_connection
+  domain: Common
+  destructive: false
+  description: Return the current CoreStack session state without raising errors. Safe to call at any
+    time, including before authenticate.
+- name: list_agent_types
+  domain: Common
+  destructive: false
+  description: Get agent types available to the given tenant.
+- name: list_chats
+  domain: Common
+  destructive: false
+  description: Get chat details based on the provided filtering criteria.
+- name: list_conversations
+  domain: Common
+  destructive: false
+  description: Fetch the details of conversations for the specified chat based on the given filters.
+- name: send_agent_query
+  domain: Common
+  destructive: true
+  description: Send a query to a CoreStack agent and return its response. Automatically creates a new
+    chat for each request.
+- name: list_system_prompts
+  domain: Common
+  destructive: false
+  description: Retrieve the details of saved prompts matching the filtering criteria.
+- name: file_bug
+  domain: Common
+  destructive: true
+  description: File a Bug Report so the CoreStack team (or an AI fixer) can resolve it. Auto-attaches
+    environment, request ID, tenant, master account, and user. Requires explicit user confirmation before
+    filing.
+deployment:
+  mode: remote
+  endpoint: https://cloud.corestack.io/mcp
+  verified: probed
+  probe: gated
+  checked: '2026-08-12'
+  source: catalog MCP census

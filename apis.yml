@@ -49,44 +49,6 @@ tags_raw:
 - agent-native
 - kubernetes
 apis:
-- name: CoreStack External API
-  description: >-
-    REST API covering the whole CoreStack governance surface — authorization, identity and RBAC,
-    guardrail policies, account governance, operations and automation, security, cost and budgets,
-    access, resources, compliance assessments and self-service. Published as a live Swagger 2.0
-    document with 838 uniquely-identified operations. Authentication is a short-lived X-Auth-Token
-    minted from an Access Key / Secret Key pair, paired with an X-Auth-User header.
-  humanURL: https://docs.corestack.io/reference
-  baseURL: https://api.corestack.io/
-  tags:
-  - Cloud Governance
-  - FinOps
-  - Compliance
-  - Multi-Cloud
-  - Policy as Code
-  tags_raw:
-  - cloud-governance
-  - finops
-  - compliance
-  - multi-cloud
-  - policy-as-code
-  properties:
-  - type: OpenAPI
-    url: openapi/corestack-external-api-openapi-original.json
-  - type: Documentation
-    url: https://docs.corestack.io/docs/corestack-api-modules
-  - type: APIReference
-    url: https://docs.corestack.io/reference
-  - type: Authentication
-    url: authentication/corestack-authentication.yml
-  - type: Conventions
-    url: conventions/corestack-conventions.yml
-  - type: ErrorCatalog
-    url: errors/corestack-problem-types.yml
-  - type: DataModel
-    url: data-model/corestack-data-model.yml
-  - type: Overlay
-    url: overlays/corestack-external-api-overlay.yaml
 - name: CoreStack MCP Server
   description: >-
     Hosted, unified Model Context Protocol server exposing 100 documented tools across five domains —
@@ -120,6 +82,1854 @@ apis:
     url: https://docs.corestack.io/docs/mcp-client-configuration
   - type: OAuthScopes
     url: scopes/corestack-scopes.yml
+- aid: corestack:corestack-access-api
+  name: CoreStack Access API
+  description: Access Pillar
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Access
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-access-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-account-governance-api
+  name: CoreStack Account Governance API
+  description: Manage Cloud Accounts
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Account Governance
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-account-governance-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-ai-agent-api
+  name: CoreStack AI Agent API
+  description: AI Agent Framework API
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - AI Agent
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-ai-agent-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-aigovernance-api
+  name: CoreStack AI Governance API
+  description: Manage AI Governance Metrics
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - AIGovernance
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-aigovernance-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-application-health-api
+  name: CoreStack Application Health API
+  description: Application Health
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Application Health
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-application-health-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-appsecops-api
+  name: CoreStack App Sec Ops API
+  description: Application Security
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - AppSecOps
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-appsecops-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-assessment-api
+  name: CoreStack Assessment API
+  description: Manage Assessment
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Assessment
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-assessment-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-attachments-api
+  name: CoreStack Attachments API
+  description: Manage Attachments
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Attachments
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-attachments-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-auditlog-api
+  name: CoreStack Audit Log API
+  description: Manage Audit Log
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - AuditLog
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-auditlog-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-authorization-api
+  name: CoreStack Authorization API
+  description: Manage Tokens
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Authorization
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-authorization-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-automation-api
+  name: CoreStack Automation API
+  description: Manage Templates, Scripts & Blueprints
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Automation
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-automation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-automation-workflows-api
+  name: CoreStack Automation WorkFlows API
+  description: Manage Automation WorkFlows
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Automation WorkFlows
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-automation-workflows-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-aws-security-hub-api
+  name: CoreStack AWS Security Hub API
+  description: AWS Security Hub
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - AWS Security Hub
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-aws-security-hub-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-awsssm-api
+  name: CoreStack Aws Ssm API
+  description: Manage AWS SSM
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - AwsSsm
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-awsssm-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-awsssm-automation-api
+  name: CoreStack AwsSsm Automation API
+  description: Manage AWS SSM Automation
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - AwsSsm Automation
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-awsssm-automation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-awsssm-command-api
+  name: CoreStack AwsSsm Command API
+  description: Manage AWS SSM Command
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - AwsSsm Command
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-awsssm-command-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-azure-devops-pipeline-dashboard-api
+  name: CoreStack Azure DevOps Pipeline DashBoard API
+  description: Azure DevOps Pipeline DashBoard
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Azure DevOps Pipeline DashBoard
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-azure-devops-pipeline-dashboard-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-background-jobs-api
+  name: CoreStack Background Jobs API
+  description: Manage Background Jobs
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Background Jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-background-jobs-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-billing-api
+  name: CoreStack Billing API
+  description: Cost Management
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Billing
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-billing-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-billing-commitment-api
+  name: CoreStack Billing Commitment API
+  description: Billing commitment
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Billing Commitment
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-billing-commitment-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-billing-metric-api
+  name: CoreStack Billing Metric API
+  description: Manage Billing Metrics
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Billing Metric
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-billing-metric-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-billingplandefinitions-api
+  name: CoreStack Billing Plan Definitions API
+  description: Manage BillOps Plans
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - BillingPlanDefinitions
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-billingplandefinitions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-billingplandefinitionversions-api
+  name: CoreStack Billing Plan Definition Versions API
+  description: Manage BillOps Plan Versions
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - BillingPlanDefinitionVersions
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-billingplandefinitionversions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-budget-v2-management-api
+  name: CoreStack Budget V2 Management API
+  description: Budget V2 Management
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Budget V2 Management
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-budget-v2-management-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-compliance-api
+  name: CoreStack Compliance API
+  description: Corestack compliance Rest API
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Compliance
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-compliance-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-copilot-governance-api
+  name: CoreStack Copilot Governance API
+  description: Manage Copilot Governance Metrics
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Copilot Governance
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-copilot-governance-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-cost-anomaly-api
+  name: CoreStack Cost Anomaly API
+  description: Cost Anomaly Detection
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Cost Anomaly
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-cost-anomaly-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-cost-api
+  name: CoreStack Cost API
+  description: Cost Pillar
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Cost
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-cost-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-currencyexchangeconfiguration-api
+  name: CoreStack Currency Exchange Configuration API
+  description: Manage Currency Exchange Configuration
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - CurrencyExchangeConfiguration
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-currencyexchangeconfiguration-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-custom-metric-configuration-api
+  name: CoreStack Custom Metric Configuration API
+  description: Custom Metric Configuration
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Custom Metric Configuration
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-custom-metric-configuration-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-custom-tags-api
+  name: CoreStack Custom Tags API
+  description: Manage Custom Tags
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Custom Tags
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-custom-tags-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-dashboard-definition-versions-api
+  name: CoreStack Dashboard Definition Versions API
+  description: Manage Executive Dashboard Versions
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Dashboard Definition Versions
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-dashboard-definition-versions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-dashboard-definitions-api
+  name: CoreStack Dashboard Definitions API
+  description: Manage Executive Dashboards
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Dashboard Definitions
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-dashboard-definitions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-dashboard-saved-views-api
+  name: CoreStack Dashboard Saved Views API
+  description: Manage saved views for executive dashboards (deep-linkable)
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Dashboard Saved Views
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-dashboard-saved-views-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-dimension-api
+  name: CoreStack Dimension API
+  description: Manage Dimensions
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Dimension
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-dimension-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-dimensionversion-api
+  name: CoreStack Dimension Version API
+  description: Manage Dimension Versions
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - DimensionVersion
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-dimensionversion-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-freshservice-tickets-api
+  name: CoreStack Freshservice Tickets API
+  description: Freshservice Ticket Integration
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Freshservice Tickets
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-freshservice-tickets-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-guardrails-api
+  name: CoreStack Guardrails API
+  description: Manage Policy
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Guardrails
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-guardrails-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-identity-api
+  name: CoreStack Identity API
+  description: User, Tenants & Roles Management
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Identity
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-identity-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-jira-service-management-api
+  name: CoreStack Jira Service Management API
+  description: Jira Service Management
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Jira Service Management
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-jira-service-management-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-kubernetes-agent-api
+  name: CoreStack Kubernetes Agent API
+  description: Kubernetes Agent
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Kubernetes Agent
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-kubernetes-agent-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-master-data-api
+  name: CoreStack Master Data API
+  description: Master Data apis
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Master Data
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-master-data-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-masteraccount-api
+  name: CoreStack Master Account API
+  description: Manage Master Account
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - MasterAccount
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-masteraccount-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-masteraccount-billing-api
+  name: CoreStack MasterAccount Billing API
+  description: Manage Master Account Billing
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - MasterAccount Billing
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-masteraccount-billing-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-nextgen-reports-api
+  name: CoreStack NextGen Reports API
+  description: Manage NextGen Reports
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - NextGen Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-nextgen-reports-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-on-premises-api
+  name: CoreStack On premises API
+  description: Manage On premises Metrics
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - On premises
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-on-premises-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-operations-api
+  name: CoreStack Operations API
+  description: Operations Pillar
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Operations
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-operations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-operations-utilization-api
+  name: CoreStack Operations Utilization API
+  description: Dashboard For Utilization
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Operations Utilization
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-operations-utilization-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-operations-utilization-metric-dashboard-api
+  name: CoreStack Operations Utilization Metric Dashboard API
+  description: Dashboard For Utilization Metrics
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Operations Utilization Metric Dashboard
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-operations-utilization-metric-dashboard-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-platformtask-api
+  name: CoreStack Platform Task API
+  description: Assign Platform related background tasks to service accounts
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - PlatformTask
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-platformtask-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-pricing-api
+  name: CoreStack Pricing API
+  description: Cloud SKU Pricing API
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Pricing
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-pricing-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-pro-active-scanner-configurations-api
+  name: CoreStack Pro Active Scanner Configurations API
+  description: Pro Active Scanner Configurations
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Pro Active Scanner Configurations
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-pro-active-scanner-configurations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-product-api
+  name: CoreStack Product API
+  description: Product bundles, Product & Role templates
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Product
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-product-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-recommendation-api
+  name: CoreStack Recommendation API
+  description: Recommendation summary
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Recommendation
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-recommendation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-recommendation-v2-dashboard-api
+  name: CoreStack Recommendation V2 Dashboard API
+  description: Manage Recommendations
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Recommendation V2 Dashboard
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-recommendation-v2-dashboard-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-reports-api
+  name: CoreStack Reports API
+  description: Reports Pillar
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-reports-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-request-audit-api
+  name: CoreStack Request Audit API
+  description: Analyze Request Audit
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Request Audit
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-request-audit-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-resource-api
+  name: CoreStack Resource API
+  description: Resource Pillar
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Resource
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-resource-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-savings-plans-api
+  name: CoreStack Savings Plans API
+  description: Savings plans purchased and utilization
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Savings Plans
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-savings-plans-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-schedule-recommendations-api
+  name: CoreStack Schedule Recommendations API
+  description: Schedule Recommendation
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Schedule Recommendations
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-schedule-recommendations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-schedules-api
+  name: CoreStack Schedules API
+  description: Schedules
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Schedules
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-schedules-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-security-api
+  name: CoreStack Security API
+  description: Security Pillar
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Security
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-security-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-self-service-api
+  name: CoreStack Self Service API
+  description: Self Service Pillar
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Self Service
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-self-service-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-service-account-governance-api
+  name: CoreStack Service Account Governance API
+  description: Manage Service Accounts
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Service Account Governance
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-service-account-governance-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-service-account-resources-api
+  name: CoreStack Service Account Resources API
+  description: Manage Service Account Resources
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Service Account Resources
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-service-account-resources-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-servicenow-integrations-api
+  name: CoreStack ServiceNow Integrations API
+  description: ServiceNow Integrations
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - ServiceNow Integrations
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-servicenow-integrations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-stacksmarketplaceproduct-api
+  name: CoreStack Stacks Marketplace Product API
+  description: Manage Stacks Marketplace Products
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - StacksMarketplaceProduct
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-stacksmarketplaceproduct-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-stacksmarketplacestackdefinition-api
+  name: CoreStack Stacks Marketplace Stack Definition API
+  description: Manage Stacks Marketplace Stack Definitions
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - StacksMarketplaceStackDefinition
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-stacksmarketplacestackdefinition-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-stacksmarketplacestackdefinitionversion-api
+  name: CoreStack Stacks Marketplace Stack Definition Version API
+  description: Manage Stacks Marketplace Stack Definition Versions
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - StacksMarketplaceStackDefinitionVersion
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-stacksmarketplacestackdefinitionversion-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-stacksmarketplacestackdeployment-api
+  name: CoreStack Stacks Marketplace Stack Deployment API
+  description: Manage Stacks Marketplace Stack Deployments
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - StacksMarketplaceStackDeployment
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-stacksmarketplacestackdeployment-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-summarydashboard-api
+  name: CoreStack Summary Dashboard API
+  description: Summary Dashboard APIs
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - SummaryDashboard
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-summarydashboard-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-tagginggovernancedefinitions-api
+  name: CoreStack Tagging Governance Definitions API
+  description: Manage Tagging Governance
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - TaggingGovernanceDefinitions
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-tagginggovernancedefinitions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-tagginggovernancedefinitionversions-api
+  name: CoreStack Tagging Governance Definition Versions API
+  description: Manage Tagging Governance Versions
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - TaggingGovernanceDefinitionVersions
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-tagginggovernancedefinitionversions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-tagginggovernancepostures-api
+  name: CoreStack Tagging Governance Postures API
+  description: Manage Tagging Governance Postures
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - TaggingGovernancePostures
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-tagginggovernancepostures-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-usergroups-api
+  name: CoreStack User Groups API
+  description: User Group Management
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - UserGroups
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-usergroups-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-userpreference-api
+  name: CoreStack User Preference API
+  description: Corestack UserPreferences Rest API
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - UserPreference
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-userpreference-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-wafassessmentdefinitions-api
+  name: CoreStack Waf Assessment Definitions API
+  description: Manage Assessments
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - WafAssessmentDefinitions
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-wafassessmentdefinitions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-wafassessmentdefinitionversions-api
+  name: CoreStack Waf Assessment Definition Versions API
+  description: Manage Assessment Versions
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - WafAssessmentDefinitionVersions
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-wafassessmentdefinitionversions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-wafassessmentruns-api
+  name: CoreStack Waf Assessment Runs API
+  description: Manage Assessment Runs
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - WafAssessmentRuns
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-wafassessmentruns-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-wellarchitectedframework-api
+  name: CoreStack Well Architected Framework API
+  description: Corestack Well Architecture Framework Rest API
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - WellArchitectedFramework
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-wellarchitectedframework-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-workloaddefinitions-api
+  name: CoreStack Workload Definitions API
+  description: Manage Workloads
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - WorkloadDefinitions
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-workloaddefinitions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-workloaddefinitionversions-api
+  name: CoreStack Workload Definition Versions API
+  description: Manage Workload Versions
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - WorkloadDefinitionVersions
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-workloaddefinitionversions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-workloadquery-api
+  name: CoreStack Workload Query API
+  description: Query Resources for Workloads
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - WorkloadQuery
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-workloadquery-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-zoho-incident-api
+  name: CoreStack Zoho Incident API
+  description: Zoho Incident
+  humanURL: https://docs.corestack.io/reference
+  baseURL: https://api.corestack.io/
+  tags:
+  - Zoho Incident
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-zoho-incident-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

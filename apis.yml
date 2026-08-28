@@ -16,6 +16,17 @@ description: >-
   operations across 767 paths, published live at the API host — and, since 2026, through a hosted
   unified MCP server that surfaces 100 documented tools to AI clients over OAuth or API key headers.
 url: https://raw.githubusercontent.com/api-evangelist/corestack/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://www.corestack.io/wp-content/uploads/Agentic-Governance-OS-Unified-Governance-Across-Cloud-SaaS-and-AI.png
 x-type: company
 x-source: harvest:secondary-market

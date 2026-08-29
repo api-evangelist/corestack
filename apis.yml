@@ -1947,6 +1947,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/corestack-capability-edges.yml
+  name: CoreStack Business Capability Map
 - type: DomainSecurity
   url: security/corestack-domain-security.yml
 - type: Website

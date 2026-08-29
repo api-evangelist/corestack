@@ -1,0 +1,226 @@
+slug: corestack
+provider: CoreStack
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 21
+edges:
+- tag: Cost
+  spec_file: corestack-cost-api-openapi.yml
+  capability_id: BC-600.80
+  capability_id_l1: BC-600
+  capability_name: IT Financial Management
+  confidence: 0.9
+  evidence: '"List Cost Saving Recommendation", "License Benefit Cost Savings Summary", schemas "Budget",
+    "BudgetDrift", "CreateMarkupRequest"'
+  reason: Operations manage cloud spend budgets, cost-saving recommendations and rate/usage optimisation
+    across cloud accounts — this is IT spend and cost optimisation (FinOps), squarely BC-600.80.
+- tag: AWS Security Hub
+  spec_file: corestack-aws-security-hub-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.85
+  evidence: '"Returns a list AWS Security Hub Findings ids"; filters for "finding severity", "finding
+    record state"; schema AwsSecurityHubFinding'
+  reason: Operations list, batch and filter cloud security findings by severity/record state — clearly
+    cybersecurity management. Whether it is threat detection/response versus posture/vulnerability handling
+    is not distinguishable from findings retrieval alone, so no L2 is asserted.
+- tag: Security
+  spec_file: corestack-security-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.85
+  evidence: '"Security Pillar"; "List Security Vulnerability Details", "Get Threat by Cloud Accounts",
+    "Get Config Violation by Cloud Account"'
+  reason: Operations expose cloud security posture dashboards over threats, vulnerabilities and configuration
+    violations — cybersecurity management. Spans threat detection, vulnerability and posture/control monitoring,
+    so no single L2 is clearly the one; left at L1.
+- tag: Cost Anomaly
+  spec_file: corestack-cost-anomaly-api-openapi.yml
+  capability_id: BC-600.80
+  capability_id_l1: BC-600
+  capability_name: IT Financial Management
+  confidence: 0.82
+  evidence: '"Get Account wise daily Billing Cost Anomaly", "Trigger cost anomaly detection for a dimension"'
+  reason: Detection and adjudication of anomalies in cloud billing cost is an IT cost-management/optimisation
+    control, not financial-crime alerting. Maps to IT Financial Management.
+- tag: Freshservice Tickets
+  spec_file: corestack-freshservice-tickets-api-openapi.yml
+  capability_id: BC-600.30
+  capability_id_l1: BC-600
+  capability_name: IT Service Management
+  confidence: 0.82
+  evidence: '"Freshservice Ticket Integration", "Creates a new FreshService Ticket", "List FreshService
+    Tickets"'
+  reason: Creation and retrieval of IT service-desk tickets in Freshservice from the governance platform
+    is incident/service-request handling — IT Service Management.
+- tag: Operations
+  spec_file: corestack-operations-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.8
+  evidence: '"Operations Pillar"; "Azure Patch Management Report Trigger"; "Apply Operations Alert Configuration";
+    ListOperationOpsPosture'
+  reason: Operational posture dashboards, monitoring/alert template configuration and patch management
+    for cloud estates — day-to-day IT operations monitoring and automation.
+- tag: AppSecOps
+  spec_file: corestack-appsecops-api-openapi.yml
+  capability_id: BC-620.40
+  capability_id_l1: BC-620
+  capability_name: Vulnerability Management
+  confidence: 0.78
+  evidence: POST /v1/appsecops/container/findings/ingest — "Ingest container security findings from external
+    tools"; schemas AppSecopsSbomVulnerabilityResponse, AppSecopsVulnerabilityCvssMetric
+  reason: Application security surface ingesting and listing container security findings, SBOM components
+    and CVSS-scored vulnerabilities — vulnerability identification and remediation tracking. Some overlap
+    with open-source/SBOM stewardship keeps confidence below 0.8.
+- tag: Billing
+  spec_file: corestack-billing-api-openapi.yml
+  capability_id: BC-600.80
+  capability_id_l1: BC-600
+  capability_name: IT Financial Management
+  confidence: 0.76
+  evidence: description "Cost Management"; "Aggregate costs based on input criteria"; "Retrieves the aggregated
+    trend of usage, rate and cost over a specified time period"
+  reason: Despite the 'Billing' tag, the operations aggregate and trend cloud service-account cost/usage/rate
+    data — cloud spend visibility and allocation, i.e. IT Financial Management, not customer invoicing.
+- tag: ServiceNow Integrations
+  spec_file: corestack-servicenow-integrations-api-openapi.yml
+  capability_id: BC-600.30
+  capability_id_l1: BC-600
+  capability_name: IT Service Management
+  confidence: 0.75
+  evidence: '"Create ServiceNow CMDB Configuration", "List ServiceNow CMDB CI Classes", "Cmdb Sync Progress"'
+  reason: Configures and synchronises cloud inventory into the ServiceNow CMDB — configuration management
+    within ITSM tooling. Integration plumbing element noted, but the CMDB/CI-class semantics are squarely
+    ITSM.
+- tag: UserGroups
+  spec_file: corestack-usergroups-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: openapi description "User Group Management"; "Create UserGroup", "Delete UserGroup", "User
+    Group List By Master Account"
+  reason: CRUD over user groups within a governance platform's account hierarchy is identity and access
+    administration.
+- tag: Automation
+  spec_file: corestack-automation-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.72
+  evidence: 'openapi description: "Manage Templates, Scripts & Blueprints"; POST /operation/automation/scripts/{tenant_id}/execute
+    — "Execute Script"'
+  reason: Creation, scanning and execution of infrastructure scripts, templates and blueprints against
+    cloud accounts — IT operations automation. Could arguably touch infrastructure provisioning, so not
+    maximal confidence.
+- tag: AwsSsm
+  spec_file: corestack-awsssm-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.72
+  evidence: '"Manage AWS SSM"; operations "List Documents", "Batch executions", schemas AwsSsmDocument,
+    AwsSsmBaseExecution under /v1/runbook/{tenant_id}/AWS/...'
+  reason: The surface manages AWS Systems Manager runbook documents and their executions across cloud
+    accounts — day-to-day IT operations automation, not any line-of-business capability.
+- tag: AwsSsm Automation
+  spec_file: corestack-awsssm-automation-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.72
+  evidence: '"Execute automation document" / "Cancel Automation Execution" (POST /v1/runbook/{tenant_id}/AWS/automation/{document_id})'
+  reason: Executing and tracking SSM automation runbooks against cloud infrastructure is IT operations
+    automation.
+- tag: AwsSsm Command
+  spec_file: corestack-awsssm-command-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.72
+  evidence: '"Execute command document", "List execution instances", schema AwsSsmCommandInstanceExecutionDetail'
+  reason: Running SSM commands on managed instances and inspecting per-instance execution is IT operations
+    execution/automation.
+- tag: Application Health
+  spec_file: corestack-application-health-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.7
+  evidence: POST /v1/monitoring/resource_utilization — MetricResourceUtilization; schemas ApplicationHealthAlert,
+    ResourceUtilizationMetric, PatchCompliance, DiskStatus
+  reason: Operations expose application health summaries, alerts, disk/patch status and resource-utilisation
+    metrics — day-to-day IT operations monitoring of customer cloud workloads. Could also be read as observability
+    of a SaaS service, so confidence is moderate.
+- tag: Budget V2 Management
+  spec_file: corestack-budget-v2-management-api-openapi.yml
+  capability_id: BC-600.80
+  capability_id_l1: BC-600
+  capability_name: IT Financial Management
+  confidence: 0.7
+  evidence: '"Create Budget", "Update Budget Threshold Alerts", "View Count Budget Alert Exceeds Summary"'
+  reason: Cloud spend budgets with threshold alerting is IT cost control/showback rather than enterprise
+    FP&A budgeting; vendor context is FinOps cloud cost governance.
+- tag: Identity
+  spec_file: corestack-identity-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: '"User, Tenants & Roles Management"; ListRoles "List Roles by Tenant"; CreateUser; ChangePassword'
+  reason: Operations create/delete users, assign roles per tenant and manage credentials — identity and
+    access administration. Some overlap with multi-tenant provisioning, so not maximal confidence.
+- tag: MasterAccount Billing
+  spec_file: corestack-masteraccount-billing-api-openapi.yml
+  capability_id: BC-4250
+  capability_id_l1: BC-4250
+  capability_name: Subscription Billing & Revenue Management
+  confidence: 0.7
+  evidence: '"Record a transaction and Update the balance for the master account"; "Master Account Billing
+    Summary"; BillingTransactionsList'
+  reason: Billing transactions, balances and billing summaries per customer account of the SaaS platform
+    — subscription billing and revenue management. Evidence does not pin a single sub-capability (metering
+    vs invoicing vs collection).
+- tag: Resource
+  spec_file: corestack-resource-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: '''Get Inventory Details'', ''Get Resource Listing'', ''List Resource Posture Details'', ''Create
+    Resource Lock Config Rule'''
+  reason: Inventory, listing, tagging, locking and posture of cloud compute/storage resources across accounts
+    — management of cloud infrastructure assets.
+- tag: Savings Plans
+  spec_file: corestack-savings-plans-api-openapi.yml
+  capability_id: BC-600.80
+  capability_id_l1: BC-600
+  capability_name: IT Financial Management
+  confidence: 0.7
+  evidence: '''List savings plan purchase recommendations'', ''List purchased savings plan details'',
+    ''Get savings plan utilization metrics'''
+  reason: Cloud commitment purchase recommendations and utilisation tracking is classic FinOps cost optimisation,
+    mapping to IT financial management (IT spend and cost optimisation).
+- tag: SummaryDashboard
+  spec_file: corestack-summarydashboard-api-openapi.yml
+  capability_id: BC-600.80
+  capability_id_l1: BC-600
+  capability_name: IT Financial Management
+  confidence: 0.7
+  evidence: '"Get cloud-wise cost usage and top resource consumption data for the service accounts in
+    a tenant"'
+  reason: Cloud cost and consumption reporting (FinOps visibility) across cloud accounts — IT financial
+    management/showback. Single operation, so confidence moderate.

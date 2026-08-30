@@ -1,0 +1,1231 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Billing Plan Definition Versions API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage BillOps Plan Versions
+servers:
+- url: /
+tags:
+- name: BillingPlanDefinitionVersions
+  description: Manage BillOps Plan Versions
+paths:
+  /v1/billing_plans/version/batch:
+    post:
+      responses:
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                description: List of billing plan versions
+                items:
+                  $ref: '#/components/schemas/BillingPlanDefinitionVersion'
+      summary: Fetch Billing Plan versions by ids
+      description: Fetch Billing Plan versions by ids
+      operationId: batch@@@3
+      security:
+      - auth_token: []
+      tags:
+      - BillingPlanDefinitionVersions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordIdentityBatchRequest'
+        required: true
+  /v1/billing_plans/version/create:
+    post:
+      responses:
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingPlanDefinitionVersion'
+      summary: Create a new version of a Billing Plan
+      description: Create a new version of a Billing Plan
+      operationId: create@@@3
+      security:
+      - auth_token: []
+      tags:
+      - BillingPlanDefinitionVersions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingPlanDefinitionVersion'
+        required: true
+  /v1/billing_plans/version/parse_import:
+    post:
+      responses:
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingPlanConfiguration'
+      summary: Parse Billing Plan Version
+      description: Parse and validate a raw json string to be used for importing a Billing Plan version
+      operationId: parse-import
+      security:
+      - auth_token: []
+      tags:
+      - BillingPlanDefinitionVersions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RawImport'
+        required: true
+  /v1/billing_plans/version/{version_id}:
+    get:
+      responses:
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Version not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingPlanDefinitionVersion'
+      summary: Get Billing Plan version details by version_id
+      description: Get Billing Plan version details by version_id
+      operationId: get@@@3
+      parameters:
+      - name: version_id
+        in: path
+        required: true
+        description: The Billing Plan version ID
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - BillingPlanDefinitionVersions
+  /v1/billing_plans/version/{version_id}/make_head:
+    patch:
+      responses:
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Version not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingPlanDefinitionVersion'
+      summary: Make a Billing Plan version the head version
+      description: Make a Billing Plan version the head version
+      operationId: make-head
+      parameters:
+      - name: version_id
+        in: path
+        required: true
+        description: The Billing Plan version ID
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - BillingPlanDefinitionVersions
+  /v1/billing_plans/version/{version_id}/make_release:
+    patch:
+      responses:
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Version not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingPlanDefinitionVersion'
+      summary: Make a Billing Plan version the release version
+      description: Make a Billing Plan version the release version
+      operationId: make-release
+      parameters:
+      - name: version_id
+        in: path
+        required: true
+        description: The Billing Plan version ID
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - BillingPlanDefinitionVersions
+components:
+  schemas:
+    BaseDefinitionVersion:
+      properties:
+        sysId:
+          type: string
+          description: Identifier of the version
+        createdOn:
+          type: string
+          format: date-time
+          description: Version created on
+        updatedOn:
+          type: string
+          format: date-time
+          description: Version  updated on
+        version:
+          type: integer
+          default: Sequence number of the version
+        definition:
+          description: Reference to the definition
+          $ref: '#/components/schemas/RecordIdentity'
+        predecessor:
+          description: Reference to the previous version
+          $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    BillingPlanDefinitionVersion:
+      allOf:
+      - $ref: '#/components/schemas/BaseDefinitionVersion'
+      - properties:
+          details:
+            description: Details of the version
+            $ref: '#/components/schemas/BillingPlanConfiguration'
+          status:
+            type: string
+            description: Billing Plan Execution Status. This field is used to indicate the completion status of the billing plan execution.
+            example: completed
+            enum:
+            - completed
+            - failed
+            - in_progress
+            - pending
+            - na
+            x-cs-enum-type: BillingPlanExecutionStatus
+          statuses:
+            type: array
+            description: Status by service account
+            items:
+              $ref: '#/components/schemas/BillingPlanSyncStatus'
+          created_by:
+            type: string
+            description: Created by
+            x-cs-type: ObjectId
+          updated_by:
+            type: string
+            description: Updated by
+            x-cs-type: ObjectId
+        type: object
+    BillingRuleGroup:
+      allOf:
+      - $ref: '#/components/schemas/BillingRule'
+      - properties:
+          rules:
+            type: array
+            description: List of rules
+            items:
+              $ref: '#/components/schemas/BillingRule'
+        type: object
+      x-cs-type-name: BillingRuleGroup
+    QueryOperator:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: QueryOperatorTrue
+        subtype_name: QueryOperatorTrue
+      - subtype_model: QueryOperatorFalse
+        subtype_name: QueryOperatorFalse
+      - subtype_model: QueryOperatorBinary
+        subtype_name: QueryOperatorBinary
+      - subtype_model: QueryOperatorBinaryLogic
+        subtype_name: QueryOperatorBinaryLogic
+      - subtype_model: QueryOperatorNary
+        subtype_name: QueryOperatorNary
+      - subtype_model: QueryOperatorNaryLogic
+        subtype_name: QueryOperatorNaryLogic
+      - subtype_model: QueryOperatorComparator
+        subtype_name: QueryOperatorComparator
+      - subtype_model: QueryOperatorComparatorLogic
+        subtype_name: QueryOperatorComparatorLogic
+      - subtype_model: QueryOperatorUnary
+        subtype_name: QueryOperatorUnary
+      - subtype_model: QueryOperatorUnaryNot
+        subtype_name: QueryOperatorUnaryNot
+      - subtype_model: QueryOperatorBinaryForGraph
+        subtype_name: QueryOperatorBinaryForGraph
+      - subtype_model: QueryOperatorBinaryLogicForGraph
+        subtype_name: QueryOperatorBinaryLogicForGraph
+      - subtype_model: QueryOperatorNaryForGraph
+        subtype_name: QueryOperatorNaryForGraph
+      - subtype_model: QueryOperatorNaryLogicForGraph
+        subtype_name: QueryOperatorNaryLogicForGraph
+      - subtype_model: QueryOperatorUnaryForGraph
+        subtype_name: QueryOperatorUnaryForGraph
+      - subtype_model: QueryOperatorUnaryNotForGraph
+        subtype_name: QueryOperatorUnaryNotForGraph
+      - subtype_model: ServiceAccountQueryOperator
+        subtype_name: ServiceAccountQueryOperator
+      - subtype_model: TenantQueryOperator
+        subtype_name: TenantQueryOperator
+      - subtype_model: DescendantServiceAccountQueryOperator
+        subtype_name: DescendantServiceAccountQueryOperator
+      - subtype_model: DescendantServiceAccountInTenantQueryOperator
+        subtype_name: DescendantServiceAccountInTenantQueryOperator
+      - subtype_model: TenantTagKeyQueryOperator
+        subtype_name: TenantTagKeyQueryOperator
+      - subtype_model: TenantTagKeyValueQueryOperator
+        subtype_name: TenantTagKeyValueQueryOperator
+      - subtype_model: LocationQueryOperator
+        subtype_name: LocationQueryOperator
+      - subtype_model: AvailabilityZoneQueryOperator
+        subtype_name: AvailabilityZoneQueryOperator
+      - subtype_model: BillingSourceQueryOperator
+        subtype_name: BillingSourceQueryOperator
+      - subtype_model: CurrencyQueryOperator
+        subtype_name: CurrencyQueryOperator
+      - subtype_model: ProductCategoryQueryOperator
+        subtype_name: ProductCategoryQueryOperator
+      - subtype_model: ProductFamilyQueryOperator
+        subtype_name: ProductFamilyQueryOperator
+      - subtype_model: ProductServiceCodeQueryOperator
+        subtype_name: ProductServiceCodeQueryOperator
+      - subtype_model: ProductSkuQueryOperator
+        subtype_name: ProductSkuQueryOperator
+      - subtype_model: PublisherQueryOperator
+        subtype_name: PublisherQueryOperator
+      - subtype_model: ResourceCategoryQueryOperator
+        subtype_name: ResourceCategoryQueryOperator
+      - subtype_model: ResourceIdQueryOperator
+        subtype_name: ResourceIdQueryOperator
+      - subtype_model: ResourceGroupQueryOperator
+        subtype_name: ResourceGroupQueryOperator
+      - subtype_model: ResourceNameQueryOperator
+        subtype_name: ResourceNameQueryOperator
+      - subtype_model: ResourceOperationQueryOperator
+        subtype_name: ResourceOperationQueryOperator
+      - subtype_model: ResourceQueryExtraPresence
+        subtype_name: ResourceQueryExtraPresence
+      - subtype_model: ResourceQueryExtraKey
+        subtype_name: ResourceQueryExtraKey
+      - subtype_model: ScopeContainsTenantQueryOperator
+        subtype_name: ScopeContainsTenantQueryOperator
+      - subtype_model: ScopeContainsServiceAccountQueryOperator
+        subtype_name: ScopeContainsServiceAccountQueryOperator
+      - subtype_model: ScopeIsQueryOperator
+        subtype_name: ScopeIsQueryOperator
+      - subtype_model: ServiceCategoryQueryOperator
+        subtype_name: ServiceCategoryQueryOperator
+      - subtype_model: ServiceTypeQueryOperator
+        subtype_name: ServiceTypeQueryOperator
+      - subtype_model: CompartmentNameQueryOperator
+        subtype_name: CompartmentNameQueryOperator
+      - subtype_model: ResourceQueryExtraKeyValue
+        subtype_name: ResourceQueryExtraKeyValue
+      - subtype_model: WorkFlowIdQueryOperator
+        subtype_name: WorkFlowIdQueryOperator
+      - subtype_model: RecommendationSubClassificationQueryOperator
+        subtype_name: RecommendationSubClassificationQueryOperator
+      - subtype_model: ServiceNowCmdbQuerySyncLogResourceId
+        subtype_name: ServiceNowCmdbQuerySyncLogResourceId
+      - subtype_model: ServiceNowCmdbQuerySyncLogResourceType
+        subtype_name: ServiceNowCmdbQuerySyncLogResourceType
+      - subtype_model: ServiceNowCmdbQuerySyncLogAction
+        subtype_name: ServiceNowCmdbQuerySyncLogAction
+      - subtype_model: ServiceNowCmdbQuerySyncLogStatus
+        subtype_name: ServiceNowCmdbQuerySyncLogStatus
+      - subtype_model: ServiceNowCmdbQuerySyncLogService
+        subtype_name: ServiceNowCmdbQuerySyncLogService
+      - subtype_model: ServiceAccountNativeDetailsQueryOperator
+        subtype_name: ServiceAccountNativeDetailsQueryOperator
+      - subtype_model: ServiceAccountStatusQueryOperator
+        subtype_name: ServiceAccountStatusQueryOperator
+      - subtype_model: ServiceAccountTagKeyQueryOperator
+        subtype_name: ServiceAccountTagKeyQueryOperator
+      - subtype_model: ServiceAccountTagKeyRegexQueryOperator
+        subtype_name: ServiceAccountTagKeyRegexQueryOperator
+      - subtype_model: ServiceAccountTagKeyValueQueryOperator
+        subtype_name: ServiceAccountTagKeyValueQueryOperator
+      - subtype_model: ApplicableHealthMetricsQueryOperator
+        subtype_name: ApplicableHealthMetricsQueryOperator
+      - subtype_model: EpssScoreRangeQueryOperator
+        subtype_name: EpssScoreRangeQueryOperator
+      - subtype_model: CvssMetricScoreRangeQueryOperator
+        subtype_name: CvssMetricScoreRangeQueryOperator
+      - subtype_model: GraphionScoreRangeQueryOperator
+        subtype_name: GraphionScoreRangeQueryOperator
+      - subtype_model: AppSecopsApplicationIdQueryOperator
+        subtype_name: AppSecopsApplicationIdQueryOperator
+      - subtype_model: AppSecopsPortfolioIdQueryOperator
+        subtype_name: AppSecopsPortfolioIdQueryOperator
+      - subtype_model: AppSecopsProjectIdQueryOperator
+        subtype_name: AppSecopsProjectIdQueryOperator
+      - subtype_model: AppSecopsSbomComponentIdQueryOperator
+        subtype_name: AppSecopsSbomComponentIdQueryOperator
+      - subtype_model: AppSecopsSbomVersionIdQueryOperator
+        subtype_name: AppSecopsSbomVersionIdQueryOperator
+      - subtype_model: AppSecopsComponentProductQueryOperator
+        subtype_name: AppSecopsComponentProductQueryOperator
+      - subtype_model: AppSecopsSbomComponentTypeQueryOperator
+        subtype_name: AppSecopsSbomComponentTypeQueryOperator
+      - subtype_model: AppSecopsSbomVersionSubmittedByQueryOperator
+        subtype_name: AppSecopsSbomVersionSubmittedByQueryOperator
+      - subtype_model: AppSecopsSbomVersionSubmittedDateQueryOperator
+        subtype_name: AppSecopsSbomVersionSubmittedDateQueryOperator
+      - subtype_model: AppSecopsSbomVersionBuildIdQueryOperator
+        subtype_name: AppSecopsSbomVersionBuildIdQueryOperator
+      - subtype_model: AppSecopsSbomNameQueryOperator
+        subtype_name: AppSecopsSbomNameQueryOperator
+      - subtype_model: AppSecopsCveIdQueryOperator
+        subtype_name: AppSecopsCveIdQueryOperator
+      - subtype_model: AppSecopsEpssScoreQueryOperator
+        subtype_name: AppSecopsEpssScoreQueryOperator
+      - subtype_model: AppSecopsCvssScoreQueryOperator
+        subtype_name: AppSecopsCvssScoreQueryOperator
+      - subtype_model: AppSecopsGraphionScoreQueryOperator
+        subtype_name: AppSecopsGraphionScoreQueryOperator
+      - subtype_model: SecopsVulnerabilitySeverityQueryOperator
+        subtype_name: SecopsVulnerabilitySeverityQueryOperator
+      - subtype_model: AppSecopsIsKnownExploitedVulnerabilityQueryOperator
+        subtype_name: AppSecopsIsKnownExploitedVulnerabilityQueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricAttackVectorV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricAttackVectorV31QueryOperator
+      - subtype_model: AppSecopsFixAvailableQueryOperator
+        subtype_name: AppSecopsFixAvailableQueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricAttackComplexityV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricAttackComplexityV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricPrivilegesRequiredV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricPrivilegesRequiredV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricScopeV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricScopeV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityUserInteractionV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityUserInteractionV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityImpactMetricConfidentialityImpactV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityImpactMetricConfidentialityImpactV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityImpactMetricIntegrityImpactV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityImpactMetricIntegrityImpactV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityImpactMetricAvailabilityImpactV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityImpactMetricAvailabilityImpactV31QueryOperator
+      - subtype_model: AppSecopsContainerFindingsSBOMVersionIdsQueryOperator
+        subtype_name: AppSecopsContainerFindingsSBOMVersionIdsQueryOperator
+      - subtype_model: AppSecopsContainerFindingsCategoryQueryOperator
+        subtype_name: AppSecopsContainerFindingsCategoryQueryOperator
+      - subtype_model: AppSecopsContainerFindingsExecutionPhaseQueryOperator
+        subtype_name: AppSecopsContainerFindingsExecutionPhaseQueryOperator
+      - subtype_model: AppSecopsContainerFindingsSeverityQueryOperator
+        subtype_name: AppSecopsContainerFindingsSeverityQueryOperator
+      - subtype_model: AppSecopsContainerFindingsStatusQueryOperator
+        subtype_name: AppSecopsContainerFindingsStatusQueryOperator
+      - subtype_model: DimensionSourceQueryOperator
+        subtype_name: DimensionSourceQueryOperator
+      - subtype_model: DimensionQueryOperator
+        subtype_name: DimensionQueryOperator
+      - subtype_model: ResourceTypeQueryOperator
+        subtype_name: ResourceTypeQueryOperator
+      - subtype_model: PodIdRegexQueryOperator
+        subtype_name: PodIdRegexQueryOperator
+      - subtype_model: PodNameRegexQueryOperator
+        subtype_name: PodNameRegexQueryOperator
+      - subtype_model: ContainerIdRegexQueryOperator
+        subtype_name: ContainerIdRegexQueryOperator
+      - subtype_model: PodNamesQueryOperator
+        subtype_name: PodNamesQueryOperator
+      - subtype_model: PodIdsQueryOperator
+        subtype_name: PodIdsQueryOperator
+      - subtype_model: UtilizationTypeQueryOperator
+        subtype_name: UtilizationTypeQueryOperator
+      - subtype_model: ResourceIdRegexQueryOperator
+        subtype_name: ResourceIdRegexQueryOperator
+      - subtype_model: ResourceNameRegexQueryOperator
+        subtype_name: ResourceNameRegexQueryOperator
+      - subtype_model: ExtrasValueRegexQueryOperator
+        subtype_name: ExtrasValueRegexQueryOperator
+      - subtype_model: TagKeyValueRegexQueryOperator
+        subtype_name: TagKeyValueRegexQueryOperator
+      - subtype_model: ResourceQueryTagKeyKind
+        subtype_name: ResourceQueryTagKeyKind
+      - subtype_model: ResourceQueryTagKeyValuesKind
+        subtype_name: ResourceQueryTagKeyValuesKind
+      - subtype_model: TagKeyStringValueRegexQueryOperator
+        subtype_name: TagKeyStringValueRegexQueryOperator
+      - subtype_model: TagKindStringKeyRegexQueryOperator
+        subtype_name: TagKindStringKeyRegexQueryOperator
+      - subtype_model: ServiceAccountNameRegexQueryOperator
+        subtype_name: ServiceAccountNameRegexQueryOperator
+      - subtype_model: TenantNameRegexQueryOperator
+        subtype_name: TenantNameRegexQueryOperator
+      - subtype_model: PlatFormAccountQueryOperator
+        subtype_name: PlatFormAccountQueryOperator
+      - subtype_model: BillingLineItemTypeQueryOperator
+        subtype_name: BillingLineItemTypeQueryOperator
+      - subtype_model: BillingEntityQueryOperator
+        subtype_name: BillingEntityQueryOperator
+      - subtype_model: LineItemDescriptionQueryOperator
+        subtype_name: LineItemDescriptionQueryOperator
+      - subtype_model: LineItemDescriptionRegexQueryOperator
+        subtype_name: LineItemDescriptionRegexQueryOperator
+      - subtype_model: MeterSubCategoryQueryOperator
+        subtype_name: MeterSubCategoryQueryOperator
+      - subtype_model: PricingCategoryQueryOperator
+        subtype_name: PricingCategoryQueryOperator
+      - subtype_model: PricingPurchaseOptionQueryOperator
+        subtype_name: PricingPurchaseOptionQueryOperator
+      - subtype_model: TagKeyRegexQueryOperator
+        subtype_name: TagKeyRegexQueryOperator
+      - subtype_model: BillingLineItemTypeRegexQueryOperator
+        subtype_name: BillingLineItemTypeRegexQueryOperator
+      - subtype_model: ResourceGroupRegexQueryOperator
+        subtype_name: ResourceGroupRegexQueryOperator
+      - subtype_model: ResourceCategoryRegexQueryOperator
+        subtype_name: ResourceCategoryRegexQueryOperator
+      - subtype_model: ProductCategoryRegexQueryOperator
+        subtype_name: ProductCategoryRegexQueryOperator
+      - subtype_model: BillingEntityRegexQueryOperator
+        subtype_name: BillingEntityRegexQueryOperator
+      - subtype_model: ResourceOperationRegexQueryOperator
+        subtype_name: ResourceOperationRegexQueryOperator
+      - subtype_model: ResourceQueryFieldPresence
+        subtype_name: ResourceQueryFieldPresence
+      - subtype_model: AssessmentRunReportDetailQuerySection
+        subtype_name: AssessmentRunReportDetailQuerySection
+      - subtype_model: AssessmentRunReportSummaryQuerySection
+        subtype_name: AssessmentRunReportSummaryQuerySection
+      - subtype_model: AssessmentQueryAssessmentName
+        subtype_name: AssessmentQueryAssessmentName
+      - subtype_model: AssessmentQueryAssessmentOwner
+        subtype_name: AssessmentQueryAssessmentOwner
+      - subtype_model: AssessmentQueryAssessmentApprover
+        subtype_name: AssessmentQueryAssessmentApprover
+      - subtype_model: AssessmentQueryWorkload
+        subtype_name: AssessmentQueryWorkload
+      - subtype_model: AssessmentQueryFramework
+        subtype_name: AssessmentQueryFramework
+      - subtype_model: AssessmentQueryPillar
+        subtype_name: AssessmentQueryPillar
+      - subtype_model: AssessmentViewQueryNature
+        subtype_name: AssessmentViewQueryNature
+      - subtype_model: AssessmentViewQueryQuestionRisk
+        subtype_name: AssessmentViewQueryQuestionRisk
+      - subtype_model: AssessmentViewQueryBestPracticeRisk
+        subtype_name: AssessmentViewQueryBestPracticeRisk
+      - subtype_model: AssessmentViewQueryQuestionStatus
+        subtype_name: AssessmentViewQueryQuestionStatus
+      - subtype_model: AssessmentViewQueryBestPracticeStatus
+        subtype_name: AssessmentViewQueryBestPracticeStatus
+      - subtype_model: AssessmentViewQueryOwner
+        subtype_name: AssessmentViewQueryOwner
+      - subtype_model: AssessmentViewQueryAssignedTo
+        subtype_name: AssessmentViewQueryAssignedTo
+      - subtype_model: AssessmentViewQueryComment
+        subtype_name: AssessmentViewQueryComment
+      - subtype_model: AssessmentReportQueryAssessmentName
+        subtype_name: AssessmentReportQueryAssessmentName
+      - subtype_model: AssessmentReportQueryFramework
+        subtype_name: AssessmentReportQueryFramework
+      - subtype_model: AssessmentReportQueryReportType
+        subtype_name: AssessmentReportQueryReportType
+      - subtype_model: AssessmentReportQueryWorkloadId
+        subtype_name: AssessmentReportQueryWorkloadId
+      - subtype_model: ScheduleQueryName
+        subtype_name: ScheduleQueryName
+      - subtype_model: ScheduleQueryCreatedBy
+        subtype_name: ScheduleQueryCreatedBy
+      - subtype_model: ScheduleQueryEmailRecipients
+        subtype_name: ScheduleQueryEmailRecipients
+      - subtype_model: ScheduleQueryRecurrence
+        subtype_name: ScheduleQueryRecurrence
+      - subtype_model: ScheduleQueryReportType
+        subtype_name: ScheduleQueryReportType
+      - subtype_model: ScheduleQueryNextGenReportType
+        subtype_name: ScheduleQueryNextGenReportType
+      - subtype_model: ScheduleQueryAssessmentAgentReportType
+        subtype_name: ScheduleQueryAssessmentAgentReportType
+      - subtype_model: AutomationTemplateQueryEngineType
+        subtype_name: AutomationTemplateQueryEngineType
+      - subtype_model: AutomationTemplateQueryRepoType
+        subtype_name: AutomationTemplateQueryRepoType
+      - subtype_model: AutomationTemplateQueryService
+        subtype_name: AutomationTemplateQueryService
+      - subtype_model: AutomationTemplateQueryTenant
+        subtype_name: AutomationTemplateQueryTenant
+      - subtype_model: AwsSecurityHubFindingQueryLocation
+        subtype_name: AwsSecurityHubFindingQueryLocation
+      - subtype_model: AwsSecurityHubFindingQuerySeverity
+        subtype_name: AwsSecurityHubFindingQuerySeverity
+      - subtype_model: AwsSecurityHubFindingQueryProductName
+        subtype_name: AwsSecurityHubFindingQueryProductName
+      - subtype_model: AwsSecurityHubFindingQueryResource
+        subtype_name: AwsSecurityHubFindingQueryResource
+      - subtype_model: AwsSecurityHubFindingQueryCloudAccount
+        subtype_name: AwsSecurityHubFindingQueryCloudAccount
+      - subtype_model: AwsSecurityHubFindingQueryRecordState
+        subtype_name: AwsSecurityHubFindingQueryRecordState
+      - subtype_model: AwsSsmDocumentQueryCloudAccount
+        subtype_name: AwsSsmDocumentQueryCloudAccount
+      - subtype_model: AwsSsmDocumentQueryRegion
+        subtype_name: AwsSsmDocumentQueryRegion
+      - subtype_model: AwsSsmDocumentQueryOwner
+        subtype_name: AwsSsmDocumentQueryOwner
+      - subtype_model: AwsSsmDocumentQueryCategory
+        subtype_name: AwsSsmDocumentQueryCategory
+      - subtype_model: AwsSsmDocumentQueryStatus
+        subtype_name: AwsSsmDocumentQueryStatus
+      - subtype_model: AwsSsmDocumentQueryName
+        subtype_name: AwsSsmDocumentQueryName
+      - subtype_model: AwsSsmDocumentQueryExecutedBy
+        subtype_name: AwsSsmDocumentQueryExecutedBy
+      - subtype_model: ComplianceURIQueryOperator
+        subtype_name: ComplianceURIQueryOperator
+      - subtype_model: DurationInMonthsQueryOperator
+        subtype_name: DurationInMonthsQueryOperator
+      - subtype_model: UniqueIdQueryOperator
+        subtype_name: UniqueIdQueryOperator
+      - subtype_model: ThreatVulnerabilityStatusQueryOperator
+        subtype_name: ThreatVulnerabilityStatusQueryOperator
+      - subtype_model: ThreatVulnerabilitySeverityQueryOperator
+        subtype_name: ThreatVulnerabilitySeverityQueryOperator
+      - subtype_model: ThreatVulnerabilityIssueTypeQueryOperator
+        subtype_name: ThreatVulnerabilityIssueTypeQueryOperator
+      - subtype_model: ThreatIntentQueryOperator
+        subtype_name: ThreatIntentQueryOperator
+      - subtype_model: VulnerabilityReferenceIdQueryOperator
+        subtype_name: VulnerabilityReferenceIdQueryOperator
+      - subtype_model: CostAnomalyStatusQueryOperator
+        subtype_name: CostAnomalyStatusQueryOperator
+      - subtype_model: CurrencyExchangeConfigurationQuerySourceCurrency
+        subtype_name: CurrencyExchangeConfigurationQuerySourceCurrency
+      - subtype_model: CurrencyExchangeConfigurationQueryTargetCurrency
+        subtype_name: CurrencyExchangeConfigurationQueryTargetCurrency
+      - subtype_model: CurrencyExchangeConfigurationQueryScope
+        subtype_name: CurrencyExchangeConfigurationQueryScope
+      - subtype_model: MetricValuesOperator
+        subtype_name: MetricValuesOperator
+      - subtype_model: PatchReadinessStatusQueryOperator
+        subtype_name: PatchReadinessStatusQueryOperator
+      - subtype_model: MasterAccountBillingQueryMasterAccounts
+        subtype_name: MasterAccountBillingQueryMasterAccounts
+      - subtype_model: MasterAccountBillingQueryTenants
+        subtype_name: MasterAccountBillingQueryTenants
+      - subtype_model: MasterAccountBillingQueryUsers
+        subtype_name: MasterAccountBillingQueryUsers
+      - subtype_model: MasterAccountBillingQueryConversations
+        subtype_name: MasterAccountBillingQueryConversations
+      - subtype_model: MasterAccountBillingQueryTransactionType
+        subtype_name: MasterAccountBillingQueryTransactionType
+      - subtype_model: PolicyResourceRecommendationStatusQueryOperator
+        subtype_name: PolicyResourceRecommendationStatusQueryOperator
+      - subtype_model: PolicyResourceRecommendationPolicyIdsQueryOperator
+        subtype_name: PolicyResourceRecommendationPolicyIdsQueryOperator
+      - subtype_model: PolicyResourceRecommendationSeverityQueryOperator
+        subtype_name: PolicyResourceRecommendationSeverityQueryOperator
+      - subtype_model: PolicyRecommendationClassificationQueryOperator
+        subtype_name: PolicyRecommendationClassificationQueryOperator
+      - subtype_model: InfraResourceTrendResourceChangeStatusQueryOperator
+        subtype_name: InfraResourceTrendResourceChangeStatusQueryOperator
+      - subtype_model: VmAgentsQueryOsTypes
+        subtype_name: VmAgentsQueryOsTypes
+      - subtype_model: VmAgentsQueryInstantState
+        subtype_name: VmAgentsQueryInstantState
+      - subtype_model: VmAgentsQueryQualysStatus
+        subtype_name: VmAgentsQueryQualysStatus
+      - subtype_model: VmAgentsQueryCrowdStrikeStatus
+        subtype_name: VmAgentsQueryCrowdStrikeStatus
+      - subtype_model: VmAgentsQuerySplunkStatus
+        subtype_name: VmAgentsQuerySplunkStatus
+      - subtype_model: StacksMarketplaceStackQueryArchived
+        subtype_name: StacksMarketplaceStackQueryArchived
+      - subtype_model: StacksMarketplaceStackQueryAutoApproved
+        subtype_name: StacksMarketplaceStackQueryAutoApproved
+      - subtype_model: StacksMarketplaceStackQueryOwner
+        subtype_name: StacksMarketplaceStackQueryOwner
+      - subtype_model: StacksMarketplaceStackQueryName
+        subtype_name: StacksMarketplaceStackQueryName
+      - subtype_model: StacksMarketplaceStackQueryProduct
+        subtype_name: StacksMarketplaceStackQueryProduct
+      - subtype_model: StacksMarketplaceDeploymentQueryName
+        subtype_name: StacksMarketplaceDeploymentQueryName
+      - subtype_model: StacksMarketplaceDeploymentQueryStack
+        subtype_name: StacksMarketplaceDeploymentQueryStack
+      - subtype_model: StacksMarketplaceDeploymentQueryAccount
+        subtype_name: StacksMarketplaceDeploymentQueryAccount
+      - subtype_model: StacksMarketplaceDeploymentQueryRegion
+        subtype_name: StacksMarketplaceDeploymentQueryRegion
+      - subtype_model: StacksMarketplaceStackDeploymentQueryExecutionStatus
+        subtype_name: StacksMarketplaceStackDeploymentQueryExecutionStatus
+      - subtype_model: MetricNameQueryOperator
+        subtype_name: MetricNameQueryOperator
+      - subtype_model: ResourceQueryCategory
+        subtype_name: ResourceQueryCategory
+      - subtype_model: ResourceQueryLocation
+        subtype_name: ResourceQueryLocation
+      - subtype_model: ResourceQueryResource
+        subtype_name: ResourceQueryResource
+      - subtype_model: ResourceQueryResourceGroup
+        subtype_name: ResourceQueryResourceGroup
+      - subtype_model: ResourceQueryResourceName
+        subtype_name: ResourceQueryResourceName
+      - subtype_model: ResourceQueryResourceType
+        subtype_name: ResourceQueryResourceType
+      - subtype_model: ResourceQueryTagPresence
+        subtype_name: ResourceQueryTagPresence
+      - subtype_model: ResourceQueryTagKey
+        subtype_name: ResourceQueryTagKey
+      - subtype_model: ResourceQueryTagKeyValue
+        subtype_name: ResourceQueryTagKeyValue
+      - subtype_model: WorkloadQueryWorkloadName
+        subtype_name: WorkloadQueryWorkloadName
+      - subtype_model: WorkloadQueryWorkloadOwner
+        subtype_name: WorkloadQueryWorkloadOwner
+      - subtype_model: WorkloadQueryCloud
+        subtype_name: WorkloadQueryCloud
+      - subtype_model: WorkloadQueryCloudAccount
+        subtype_name: WorkloadQueryCloudAccount
+      - subtype_model: WorkloadQueryWorkloadType
+        subtype_name: WorkloadQueryWorkloadType
+      - subtype_model: WorkloadQueryWorkloadId
+        subtype_name: WorkloadQueryWorkloadId
+    RawImport:
+      properties:
+        contentsAsJSON:
+          type: string
+      type: object
+    BillingRule:
+      required:
+      - __type
+      properties:
+        name:
+          type: string
+          description: Name of the billing rule
+        description:
+          type: string
+          description: Description of the billing rule
+        is_active:
+          type: boolean
+          description: True if the billing plan is active
+        scope:
+          description: Filter to select the line items this rule applies to.
+          $ref: '#/components/schemas/QueryOperator'
+        start_date:
+          type: string
+          format: date-time
+          description: Start date of the billing rule
+        end_date:
+          type: string
+          format: date-time
+          description: End date of the billing rule
+        note:
+          type: string
+          description: Note for the billing rule
+        attachment_ids:
+          type: array
+          description: List of attachment IDs
+          items:
+            type: string
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: BillingRuleStop
+        subtype_name: BillingRuleStop
+      - subtype_model: BillingRuleStopGroup
+        subtype_name: BillingRuleStopGroup
+      - subtype_model: BillingRulePublish
+        subtype_name: BillingRulePublish
+      - subtype_model: BillingRuleGroup
+        subtype_name: BillingRuleGroup
+      - subtype_model: BillingRuleRoot
+        subtype_name: BillingRuleRoot
+      - subtype_model: BillingRuleCalculate
+        subtype_name: BillingRuleCalculate
+      - subtype_model: BillingRuleFixedCustomRate
+        subtype_name: BillingRuleFixedCustomRate
+      - subtype_model: BillingRulePercentageCalculate
+        subtype_name: BillingRulePercentageCalculate
+      - subtype_model: BillingRuleMargin
+        subtype_name: BillingRuleMargin
+      - subtype_model: BillingRuleFixedTiered
+        subtype_name: BillingRuleFixedTiered
+      - subtype_model: BillingRuleAllocation
+        subtype_name: BillingRuleAllocation
+      - subtype_model: BillingRuleAllocationGenericTargets
+        subtype_name: BillingRuleAllocationGenericTargets
+      - subtype_model: BillingRuleAllocationProportionalSpend
+        subtype_name: BillingRuleAllocationProportionalSpend
+      - subtype_model: BillingRuleAllocationProportionalUsage
+        subtype_name: BillingRuleAllocationProportionalUsage
+      - subtype_model: BillingRuleAllocationProportionalServiceCategory
+        subtype_name: BillingRuleAllocationProportionalServiceCategory
+      - subtype_model: BillingRuleAllocationEqual
+        subtype_name: BillingRuleAllocationEqual
+      - subtype_model: BillingRuleAllocationPercentage
+        subtype_name: BillingRuleAllocationPercentage
+      - subtype_model: BillingRuleCreateLineItemBase
+        subtype_name: BillingRuleCreateLineItemBase
+      - subtype_model: BillingRuleCreateLineItemFromTiered
+        subtype_name: BillingRuleCreateLineItemFromTiered
+      - subtype_model: BillingRuleCreateLineItemFromPercentage
+        subtype_name: BillingRuleCreateLineItemFromPercentage
+      - subtype_model: BillingRuleCreateLineItem
+        subtype_name: BillingRuleCreateLineItem
+      - subtype_model: BillingRuleCommitmentUnshare
+        subtype_name: BillingRuleCommitmentUnshare
+      - subtype_model: BillingRuleAllocationProportionalSpendPlatform
+        subtype_name: BillingRuleAllocationProportionalSpendPlatform
+      - subtype_model: BillingRuleAllocationProportionalSpendCloudAndPlatform
+        subtype_name: BillingRuleAllocationProportionalSpendCloudAndPlatform
+      - subtype_model: BillingRuleAllocationProportionalServiceCategoryPlatform
+        subtype_name: BillingRuleAllocationProportionalServiceCategoryPlatform
+      - subtype_model: BillingRuleAllocationProportionalServiceCategoryCloudAndPlatform
+        subtype_name: BillingRuleAllocationProportionalServiceCategoryCloudAndPlatform
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    BillingPlanSyncStatus:
+      required:
+      - status
+      - sys_id
+      properties:
+        sys_id:
+          type: string
+          description: Service account ID
+          x-cs-type: ObjectId
+        status:
+          type: string
+          description: Status of the billing plan execution
+          example: completed
+          enum:
+          - completed
+          - failed
+          - in_progress
+          - pending
+          - na
+          x-cs-enum-type: BillingPlanExecutionStatus
+        message:
+          type: string
+          description: Message related to the billing plan status
+      type: object
+    BillingRuleRoot:
+      allOf:
+      - $ref: '#/components/schemas/BillingRuleGroup'
+      - properties:
+          parent_plan_id:
+            type: string
+            description: Parent plan ID
+          destination_metric:
+            type: string
+            description: Describes the destination metrics of the billing plan.
+          source_metric:
+            type: string
+            description: Describes the source metric of the billing plan.
+          source_metric_overrides:
+            type: array
+            description: List of source metric overrides by native details
+            items:
+              $ref: '#/components/schemas/BillingMetricSourceOverride'
+          match_service_account_ancestors:
+            type: boolean
+            description: True if the rules contained by the group should match service account ancestors
+            default: false
+        type: object
+      x-cs-type-name: BillingRuleRoot
+    ServiceAccountNativeDetailsBase:
+      required:
+      - type
+      properties: {}
+      discriminator:
+        propertyName: type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ServiceAccountNativeDetailsBaseForCostCenter
+        subtype_name: ServiceAccountNativeDetailsBaseForCostCenter
+      - subtype_model: ServiceAccountNativeDetailsBaseForStructure
+        subtype_name: ServiceAccountNativeDetailsBaseForStructure
+      - subtype_model: ServiceAccountNativeDetailsBaseForCostCenterCloud
+        subtype_name: ServiceAccountNativeDetailsBaseForCostCenterCloud
+      - subtype_model: ServiceAccountNativeDetailsBaseForCostCenterDimension
+        subtype_name: ServiceAccountNativeDetailsBaseForCostCenterDimension
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterDimension
+        subtype_name: ServiceAccountNativeDetailsForCostCenterDimension
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterDimensionGroupingRule
+        subtype_name: ServiceAccountNativeDetailsForCostCenterDimensionGroupingRule
+      - subtype_model: ServiceAccountNativeDetailsBaseForCloud
+        subtype_name: ServiceAccountNativeDetailsBaseForCloud
+      - subtype_model: ServiceAccountNativeDetailsBaseForAws
+        subtype_name: ServiceAccountNativeDetailsBaseForAws
+      - subtype_model: ServiceAccountNativeDetailsForAwsOrganizationUnit
+        subtype_name: ServiceAccountNativeDetailsForAwsOrganizationUnit
+      - subtype_model: ServiceAccountNativeDetailsForAwsManagementAccount
+        subtype_name: ServiceAccountNativeDetailsForAwsManagementAccount
+      - subtype_model: ServiceAccountNativeDetailsForAwsMemberAccount
+        subtype_name: ServiceAccountNativeDetailsForAwsMemberAccount
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterAws
+        subtype_name: ServiceAccountNativeDetailsForCostCenterAws
+      - subtype_model: ServiceAccountNativeDetailsBaseForAzure
+        subtype_name: ServiceAccountNativeDetailsBaseForAzure
+      - subtype_model: ServiceAccountNativeDetailsForAzureCspMaster
+        subtype_name: ServiceAccountNativeDetailsForAzureCspMaster
+      - subtype_model: ServiceAccountNativeDetailsForAzureCspPartner
+        subtype_name: ServiceAccountNativeDetailsForAzureCspPartner
+      - subtype_model: ServiceAccountNativeDetailsForAzureCspCustomer
+        subtype_name: ServiceAccountNativeDetailsForAzureCspCustomer
+      - subtype_model: ServiceAccountNativeDetailsBaseForAzureSubscription
+        subtype_name: ServiceAccountNativeDetailsBaseForAzureSubscription
+      - subtype_model: ServiceAccountNativeDetailsForAzureSubscription
+        subtype_name: ServiceAccountNativeDetailsForAzureSubscription
+      - subtype_model: ServiceAccountNativeDetailsForAzureCspSubscription
+        subtype_name: ServiceAccountNativeDetailsForAzureCspSubscription
+      - subtype_model: ServiceAccountNativeDetailsBaseForAzureEaMaster
+        subtype_name: ServiceAccountNativeDetailsBaseForAzureEaMaster
+      - subtype_model: ServiceAccountNativeDetailsForAzureEaApiKeyMaster
+        subtype_name: ServiceAccountNativeDetailsForAzureEaApiKeyMaster
+      - subtype_model: ServiceAccountNativeDetailsForAzureEaApplicationMaster
+        subtype_name: ServiceAccountNativeDetailsForAzureEaApplicationMaster
+      - subtype_model: ServiceAccountNativeDetailsForAzureEaDepartment
+        subtype_name: ServiceAccountNativeDetailsForAzureEaDepartment
+      - subtype_model: ServiceAccountNativeDetailsForAzureEaAccount
+        subtype_name: ServiceAccountNativeDetailsForAzureEaAccount
+      - subtype_model: ServiceAccountNativeDetailsForAzureEaSubscription
+        subtype_name: ServiceAccountNativeDetailsForAzureEaSubscription
+      - subtype_model: ServiceAccountNativeDetailsForAzureMcaBillingAccount
+        subtype_name: ServiceAccountNativeDetailsForAzureMcaBillingAccount
+      - subtype_model: ServiceAccountNativeDetailsForAzureMcaBillingProfile
+        subtype_name: ServiceAccountNativeDetailsForAzureMcaBillingProfile
+      - subtype_model: ServiceAccountNativeDetailsForAzureMcaInvoiceSection
+        subtype_name: ServiceAccountNativeDetailsForAzureMcaInvoiceSection
+      - subtype_model: ServiceAccountNativeDetailsForAzureMcaSubscription
+        subtype_name: ServiceAccountNativeDetailsForAzureMcaSubscription
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterAzure
+        subtype_name: ServiceAccountNativeDetailsForCostCenterAzure
+      - subtype_model: ServiceAccountNativeDetailsBaseForGcp
+        subtype_name: ServiceAccountNativeDetailsBaseForGcp
+      - subtype_model: ServiceAccountNativeDetailsForGcpBillingAccount
+        subtype_name: ServiceAccountNativeDetailsForGcpBillingAccount
+      - subtype_model: ServiceAccountNativeDetailsForGcpParentBillingAccount
+        subtype_name: ServiceAccountNativeDetailsForGcpParentBillingAccount
+      - subtype_model: ServiceAccountNativeDetailsForGcpBillingSubAccount
+        subtype_name: ServiceAccountNativeDetailsForGcpBillingSubAccount
+      - subtype_model: ServiceAccountNativeDetailsForGcpOrganization
+        subtype_name: ServiceAccountNativeDetailsForGcpOrganization
+      - subtype_model: ServiceAccountNativeDetailsForGcpFolder
+        subtype_name: ServiceAccountNativeDetailsForGcpFolder
+      - subtype_model: ServiceAccountNativeDetailsForGcpProject
+        subtype_name: ServiceAccountNativeDetailsForGcpProject
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterGcp
+        subtype_name: ServiceAccountNativeDetailsForCostCenterGcp
+      - subtype_model: ServiceAccountNativeDetailsForOciTenancy
+        subtype_name: ServiceAccountNativeDetailsForOciTenancy
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterOci
+        subtype_name: ServiceAccountNativeDetailsForCostCenterOci
+      - subtype_model: ServiceAccountNativeDetailsForAzureStack
+        subtype_name: ServiceAccountNativeDetailsForAzureStack
+      - subtype_model: ServiceAccountNativeDetailsForCloudstack
+        subtype_name: ServiceAccountNativeDetailsForCloudstack
+      - subtype_model: ServiceAccountNativeDetailsForOpenstack
+        subtype_name: ServiceAccountNativeDetailsForOpenstack
+      - subtype_model: ServiceAccountNativeDetailsForRackspace
+        subtype_name: ServiceAccountNativeDetailsForRackspace
+      - subtype_model: ServiceAccountNativeDetailsForVmware
+        subtype_name: ServiceAccountNativeDetailsForVmware
+      - subtype_model: ServiceAccountNativeDetailsForVcenter
+        subtype_name: ServiceAccountNativeDetailsForVcenter
+      - subtype_model: ServiceAccountNativeDetailsForMsVmm
+        subtype_name: ServiceAccountNativeDetailsForMsVmm
+      - subtype_model: ServiceAccountNativeDetailsForVmwareVcdMaster
+        subtype_name: ServiceAccountNativeDetailsForVmwareVcdMaster
+      - subtype_model: ServiceAccountNativeDetailsForVmwareVcdOrganization
+        subtype_name: ServiceAccountNativeDetailsForVmwareVcdOrganization
+      - subtype_model: ServiceAccountNativeDetailsForVmwareVcdOrganizationVdc
+        subtype_name: ServiceAccountNativeDetailsForVmwareVcdOrganizationVdc
+      - subtype_model: ServiceAccountNativeDetailsForPrivateCloud
+        subtype_name: ServiceAccountNativeDetailsForPrivateCloud
+      - subtype_model: ServiceAccountNativeDetailsBaseForIntegratedTool
+        subtype_name: ServiceAccountNativeDetailsBaseForIntegratedTool
+      - subtype_model: ServiceAccountNativeDetailsForAppDynamics
+        subtype_name: ServiceAccountNativeDetailsForAppDynamics
+      - subtype_model: ServiceAccountNativeDetailsForAppInsights
+        subtype_name: ServiceAccountNativeDetailsForAppInsights
+      - subtype_model: ServiceAccountNativeDetailsForAzureDevops
+        subtype_name: ServiceAccountNativeDetailsForAzureDevops
+      - subtype_model: ServiceAccountNativeDetailsForAzureSecurityGraph
+        subtype_name: ServiceAccountNativeDetailsForAzureSecurityGraph
+      - subtype_model: ServiceAccountNativeDetailsForAzureSentinel
+        subtype_name: ServiceAccountNativeDetailsForAzureSentinel
+      - subtype_model: ServiceAccountNativeDetailsForCorestack
+        subtype_name: ServiceAccountNativeDetailsForCorestack
+      - subtype_model: ServiceAccountNativeDetailsForDockerHub
+        subtype_name: ServiceAccountNativeDetailsForDockerHub
+      - subtype_model: ServiceAccountNativeDetailsForElasticSearch
+        subtype_name: ServiceAccountNativeDetailsForElasticSearch
+      - subtype_model: ServiceAccountNativeDetailsForFreshservice
+        subtype_name: ServiceAccountNativeDetailsForFreshservice
+      - subtype_model: ServiceAccountNativeDetailsBaseForJiraServiceManagement
+        subtype_name: ServiceAccountNativeDetailsBaseForJiraServiceManagement
+      - subtype_model: ServiceAccountNativeDetailsForJiraServiceManagementParent
+        subtype_name: ServiceAccountNativeDetailsForJiraServiceManagementParent
+      - subtype_model: ServiceAccountNativeDetailsForJiraServiceManagementProject
+        subtype_name: ServiceAccountNativeDetailsForJiraServiceManagementProject
+      - subtype_model: ServiceAccountNativeDetailsForGithub
+        subtype_name: ServiceAccountNativeDetailsForGithub
+      - subtype_model: ServiceAccountNativeDetailsForJiraDataCenter
+        subtype_name: ServiceAccountNativeDetailsForJiraDataCenter
+      - subtype_model: ServiceAccountNativeDetailsForJiraServiceDesk
+        subtype_name: ServiceAccountNativeDetailsForJiraServiceDesk
+      - subtype_model: ServiceAccountNativeDetailsForJenkins
+        subtype_name: ServiceAccountNativeDetailsForJenkins
+      - subtype_model: ServiceAccountNativeDetailsForLogstash
+        subtype_name: ServiceAccountNativeDetailsForLogstash
+      - subtype_model: ServiceAccountNativeDetailsForMicrosoftTeams
+        subtype_name: ServiceAccountNativeDetailsForMicrosoftTeams
+      - subtype_model: ServiceAccountNativeDetailsForNagios
+        subtype_name: ServiceAccountNativeDetailsForNagios
+      - subtype_model: ServiceAccountNativeDetailsForNewrelic
+        subtype_name: ServiceAccountNativeDetailsForNewrelic
+      - subtype_model: ServiceAccountNativeDetailsForPrometheus
+        subtype_name: ServiceAccountNativeDetailsForPrometheus
+      - subtype_model: ServiceAccountNativeDetailsForQualys
+        subtype_name: ServiceAccountNativeDetailsForQualys
+      - subtype_model: ServiceAccountNativeDetailsForRedhatSatellite
+        subtype_name: ServiceAccountNativeDetailsForRedhatSatellite
+      - subtype_model: ServiceAccountNativeDetailsForServiceNow
+        subtype_name: ServiceAccountNativeDetailsForServiceNow
+      - subtype_model: ServiceAccountNativeDetailsForArrowSphere
+        subtype_name: ServiceAccountNativeDetailsForArrowSphere
+      - subtype_model: ServiceAccountNativeDetailsForTclItsm
+        subtype_name: ServiceAccountNativeDetailsForTclItsm
+      - subtype_model: ServiceAccountNativeDetailsForTenableNessus
+        subtype_name: ServiceAccountNativeDetailsForTenableNessus
+      - subtype_model: ServiceAccountNativeDetailsForZohoServiceDesk
+        subtype_name: ServiceAccountNativeDetailsForZohoServiceDesk
+      - subtype_model: ServiceAccountNativeDetailsBaseForResource
+        subtype_name: ServiceAccountNativeDetailsBaseForResource
+      - subtype_model: ServiceAccountNativeDetailsBaseForKubernetesCluster
+        subtype_name: ServiceAccountNativeDetailsBaseForKubernetesCluster
+      - subtype_model: ServiceAccountNativeDetailsBaseForKubernetesClusterCloud
+        subtype_name: ServiceAccountNativeDetailsBaseForKubernetesClusterCloud
+      - subtype_model: ServiceAccountNativeDetailsBaseForKubernetesClusterOthers
+        subtype_name: ServiceAccountNativeDetailsBaseForKubernetesClusterOthers
+      - subtype_model: ServiceAccountNativeDetailsForAwsEksCluster
+        subtype_name: ServiceAccountNativeDetailsForAwsEksCluster
+      - subtype_model: ServiceAccountNativeDetailsForAzureAksCluster
+        subtype_name: ServiceAccountNativeDetailsForAzureAksCluster
+      - subtype_model: ServiceAccountNativeDetailsForGcpGkeCluster
+        subtype_name: ServiceAccountNativeDetailsForGcpGkeCluster
+      - subtype_model: ServiceAccountNativeDetailsForOciOkeCluster
+        subtype_name: ServiceAccountNativeDetailsForOciOkeCluster
+      - subtype_model: ServiceAccountNativeDetailsForSelfManagedCluster
+        subtype_name: ServiceAccountNativeDetailsForSelfManagedCluster
+      - subtype_model: ServiceAccountNativeDetailsBaseForSaas
+        subtype_name: ServiceAccountNativeDetailsBaseForSaas
+      - subtype_model: ServiceAccountNativeDetailsBaseForSaasAiServices
+        subtype_name: ServiceAccountNativeDetailsBaseForSaasAiServices
+      - subtype_model: ServiceAccountNativeDetailsForOpenAI
+        subtype_name: ServiceAccountNativeDetailsForOpenAI
+      - subtype_model: ServiceAccountNativeDetailsForAnthropic
+        subtype_name: ServiceAccountNativeDetailsForAnthropic
+      - subtype_model: ServiceAccountNativeDetailsBaseForSaasDataServices
+        subtype_name: ServiceAccountNativeDetailsBaseForSaasDataServices
+      - subtype_model: ServiceAccountNativeDetailsForSnowflake
+        subtype_name: ServiceAccountNativeDetailsForSnowflake
+      - subtype_model: ServiceAccountNativeDetailsForDataBricks
+        subtype_name: ServiceAccountNativeDetailsForDataBricks
+      - subtype_model: ServiceAccountNativeDetailsBaseForSaasOtherServices
+        subtype_name: ServiceAccountNativeDetailsBaseForSaasOtherServices
+      - subtype_model: ServiceAccountNativeDetailsForDataDog
+        subtype_name: ServiceAccountNativeDetailsForDataDog
+      - subtype_model: ServiceAccountNativeDetailsForSplunk
+        subtype_name: ServiceAccountNativeDetailsForSplunk
+      - subtype_model: ServiceAccountNativeDetailsForCircleCI
+        subtype_name: ServiceAccountNativeDetailsForCircleCI
+      - subtype_model: ServiceAccountNativeDetailsForElastic
+        subtype_name: ServiceAccountNativeDetailsForElastic
+      - subtype_model: ServiceAccountNativeDetailsForSaasMicrosoftTeams
+        subtype_name: ServiceAccountNativeDetailsForSaasMicrosoftTeams
+      - subtype_model: ServiceAccountNativeDetailsForSalesForceSalesCloud
+        subtype_name: ServiceAccountNativeDetailsForSalesForceSalesCloud
+      - subtype_model: ServiceAccountNativeDetailsForDropbox
+        subtype_name: ServiceAccountNativeDetailsForDropbox
+      - subtype_model: ServiceAccountNativeDetailsForOkta
+        subtype_name: ServiceAccountNativeDetailsForOkta
+      - subtype_model: ServiceAccountNativeDetailsForSaasNewRelic
+        subtype_name: ServiceAccountNativeDetailsForSaasNewRelic
+      - subtype_model: ServiceAccountNativeDetailsForDynatrace
+        subtype_name: ServiceAccountNativeDetailsForDynatrace
+      - subtype_model: ServiceAccountNativeDetailsForGrafana
+        subtype_name: ServiceAccountNativeDetailsForGrafana
+      - subtype_model: ServiceAccountNativeDetailsForIbmTencent
+        subtype_name: ServiceAccountNativeDetailsForIbmTencent
+      - subtype_model: ServiceAccountNativeDetailsForCustomSaasTool
+        subtype_name: ServiceAccountNativeDetailsForCustomSaasTool
+      - subtype_model: ServiceAccountNativeDetailsForZabbix
+        subtype_name: ServiceAccountNativeDetailsForZabbix
+    BillingPlanConfiguration:
+      required:
+      - rules
+      properties:
+        rules:
+          type: array
+          description: Root rule of the billing plan. This rule is used to evaluate the billing plan.
+          items:
+            $ref: '#/components/schemas/BillingRuleRoot'
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    BillingMetricSourceOverride:
+      properties:
+        native_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceAccountNativeDetailsBase'
+        source_metric_id:
+          type: string
+          description: ID of the metric to override
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

@@ -1,0 +1,385 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Account Governance API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage Cloud Accounts
+servers:
+- url: /
+tags:
+- name: Account Governance
+  description: Manage Cloud Accounts
+paths:
+  /governance/account/{tenant_id}/cloud_account/{cloud_account_id}/config_validation:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigValidationResponse'
+      summary: Config Validation Details
+      description: Config validation based on the policy engine
+      operationId: CloudAccountConfigValidation
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: cloud_account_id
+        in: path
+        required: true
+        description: Specify the cloud account id to update, cloud account id is unique can be obtained from the list cloud account api. This should be same as the ID of the reference APIFor Azure CSP-Direct subscriptions, this can be fetched from list child accounts api.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Account Governance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfigValidationRequest'
+        required: true
+  /governance/account/{tenant_id}/create/{cloud_account_id}/assessment_validation_result:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssessmentValidationResponseDataModel'
+      summary: Assessment Validation Details
+      description: Assessment validation for Operations, Cost, Security, Access and Resource.
+      operationId: AssessmentValidationDetails
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: cloud_account_id
+        in: path
+        required: true
+        description: Specify the cloud account id to update, cloud account id is unique can be obtained from the list cloud account api. This should be same as the ID of the reference APIFor Azure CSP-Direct subscriptions, this can be fetched from list child accounts api.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Account Governance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssessmentValidationRequestDataModel'
+        required: true
+  /governance/account/{tenant_id}/create/{cloud_account_id}/revalidate_assessment:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Assessment Re-Validation
+      description: Assessment revalidation for Operations, Cost, Security, Access and Resource.
+      operationId: AssessmentReValidation
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: cloud_account_id
+        in: path
+        required: true
+        description: Specify the cloud account id to assess a cloud account, cloud account id is unique can be obtained from the list cloud account api. This should be same as the ID of the reference APIFor Azure CSP-Direct subscriptions, this can be fetched from list child accounts api.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Account Governance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssessmentValidationRequestDataModel'
+        required: true
+  /governance/account/{tenant_id}/get/{cloud_account_id}/assessment_validation_result:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: cloud_account_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssessmentResultResponseDataModel'
+      summary: Assessment Results
+      description: Displays the results of assessment with summary and history of the cloud account for OSCAR
+      operationId: AssessmentResults
+      security:
+      - auth_token: []
+      tags:
+      - Account Governance
+components:
+  schemas:
+    AssessmentValidationRequestDataModel:
+      required:
+      - category
+      - validation_type
+      properties:
+        validation_type:
+          type: string
+          description: Type of validation for the cloud account. If post_onboarding is selected, then the category can only be cost/access/resource/operations/security. Post Onboarding applies for Governance Configuration
+          example: assessment
+          enum:
+          - assessment
+          - post_onboarding
+          x-cs-enum-type: ValidationType
+        category:
+          type: string
+          description: Category of assessment validation for the cloud account
+          example: operations
+          enum:
+          - operations
+          - security
+          - access
+          - cost
+          - resource
+          - compliance
+          x-cs-enum-type: AssessmentCategory
+      type: object
+    ConfigValidationSummary:
+      properties:
+        region:
+          type: string
+          description: Region
+        recorder_status:
+          type: string
+          description: Recorder status
+          example: running
+          enum:
+          - running
+          - not_running
+          - error
+          x-cs-enum-type: ConfigValidationRecorderStatus
+        role_name:
+          type: string
+          description: Role name
+        availability_status:
+          type: string
+          description: Availability status
+          example: success
+          enum:
+          - success
+          x-cs-enum-type: ConfigValidationAvailabilityStatus
+      type: object
+    AssessmentResultResponseDataModel:
+      required:
+      - grade
+      - history
+      - last_assessed_time
+      - overall_status
+      - score
+      - summary
+      properties:
+        overall_status:
+          type: string
+          description: Overall assessment status for the cloud account
+        score:
+          type: string
+          description: Assessment score for the cloud account
+        grade:
+          type: string
+          description: Grade based on the assessment for the cloud account
+        last_assessed_time:
+          type: string
+          description: Last assessed time for the cloud account
+        summary:
+          type: object
+          description: Summary of the assessment for the cloud account on OSCAR
+        history:
+          type: object
+          description: History of the assessment for the cloud account on OSCAR
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ConfigValidationRequest:
+      required:
+      - policy_engine
+      - service_name
+      properties:
+        policy_engine:
+          type: string
+          description: Supported Policy engines are corestack_policy, aws_config and azure_policy
+          example: corestack_policy
+          enum:
+          - corestack_policy
+          - aws_organization_policy
+          - azure_policy
+          - aws_config
+          - gcp_organization_policy
+          - gcp_policy
+          - kubernetes_policy
+          - oracle_cloud_guard
+          x-cs-enum-type: PolicyEngineType
+        service_name:
+          type: string
+          description: Supported Clouds for the respective Policy engine are AWS and Azure
+          example: AWS
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          x-cs-enum-type: CloudServiceName
+      type: object
+    AssessmentValidationResponseDataModel:
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          description: Assessment validation response for the cloud account based on the category
+      type: object
+    ConfigValidationResponse:
+      properties:
+        status:
+          type: string
+          description: Status response
+        mandatory_requirements:
+          type: object
+          description: Mandatory requirements
+          additionalProperties:
+            type: string
+        optional_requirements:
+          type: object
+          description: Optional requirements
+          additionalProperties:
+            type: string
+        config_validations:
+          type: array
+          description: Config validation results
+          items:
+            $ref: '#/components/schemas/ConfigValidationSummary'
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

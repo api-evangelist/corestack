@@ -1,0 +1,104 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Jira Service Management API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Jira Service Management
+servers:
+- url: /
+tags:
+- name: Jira Service Management
+  description: Jira Service Management
+paths:
+  /v1/jira_service_management/project_fields/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JiraServiceManagementListProjectFieldsResponse'
+      summary: List Jira Service Management Project Fields
+      description: Retrieve the list of Jira project fields for the service account
+      operationId: ListJiraFields
+      security:
+      - auth_token: []
+      tags:
+      - Jira Service Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JiraServiceManagementProjectFieldsRequest'
+        required: true
+components:
+  schemas:
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    JiraServiceManagementProjectFieldsRequest:
+      required:
+      - issue_type
+      - service_account_id
+      properties:
+        service_account_id:
+          type: string
+          description: Service Account ID
+          x-cs-type: ObjectId
+        issue_type:
+          type: string
+          description: Jira Service Management Issue Type
+          example: ChangeManagement
+          enum:
+          - ChangeManagement
+          - IncidentManagement
+          x-cs-enum-type: JiraServiceManagementIssueType
+      type: object
+    JiraServiceManagementProjectFields:
+      properties:
+        key:
+          type: string
+          description: Key associated with the field
+        name:
+          type: string
+          description: Name of the field
+      type: object
+    JiraServiceManagementListProjectFieldsResponse:
+      properties:
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/JiraServiceManagementProjectFields'
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

@@ -1,0 +1,541 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Audit Log API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage Audit Log
+servers:
+- url: /
+tags:
+- name: AuditLog
+  description: Manage Audit Log
+paths:
+  /v2/audit/auditlog/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditLogBatchResponse'
+      summary: Audit Detail
+      description: List all Audit Log document batches
+      operationId: AuditLogBatch
+      security:
+      - auth_token: []
+      tags:
+      - AuditLog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordIdentityBatchRequest'
+        required: true
+  /v2/audit/auditlog/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+      summary: Audit List
+      description: Audit Log List
+      operationId: AuditLogList
+      security:
+      - auth_token: []
+      tags:
+      - AuditLog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuditLogListRequest'
+        required: true
+components:
+  schemas:
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    AuditLogDocumentSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: event_time
+          enum:
+          - event_time
+          x-cs-enum-type: AuditLogDocumentSortColumn
+        ascending:
+          type: boolean
+      type: object
+    AuditLogDocument:
+      properties:
+        sysId:
+          type: string
+          description: Id of the document.
+        event_time:
+          type: string
+          format: date-time
+          description: Time of document creation.
+        event_type:
+          type: string
+          description: Type of the event performed.
+          example: Activity
+          enum:
+          - Activity
+          - AiAgent
+          - Alarm
+          - AlarmListener
+          - Alert
+          - Application
+          - AuthConfig
+          - AutomationWorkflows
+          - AwsSsm
+          - Billing
+          - BillingPlans
+          - Blueprint
+          - BlueprintJobs
+          - Catalog
+          - CloudAccount
+          - ComplianceStandard
+          - CostAnomaly
+          - CostAnomalyDashboard
+          - CostBudget
+          - CostBudgetAction
+          - CostBudgetAlert
+          - CostBudgetNotification
+          - CostBudgetReview
+          - CostDashboard
+          - CostMarkupDiscount
+          - CostOptimization
+          - CostOptimizer
+          - CostPosture
+          - CurrencyExchangeConfiguration
+          - CustomTags
+          - Dimension
+          - GovernanceConfiguration
+          - IntegratedTool
+          - Inventory
+          - InventoryElements
+          - KubernetesCluster
+          - LogAnalyticsWorkspaces
+          - MasterAccount
+          - Policy
+          - PolicyRecommendation
+          - PolicyParameterConfiguration
+          - Portfolio
+          - Project
+          - RecommendationExclusionRule
+          - Report
+          - Request
+          - Request-iaas
+          - Request-workload
+          - RequestApproval-iaas
+          - RequestApproval-workload
+          - RequestJob
+          - ResourceCatalog
+          - RoleAccessPolicies
+          - SaaS
+          - Sbom
+          - Scheduler
+          - ScriptComponent
+          - ScriptJobs
+          - Scripts
+          - Services
+          - StackOpsApprove
+          - StackOpsDeployment
+          - StackOpsProduct
+          - StackOpsPublish
+          - StackOpsStack
+          - SwitchMasterAccount
+          - Template
+          - TemplateBuilder
+          - TemplateJobs
+          - Tenant
+          - User
+          - UserDelegation
+          - UserGroup
+          - UserInvite
+          - UserLogin
+          - WellArchitectedAssessment
+          - WellArchitectedAssessmentRun
+          - WellArchitectedCustomFramework
+          - WellArchitectedWorkload
+          - WorkloadComponent
+          x-cs-enum-type: AuditLogEventType
+        event_action:
+          type: string
+          description: Type of the action performed.
+          example: abandon
+          enum:
+          - abandon
+          - activate
+          - add_balance
+          - add_role
+          - add_tenant
+          - add_user
+          - apply
+          - approve
+          - archive
+          - cancel
+          - clone
+          - configure
+          - create
+          - deactivate
+          - definition
+          - delete
+          - disable
+          - dismiss
+          - download
+          - enable
+          - execute
+          - export
+          - import
+          - inventory_action
+          - login
+          - open
+          - postpone
+          - publish
+          - reactivate
+          - reject
+          - remediate
+          - remove_role
+          - remove_tenant
+          - remove_user
+          - retry
+          - reorder
+          - request_review
+          - rerun
+          - resolve
+          - revoke
+          - save_commit
+          - schedule
+          - set_defaults
+          - share
+          - share_report
+          - start_scan
+          - submit
+          - suspend
+          - terminate
+          - trigger
+          - update
+          - version
+          x-cs-enum-type: AuditLogEventAction
+        master_account_id:
+          type: string
+          description: The id of the account master within the CoreStack.
+        master_account_name:
+          type: string
+          description: The name of the account master within the CoreStack.
+        tenant_name:
+          type: string
+          description: The name of the tenant within the CoreStack account.
+        user_name:
+          type: string
+          description: The name of the user who performed the action.
+        source_ip_address:
+          type: string
+          description: IP from which the action is performed.
+        activity:
+          type: string
+          description: Description of the activity done.
+      type: object
+    AuditLogFilters:
+      properties:
+        from_date:
+          type: string
+          format: date-time
+          description: Filter from date
+        to_date:
+          type: string
+          format: date-time
+          description: Filter to date
+        master_account_id:
+          type: array
+          description: Filter by master account ids
+          items:
+            type: string
+        master_account_names:
+          type: array
+          description: Filter by accounts
+          items:
+            type: string
+        tenant_names:
+          type: array
+          description: Filter by tenants
+          items:
+            type: string
+        user_names:
+          type: array
+          description: Filter by users
+          items:
+            type: string
+        event_types:
+          type: array
+          description: Filter by event types
+          items:
+            type: string
+            description: Type of the event performed.
+            example: Activity
+            enum:
+            - Activity
+            - AiAgent
+            - Alarm
+            - AlarmListener
+            - Alert
+            - Application
+            - AuthConfig
+            - AutomationWorkflows
+            - AwsSsm
+            - Billing
+            - BillingPlans
+            - Blueprint
+            - BlueprintJobs
+            - Catalog
+            - CloudAccount
+            - ComplianceStandard
+            - CostAnomaly
+            - CostAnomalyDashboard
+            - CostBudget
+            - CostBudgetAction
+            - CostBudgetAlert
+            - CostBudgetNotification
+            - CostBudgetReview
+            - CostDashboard
+            - CostMarkupDiscount
+            - CostOptimization
+            - CostOptimizer
+            - CostPosture
+            - CurrencyExchangeConfiguration
+            - CustomTags
+            - Dimension
+            - GovernanceConfiguration
+            - IntegratedTool
+            - Inventory
+            - InventoryElements
+            - KubernetesCluster
+            - LogAnalyticsWorkspaces
+            - MasterAccount
+            - Policy
+            - PolicyRecommendation
+            - PolicyParameterConfiguration
+            - Portfolio
+            - Project
+            - RecommendationExclusionRule
+            - Report
+            - Request
+            - Request-iaas
+            - Request-workload
+            - RequestApproval-iaas
+            - RequestApproval-workload
+            - RequestJob
+            - ResourceCatalog
+            - RoleAccessPolicies
+            - SaaS
+            - Sbom
+            - Scheduler
+            - ScriptComponent
+            - ScriptJobs
+            - Scripts
+            - Services
+            - StackOpsApprove
+            - StackOpsDeployment
+            - StackOpsProduct
+            - StackOpsPublish
+            - StackOpsStack
+            - SwitchMasterAccount
+            - Template
+            - TemplateBuilder
+            - TemplateJobs
+            - Tenant
+            - User
+            - UserDelegation
+            - UserGroup
+            - UserInvite
+            - UserLogin
+            - WellArchitectedAssessment
+            - WellArchitectedAssessmentRun
+            - WellArchitectedCustomFramework
+            - WellArchitectedWorkload
+            - WorkloadComponent
+            x-cs-enum-type: AuditLogEventType
+        event_actions:
+          type: array
+          description: Filter by event actions
+          items:
+            type: string
+            description: Type of the action performed.
+            example: abandon
+            enum:
+            - abandon
+            - activate
+            - add_balance
+            - add_role
+            - add_tenant
+            - add_user
+            - apply
+            - approve
+            - archive
+            - cancel
+            - clone
+            - configure
+            - create
+            - deactivate
+            - definition
+            - delete
+            - disable
+            - dismiss
+            - download
+            - enable
+            - execute
+            - export
+            - import
+            - inventory_action
+            - login
+            - open
+            - postpone
+            - publish
+            - reactivate
+            - reject
+            - remediate
+            - remove_role
+            - remove_tenant
+            - remove_user
+            - retry
+            - reorder
+            - request_review
+            - rerun
+            - resolve
+            - revoke
+            - save_commit
+            - schedule
+            - set_defaults
+            - share
+            - share_report
+            - start_scan
+            - submit
+            - suspend
+            - terminate
+            - trigger
+            - update
+            - version
+            x-cs-enum-type: AuditLogEventAction
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    AuditLogBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AuditLogDocument'
+      type: object
+    AuditLogListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/AuditLogDocumentSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AuditLogFilters'
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

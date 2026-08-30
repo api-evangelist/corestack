@@ -1,0 +1,277 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External NextGen Reports API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage NextGen Reports
+servers:
+- url: /
+tags:
+- name: NextGen Reports
+  description: Manage NextGen Reports
+paths:
+  /v2/reports/generate:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordIdentity'
+      summary: Create a NextGen report
+      description: Create a report
+      operationId: CreateReport
+      security:
+      - auth_token: []
+      tags:
+      - NextGen Reports
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NextGenReportCreateRequest'
+        required: true
+  /v2/reports/item/{report_id}:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NextGenReportResponse'
+      summary: Fetch a report by ID
+      description: Get a report by ID
+      operationId: GetReport
+      parameters:
+      - name: report_id
+        in: path
+        required: true
+        description: ID of the report to fetch. This can be retrieved using Report Generation API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - NextGen Reports
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NextGenReportGetRequest'
+        required: true
+components:
+  schemas:
+    AttachmentStorageBase:
+      required:
+      - __type
+      properties:
+        file_name:
+          type: string
+          description: Original file name
+        size:
+          type: integer
+          description: Size of file in bytes
+        created_at:
+          type: string
+          format: date-time
+          description: Date and Time of the attachment creation
+        expires_at:
+          type: string
+          format: date-time
+          description: Date and Time when the attachment expires. If not set, the attachment does not expire.
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: AttachmentStorageCorestack
+        subtype_name: AttachmentStorageCorestack
+      - subtype_model: AttachmentStorageAzureBlob
+        subtype_name: AttachmentStorageAzureBlob
+    NextGenReportResponse:
+      properties:
+        sys_id:
+          type: string
+          description: Unique ID for the report.
+          x-cs-type: ObjectId
+        background_job_id:
+          type: string
+          description: ID of the background job responsible for generating the report.
+        attachments:
+          type: array
+          description: List of attachment storage types. Can be CoreStack Attachment or Azure Blob Storage.
+          items:
+            $ref: '#/components/schemas/AttachmentStorageBase'
+        status:
+          type: string
+          description: Status of the report
+          example: Unknown
+          enum:
+          - Unknown
+          - Queued
+          - Processing
+          - Success
+          - Failure
+          x-cs-enum-type: ReportStatus
+      type: object
+    ReportConfiguration:
+      required:
+      - __type
+      properties:
+        export_format:
+          type: string
+          description: Specifies the format of the file being exported.
+          default: PDF
+          example: PDF
+          enum:
+          - PDF
+          - CSV
+          x-cs-enum-type: ExportFormat
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ReportConfigurationForAiAgent
+        subtype_name: ReportConfigurationForAiAgent
+      - subtype_model: BaseReportConfigurationForAssessmentAgent
+        subtype_name: BaseReportConfigurationForAssessmentAgent
+      - subtype_model: ReportConfigurationForAssessment
+        subtype_name: ReportConfigurationForAssessment
+      - subtype_model: ReportConfigurationForWorkload
+        subtype_name: ReportConfigurationForWorkload
+      - subtype_model: ReportConfigurationForExecutiveDashboard
+        subtype_name: ReportConfigurationForExecutiveDashboard
+      - subtype_model: ConfigurationForNextGenReportBase
+        subtype_name: ConfigurationForNextGenReportBase
+      - subtype_model: ConfigurationForFinOpsConsolidatedReport
+        subtype_name: ConfigurationForFinOpsConsolidatedReport
+      - subtype_model: ConfigurationForAwsConsolidatedChargesReport
+        subtype_name: ConfigurationForAwsConsolidatedChargesReport
+      - subtype_model: ConfigurationForAzureConsolidatedChargesReport
+        subtype_name: ConfigurationForAzureConsolidatedChargesReport
+      - subtype_model: ConfigurationForGcpConsolidatedChargesReport
+        subtype_name: ConfigurationForGcpConsolidatedChargesReport
+      - subtype_model: ConfigurationForOciConsolidatedChargesReport
+        subtype_name: ConfigurationForOciConsolidatedChargesReport
+      - subtype_model: ConfigurationForDistributorConsolidatedReport
+        subtype_name: ConfigurationForDistributorConsolidatedReport
+      - subtype_model: ReportConfigurationForAssessmentRun
+        subtype_name: ReportConfigurationForAssessmentRun
+      - subtype_model: ReportConfigurationForAssessmentRunDetail
+        subtype_name: ReportConfigurationForAssessmentRunDetail
+      - subtype_model: ReportConfigurationForAssessmentRunSummary
+        subtype_name: ReportConfigurationForAssessmentRunSummary
+      - subtype_model: ReportConfigurationForAssessmentRunViolation
+        subtype_name: ReportConfigurationForAssessmentRunViolation
+    NextGenReportCreateRequest:
+      properties:
+        configuration:
+          description: Report configuration to generate report
+          $ref: '#/components/schemas/ConfigurationForNextGenReportBase'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ConfigurationForNextGenReportBase:
+      allOf:
+      - $ref: '#/components/schemas/ReportConfiguration'
+      - properties:
+          limit:
+            type: integer
+            description: If set, limits the results to given number.
+        type: object
+      x-cs-type-name: ConfigurationForNextGenReportBase
+    NextGenReportGetRequest:
+      properties:
+        refresh_download_link:
+          type: boolean
+          description: If true, generates a new download link for the report if the existing link has expired.
+          default: false
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

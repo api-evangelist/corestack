@@ -1,0 +1,514 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External AwsSsm Automation API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage AWS SSM Automation
+servers:
+- url: /
+tags:
+- name: AwsSsm Automation
+  description: Manage AWS SSM Automation
+paths:
+  /v1/runbook/{tenant_id}/AWS/automation/{document_id}:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: document_id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AwsSsmExecuteDocumentResponse'
+      summary: Execute automation document
+      description: Execute a automation document with all required parameters
+      operationId: AutomationExecute
+      security:
+      - auth_token: []
+      tags:
+      - AwsSsm Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AwsSsmExecuteAutomationDocumentRequest'
+        required: true
+  /v1/runbook/{tenant_id}/AWS/automation/{execution_id}:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: execution_id
+      in: path
+      required: true
+      schema:
+        type: string
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AwsSsmExecuteDocumentResponse'
+      summary: Cancel Automation Execution
+      description: Cancel a specific automation document execution
+      operationId: CancelAutomation
+      security:
+      - auth_token: []
+      tags:
+      - AwsSsm Automation
+  /v1/runbook/{tenant_id}/AWS/execution/step/batch:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AwsSsmExecutionStepBatchResponse'
+      summary: Batch execution steps
+      description: List all document execution steps batch
+      operationId: ExecutionStepBatch
+      security:
+      - auth_token: []
+      tags:
+      - AwsSsm Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordIdentityBatchRequest'
+        required: true
+  /v1/runbook/{tenant_id}/AWS/execution/step/list/{execution_id}:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: execution_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+      summary: List execution steps
+      description: List all document execution Steps
+      operationId: ExecutionStepList
+      security:
+      - auth_token: []
+      tags:
+      - AwsSsm Automation
+components:
+  schemas:
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    AwsSsmCommandDocumentTarget:
+      properties:
+        key:
+          type: string
+          description: 'Supported keys: InstanceIds/tag/resource-groups'
+        values:
+          type: array
+          description: 'Supported values: <instance-id-1>,<instance-id-2>/<my-tag-value-1>,<my-tag-value-2>/<resource-type-1>,<resource-type-2>'
+          items:
+            type: string
+      type: object
+    AwsSsmExecutionStepBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AwsSsmStepExecution'
+      type: object
+    AwsSsmCommandDocumentAlarm:
+      properties:
+        name:
+          type: string
+          description: The name of CloudWatch alarm.
+      type: object
+    AwsSsmStepFailureDetail:
+      properties:
+        stage:
+          type: string
+          description: Stage of the execution when the failure occurred
+        type:
+          type: string
+          description: type of the failure
+        details:
+          type: object
+          additionalProperties:
+            type: string
+      type: object
+    AwsSsmBaseExecuteDocumentRequest:
+      required:
+      - cloud_account_id
+      - document_name
+      - document_version
+      - region
+      properties:
+        cloud_account_id:
+          type: string
+          description: Cloud Account id  for which command document need to be executed.
+        region:
+          type: string
+          description: Region of the document to be executed.
+        document_name:
+          type: string
+          description: Name of the document.
+        document_version:
+          type: string
+          description: The SSM document version to use in the request.
+        document_hash:
+          type: string
+          description: The cryptographic hash value of the document content.
+        document_hash_type:
+          type: string
+          description: The hash algorithm used to calculate the hash value
+          example: Sha256
+          enum:
+          - Sha256
+          - Sha1
+          x-cs-enum-type: AwsSsmHashType
+        parameters:
+          type: object
+          description: The required and optional parameters specified in the document being run.
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        max_concurrency:
+          type: string
+          description: The maximum number of managed nodes that are allowed to run the command at the same time.
+        max_errors:
+          type: string
+          description: The maximum number of errors allowed without the command failing.
+        alarm_configuration:
+          description: The CloudWatch alarm you want to apply to your command.
+          $ref: '#/components/schemas/AwsSsmDocumentAlarmConfiguration'
+        change_id:
+          type: string
+          description: Service Now tracking id
+      type: object
+    AwsSsmExecuteDocumentResponse:
+      properties:
+        execution_id:
+          type: string
+          description: Automation Execution Id
+      type: object
+    AwsSsmDocumentAlarmConfiguration:
+      properties:
+        ignore_poll_alarm_failure:
+          type: boolean
+          description: The automation or command continues to run, either the Alarm status is OK or INSUFFICIENT_DATA.
+        alarms:
+          type: array
+          description: List of Alarms.
+          items:
+            $ref: '#/components/schemas/AwsSsmCommandDocumentAlarm'
+      type: object
+    AwsSsmExecuteAutomationTargetLocation:
+      properties:
+        accounts:
+          type: array
+          description: The AWS accounts targeted by the current Automation execution.
+          items:
+            type: string
+        execution_role_name:
+          type: string
+          description: The Automation execution role used by the currently running Automation.
+        regions:
+          type: array
+          description: The AWS Regions targeted by the current Automation execution.
+          items:
+            type: string
+        target_alarm_configuration:
+          description: Details of the cloud watch alarm.
+          $ref: '#/components/schemas/AwsSsmDocumentAlarmConfiguration'
+        target_location_max_concurrency:
+          type: string
+          description: The maximum number of AWS Regions and AWS accounts allowed to run the Automation concurrently.
+        target_location_max_errors:
+          type: string
+          description: The maximum number of errors allowed before the system stops queueing additional Automation executions for the currently running Automation.
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    AwsSsmStepExecution:
+      properties:
+        sysId:
+          type: string
+          description: Id of the Step Execution
+        job_id:
+          type: string
+          description: Id reference of the execution job id
+        name:
+          type: string
+          description: Name of the step.
+        action:
+          type: string
+          description: The action this step performs. The action determines the behavior of the step
+        on_failure:
+          type: string
+          description: The action to take if the step fails. The default value is Abort
+        max_attempts:
+          type: integer
+          description: The maximum number of tries to run the action of the step. The default value is 1
+        execution_start_time:
+          type: string
+          format: date-time
+          description: If a step has begun execution, this contains the time the step started.
+        execution_end_time:
+          type: string
+          format: date-time
+          description: If a step has finished execution, this contains the time the execution ended.
+        status:
+          type: string
+          description: Status of the Automation Execution
+          example: Pending
+          enum:
+          - Pending
+          - InProgress
+          - Waiting
+          - Success
+          - TimedOut
+          - Cancelling
+          - Cancelled
+          - Failed
+          - PendingApproval
+          - Approved
+          - Rejected
+          - Scheduled
+          - RunbookInProgress
+          - PendingChangeCalendarOverride
+          - ChangeCalendarOverrideApproved
+          - ChangeCalendarOverrideRejected
+          - CompletedWithSuccess
+          - CompletedWithFailure
+          x-cs-enum-type: AwsSsmAutomationExecutionStatus
+        inputs:
+          type: object
+          additionalProperties:
+            type: string
+        output:
+          type: object
+          additionalProperties:
+            type: string
+        step_execution_id:
+          type: string
+          description: The unique ID of a step execution. Execution id of the step
+        overridden_parameters:
+          type: object
+          additionalProperties:
+            type: string
+        valid_next_steps:
+          type: array
+          description: Strategies used when step fails, we support Continue and Abort. Abort will fail the automation when the step fails. Continue will ignore the failure of current step and allow automation to run the next step.
+          items:
+            type: string
+        failure_message:
+          type: string
+          description: Failure message of the step of the job.
+        failure_details:
+          description: Information about the Automation failure
+          $ref: '#/components/schemas/AwsSsmStepFailureDetail'
+      type: object
+    AwsSsmExecuteAutomationDocumentRequest:
+      allOf:
+      - $ref: '#/components/schemas/AwsSsmBaseExecuteDocumentRequest'
+      - properties:
+          client_token:
+            type: string
+            description: Client auth token.
+          mode:
+            type: string
+            description: Execution mode of the document.
+          target_parameter_name:
+            type: string
+            description: The name of the parameter used as the target resource for the rate-controlled execution.
+          targets:
+            type: array
+            description: An array of search criteria that targets managed nodes using a Key,Value combination.
+            items:
+              $ref: '#/components/schemas/AwsSsmCommandDocumentTarget'
+          target_maps:
+            type: object
+            description: A key-value mapping of document parameters to target resources.
+            additionalProperties:
+              type: array
+              items:
+                type: string
+          target_locations:
+            type: array
+            description: A location is a combination of AWS Regions and/or AWS accounts.
+            items:
+              $ref: '#/components/schemas/AwsSsmExecuteAutomationTargetLocation'
+          tags:
+            type: array
+            description: List of tag key/value pairs
+            items:
+              $ref: '#/components/schemas/KeyValuePair'
+        type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

@@ -1,0 +1,453 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Waf Assessment Definition Versions API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage Assessment Versions
+servers:
+- url: /
+tags:
+- name: WafAssessmentDefinitionVersions
+  description: Manage Assessment Versions
+paths:
+  /v1/well-architected-framework/assessment-version/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WellArchitectedFrameworkAssessmentDefinitionVersion'
+      summary: Get Assessment Versions
+      description: Fetch a batch of Assessment Versions
+      operationId: batch@@@9
+      security:
+      - auth_token: []
+      tags:
+      - WafAssessmentDefinitionVersions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordIdentityBatchRequest'
+        required: true
+  /v1/well-architected-framework/assessment-version/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WellArchitectedFrameworkAssessmentDefinitionVersion'
+      summary: Create new Assessment Definition Version
+      description: Create a Assessment Definition Version. This will create and link a new version to the given definition id.
+      operationId: create@@@10
+      security:
+      - auth_token: []
+      tags:
+      - WafAssessmentDefinitionVersions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WellArchitectedFrameworkAssessmentDefinitionVersion'
+        required: true
+  /v1/well-architected-framework/assessment-version/item/{version_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WellArchitectedFrameworkAssessmentDefinitionVersion'
+      summary: Get Assessment Definition Version
+      description: Get a Assessment Definition Version by id.
+      operationId: get@@@10
+      parameters:
+      - name: version_id
+        in: path
+        required: true
+        description: ID of Assessment Definition Version.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WafAssessmentDefinitionVersions
+  /v1/well-architected-framework/assessment-version/item/{version_id}/make-head:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WellArchitectedFrameworkAssessmentDefinitionVersion'
+      summary: Make Assessment Definition Version the Head version
+      description: Mark this version as the 'head' version.
+      operationId: make-head@@@4
+      parameters:
+      - name: version_id
+        in: path
+        required: true
+        description: ID of Assessment Definition Version.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WafAssessmentDefinitionVersions
+  /v1/well-architected-framework/assessment-version/item/{version_id}/make-release:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WellArchitectedFrameworkAssessmentDefinitionVersion'
+      summary: Make Assessment Definition Version the Release version
+      description: Mark this version as the release version. The release version will be used for posture generation
+      operationId: make-release@@@4
+      parameters:
+      - name: version_id
+        in: path
+        required: true
+        description: ID of Assessment Definition Version.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WafAssessmentDefinitionVersions
+  /v1/well-architected-framework/assessment-version/item/{version_id}/set-state:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WellArchitectedFrameworkAssessmentDefinitionVersion'
+      summary: Set state of Assessment Definition Version
+      description: Set the version state for a Assessment Definition Version. This is used to approve or reject a draft version
+      operationId: set-state@@@4
+      parameters:
+      - name: version_id
+        in: path
+        required: true
+        description: ID of Assessment Definition Version.
+        schema:
+          type: string
+      - description: Version state to transition to
+        in: query
+        x-cs-enum-type: VersionState
+        required: true
+        name: state
+        schema:
+          type: string
+          enum:
+          - Draft
+          - Approved
+          - Rejected
+          default: Draft
+      security:
+      - auth_token: []
+      tags:
+      - WafAssessmentDefinitionVersions
+  /v1/well-architected-framework/assessment-version/parseImport:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Parsed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WellArchitectedFrameworkAssessmentConfiguration'
+      summary: Parse Assessment Definition Version
+      description: Parse and validate a raw json string to be used for importing a Assessment Definition Version
+      operationId: parse-import@@@4
+      security:
+      - auth_token: []
+      tags:
+      - WafAssessmentDefinitionVersions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RawImport'
+        required: true
+components:
+  schemas:
+    BaseDefinitionVersion:
+      properties:
+        sysId:
+          type: string
+          description: Identifier of the version
+        createdOn:
+          type: string
+          format: date-time
+          description: Version created on
+        updatedOn:
+          type: string
+          format: date-time
+          description: Version  updated on
+        version:
+          type: integer
+          default: Sequence number of the version
+        definition:
+          description: Reference to the definition
+          $ref: '#/components/schemas/RecordIdentity'
+        predecessor:
+          description: Reference to the previous version
+          $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    WellArchitectedFrameworkAssessmentAwsSyncFields:
+      properties:
+        cloud_account_id:
+          type: string
+          description: ID of cloud account
+        region:
+          type: string
+          description: Name of region
+        partner_id:
+          type: string
+          description: AWS Partner Network(APN) reference ID
+      type: object
+    RawImport:
+      properties:
+        contentsAsJSON:
+          type: string
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    WellArchitectedFrameworkAssessmentSync:
+      properties:
+        AWS:
+          $ref: '#/components/schemas/WellArchitectedFrameworkAssessmentAwsSyncFields'
+      type: object
+    WellArchitectedFrameworkAssessmentConfiguration:
+      properties:
+        workload_id:
+          type: string
+          description: ID of the Workload Definition to use for this assessment
+        framework_ids:
+          type: array
+          items:
+            type: string
+            description: IDs of the Frameworks to use for this assessment
+        sync_with_hyperscaler:
+          $ref: '#/components/schemas/WellArchitectedFrameworkAssessmentSync'
+      type: object
+    WellArchitectedFrameworkAssessmentDefinitionVersion:
+      allOf:
+      - $ref: '#/components/schemas/BaseDefinitionVersion'
+      - properties:
+          details:
+            description: Details of the version
+            $ref: '#/components/schemas/WellArchitectedFrameworkAssessmentConfiguration'
+          version_state:
+            type: string
+            description: State of the version
+            example: Draft
+            enum:
+            - Draft
+            - Approved
+            - Rejected
+            x-cs-enum-type: VersionState
+        type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

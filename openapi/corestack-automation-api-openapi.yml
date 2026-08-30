@@ -1,0 +1,4387 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Automation API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage Templates, Scripts & Blueprints
+servers:
+- url: /
+tags:
+- name: Automation
+  description: Manage Templates, Scripts & Blueprints
+paths:
+  /operation/automation/scripts/{tenant_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScriptListResponse'
+      summary: List Scripts
+      description: List all the scripts. Global Scripts - All user will have access to Corestack's Marketplace Scripts (Can view and execute). Account - All users under that account will have access (Can view and execute). Only Account admins can update/delete. Tenant - Users with access to the specific tenant will have access scripts (Can view and execute). Tenant admins can update/delete. Private - User who created will only have access.
+      operationId: ListScripts
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: 'Script types to filter. Allowed Values: chef, ansible, puppet, shell'
+        in: query
+        name: types
+        schema:
+          type: string
+          enum:
+          - chef
+          - ansible
+          - puppet
+          - shell
+      - description: 'Script types to filter. Allowed Values: Application, Languages, Database, Security, System, Web Server, Others'
+        in: query
+        name: category
+        schema:
+          type: string
+          enum:
+          - Application
+          - Languages
+          - Database
+          - Security
+          - System
+          - Web Server
+          - Others
+      - description: Number of records to display
+        name: limit
+        in: query
+        schema:
+          type: integer
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateScriptResponse'
+      summary: Create Script
+      description: Creates a new script under the tenant. However the script will be accessible based on its scope. Global Scripts - All user will have access to Corestack's Marketplace Scripts (Can view and execute). Account - All users under that account will have access (Can view and execute). Only Account admins can update/delete. Tenant - Users with access to the specific tenant will have access scripts (Can view and execute). Tenant admins can update/delete. Private - User who created will only have access.
+      operationId: CreateScript
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateScriptRequest'
+        required: true
+  /operation/automation/scripts/{tenant_id}/execute:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Execution Initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecuteResponse'
+      summary: Execute Script
+      description: Execute scripts. Ansible script supports executing single script in multiple machines. Chef/Puppet/Shell executing multiple scripts against multiple target machines.
+      operationId: ExecuteScript
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteScriptRequest'
+        required: true
+  /operation/automation/scripts/{tenant_id}/get/{script_job_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScriptJobDataView'
+      summary: Describe Script Job
+      description: View script job details.
+      operationId: DescribeScriptJob
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: script_job_id
+        in: path
+        required: true
+        description: ID of the script_job. This can be fetched from listScriptJobs API/scriptExecute response
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+  /operation/automation/scripts/{tenant_id}/jobs/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScriptJobListResponse'
+      summary: List Script Jobs
+      description: This API will list all script jobs initiated by the logged in user.
+      operationId: ListScriptJobs
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: Number of records to display
+        name: limit
+        in: query
+        schema:
+          type: integer
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+  /operation/automation/scripts/{tenant_id}/scan:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Scanned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScanScriptResponse'
+      summary: Scan Script
+      description: Scans a script to check if all dependencies(if any) are satisfied. This API will also return parameters available in script for chef and parameter & hosts available in the script for ansible
+      operationId: ScanScript
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScriptScanRequest'
+        required: true
+  /operation/automation/template/{tenant_id}/get/{job_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateJobUpdateResponse'
+      summary: View Template Job
+      description: View Template job details
+      operationId: ViewTemplateJob
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: job_id
+        in: path
+        required: true
+        description: ID of the template_job. This can be fetched from listTemplateJobs API response
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+  /operation/automation/template/{tenant_id}/jobs/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateJobListResponse'
+      summary: List Templates Jobs
+      description: Jobs represent an instance of a Template or Script. Every time a Template or Script is executed, a Job is created. Jobs provide a reference of the execution, during and any time after it.
+      operationId: ListTemplatesJobs
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: Number of records to display
+        name: limit
+        in: query
+        schema:
+          type: integer
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+  /operation/automation/templates/{tenant_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateListResponse'
+      summary: List Templates
+      description: List all the Templates. Global Scope - All the users will have access to view and execute CoreStack Marketplace Templates will not have access to update/delete the templates. Account Scope - All users under account scope will have access to view and execute the templates, only Account admins can update/delete the templates. Tenant Scope - Users having access to the specific tenant can view or execute templates. Tenant admins can only have the access toupdate/delete the templates. Private Scope - Templates created by the user will only have access for the templates under private scope.
+      operationId: ListTemplates
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: DSL types to filter templates.
+        in: query
+        name: dsl
+        schema:
+          type: string
+          enum:
+          - arm
+          - cfn
+          - heat
+          - mistral
+          - terraform
+      - description: Services to filter templates.
+        in: query
+        name: services
+        schema:
+          type: string
+          enum:
+          - Openstack
+          - Azure(public)
+          - Azure
+          - Cloudstack
+          - vCenter
+          - AWS
+          - Rackspace
+          - OpenstackPublic
+          - GCP
+      - description: Number of records to display
+        name: limit
+        in: query
+        schema:
+          type: integer
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateCreateResponse'
+      summary: Create Template
+      description: Creates a new Template under the tenant. However the script will be accessible based on its scope. Global Templates - All user will have access to CoreStack's Marketplace Templates (Can view and execute). Account - All users under that account will have access (Can view and execute). Only Account admins can update/delete. Tenant - Users with access to the specific tenant will have access template (Can view and execute). Tenant admins can update/delete. Private - User who created will only have access.
+      operationId: CreateTemplate
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTemplateRequest'
+        required: true
+  /operation/automation/{tenant_id}/scripts/{script_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Script
+      description: Deletes a script. Cannot undo this action, so be cautious when performing this operation. Use updateScript to make the script as inactive if required
+      operationId: DeleteScript
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: script_id
+        in: path
+        required: true
+        description: ID of the script. This can be fetched from listScripts API
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScriptDataView'
+      summary: Describe Script
+      description: This API will provide detailed information about the script.
+      operationId: DescribeScript
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: script_id
+        in: path
+        required: true
+        description: ID of the script. This can be fetched from listScripts API
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateScriptResponse'
+      summary: Update Script
+      description: Updates script details such as name, script path, dependencies etc.,
+      operationId: UpdateScript
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: script_id
+        in: path
+        required: true
+        description: ID of the script. This can be fetched from listScripts API
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateScriptRequest'
+        required: true
+  /operation/automation/{tenant_id}/templates/{template_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Template
+      description: Delete a Template which is no more required
+      operationId: DeleteTemplate
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template id of the template to delete, template id is unique can be obtained from the list template api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateViewResponse'
+      summary: Describe Template
+      description: Describe the already created Templates
+      operationId: DescribeTemplate
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: template_id
+        in: path
+        required: true
+        description: specify the template id to retrieve, which is a unique id can be obtained using list template api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Update Template
+      description: Update Template details if required after creation using the api, the update by a user depends on the scope of the template created check create template docs for more details on the scope
+      operationId: UpdateTemplate
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template id to update which is a unique id can be retrieved using list template api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTemplateRequest'
+        required: true
+  /operation/automation/{tenant_id}/templates/{template_id}/execute:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateExecuteResponse'
+      summary: Execute Template
+      description: Execute template will return a unique job id the status of the template can be checked  using the Job details api where you can pass the unique id generated to get the details or errors if any on execution
+      operationId: ExecuteTemplate
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template id to execute, template id can be obtained from the list template api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateExecuteRequest'
+        required: true
+  /operation/automation/{tenant_id}/templates/{template_id}/get_params:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateGetParamsResponse'
+      summary: Get Template Params
+      description: Get the parameters required to execute a template
+      operationId: GetTemplateParams
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template id to execute, template id can be obtained from the list template api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateGetParamsRequest'
+        required: true
+  /operation/automation/{tenant_id}/templates/{template_id}/validate:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateValidateResponse'
+      summary: Validate Template
+      description: Validates the Cloud Account and the input parameters provided for a template before executing the template
+      operationId: ValidateTemplate
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template id to execute, template id can be obtained from the list template api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateValidateRequest'
+        required: true
+  /operations/automation/blueprints/{tenant_id}/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateBlueprintDetails'
+      summary: Create Blueprints
+      description: create blueprints
+      operationId: CreateBlueprints
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBlueprintRequest'
+        required: true
+  /operations/automation/blueprints/{tenant_id}/delete/{blueprint_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Blueprints
+      description: delete blueprints
+      operationId: DeleteBlueprints
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: blueprint_id
+        in: path
+        required: true
+        description: Specify the blueprint Id to fetch data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+  /operations/automation/blueprints/{tenant_id}/get/{blueprint_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewBlueprintDetails'
+      summary: View Blueprints
+      description: view blueprints
+      operationId: ViewBlueprints
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: blueprint_id
+        in: path
+        required: true
+        description: Specify the blueprint Id to fetch data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+  /operations/automation/blueprints/{tenant_id}/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBlueprintDetails'
+      summary: List Blueprints
+      description: list blueprints
+      operationId: ListBlueprints
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+  /operations/automation/blueprints/{tenant_id}/update/{blueprint_id}:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateBlueprintResponse'
+      summary: Update Blueprints
+      description: update blueprints
+      operationId: UpdateBlueprints
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: blueprint_id
+        in: path
+        required: true
+        description: Specify the blueprint Id to fetch data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBlueprintRequest'
+        required: true
+  /operations/automation/scripts/{tenant_id}/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateScheduleResponse'
+      summary: Create Script Schedules
+      description: create script schedules
+      operationId: CreateScriptSchedules
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateScheduleRequestScript'
+        required: true
+  /operations/automation/scripts/{tenant_id}/update/{schedule_id}:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateScheduleResponse'
+      summary: Update Script Schedules
+      description: update script schedules
+      operationId: UpdateScriptSchedules
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: schedule_id
+        in: path
+        required: true
+        description: Specify the schedule Id to fetch the schedule data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateScheduleRequestScript'
+        required: true
+  /operations/automation/templates/{tenant_id}/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateScheduleResponse'
+      summary: Create Template Schedules
+      description: create template schedules
+      operationId: CreateTemplateSchedules
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateScheduleRequest'
+        required: true
+  /operations/automation/templates/{tenant_id}/update/{schedule_id}:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateScheduleResponse'
+      summary: Update Template Schedules
+      description: update template schedules
+      operationId: UpdateTemplateSchedules
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: schedule_id
+        in: path
+        required: true
+        description: Specify the schedule Id to fetch the schedule data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateScheduleRequest'
+        required: true
+  /operations/automation/{tenant_id}/delete/{schedule_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Template and Script Schedules
+      description: delete template and script schedules
+      operationId: DeleteTemplateAndScriptSchedules
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: schedule_id
+        in: path
+        required: true
+        description: Specify the schedule Id to fetch the schedule data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+  /operations/automation/{tenant_id}/get/{schedule_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewScheduleResponse'
+      summary: View Template and Script Schedules
+      description: view template and script schedules
+      operationId: ViewTemplateAndScriptSchedules
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: schedule_id
+        in: path
+        required: true
+        description: Specify the schedule Id to fetch the schedule data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+  /operations/automation/{tenant_id}/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListScheduleResponse'
+      summary: List Template and Script Schedules
+      description: list template and script schedules
+      operationId: ListTemplateAndScriptSchedules
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: Type of schedule. Choose one of the below.
+        required: true
+        name: type
+        in: query
+        schema:
+          type: string
+          enum:
+          - template
+          - script
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+  /v2/operation/automation/templates/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AutomationTemplate'
+      summary: Template List Batch
+      description: Batch the templates
+      operationId: BatchTemplate
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordIdentityBatchRequest'
+        required: true
+  /v2/operation/automation/templates/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+      summary: Template List
+      description: List the Templates
+      operationId: ListTemplatesV2
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutomationTemplateListRequest'
+        required: true
+  /v2/operation/automation/{tenant_id}/templates/{template_id}/parameter_schema:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateGetParameterSchemaResponse'
+      summary: Get Template Parameter Schema
+      description: Get the list of input and output parameters schema available in a template.
+      operationId: GetTemplateParameterSchema
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template id to get parameters, template id can be obtained from the list template api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+  /v2/operation/automation/{tenant_id}/templates/{template_id}/validate_parameters:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResults'
+      summary: Validate parameters for a given template
+      description: Validate a set of parameters for a given template
+      operationId: ValidateTemplateParameters
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template id to validate template execution parameters, template id can be obtained from the list template api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Automation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateParameterValidationRequest'
+        required: true
+components:
+  schemas:
+    CreateScriptResponse:
+      properties:
+        script_id:
+          type: string
+          description: Unique ID of the script
+      type: object
+    TemplateJobListResponse:
+      required:
+      - jobs
+      properties:
+        jobs:
+          $ref: '#/components/schemas/TemplateJobsList'
+      type: object
+    BlueprintDetails:
+      required:
+      - created_at
+      - created_by
+      - description
+      - id
+      - name
+      - resources
+      - scope
+      - status
+      - updated_at
+      - updated_by
+      properties:
+        id:
+          type: string
+          description: Blueprint ID
+        name:
+          type: string
+          description: Blueprint Name
+        description:
+          type: string
+          description: Blueprints Description
+        resources:
+          type: array
+          description: Resource Details
+          items:
+            $ref: '#/components/schemas/ResourcesDetails'
+        scope:
+          type: string
+          description: Scope of the blueprint
+        status:
+          type: string
+          description: Status of the blueprint
+        created_by:
+          type: string
+          description: Who has created the blueprint
+        created_at:
+          type: string
+          description: When was the blueprint created
+        updated_by:
+          type: string
+          description: Who has updated the blueprint
+        updated_at:
+          type: string
+          description: When was the blueprint updated
+      type: object
+    ScriptMinimumRequirements:
+      properties:
+        ram(MB):
+          type: number
+          description: Minimum RAM required(in MB) to install the script.
+          default: 0.0
+        cpu:
+          type: integer
+          description: Minimum CPU core required(in MB) to install the script.
+          default: 0
+        disk(MB):
+          type: number
+          description: Minimum disk space required(in MB) to install the script.
+          default: 0.0
+      type: object
+    CloudAccountDetailsResponse:
+      required:
+      - cloud
+      - cloud_account_id
+      properties:
+        cloud:
+          type: string
+          description: Displays the cloud associated with the template, for example, AWS, Azure etc
+        cloud_account_id:
+          type: string
+          description: Unique Identifier of the cloud account onboarded in the on boarding section
+        region:
+          type: string
+          description: The region of the cloud account where it needs to be executed. Mandatory for AWS
+        resourcegroup:
+          type: string
+          description: Resource group for which you need to execute the template for. Mandatory for Azure
+        location:
+          type: string
+          description: Location under which you need to execute the template for. Mandatory for Azure
+      type: object
+    ArgsDetails:
+      required:
+      - job_details
+      properties:
+        job_details:
+          type: array
+          description: The Job Details of the script
+          items:
+            $ref: '#/components/schemas/JobDetails'
+      type: object
+    AttributeDetails:
+      required:
+      - service_accounts
+      properties:
+        service_accounts:
+          type: array
+          description: Service account id is unique can be obtained from the list cloud
+          items:
+            $ref: '#/components/schemas/CloudAccountDetails'
+      type: object
+    TemplateGetParameterSchemaResponse:
+      properties:
+        input_parameters:
+          type: array
+          description: List of input parameters.
+          items:
+            $ref: '#/components/schemas/NamedParameter'
+        output_parameters:
+          type: array
+          description: List of output parameters.
+          items:
+            $ref: '#/components/schemas/NamedParameter'
+      type: object
+    ScriptJobListModel:
+      required:
+      - completed_at
+      - execution_type
+      - initiated_by
+      - started_at
+      - status
+      - status_reason
+      properties:
+        script_job_id:
+          type: string
+          description: Unique ID of the Script Job
+        script_job_name:
+          type: string
+          description: Name of the Script Job
+        status:
+          type: string
+          description: Overall status of the script execution
+        status_reason:
+          type: string
+          description: Error message if failed
+        started_at:
+          type: string
+          description: Script Job start time in UTC
+        completed_at:
+          type: string
+          description: Script Job completion time in UTC
+        execution_type:
+          type: string
+          description: Script Job execution type (on_demand/scheduled)
+        initiated_by:
+          type: string
+          description: User who initiated the script execution
+      type: object
+    TemplateJobsList:
+      properties:
+        id:
+          type: string
+          description: Unique ID of the template job.
+        name:
+          type: string
+          description: Name of the template job.
+        status:
+          type: string
+          description: Overall status of the template execution
+          example: CANCELED
+          enum:
+          - CANCELED
+          - COMPLETED
+          - CREATE_FAILED
+          - CREATE_IN_PROGRESS
+          - DELETED
+          - DELETE_FAILED
+          - DELETE_IN_PROGRESS
+          - FAILED
+          - IN_PROGRESS
+          - SNAPSHOT_COMPLETED
+          - SNAPSHOT_FAILED
+          - SNAPSHOT_IN_PROGRESS
+          - UPDATED
+          - UPDATE_FAILED
+          - UPDATE_IN_PROGRESS
+          x-cs-enum-type: TemplateJobStatus
+        type:
+          type: string
+          description: Type of the executed template [heat/mistral]
+        status_reason:
+          type: string
+          description: Error message if failed
+        user_name:
+          type: string
+          description: User who initiated the template execution
+        job_actions:
+          type: array
+          description: list of actions supported for this job based on its type.
+          items:
+            type: string
+        incident_reference:
+          description: Incident reference details.
+          $ref: '#/components/schemas/TemplateIncidentReference'
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    TemplateValidateRequest:
+      required:
+      - cloud_accounts
+      properties:
+        cloud_accounts:
+          type: array
+          description: cloud account details to execute the template
+          items:
+            $ref: '#/components/schemas/CloudAccount'
+      type: object
+    ValidationResult:
+      properties:
+        field:
+          type: string
+        reason:
+          type: string
+      type: object
+    DateAndTimeDetails:
+      required:
+      - dayofmonth
+      - month
+      - time
+      - weekday
+      - year
+      properties:
+        month:
+          type: string
+          description: 'Month when the Template/Script/Policy is scheduled to run. Allowed values: 01-12'
+        time:
+          description: Time when the Template/Script/Policy is scheduled to run.
+          $ref: '#/components/schemas/TimeDetails'
+        dayofmonth:
+          description: 'At which day of that month the Template/Script/Policy is scheduled to run.Note - weekday and dayofmonth are alternate.Allowed values: 01-31'
+          $ref: '#/components/schemas/DayDetails'
+        weekday:
+          description: 'At which day of that week the Template/Script/Policy is scheduled to run.Note - weekday and dayofmonth are alternate.Allowed values: 01-07'
+          $ref: '#/components/schemas/DayDetails'
+        year:
+          type: string
+          description: Year when the Template/Script/Policy is scheduled to run. Example:'year':'2022'
+      type: object
+    ParameterBase:
+      required:
+      - __type
+      properties:
+        description:
+          type: string
+          description: A brief explanation of the policy parameter
+        default_value:
+          type: string
+          description: Default value of the parameter, encoded as a JSON string
+        hide_parameter:
+          type: boolean
+          description: Hide/Show a parameter for visibility as part of deployment
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ParameterStringType
+        subtype_name: ParameterStringType
+      - subtype_model: ParameterNumberType
+        subtype_name: ParameterNumberType
+      - subtype_model: ParameterBooleanType
+        subtype_name: ParameterBooleanType
+      - subtype_model: ParameterBaseWithSchema
+        subtype_name: ParameterBaseWithSchema
+      - subtype_model: ParameterArray
+        subtype_name: ParameterArray
+      - subtype_model: ParameterMap
+        subtype_name: ParameterMap
+      - subtype_model: ParameterObject
+        subtype_name: ParameterObject
+      - subtype_model: ParameterJsonBlob
+        subtype_name: ParameterJsonBlob
+    QueryOperator:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: QueryOperatorTrue
+        subtype_name: QueryOperatorTrue
+      - subtype_model: QueryOperatorFalse
+        subtype_name: QueryOperatorFalse
+      - subtype_model: QueryOperatorBinary
+        subtype_name: QueryOperatorBinary
+      - subtype_model: QueryOperatorBinaryLogic
+        subtype_name: QueryOperatorBinaryLogic
+      - subtype_model: QueryOperatorNary
+        subtype_name: QueryOperatorNary
+      - subtype_model: QueryOperatorNaryLogic
+        subtype_name: QueryOperatorNaryLogic
+      - subtype_model: QueryOperatorComparator
+        subtype_name: QueryOperatorComparator
+      - subtype_model: QueryOperatorComparatorLogic
+        subtype_name: QueryOperatorComparatorLogic
+      - subtype_model: QueryOperatorUnary
+        subtype_name: QueryOperatorUnary
+      - subtype_model: QueryOperatorUnaryNot
+        subtype_name: QueryOperatorUnaryNot
+      - subtype_model: QueryOperatorBinaryForGraph
+        subtype_name: QueryOperatorBinaryForGraph
+      - subtype_model: QueryOperatorBinaryLogicForGraph
+        subtype_name: QueryOperatorBinaryLogicForGraph
+      - subtype_model: QueryOperatorNaryForGraph
+        subtype_name: QueryOperatorNaryForGraph
+      - subtype_model: QueryOperatorNaryLogicForGraph
+        subtype_name: QueryOperatorNaryLogicForGraph
+      - subtype_model: QueryOperatorUnaryForGraph
+        subtype_name: QueryOperatorUnaryForGraph
+      - subtype_model: QueryOperatorUnaryNotForGraph
+        subtype_name: QueryOperatorUnaryNotForGraph
+      - subtype_model: ServiceAccountQueryOperator
+        subtype_name: ServiceAccountQueryOperator
+      - subtype_model: TenantQueryOperator
+        subtype_name: TenantQueryOperator
+      - subtype_model: DescendantServiceAccountQueryOperator
+        subtype_name: DescendantServiceAccountQueryOperator
+      - subtype_model: DescendantServiceAccountInTenantQueryOperator
+        subtype_name: DescendantServiceAccountInTenantQueryOperator
+      - subtype_model: TenantTagKeyQueryOperator
+        subtype_name: TenantTagKeyQueryOperator
+      - subtype_model: TenantTagKeyValueQueryOperator
+        subtype_name: TenantTagKeyValueQueryOperator
+      - subtype_model: LocationQueryOperator
+        subtype_name: LocationQueryOperator
+      - subtype_model: AvailabilityZoneQueryOperator
+        subtype_name: AvailabilityZoneQueryOperator
+      - subtype_model: BillingSourceQueryOperator
+        subtype_name: BillingSourceQueryOperator
+      - subtype_model: CurrencyQueryOperator
+        subtype_name: CurrencyQueryOperator
+      - subtype_model: ProductCategoryQueryOperator
+        subtype_name: ProductCategoryQueryOperator
+      - subtype_model: ProductFamilyQueryOperator
+        subtype_name: ProductFamilyQueryOperator
+      - subtype_model: ProductServiceCodeQueryOperator
+        subtype_name: ProductServiceCodeQueryOperator
+      - subtype_model: ProductSkuQueryOperator
+        subtype_name: ProductSkuQueryOperator
+      - subtype_model: PublisherQueryOperator
+        subtype_name: PublisherQueryOperator
+      - subtype_model: ResourceCategoryQueryOperator
+        subtype_name: ResourceCategoryQueryOperator
+      - subtype_model: ResourceIdQueryOperator
+        subtype_name: ResourceIdQueryOperator
+      - subtype_model: ResourceGroupQueryOperator
+        subtype_name: ResourceGroupQueryOperator
+      - subtype_model: ResourceNameQueryOperator
+        subtype_name: ResourceNameQueryOperator
+      - subtype_model: ResourceOperationQueryOperator
+        subtype_name: ResourceOperationQueryOperator
+      - subtype_model: ResourceQueryExtraPresence
+        subtype_name: ResourceQueryExtraPresence
+      - subtype_model: ResourceQueryExtraKey
+        subtype_name: ResourceQueryExtraKey
+      - subtype_model: ScopeContainsTenantQueryOperator
+        subtype_name: ScopeContainsTenantQueryOperator
+      - subtype_model: ScopeContainsServiceAccountQueryOperator
+        subtype_name: ScopeContainsServiceAccountQueryOperator
+      - subtype_model: ScopeIsQueryOperator
+        subtype_name: ScopeIsQueryOperator
+      - subtype_model: ServiceCategoryQueryOperator
+        subtype_name: ServiceCategoryQueryOperator
+      - subtype_model: ServiceTypeQueryOperator
+        subtype_name: ServiceTypeQueryOperator
+      - subtype_model: CompartmentNameQueryOperator
+        subtype_name: CompartmentNameQueryOperator
+      - subtype_model: ResourceQueryExtraKeyValue
+        subtype_name: ResourceQueryExtraKeyValue
+      - subtype_model: WorkFlowIdQueryOperator
+        subtype_name: WorkFlowIdQueryOperator
+      - subtype_model: RecommendationSubClassificationQueryOperator
+        subtype_name: RecommendationSubClassificationQueryOperator
+      - subtype_model: ServiceNowCmdbQuerySyncLogResourceId
+        subtype_name: ServiceNowCmdbQuerySyncLogResourceId
+      - subtype_model: ServiceNowCmdbQuerySyncLogResourceType
+        subtype_name: ServiceNowCmdbQuerySyncLogResourceType
+      - subtype_model: ServiceNowCmdbQuerySyncLogAction
+        subtype_name: ServiceNowCmdbQuerySyncLogAction
+      - subtype_model: ServiceNowCmdbQuerySyncLogStatus
+        subtype_name: ServiceNowCmdbQuerySyncLogStatus
+      - subtype_model: ServiceNowCmdbQuerySyncLogService
+        subtype_name: ServiceNowCmdbQuerySyncLogService
+      - subtype_model: ServiceAccountNativeDetailsQueryOperator
+        subtype_name: ServiceAccountNativeDetailsQueryOperator
+      - subtype_model: ServiceAccountStatusQueryOperator
+        subtype_name: ServiceAccountStatusQueryOperator
+      - subtype_model: ServiceAccountTagKeyQueryOperator
+        subtype_name: ServiceAccountTagKeyQueryOperator
+      - subtype_model: ServiceAccountTagKeyRegexQueryOperator
+        subtype_name: ServiceAccountTagKeyRegexQueryOperator
+      - subtype_model: ServiceAccountTagKeyValueQueryOperator
+        subtype_name: ServiceAccountTagKeyValueQueryOperator
+      - subtype_model: ApplicableHealthMetricsQueryOperator
+        subtype_name: ApplicableHealthMetricsQueryOperator
+      - subtype_model: EpssScoreRangeQueryOperator
+        subtype_name: EpssScoreRangeQueryOperator
+      - subtype_model: CvssMetricScoreRangeQueryOperator
+        subtype_name: CvssMetricScoreRangeQueryOperator
+      - subtype_model: GraphionScoreRangeQueryOperator
+        subtype_name: GraphionScoreRangeQueryOperator
+      - subtype_model: AppSecopsApplicationIdQueryOperator
+        subtype_name: AppSecopsApplicationIdQueryOperator
+      - subtype_model: AppSecopsPortfolioIdQueryOperator
+        subtype_name: AppSecopsPortfolioIdQueryOperator
+      - subtype_model: AppSecopsProjectIdQueryOperator
+        subtype_name: AppSecopsProjectIdQueryOperator
+      - subtype_model: AppSecopsSbomComponentIdQueryOperator
+        subtype_name: AppSecopsSbomComponentIdQueryOperator
+      - subtype_model: AppSecopsSbomVersionIdQueryOperator
+        subtype_name: AppSecopsSbomVersionIdQueryOperator
+      - subtype_model: AppSecopsComponentProductQueryOperator
+        subtype_name: AppSecopsComponentProductQueryOperator
+      - subtype_model: AppSecopsSbomComponentTypeQueryOperator
+        subtype_name: AppSecopsSbomComponentTypeQueryOperator
+      - subtype_model: AppSecopsSbomVersionSubmittedByQueryOperator
+        subtype_name: AppSecopsSbomVersionSubmittedByQueryOperator
+      - subtype_model: AppSecopsSbomVersionSubmittedDateQueryOperator
+        subtype_name: AppSecopsSbomVersionSubmittedDateQueryOperator
+      - subtype_model: AppSecopsSbomVersionBuildIdQueryOperator
+        subtype_name: AppSecopsSbomVersionBuildIdQueryOperator
+      - subtype_model: AppSecopsSbomNameQueryOperator
+        subtype_name: AppSecopsSbomNameQueryOperator
+      - subtype_model: AppSecopsCveIdQueryOperator
+        subtype_name: AppSecopsCveIdQueryOperator
+      - subtype_model: AppSecopsEpssScoreQueryOperator
+        subtype_name: AppSecopsEpssScoreQueryOperator
+      - subtype_model: AppSecopsCvssScoreQueryOperator
+        subtype_name: AppSecopsCvssScoreQueryOperator
+      - subtype_model: AppSecopsGraphionScoreQueryOperator
+        subtype_name: AppSecopsGraphionScoreQueryOperator
+      - subtype_model: SecopsVulnerabilitySeverityQueryOperator
+        subtype_name: SecopsVulnerabilitySeverityQueryOperator
+      - subtype_model: AppSecopsIsKnownExploitedVulnerabilityQueryOperator
+        subtype_name: AppSecopsIsKnownExploitedVulnerabilityQueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricAttackVectorV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricAttackVectorV31QueryOperator
+      - subtype_model: AppSecopsFixAvailableQueryOperator
+        subtype_name: AppSecopsFixAvailableQueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricAttackComplexityV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricAttackComplexityV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricPrivilegesRequiredV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricPrivilegesRequiredV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricScopeV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricScopeV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityUserInteractionV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityUserInteractionV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityImpactMetricConfidentialityImpactV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityImpactMetricConfidentialityImpactV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityImpactMetricIntegrityImpactV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityImpactMetricIntegrityImpactV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityImpactMetricAvailabilityImpactV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityImpactMetricAvailabilityImpactV31QueryOperator
+      - subtype_model: AppSecopsContainerFindingsSBOMVersionIdsQueryOperator
+        subtype_name: AppSecopsContainerFindingsSBOMVersionIdsQueryOperator
+      - subtype_model: AppSecopsContainerFindingsCategoryQueryOperator
+        subtype_name: AppSecopsContainerFindingsCategoryQueryOperator
+      - subtype_model: AppSecopsContainerFindingsExecutionPhaseQueryOperator
+        subtype_name: AppSecopsContainerFindingsExecutionPhaseQueryOperator
+      - subtype_model: AppSecopsContainerFindingsSeverityQueryOperator
+        subtype_name: AppSecopsContainerFindingsSeverityQueryOperator
+      - subtype_model: AppSecopsContainerFindingsStatusQueryOperator
+        subtype_name: AppSecopsContainerFindingsStatusQueryOperator
+      - subtype_model: DimensionSourceQueryOperator
+        subtype_name: DimensionSourceQueryOperator
+      - subtype_model: DimensionQueryOperator
+        subtype_name: DimensionQueryOperator
+      - subtype_model: ResourceTypeQueryOperator
+        subtype_name: ResourceTypeQueryOperator
+      - subtype_model: PodIdRegexQueryOperator
+        subtype_name: PodIdRegexQueryOperator
+      - subtype_model: PodNameRegexQueryOperator
+        subtype_name: PodNameRegexQueryOperator
+      - subtype_model: ContainerIdRegexQueryOperator
+        subtype_name: ContainerIdRegexQueryOperator
+      - subtype_model: PodNamesQueryOperator
+        subtype_name: PodNamesQueryOperator
+      - subtype_model: PodIdsQueryOperator
+        subtype_name: PodIdsQueryOperator
+      - subtype_model: UtilizationTypeQueryOperator
+        subtype_name: UtilizationTypeQueryOperator
+      - subtype_model: ResourceIdRegexQueryOperator
+        subtype_name: ResourceIdRegexQueryOperator
+      - subtype_model: ResourceNameRegexQueryOperator
+        subtype_name: ResourceNameRegexQueryOperator
+      - subtype_model: ExtrasValueRegexQueryOperator
+        subtype_name: ExtrasValueRegexQueryOperator
+      - subtype_model: TagKeyValueRegexQueryOperator
+        subtype_name: TagKeyValueRegexQueryOperator
+      - subtype_model: ResourceQueryTagKeyKind
+        subtype_name: ResourceQueryTagKeyKind
+      - subtype_model: ResourceQueryTagKeyValuesKind
+        subtype_name: ResourceQueryTagKeyValuesKind
+      - subtype_model: TagKeyStringValueRegexQueryOperator
+        subtype_name: TagKeyStringValueRegexQueryOperator
+      - subtype_model: TagKindStringKeyRegexQueryOperator
+        subtype_name: TagKindStringKeyRegexQueryOperator
+      - subtype_model: ServiceAccountNameRegexQueryOperator
+        subtype_name: ServiceAccountNameRegexQueryOperator
+      - subtype_model: TenantNameRegexQueryOperator
+        subtype_name: TenantNameRegexQueryOperator
+      - subtype_model: PlatFormAccountQueryOperator
+        subtype_name: PlatFormAccountQueryOperator
+      - subtype_model: BillingLineItemTypeQueryOperator
+        subtype_name: BillingLineItemTypeQueryOperator
+      - subtype_model: BillingEntityQueryOperator
+        subtype_name: BillingEntityQueryOperator
+      - subtype_model: LineItemDescriptionQueryOperator
+        subtype_name: LineItemDescriptionQueryOperator
+      - subtype_model: LineItemDescriptionRegexQueryOperator
+        subtype_name: LineItemDescriptionRegexQueryOperator
+      - subtype_model: MeterSubCategoryQueryOperator
+        subtype_name: MeterSubCategoryQueryOperator
+      - subtype_model: PricingCategoryQueryOperator
+        subtype_name: PricingCategoryQueryOperator
+      - subtype_model: PricingPurchaseOptionQueryOperator
+        subtype_name: PricingPurchaseOptionQueryOperator
+      - subtype_model: TagKeyRegexQueryOperator
+        subtype_name: TagKeyRegexQueryOperator
+      - subtype_model: BillingLineItemTypeRegexQueryOperator
+        subtype_name: BillingLineItemTypeRegexQueryOperator
+      - subtype_model: ResourceGroupRegexQueryOperator
+        subtype_name: ResourceGroupRegexQueryOperator
+      - subtype_model: ResourceCategoryRegexQueryOperator
+        subtype_name: ResourceCategoryRegexQueryOperator
+      - subtype_model: ProductCategoryRegexQueryOperator
+        subtype_name: ProductCategoryRegexQueryOperator
+      - subtype_model: BillingEntityRegexQueryOperator
+        subtype_name: BillingEntityRegexQueryOperator
+      - subtype_model: ResourceOperationRegexQueryOperator
+        subtype_name: ResourceOperationRegexQueryOperator
+      - subtype_model: ResourceQueryFieldPresence
+        subtype_name: ResourceQueryFieldPresence
+      - subtype_model: AssessmentRunReportDetailQuerySection
+        subtype_name: AssessmentRunReportDetailQuerySection
+      - subtype_model: AssessmentRunReportSummaryQuerySection
+        subtype_name: AssessmentRunReportSummaryQuerySection
+      - subtype_model: AssessmentQueryAssessmentName
+        subtype_name: AssessmentQueryAssessmentName
+      - subtype_model: AssessmentQueryAssessmentOwner
+        subtype_name: AssessmentQueryAssessmentOwner
+      - subtype_model: AssessmentQueryAssessmentApprover
+        subtype_name: AssessmentQueryAssessmentApprover
+      - subtype_model: AssessmentQueryWorkload
+        subtype_name: AssessmentQueryWorkload
+      - subtype_model: AssessmentQueryFramework
+        subtype_name: AssessmentQueryFramework
+      - subtype_model: AssessmentQueryPillar
+        subtype_name: AssessmentQueryPillar
+      - subtype_model: AssessmentViewQueryNature
+        subtype_name: AssessmentViewQueryNature
+      - subtype_model: AssessmentViewQueryQuestionRisk
+        subtype_name: AssessmentViewQueryQuestionRisk
+      - subtype_model: AssessmentViewQueryBestPracticeRisk
+        subtype_name: AssessmentViewQueryBestPracticeRisk
+      - subtype_model: AssessmentViewQueryQuestionStatus
+        subtype_name: AssessmentViewQueryQuestionStatus
+      - subtype_model: AssessmentViewQueryBestPracticeStatus
+        subtype_name: AssessmentViewQueryBestPracticeStatus
+      - subtype_model: AssessmentViewQueryOwner
+        subtype_name: AssessmentViewQueryOwner
+      - subtype_model: AssessmentViewQueryAssignedTo
+        subtype_name: AssessmentViewQueryAssignedTo
+      - subtype_model: AssessmentViewQueryComment
+        subtype_name: AssessmentViewQueryComment
+      - subtype_model: AssessmentReportQueryAssessmentName
+        subtype_name: AssessmentReportQueryAssessmentName
+      - subtype_model: AssessmentReportQueryFramework
+        subtype_name: AssessmentReportQueryFramework
+      - subtype_model: AssessmentReportQueryReportType
+        subtype_name: AssessmentReportQueryReportType
+      - subtype_model: AssessmentReportQueryWorkloadId
+        subtype_name: AssessmentReportQueryWorkloadId
+      - subtype_model: ScheduleQueryName
+        subtype_name: ScheduleQueryName
+      - subtype_model: ScheduleQueryCreatedBy
+        subtype_name: ScheduleQueryCreatedBy
+      - subtype_model: ScheduleQueryEmailRecipients
+        subtype_name: ScheduleQueryEmailRecipients
+      - subtype_model: ScheduleQueryRecurrence
+        subtype_name: ScheduleQueryRecurrence
+      - subtype_model: ScheduleQueryReportType
+        subtype_name: ScheduleQueryReportType
+      - subtype_model: ScheduleQueryNextGenReportType
+        subtype_name: ScheduleQueryNextGenReportType
+      - subtype_model: ScheduleQueryAssessmentAgentReportType
+        subtype_name: ScheduleQueryAssessmentAgentReportType
+      - subtype_model: AutomationTemplateQueryEngineType
+        subtype_name: AutomationTemplateQueryEngineType
+      - subtype_model: AutomationTemplateQueryRepoType
+        subtype_name: AutomationTemplateQueryRepoType
+      - subtype_model: AutomationTemplateQueryService
+        subtype_name: AutomationTemplateQueryService
+      - subtype_model: AutomationTemplateQueryTenant
+        subtype_name: AutomationTemplateQueryTenant
+      - subtype_model: AwsSecurityHubFindingQueryLocation
+        subtype_name: AwsSecurityHubFindingQueryLocation
+      - subtype_model: AwsSecurityHubFindingQuerySeverity
+        subtype_name: AwsSecurityHubFindingQuerySeverity
+      - subtype_model: AwsSecurityHubFindingQueryProductName
+        subtype_name: AwsSecurityHubFindingQueryProductName
+      - subtype_model: AwsSecurityHubFindingQueryResource
+        subtype_name: AwsSecurityHubFindingQueryResource
+      - subtype_model: AwsSecurityHubFindingQueryCloudAccount
+        subtype_name: AwsSecurityHubFindingQueryCloudAccount
+      - subtype_model: AwsSecurityHubFindingQueryRecordState
+        subtype_name: AwsSecurityHubFindingQueryRecordState
+      - subtype_model: AwsSsmDocumentQueryCloudAccount
+        subtype_name: AwsSsmDocumentQueryCloudAccount
+      - subtype_model: AwsSsmDocumentQueryRegion
+        subtype_name: AwsSsmDocumentQueryRegion
+      - subtype_model: AwsSsmDocumentQueryOwner
+        subtype_name: AwsSsmDocumentQueryOwner
+      - subtype_model: AwsSsmDocumentQueryCategory
+        subtype_name: AwsSsmDocumentQueryCategory
+      - subtype_model: AwsSsmDocumentQueryStatus
+        subtype_name: AwsSsmDocumentQueryStatus
+      - subtype_model: AwsSsmDocumentQueryName
+        subtype_name: AwsSsmDocumentQueryName
+      - subtype_model: AwsSsmDocumentQueryExecutedBy
+        subtype_name: AwsSsmDocumentQueryExecutedBy
+      - subtype_model: ComplianceURIQueryOperator
+        subtype_name: ComplianceURIQueryOperator
+      - subtype_model: DurationInMonthsQueryOperator
+        subtype_name: DurationInMonthsQueryOperator
+      - subtype_model: UniqueIdQueryOperator
+        subtype_name: UniqueIdQueryOperator
+      - subtype_model: ThreatVulnerabilityStatusQueryOperator
+        subtype_name: ThreatVulnerabilityStatusQueryOperator
+      - subtype_model: ThreatVulnerabilitySeverityQueryOperator
+        subtype_name: ThreatVulnerabilitySeverityQueryOperator
+      - subtype_model: ThreatVulnerabilityIssueTypeQueryOperator
+        subtype_name: ThreatVulnerabilityIssueTypeQueryOperator
+      - subtype_model: ThreatIntentQueryOperator
+        subtype_name: ThreatIntentQueryOperator
+      - subtype_model: VulnerabilityReferenceIdQueryOperator
+        subtype_name: VulnerabilityReferenceIdQueryOperator
+      - subtype_model: CostAnomalyStatusQueryOperator
+        subtype_name: CostAnomalyStatusQueryOperator
+      - subtype_model: CurrencyExchangeConfigurationQuerySourceCurrency
+        subtype_name: CurrencyExchangeConfigurationQuerySourceCurrency
+      - subtype_model: CurrencyExchangeConfigurationQueryTargetCurrency
+        subtype_name: CurrencyExchangeConfigurationQueryTargetCurrency
+      - subtype_model: CurrencyExchangeConfigurationQueryScope
+        subtype_name: CurrencyExchangeConfigurationQueryScope
+      - subtype_model: MetricValuesOperator
+        subtype_name: MetricValuesOperator
+      - subtype_model: PatchReadinessStatusQueryOperator
+        subtype_name: PatchReadinessStatusQueryOperator
+      - subtype_model: MasterAccountBillingQueryMasterAccounts
+        subtype_name: MasterAccountBillingQueryMasterAccounts
+      - subtype_model: MasterAccountBillingQueryTenants
+        subtype_name: MasterAccountBillingQueryTenants
+      - subtype_model: MasterAccountBillingQueryUsers
+        subtype_name: MasterAccountBillingQueryUsers
+      - subtype_model: MasterAccountBillingQueryConversations
+        subtype_name: MasterAccountBillingQueryConversations
+      - subtype_model: MasterAccountBillingQueryTransactionType
+        subtype_name: MasterAccountBillingQueryTransactionType
+      - subtype_model: PolicyResourceRecommendationStatusQueryOperator
+        subtype_name: PolicyResourceRecommendationStatusQueryOperator
+      - subtype_model: PolicyResourceRecommendationPolicyIdsQueryOperator
+        subtype_name: PolicyResourceRecommendationPolicyIdsQueryOperator
+      - subtype_model: PolicyResourceRecommendationSeverityQueryOperator
+        subtype_name: PolicyResourceRecommendationSeverityQueryOperator
+      - subtype_model: PolicyRecommendationClassificationQueryOperator
+        subtype_name: PolicyRecommendationClassificationQueryOperator
+      - subtype_model: InfraResourceTrendResourceChangeStatusQueryOperator
+        subtype_name: InfraResourceTrendResourceChangeStatusQueryOperator
+      - subtype_model: VmAgentsQueryOsTypes
+        subtype_name: VmAgentsQueryOsTypes
+      - subtype_model: VmAgentsQueryInstantState
+        subtype_name: VmAgentsQueryInstantState
+      - subtype_model: VmAgentsQueryQualysStatus
+        subtype_name: VmAgentsQueryQualysStatus
+      - subtype_model: VmAgentsQueryCrowdStrikeStatus
+        subtype_name: VmAgentsQueryCrowdStrikeStatus
+      - subtype_model: VmAgentsQuerySplunkStatus
+        subtype_name: VmAgentsQuerySplunkStatus
+      - subtype_model: StacksMarketplaceStackQueryArchived
+        subtype_name: StacksMarketplaceStackQueryArchived
+      - subtype_model: StacksMarketplaceStackQueryAutoApproved
+        subtype_name: StacksMarketplaceStackQueryAutoApproved
+      - subtype_model: StacksMarketplaceStackQueryOwner
+        subtype_name: StacksMarketplaceStackQueryOwner
+      - subtype_model: StacksMarketplaceStackQueryName
+        subtype_name: StacksMarketplaceStackQueryName
+      - subtype_model: StacksMarketplaceStackQueryProduct
+        subtype_name: StacksMarketplaceStackQueryProduct
+      - subtype_model: StacksMarketplaceDeploymentQueryName
+        subtype_name: StacksMarketplaceDeploymentQueryName
+      - subtype_model: StacksMarketplaceDeploymentQueryStack
+        subtype_name: StacksMarketplaceDeploymentQueryStack
+      - subtype_model: StacksMarketplaceDeploymentQueryAccount
+        subtype_name: StacksMarketplaceDeploymentQueryAccount
+      - subtype_model: StacksMarketplaceDeploymentQueryRegion
+        subtype_name: StacksMarketplaceDeploymentQueryRegion
+      - subtype_model: StacksMarketplaceStackDeploymentQueryExecutionStatus
+        subtype_name: StacksMarketplaceStackDeploymentQueryExecutionStatus
+      - subtype_model: MetricNameQueryOperator
+        subtype_name: MetricNameQueryOperator
+      - subtype_model: ResourceQueryCategory
+        subtype_name: ResourceQueryCategory
+      - subtype_model: ResourceQueryLocation
+        subtype_name: ResourceQueryLocation
+      - subtype_model: ResourceQueryResource
+        subtype_name: ResourceQueryResource
+      - subtype_model: ResourceQueryResourceGroup
+        subtype_name: ResourceQueryResourceGroup
+      - subtype_model: ResourceQueryResourceName
+        subtype_name: ResourceQueryResourceName
+      - subtype_model: ResourceQueryResourceType
+        subtype_name: ResourceQueryResourceType
+      - subtype_model: ResourceQueryTagPresence
+        subtype_name: ResourceQueryTagPresence
+      - subtype_model: ResourceQueryTagKey
+        subtype_name: ResourceQueryTagKey
+      - subtype_model: ResourceQueryTagKeyValue
+        subtype_name: ResourceQueryTagKeyValue
+      - subtype_model: WorkloadQueryWorkloadName
+        subtype_name: WorkloadQueryWorkloadName
+      - subtype_model: WorkloadQueryWorkloadOwner
+        subtype_name: WorkloadQueryWorkloadOwner
+      - subtype_model: WorkloadQueryCloud
+        subtype_name: WorkloadQueryCloud
+      - subtype_model: WorkloadQueryCloudAccount
+        subtype_name: WorkloadQueryCloudAccount
+      - subtype_model: WorkloadQueryWorkloadType
+        subtype_name: WorkloadQueryWorkloadType
+      - subtype_model: WorkloadQueryWorkloadId
+        subtype_name: WorkloadQueryWorkloadId
+    ScriptScanRequest:
+      required:
+      - config_type
+      - script_info
+      properties:
+        config_type:
+          type: string
+          description: Config type of the script
+          example: chef
+          enum:
+          - chef
+          - ansible
+          - puppet
+          - shell
+          x-cs-enum-type: ConfigType
+        script_info:
+          type: array
+          description: script info
+          items:
+            $ref: '#/components/schemas/ScriptInfo'
+        dependencies:
+          type: array
+          description: Details of the dependent scripts if any
+          items:
+            $ref: '#/components/schemas/ScriptInfo'
+        playbook_yaml:
+          type: string
+          description: Playbook yaml path - mandatory for ansible scripts
+      type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    CloudAccount:
+      required:
+      - cloud
+      - cloud_account_id
+      properties:
+        cloud:
+          type: string
+          description: Displays the cloud associated with the template, for example, AWS, GCP, Azure etc
+        cloud_account_id:
+          type: string
+          description: Unique Identifier of the cloud account onboarded in the on boarding section
+        region:
+          type: string
+          description: The region of the cloud account where it needs to be executed. Mandatory for AWS
+        zones:
+          type: string
+          description: The zones of the cloud account where it needs to be executed. Mandatory for GCP
+        resourcegroup:
+          type: string
+          description: Resource group for which you need to execute the template for. Mandatory for Azure
+        location:
+          type: string
+          description: Location under which you need to execute the template for. Mandatory for Azure
+      type: object
+    ScanScriptResponse:
+      required:
+      - hosts
+      - scanned_parameters
+      properties:
+        scanned_parameters:
+          type: object
+          description: A JSON object which contains the scanned parameters of the script.
+        hosts:
+          type: array
+          description: Hosts available in the playbook if any
+          items:
+            type: string
+      type: object
+    ScriptJobDataView:
+      required:
+      - completed_at
+      - execution_type
+      - initiated_by
+      - started_at
+      - status
+      - status_reason
+      properties:
+        script_job_id:
+          type: string
+          description: Unique ID of the Script Job
+        script_job_name:
+          type: string
+          description: Name of the Script Job
+        status:
+          type: string
+          description: Overall status of the script execution
+        status_reason:
+          type: string
+          description: Error message if failed
+        started_at:
+          type: string
+          description: Script Job start time in UTC
+        completed_at:
+          type: string
+          description: Script Job completion time in UTC
+        execution_type:
+          type: string
+          description: Script Job execution type (on_demand/scheduled)
+        initiated_by:
+          type: string
+          description: User who initiated script execution
+        job_info:
+          description: Script execution details
+          $ref: '#/components/schemas/ScriptJobInfo'
+      type: object
+    NamedParameter:
+      required:
+      - is_required
+      - name
+      - schema
+      properties:
+        name:
+          type: string
+          description: Name of the parameter
+        display_name:
+          type: string
+          description: Display Name of the parameter
+        is_required:
+          type: boolean
+          description: Whether the parameter is required.
+        schema:
+          $ref: '#/components/schemas/ParameterBase'
+      type: object
+    ScriptJobInfo:
+      required:
+      - host
+      - platform
+      - username
+      properties:
+        host:
+          type: string
+          description: Target machine's IP/DNS
+        username:
+          type: string
+          description: Username of the target machine
+        platform:
+          type: string
+          description: Platform of the target machine.
+        script_info:
+          description: Script execution details
+          $ref: '#/components/schemas/ScriptJobScriptInfo'
+      type: object
+    ResourceRequest:
+      required:
+      - action
+      - execution_type
+      - id
+      - name
+      - param_mapper
+      - type
+      properties:
+        execution_type:
+          type: string
+          description: Indicates whether this template/script will be executed immediately on executing the blueprint or will be scheduled for  one/more occurrences
+          example: on_demand
+          enum:
+          - on_demand
+          - scheduled
+          x-cs-enum-type: ExecutionType
+        action:
+          type: string
+          description: A short name that represents the action performed by the template. Useful while viewing the job output while executing the blueprint.
+        name:
+          type: string
+          description: Resource Name
+        param_mapper:
+          type: object
+          description: mapping of input parameter for this template to the output parameter of any of the previous templates
+        type:
+          type: string
+          description: Type for the blueprint
+          example: template
+          enum:
+          - template
+          - script
+          x-cs-enum-type: BlueprintType
+        id:
+          type: string
+          description: Object Id of the Template or Script. You can get this from Describe Template/Script call
+      type: object
+    UpdateScheduleResponse:
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: Schedule ID
+      type: object
+    ExecuteScriptJobData:
+      required:
+      - host
+      - keypair_flag
+      - parameters
+      - platform
+      - port
+      - script_name
+      - username
+      properties:
+        host:
+          type: string
+          description: Target machine's IP/DNS
+        username:
+          type: string
+          description: Username of the target machine
+        keypair_flag:
+          type: string
+          description: Flag to indicate whether to connect using keypair or not
+        password:
+          type: string
+          description: Password of the target machine's IP/DNS
+        key_file:
+          type: string
+          description: Private key content if keypair_flag is true
+        port:
+          type: string
+          description: SSH/WinRM port
+        platform:
+          type: string
+          description:
+          - OS platform of the target machine (linux/windows)
+          example: linux
+          enum:
+          - linux
+          - windows
+          x-cs-enum-type: Platform
+        script_name:
+          type: array
+          description: Name of the scripts to execute. This can be fetched from listScripts/describeScript API
+          items:
+            type: string
+        playbook_hosts:
+          type: array
+          description: Required only for ansible scripts. Name of the hostgroup to be referred as per playbook. For eg, if you are installing a 3 tier app, you might have hostgroup such as dbserver, appserver, uiserver of the scripts to execute and the playbook tasks will be based on the hostgroups. The hostgroup initialized in a playbook can be fetched from scanScript API
+          items:
+            type: string
+        parameters:
+          type: object
+          description: "A JSON object which contains the parameters of the script. Refer scanned_parameters from scanScript/viewScript API response to view parameter available. Parameter JSON should be as follows.{\"<script_name_as_available_in_path>\": {\"parameter_key\" : \"parameter_value\"},\"<dependent_script_name_as_available_in_path>\": {\"parameter_key\" : \"parameter_value\"}}. \nFor Eg.{\"ansible_lamp\": {\"mysql_port\" : \"3307\"}}"
+          example:
+            ansible_lamp:
+              mysql_port: '3307'
+        parameter_source:
+          type: string
+          description: Parameter source - whether as per the one defined in script or custom json
+          default: script
+          example: script
+          enum:
+          - script
+          - json
+          x-cs-enum-type: ParameterSource
+      type: object
+    ExecutionLogDetails:
+      required:
+      - name
+      - run_time
+      - status
+      properties:
+        status:
+          type: string
+          description: Status of the Execution Log
+        run_time:
+          type: string
+          description: Run Time Execution of the schedule
+        name:
+          type: string
+          description: Job Name of the schedule execution log
+      type: object
+    TimeDetails:
+      required:
+      - hour
+      - minute
+      - seconds
+      properties:
+        seconds:
+          type: string
+          description: 'The Template/Script/Policy is scheduled at which second. Allowed values: 00-60'
+        minute:
+          type: string
+          description: 'The Template/Script/Policy is scheduled at which minute. Allowed values: 00-60'
+        hour:
+          type: string
+          description: 'The Template/Script/Policy is scheduled at which hour. Allowed values: 01-23'
+      type: object
+    ScriptJobListResponse:
+      required:
+      - script_jobs
+      - total_pages
+      - total_script_jobs
+      properties:
+        total_script_jobs:
+          type: string
+          description: Total number of script jobs available
+        total_pages:
+          type: string
+          description: Total number of pages
+        script_jobs:
+          description: Script Jobs List.
+          $ref: '#/components/schemas/ScriptJobListModel'
+      type: object
+    TemplateValidateResponse:
+      required:
+      - validation_status
+      properties:
+        validation_status:
+          type: string
+          description: Job identifier of the executed template
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    ScriptInfo:
+      required:
+      - name
+      - path
+      - path_type
+      properties:
+        name:
+          type: string
+          description: Script Name as available in the path
+        path_type:
+          type: string
+          description: Path type for script
+          example: file
+          enum:
+          - file
+          - git
+          - local
+          - repository
+          - url
+          x-cs-enum-type: ScriptPathType
+        content:
+          type: string
+          description: File content, if path type is specified as file
+        path:
+          type: string
+          description: 'Path of the script. ExamplesFor git path_type: https://github.com/ansible/test-playbooks.git,For url path_type: https://s3.amazonaws.com/ansible/test-playbooks.tar,For galaxy: https://galaxy.ansible.com/community/zabbix.'
+      type: object
+    UpdateScheduleRequestScript:
+      required:
+      - attributes
+      - name
+      - recurrence
+      - resource
+      - schedule
+      properties:
+        name:
+          type: string
+          description: Schedule Name to be create
+        description:
+          type: string
+          description: Description of the schedule
+        recurrence:
+          type: string
+          description: Recurrence of the schedule
+          example: Once
+          enum:
+          - Once
+          - Minutes
+          - Hours
+          - Daily
+          - Weekly
+          - Monthly
+          - Annually
+          x-cs-enum-type: ScheduleRecurrence
+        schedule:
+          description: Schedule date and time details
+          $ref: '#/components/schemas/DateAndTimeDetails'
+        resource:
+          type: array
+          description: Template/Script/Policy Id.can be retrieved using the List Policy Schedules
+          items:
+            type: string
+        attributes:
+          description: Attribute Details
+          $ref: '#/components/schemas/AttributeDetails'
+        args:
+          description: Input Parameters for the Template/Script/Policy
+          $ref: '#/components/schemas/ArgsDetails'
+      type: object
+    JobDetails:
+      required:
+      - host
+      - keypair_flag
+      - parameters
+      - platform
+      - port
+      - script_name
+      - username
+      properties:
+        username:
+          type: string
+          description: User name of virtual machine where the script will be scheduled
+        parameters:
+          description: Parameters (Chef and Shell) or the manifest files to the execution
+          $ref: '#/components/schemas/ParameterDetails'
+        keypair_flag:
+          type: string
+          description: Status of the key value pair set in Virtual Machine
+          example: 'true'
+          enum:
+          - 'true'
+          - 'false'
+          x-cs-enum-type: TrueFalse
+        script_name:
+          type: array
+          description: Script Name to be scheduled
+          items:
+            type: string
+        platform:
+          type: string
+          description: OS(Operating System) Platform of the virtual machine
+        host:
+          type: string
+          description: Host IP address of virtual machine
+        key_file:
+          type: string
+          description: Key Value Pair(.pem file).Note - If key_file field is given, password field can be empty
+        password:
+          type: string
+          description: Password of virtual machine.Note - If password is given, key_file field can be empty
+        port:
+          type: string
+          description: Port of the Virtual Machine
+      type: object
+    ScriptDataView:
+      required:
+      - category
+      - cookbook_name
+      - cookbook_path
+      - created_at
+      - created_by
+      - description
+      - module_name
+      - module_path
+      - operating_system
+      - parameters
+      - path_type
+      - platform
+      - playbook_name
+      - playbook_path
+      - scope
+      - script_id
+      - script_name
+      - shell_script_name
+      - shell_script_path
+      - status
+      - type
+      - updated_at
+      - updated_by
+      - uri
+      properties:
+        script_id:
+          type: string
+          description: Unique Id of the script
+        script_name:
+          type: string
+          description: Name of the script
+        uri:
+          type: string
+          description: Unique URI for script
+        description:
+          type: string
+          description: Description about script
+        status:
+          type: string
+          description: Status of the script(active/inactive). Only active scripts can be executed
+        category:
+          type: array
+          description: Category the script belongs to the script
+          items:
+            type: string
+            example: Application
+            enum:
+            - Application
+            - Languages
+            - Database
+            - Security
+            - System
+            - Web Server
+            - Others
+            x-cs-enum-type: ScriptCategory
+        platform:
+          type: array
+          description: Platforms supported by script.
+          items:
+            type: string
+            description:
+            - OS platform of the target machine (linux/windows)
+            example: linux
+            enum:
+            - linux
+            - windows
+            x-cs-enum-type: Platform
+        operating_system:
+          type: array
+          description: OS supported by script
+          items:
+            type: object
+        type:
+          type: string
+          description: Config type of the script (chef/ansible/shell/puppet)
+        scope:
+          type: string
+          description: Scope of the script  (global/account/tenant/private)
+        path_type:
+          type: string
+          description: Script path type such as git/url/repository(puppet_alone)/galaxy(ansible).
+        playbook_path:
+          type: string
+          description: Playbook path - available for ansible alone
+        playbook_name:
+          type: string
+          description: Playbook name - available for ansible alone
+        cookbook_path:
+          type: string
+          description: Cookbook path - available for chef alone.
+        cookbook_name:
+          type: string
+          description: Cookbook path - available for chef alone
+        shell_script_path:
+          type: string
+          description: Shell script path - available for shell alone
+        shell_script_name:
+          type: string
+          description: Shell script path - available for shell alone
+        module_path:
+          type: string
+          description: Module path - available for puppet alone
+        module_name:
+          type: string
+          description: Module path - available for puppet alone.
+        parameters:
+          type: object
+          description: A JSON object which contains the parameters of the script.
+        created_by:
+          type: string
+          description: Name of the user who created the script.
+        created_at:
+          type: string
+          description: Script creation time in UTC
+        updated_by:
+          type: string
+          description: 'Name of the user who updated the script. '
+        updated_at:
+          type: string
+          description: Script update time in UTC
+      type: object
+    AutomationTemplateSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          - UpdatedAt
+          - Name
+          x-cs-enum-type: AutomationTemplateSortColumn
+        ascending:
+          type: boolean
+      type: object
+    ExecuteResponse:
+      properties:
+        script_job_id:
+          type: string
+          description: Unique ID of the Script Job. Use this ID in describeScriptJob API and check the execution status
+      type: object
+    ListScheduleResponse:
+      required:
+      - page_count
+      - schedules
+      - total_count
+      properties:
+        page_count:
+          type: integer
+          description: Page count
+        total_count:
+          type: integer
+          description: Total count
+        schedules:
+          type: array
+          description: Schedule Details
+          items:
+            $ref: '#/components/schemas/ScheduleData'
+      type: object
+    CreateScheduleResponse:
+      properties:
+        schedule_id:
+          type: string
+          description: Schedule ID
+      type: object
+    AutomationTemplate:
+      required:
+      - content
+      - content_files
+      - content_type
+      - created_at
+      - created_by
+      - description
+      - name
+      - scope
+      - services
+      - updated_at
+      - updated_by
+      properties:
+        sysId:
+          type: string
+          description: ID of the template
+        services:
+          type: array
+          description: Service(s) associated with the template.
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        name:
+          type: string
+          description: Name of the template
+        content:
+          type: string
+          description: Raw content of the template which is usually in YAML or JSON format
+        content_type:
+          type: string
+          description: Template content source (git, file)
+        content_url:
+          type: string
+          description: Git project URL when the content type is git required only in case of content type git
+        content_files:
+          type: string
+          description: Details about content like its data,filename
+        description:
+          type: string
+          description: Usage of template
+        resources:
+          type: string
+          description: Resources created/modified by the template
+        resource_types:
+          type: array
+          description: Resource Types for Services.
+          items:
+            $ref: '#/components/schemas/AutomationTemplateResourceTypesMapping'
+        status:
+          type: string
+          description: Status of the template[active/inactive]. Only active templates can be executed
+        sub_classifications:
+          type: array
+          description: Sub classification of the template
+          items:
+            $ref: '#/components/schemas/AutomationTemplateSubClassification'
+        template_types:
+          type: array
+          description: Type of the template like Cloud, Monitoring, Orchestration., etc
+          items:
+            type: string
+        engine_type:
+          type: string
+          description: Engine type of the template
+        classifications:
+          type: array
+          description: Classification of the template
+          items:
+            type: string
+        scope:
+          type: string
+          description: Scope of the template [MarketPlace, MyTemplates]
+        created_by:
+          type: string
+          description: Name of the user who created the template.
+        created_at:
+          type: string
+          description: Template creation time
+        updated_by:
+          type: string
+          description: 'Name of the user who updated the templated. '
+        updated_at:
+          type: string
+          description: Template updated time
+        blueprint_support:
+          type: boolean
+          description: Blueprint support for the template
+      type: object
+    DayDetails:
+      required:
+      - day
+      properties:
+        day:
+          type: string
+          description: 'At which day of that month the Template/Script/Policy is scheduled to run.Allowed values: 01-31'
+      type: object
+    AutomationTemplateFilters:
+      properties:
+        from_date:
+          type: string
+          format: date-time
+          description: Filter from date
+        to_date:
+          type: string
+          format: date-time
+          description: Filter to date
+        scope:
+          type: string
+          description: Scope of the template.
+          example: MyTemplates
+          enum:
+          - MyTemplates
+          - Marketplace
+          x-cs-enum-type: AutomationTemplateScope
+        template_name:
+          type: string
+          description: Name of the template
+        query:
+          $ref: '#/components/schemas/QueryOperator'
+      type: object
+    UpdateBlueprintResponse:
+      required:
+      - blueprint_id
+      properties:
+        blueprint_id:
+          type: string
+          description: Blueprint ID
+      type: object
+    TemplateExecuteResponse:
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          description: Job identifier of the executed template
+      type: object
+    AutomationTemplateSubClassification:
+      properties:
+        key:
+          type: string
+          description: List sub-classification based on templates.
+        classifications:
+          type: array
+          description: List of sub-classification for templates.
+          items:
+            type: string
+      type: object
+    MetaDataModel:
+      required:
+      - tags
+      properties:
+        tags:
+          type: object
+          description: template tags
+      type: object
+    TemplateDataModelList:
+      required:
+      - classification
+      - description
+      - dsl
+      - scope
+      - services
+      - template_id
+      - template_name
+      - type
+      properties:
+        template_id:
+          type: string
+          description: Unique Id of the template
+        services:
+          type: array
+          description: Service(s) associated with the template, for example, AWS, AzureRM, Openstack., etc
+          items:
+            type: string
+        template_name:
+          type: string
+          description: Name of the template
+        description:
+          type: string
+          description: Description about template
+        type:
+          type: array
+          description: Type of the template like, Cloud, Monitoring, Orchestration., etc
+          items:
+            type: string
+        dsl:
+          type: string
+          description: dsl of the template
+        classification:
+          type: array
+          description: Classification of the Template
+          items:
+            type: string
+        scope:
+          type: string
+          description: scope of template (Account,Tenant,Private)
+      type: object
+    ValidationResults:
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationResult'
+      type: object
+    ScheduleData:
+      required:
+      - args
+      - created_at
+      - created_by
+      - description
+      - id
+      - name
+      - next_run
+      - recurrence
+      - resource_details
+      - schedule
+      - type
+      properties:
+        id:
+          type: string
+          description: Schedule ID
+        name:
+          type: string
+          description: Schedule Name
+        type:
+          type: string
+          description: Schedule type
+          example: template
+          enum:
+          - template
+          - script
+          - policy
+          x-cs-enum-type: ScheduleType
+        description:
+          type: string
+          description: Description of the schedule
+        recurrence:
+          type: string
+          description: Re-occurrence of the schedule
+        next_run:
+          type: string
+          description: When will the schedule run for the next time
+        schedule:
+          type: object
+          description: Schedule date and time details
+        args:
+          type: object
+          description: Input Parameters for that Template/Script/Policy that is scheduled
+        resource_details:
+          type: array
+          description: Template/Script/Policy Details that is scheduled
+          items:
+            $ref: '#/components/schemas/ResourceDetails'
+        created_at:
+          type: string
+          description: When the schedule is created
+        created_by:
+          type: string
+          description: Who has created the schedule
+      type: object
+    TemplateListResponse:
+      required:
+      - templates
+      - total_pages
+      - total_templates
+      properties:
+        total_templates:
+          type: string
+          description: Total number of templates available
+        total_pages:
+          type: string
+          description: Total number of pages
+        templates:
+          description: Template Metadata Info.
+          $ref: '#/components/schemas/TemplateDataModelList'
+      type: object
+    ResourcesDetails:
+      required:
+      - action
+      - execution_type
+      - id
+      - name
+      - param_mapper
+      properties:
+        param_mapper:
+          type: object
+          description: Mapping of input parameter for this template to the output parameter of any of the previous templates
+        execution_type:
+          type: string
+          description: Can be “on_demand” or “scheduled”. Indicates whether this template/script will be executed immediately on executing the blueprint or will be scheduled for one/more occurrences
+        action:
+          type: string
+          description: A short name that represents the action performed by the template. Useful while viewing the job output while executing the blueprint
+        name:
+          type: string
+          description: Resource Name
+        id:
+          type: string
+          description: Resource ID
+      type: object
+    TemplateIncidentReference:
+      properties:
+        integrated_tool_account_id:
+          type: string
+          description: Integrated tool account id
+          x-cs-type: ObjectId
+        incident_id:
+          type: string
+          description: Incident Id
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ScriptDataList:
+      required:
+      - category
+      - description
+      - operating_system
+      - platform
+      - scope
+      - script_id
+      - script_name
+      - status
+      - type
+      - uri
+      properties:
+        script_id:
+          type: string
+          description: Unique Id of the script
+        script_name:
+          type: string
+          description: Name of the script
+        uri:
+          type: string
+          description: Unique URI for script
+        description:
+          type: string
+          description: Description about script
+        status:
+          type: string
+          description: Status of the script
+        category:
+          type: array
+          description: Category of the script
+          items:
+            type: string
+        platform:
+          type: array
+          description: Platforms supported by script.
+          items:
+            type: string
+            description:
+            - OS platform of the target machine (linux/windows)
+            example: linux
+            enum:
+            - linux
+            - windows
+            x-cs-enum-type: Platform
+        operating_system:
+          type: array
+          description: OS supported by script
+          items:
+            type: string
+        type:
+          type: string
+          description: Config type of the script
+        scope:
+          type: string
+          description: Scope of the script (global/account/tenant/private)
+      type: object
+    CreateTemplateRequest:
+      required:
+      - classification
+      - content
+      - engine_type
+      - name
+      - services
+      - type
+      properties:
+        name:
+          type: string
+          description: template name which is unique and does not allow special character or space
+        description:
+          type: string
+          description: Usage of the template.
+        content:
+          type: string
+          description: The template content
+        metadata:
+          description: Metadata like file name, file format
+          $ref: '#/components/schemas/MetaDataModel'
+        status:
+          type: string
+          description: 'Status of the template [active/inactive].
+
+            active:- Templates which can be executed.
+
+            inactive:- Template which cannot be executed'
+        classification:
+          type: array
+          description: Templates are classified based orchestration actions like Provision, Configure, Backup, Catalog Builder, Deployment, Autoscaling
+          items:
+            type: string
+        scope:
+          type: string
+          description: 'The scope of the template:
+
+            Account scope - All users under that account will have access to view and execute Only Account admins can update/delete the templates,
+
+            Tenant Scope - Users with access to the specific tenant will have access to templates who can describe or execute templates. Tenant admins can only update/delete.
+
+            Private Scope - User who created will only have access'
+          example: private
+          enum:
+          - private
+          - account
+          - tenant
+          x-cs-enum-type: AccountScope
+        type:
+          type: array
+          description: Type of the template (Cloud, Monitoring, Virtualization)
+          items:
+            type: string
+        services:
+          type: array
+          description: Displays the service associated with the template, for example, AWS, AzureRM, Openstack., etc
+          items:
+            type: string
+        engine_type:
+          type: string
+          description: Template formats such as AWS CFN, Azure ARM, Openstack Heat and Mistral
+          example: cfn
+          enum:
+          - cfn
+          - arm
+          - terraform
+          - mistral
+          - heat
+          - oracle
+          - dm
+          x-cs-enum-type: TemplateEngineType
+        blueprint_support:
+          type: boolean
+          description: Flag to add template to blueprints
+      type: object
+    TemplateCreateResponse:
+      required:
+      - template_id
+      properties:
+        template_id:
+          type: string
+          description: Unique Id of the template
+      type: object
+    CreateBlueprintRequest:
+      required:
+      - name
+      - resources
+      - scope
+      properties:
+        name:
+          type: string
+          description: Blueprint Name
+        resources:
+          type: array
+          description: Resource Details
+          items:
+            $ref: '#/components/schemas/ResourceRequest'
+        scope:
+          type: string
+          description: Scope of the Blueprint
+          example: private
+          enum:
+          - private
+          - tenant
+          - global
+          - account
+          x-cs-enum-type: BlueprintScope
+      type: object
+    TemplateJobResource:
+      properties:
+        resource_id:
+          type: string
+          description: Unique Resource ID.
+        resource_name:
+          type: string
+          description: Name of the resource.
+        resource_type:
+          type: string
+          description: Type of the resource created.
+        status:
+          type: string
+          description: Provides status of the resource.
+          example: CANCELED
+          enum:
+          - CANCELED
+          - COMPLETED
+          - CREATE_FAILED
+          - CREATE_IN_PROGRESS
+          - DELETED
+          - DELETE_FAILED
+          - DELETE_IN_PROGRESS
+          - FAILED
+          - IN_PROGRESS
+          - SNAPSHOT_COMPLETED
+          - SNAPSHOT_FAILED
+          - SNAPSHOT_IN_PROGRESS
+          - UPDATED
+          - UPDATE_FAILED
+          - UPDATE_IN_PROGRESS
+          x-cs-enum-type: TemplateJobStatus
+        status_reason:
+          type: string
+          description: Provides reason for the failure of the job
+        start_date:
+          type: string
+          format: date-time
+          description: Template job start time.
+        end_date:
+          type: string
+          format: date-time
+          description: Template job end time.
+      type: object
+    AutomationTemplateResourceTypesMapping:
+      properties:
+        service_name:
+          type: string
+          description: Cloud Service and it's resource type.
+          example: AWS
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          x-cs-enum-type: CloudServiceName
+        resource_types:
+          type: array
+          description: Resource type of the service.
+          items:
+            type: string
+      type: object
+    ScriptJobScriptInfo:
+      required:
+      - config_type
+      - output_parameters
+      - parameters
+      - script_id
+      - script_name
+      - started_at
+      - status
+      - status_reason
+      properties:
+        script_id:
+          type: string
+          description: Script Id
+        script_name:
+          type: string
+          description: Script Name
+        config_type:
+          type: string
+          description: Config type of the script(s)
+        parameters:
+          type: object
+          description: Parameters of the script.
+        parameter_source:
+          type: string
+          description: Parameter source - whether as per the one defined in script or custom json
+          default: script
+          example: script
+          enum:
+          - script
+          - json
+          x-cs-enum-type: ParameterSource
+        output_parameters:
+          type: object
+          description: Output parameters of the script (all applied parameters).
+        status:
+          type: string
+          description: Status of the script execution
+        status_reason:
+          type: string
+          description: Error message if failed
+        started_at:
+          type: string
+          description: Execution start time in UTC
+      type: object
+    CloudAccountDetails:
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: Cloud account id is unique can be obtained from the list cloud
+      type: object
+    TemplateGetParamsResponse:
+      required:
+      - args
+      - cloud_accounts
+      properties:
+        args:
+          type: object
+          description: Arguments to the template
+        cloud_accounts:
+          type: array
+          description: Cloud account details to execute the template
+          items:
+            $ref: '#/components/schemas/CloudAccountDetailsResponse'
+      type: object
+    ResourceViewDetails:
+      required:
+      - resource_details
+      properties:
+        resource_details:
+          type: array
+          description: Template/Scripts/Policies Details that is scheduled to run
+          items:
+            $ref: '#/components/schemas/ResourceDetails'
+      type: object
+    ViewScheduleResponse:
+      required:
+      - args
+      - created_at
+      - created_by
+      - description
+      - execution_logs
+      - name
+      - next_run
+      - recurrence
+      - resource
+      - schedule
+      - type
+      - updated_at
+      - updated_by
+      properties:
+        name:
+          type: string
+          description: Schedule Name
+        type:
+          type: string
+          description: Schedule type
+          example: template
+          enum:
+          - template
+          - script
+          - policy
+          x-cs-enum-type: ScheduleType
+        description:
+          type: string
+          description: Description of the schedule
+        recurrence:
+          type: string
+          description: Re-occurence of the schedule
+        next_run:
+          type: string
+          description: When will the schedule run for the next time
+        schedule:
+          type: object
+          description: Schedule date and time details
+        args:
+          type: object
+          description: Input Parameters for that Template/Policy/Script that is scheduled
+        resource:
+          type: array
+          description: Template/Policy/Script Details that is scheduled
+          items:
+            $ref: '#/components/schemas/ResourceViewDetails'
+        execution_logs:
+          type: array
+          description: Execution Log Details
+          items:
+            $ref: '#/components/schemas/ExecutionLogDetails'
+        created_at:
+          type: string
+          description: When the schedule is created
+        created_by:
+          type: string
+          description: Who has created the schedule
+        updated_by:
+          type: string
+          description: Who has updated the schedule
+        updated_at:
+          type: string
+          description: When the schedule is updated
+      type: object
+    UpdateScheduleRequest:
+      required:
+      - attributes
+      - name
+      - recurrence
+      - resource
+      - schedule
+      properties:
+        name:
+          type: string
+          description: Schedule Name to be create
+        description:
+          type: string
+          description: Description of the schedule
+        recurrence:
+          type: string
+          description: Recurrence of the schedule
+          example: Once
+          enum:
+          - Once
+          - Minutes
+          - Hours
+          - Daily
+          - Weekly
+          - Monthly
+          - Annually
+          x-cs-enum-type: ScheduleRecurrence
+        schedule:
+          description: Schedule date and time details
+          $ref: '#/components/schemas/DateAndTimeDetails'
+        resource:
+          type: array
+          description: Template/Script/Policy Id.can be retrieved using the List Policy Schedules
+          items:
+            type: string
+        attributes:
+          description: Attribute Details
+          $ref: '#/components/schemas/AttributeDetails'
+        args:
+          type: object
+          description: Input Parameters for the Template/Script/Policy
+      type: object
+    TemplateGetParamsRequest:
+      required:
+      - cloud_accounts
+      properties:
+        cloud_accounts:
+          type: array
+          description: cloud account details to execute the template
+          items:
+            $ref: '#/components/schemas/CloudAccount'
+      type: object
+    AutomationTemplateListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/AutomationTemplateSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AutomationTemplateFilters'
+      type: object
+    TemplateParameterValidationRequest:
+      required:
+      - input_parameters
+      properties:
+        input_parameters:
+          type: string
+          description: Template execution parameters, encoded as a JSON string
+      type: object
+    ResourceDetails:
+      required:
+      - id
+      - name
+      properties:
+        id:
+          type: string
+          description: ID of that Template/Script/Policy that is scheduled to run
+        name:
+          type: string
+          description: Name of the Template/Script/Policy that is scheduled to run
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    ListBlueprintDetails:
+      required:
+      - blueprints
+      - page_count
+      - total_count
+      properties:
+        page_count:
+          type: integer
+          description: Page count
+        total_count:
+          type: integer
+          description: Total count
+        blueprints:
+          type: array
+          description: Blueprints Details
+          items:
+            $ref: '#/components/schemas/BlueprintDetails'
+      type: object
+    ExecuteScriptRequest:
+      required:
+      - job_details
+      - job_name
+      properties:
+        job_name:
+          type: string
+          description: Name of the script job
+        job_details:
+          type: array
+          description: Execution input such as script/host details
+          items:
+            $ref: '#/components/schemas/ExecuteScriptJobData'
+      type: object
+    TemplateExecuteRequest:
+      required:
+      - args
+      - cloud_accounts
+      properties:
+        args:
+          type: object
+          description: Arguments to the template
+        cloud_accounts:
+          type: array
+          description: Cloud account details to execute the template
+          items:
+            $ref: '#/components/schemas/CloudAccount'
+        incident_reference:
+          description: Incident reference.
+          $ref: '#/components/schemas/TemplateIncidentReference'
+      type: object
+    TemplateJobUpdateResponse:
+      properties:
+        id:
+          type: string
+          description: Unique ID of the Template Job
+        name:
+          type: string
+          description: Name of the Template Job
+        status:
+          type: string
+          description: Overall status of the template execution
+          example: CANCELED
+          enum:
+          - CANCELED
+          - COMPLETED
+          - CREATE_FAILED
+          - CREATE_IN_PROGRESS
+          - DELETED
+          - DELETE_FAILED
+          - DELETE_IN_PROGRESS
+          - FAILED
+          - IN_PROGRESS
+          - SNAPSHOT_COMPLETED
+          - SNAPSHOT_FAILED
+          - SNAPSHOT_IN_PROGRESS
+          - UPDATED
+          - UPDATE_FAILED
+          - UPDATE_IN_PROGRESS
+          x-cs-enum-type: TemplateJobStatus
+        status_reason:
+          type: string
+          description: Error message if failed
+        created_at:
+          type: string
+          format: date-time
+          description: Template Job start time in UTC
+        completed_at:
+          type: string
+          format: date-time
+          description: Template Job completion time in UTC
+        execution_type:
+          type: string
+          description: Template Job execution type
+          example: on_demand
+          enum:
+          - on_demand
+          - scheduled
+          - event_driven
+          - system
+          x-cs-enum-type: TemplateExecutionType
+        terraform_state:
+          type: string
+          description: Terraform Template state
+        args:
+          type: object
+          description: Template Job execution template inputs arguments
+          additionalProperties:
+            type: string
+        output:
+          type: string
+          description: Template Job outputs
+        attachment_id:
+          type: string
+          description: Terraform job log ID
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateJobResource'
+      type: object
+    ViewBlueprintDetails:
+      required:
+      - created_at
+      - created_by
+      - description
+      - id
+      - name
+      - resources
+      - scope
+      - status
+      - updated_at
+      - updated_by
+      properties:
+        id:
+          type: string
+          description: Blueprint ID
+        name:
+          type: string
+          description: Blueprint Name
+        description:
+          type: string
+          description: Blueprints Description
+        resources:
+          type: array
+          description: Resource Details
+          items:
+            $ref: '#/components/schemas/ResourcesDetails'
+        scope:
+          type: string
+          description: Scope of the blueprint
+        status:
+          type: string
+          description: Status of the blueprint
+        created_by:
+          type: string
+          description: Who has created the blueprint
+        created_at:
+          type: string
+          description: When was the blueprint created
+        updated_by:
+          type: string
+          description: Who has updated the blueprint
+        updated_at:
+          type: string
+          description: When was the blueprint updated
+      type: object
+    ScriptListResponse:
+      required:
+      - scripts
+      - total_pages
+      - total_scripts
+      properties:
+        total_scripts:
+          type: string
+          description: Total number of scripts available
+        total_pages:
+          type: string
+          description: Total number of pages
+        scripts:
+          description: Scripts List.
+          $ref: '#/components/schemas/ScriptDataList'
+      type: object
+    CreateScriptRequest:
+      required:
+      - category
+      - config_type
+      - name
+      - operating_system
+      - platform
+      - scope
+      - script_info
+      properties:
+        name:
+          type: string
+          description: Name of the script and it should be unique.
+        uri:
+          type: string
+          description: 'Unique URI for script - eg: script/ansi/linux/lamp_install. If not provided, corestack will generate it automatically'
+        description:
+          type: string
+          description: Detailed description about script
+        category:
+          type: array
+          description: Script Category
+          items:
+            type: string
+            example: Application
+            enum:
+            - Application
+            - Languages
+            - Database
+            - Security
+            - System
+            - Web Server
+            - Others
+            x-cs-enum-type: ScriptCategory
+        platform:
+          type: array
+          description: Platforms supported by script.
+          items:
+            type: string
+            description:
+            - OS platform of the target machine (linux/windows)
+            example: linux
+            enum:
+            - linux
+            - windows
+            x-cs-enum-type: Platform
+        operating_system:
+          type: array
+          description: OS supported by script
+          items:
+            type: string
+            example: centos
+            enum:
+            - centos
+            - ubuntu
+            - Win-2008(Server)
+            - Win-2012(Server)
+            - redhat
+            - fedora
+            - debian
+            - Win-2016(Server)
+            - Win-7(Desktop)
+            - Win-8(Desktop)
+            x-cs-enum-type: Os
+        config_type:
+          type: string
+          description: Config type of the script. Create is supported for ansible type scripts alone for now
+          example: ansible
+          enum:
+          - ansible
+          x-cs-enum-type: ScriptConfigType
+        scope:
+          type: string
+          description: 'The scope of the script:
+
+            Account scope - All users under that account will have access to view and execute Only Account admins can update/delete the scripts,
+
+            Tenant Scope - Users with access to the specific tenant will have access to scripts who can describe or execute scripts. Tenant admins can only update/delete.
+
+            Private Scope - User who created will only have access'
+          example: private
+          enum:
+          - private
+          - account
+          - tenant
+          x-cs-enum-type: AccountScope
+        script_info:
+          type: array
+          description: script info
+          items:
+            $ref: '#/components/schemas/ScriptInfo'
+        dependencies:
+          type: array
+          description: Details of the dependent scripts if any. For eg., A LAMP script will have apache, mysql, php as dependent scripts.This can be skipped if there are no dependent scripts or if the actual script takes care of installing all dependencies
+          items:
+            $ref: '#/components/schemas/ScriptInfo'
+        minimum_requirement:
+          description: Minimum requirements of the target machine to install the script
+          $ref: '#/components/schemas/ScriptMinimumRequirements'
+        playbook_yaml:
+          type: string
+          description: Playbook yaml path - mandatory for ansible scripts
+      type: object
+    TemplateViewResponse:
+      required:
+      - classification
+      - content
+      - content_files
+      - content_type
+      - content_url
+      - created_at
+      - created_by
+      - description
+      - dsl
+      - resource_type
+      - resources
+      - scope
+      - services
+      - template_id
+      - template_name
+      - type
+      - updated_at
+      - updated_by
+      properties:
+        template_id:
+          type: string
+          description: Unique Id of the template
+        services:
+          type: array
+          description: Service(s) associated with the template, for example, AWS, AzureRM, Openstack., etc
+          items:
+            type: string
+        template_name:
+          type: string
+          description: Name of the template
+        content:
+          type: string
+          description: Raw content of the template which is usually in YAML or JSON format
+        content_type:
+          type: string
+          description: Template content source (git, file)
+        content_url:
+          type: string
+          description: Git project URL when the content type is git required only in case of content type git
+        content_files:
+          type: string
+          description: Details about content like its data,filename
+        description:
+          type: string
+          description: Usage of template
+        resources:
+          type: string
+        resource_type:
+          type: string
+        status:
+          type: string
+          description: Status of the template[active/inactive]. Only active templates can be executed
+        type:
+          type: array
+          description: Type of the template like Cloud, Monitoring, Orchestration., etc
+          items:
+            type: string
+        dsl:
+          type: string
+          description: DSL of the template
+        classification:
+          type: array
+          description: Classification of the template
+          items:
+            type: string
+        scope:
+          type: string
+          description: Scope of the template [Account,Tenant,Private]
+        created_by:
+          type: string
+          description: Name of the user who created the template.
+        created_at:
+          type: string
+          description: Template creation time
+        updated_by:
+          type: string
+          description: 'Name of the user who updated the templated. '
+        updated_at:
+          type: string
+          description: Template updated time
+      type: object
+    CreateBlueprintDetails:
+      properties:
+        blueprint_id:
+          type: string
+          description: Blueprint ID
+      type: object
+    ParameterDetails:
+      required:
+      - ansible
+      - chef
+      - puppet
+      - shell
+      properties:
+        chef:
+          type: object
+          description: Input for the Chef Script to be executed
+        shell:
+          type: object
+          description: Input for the Shell Script to be executed
+        puppet:
+          type: object
+          description: Input for the Puppet Script to be executed
+        ansible:
+          type: object
+          description: Input for the Ansible Script to be executed
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

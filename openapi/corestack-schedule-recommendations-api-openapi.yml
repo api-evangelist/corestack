@@ -1,0 +1,1601 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Schedule Recommendations API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Schedule Recommendation
+servers:
+- url: /
+tags:
+- name: Schedule Recommendations
+  description: Schedule Recommendation
+paths:
+  /v2/schedule_recommendations/filters:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Schedule Recommendation Filters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleRecommendationFiltersResponse'
+      summary: Schedule Recommendations Filters
+      description: Schedule Recommendations Filters
+      operationId: ScheduleRecommendationsFilters
+      security:
+      - auth_token: []
+      tags:
+      - Schedule Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRecommendationFiltersRequest'
+        required: true
+  /v2/schedule_recommendations/list_resource_schedule:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Schedule Recommendation List Resource Schedule
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScheduleRecommendationResourceScheduleDetails'
+      summary: Schedule Recommendations Resource Schedule List
+      description: Schedule Recommendations Resource Schedule List
+      operationId: ScheduleRecommendationsListResourceSchedule
+      security:
+      - auth_token: []
+      tags:
+      - Schedule Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRecommendationResourceScheduleRequest'
+        required: true
+  /v2/schedule_recommendations/list_schedules:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Schedule Recommendation List Schedules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleRecommendationScheduleResponse'
+      summary: Schedule Recommendations Schedule List
+      description: Schedule Recommendations Schedule List
+      operationId: ScheduleRecommendationsListSchedules
+      security:
+      - auth_token: []
+      tags:
+      - Schedule Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRecommendationScheduleRequest'
+        required: true
+  /v2/schedule_recommendations/overview:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Schedule Recommendation Overview
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleRecommendationDetailsOverviewResponse'
+      summary: Schedule Recommendations Overview
+      description: Schedule Recommendations Overview
+      operationId: ScheduleRecommendationsOverview
+      security:
+      - auth_token: []
+      tags:
+      - Schedule Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRecommendationDetailsOverviewRequest'
+        required: true
+  /v2/schedule_recommendations/postpone:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Postponed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Postpone Schedule Recommendation
+      description: Postpone Schedule Recommendations
+      operationId: ScheduleRecommendationsPostpone
+      security:
+      - auth_token: []
+      tags:
+      - Schedule Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRecommendationPostponeRequest'
+        required: true
+  /v2/schedule_recommendations/reactivate:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Reactivated
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Reactivate Schedule Recommendation
+      description: Reactivate Schedule Recommendations
+      operationId: ScheduleRecommendationsReactivate
+      security:
+      - auth_token: []
+      tags:
+      - Schedule Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRecommendationReactivateRequest'
+        required: true
+  /v2/schedule_recommendations/reject:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Rejected
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Reject Schedule Recommendation
+      description: Reject Schedule Recommendations
+      operationId: ScheduleRecommendationsReject
+      security:
+      - auth_token: []
+      tags:
+      - Schedule Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRecommendationRejectRequest'
+        required: true
+  /v2/schedule_recommendations/remediate:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Remediated
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      summary: Remediate Schedule Recommendation
+      description: Remediate Schedule Recommendations
+      operationId: ScheduleRecommendationsRemediate
+      security:
+      - auth_token: []
+      tags:
+      - Schedule Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRecommendationRemediateRequest'
+        required: true
+  /v2/schedule_recommendations/resource_details:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Schedule Recommendation Resource Details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScheduleRecommendationResourceDetails'
+      summary: Schedule Recommendations Resource Details
+      description: Schedule Recommendations Resource Details
+      operationId: ScheduleRecommendationsResourceDetails
+      security:
+      - auth_token: []
+      tags:
+      - Schedule Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRecommendationResourceDetailsRequest'
+        required: true
+  /v2/schedule_recommendations/summary:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Schedule Recommendation Summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleRecommendationSummaryResponse'
+      summary: Schedule Recommendations Summary
+      description: Schedule Recommendations Summary
+      operationId: ScheduleRecommendationsSummary
+      security:
+      - auth_token: []
+      tags:
+      - Schedule Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRecommendationSummaryRequest'
+        required: true
+  /v2/schedule_recommendations/trigger_cost_savings_calculation:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Triggered
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Trigger Cost Savings Calculation Schedule Recommendation
+      description: Trigger Cost Savings Calculations for Schedule Recommendations
+      operationId: ScheduleRecommendationsTriggerCostSavingsCalculation
+      security:
+      - auth_token: []
+      tags:
+      - Schedule Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRecommendationCalculateCostSavings'
+        required: true
+  /v2/schedule_recommendations/utilization_definitions:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Schedule Recommendation Utilization Definitions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScheduleRecommendationUtilizationDefinition'
+      summary: Schedule Recommendations Utilization Definitions
+      description: Schedule Recommendations Utilization Definitions
+      operationId: ScheduleRecommendationsUtilizationDefinitions
+      security:
+      - auth_token: []
+      tags:
+      - Schedule Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRecommendationUtilizationDefinitionRequest'
+        required: true
+  /v2/schedule_recommendations/utilization_metrics:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Schedule Recommendation Utilization Metrics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScheduleRecommendationUtilizationMetric'
+      summary: Schedule Recommendations Utilization Metrics
+      description: Schedule Recommendations Utilization Metrics
+      operationId: ScheduleRecommendationsUtilizationMetrics
+      security:
+      - auth_token: []
+      tags:
+      - Schedule Recommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRecommendationUtilizationMetricRequest'
+        required: true
+components:
+  schemas:
+    ScheduleRecommendationResourceDetails:
+      properties:
+        currency:
+          type: string
+          description: Currency
+          example: AED
+          enum:
+          - AED
+          - ALL
+          - ARS
+          - AUD
+          - BAM
+          - BDT
+          - BGN
+          - BHD
+          - BRL
+          - CAD
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CZK
+          - DKK
+          - EGP
+          - EUR
+          - GBP
+          - HKD
+          - HRK
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - ISK
+          - JPY
+          - KES
+          - KRW
+          - KWD
+          - KZT
+          - MOP
+          - MVR
+          - MXN
+          - MYR
+          - NOK
+          - NZD
+          - OMR
+          - PEN
+          - PHP
+          - PKR
+          - PLN
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - SAR
+          - SEK
+          - SGD
+          - THB
+          - TRY
+          - TWD
+          - USD
+          - VND
+          - ZAR
+          x-cs-enum-type: Currency
+        resource:
+          type: string
+          description: Name of the resource
+        resource_type:
+          type: string
+          description: Name of the resource component
+        potential_cost_savings_daily:
+          type: number
+          description: Daily Cost Savings of the Recommendation
+        potential_cost_savings_monthly:
+          type: number
+          description: Monthly Cost Savings of the Recommendation
+        potential_cost_savings_yearly:
+          type: number
+          description: Yearly Cost Savings of the Recommendation
+        schedule_finding:
+          type: string
+          description: Schedule Finding Type
+          example: hourly
+          enum:
+          - hourly
+          - weekly
+          x-cs-enum-type: ScheduleFinding
+        recommendation_id:
+          type: string
+          description: Recommendation Id
+        show_remediation_action:
+          type: boolean
+          description: If set indicates remediation action should be shown
+        statistical_method:
+          type: string
+          description: Schedule Recommendation Statistical Method Name
+          example: Average
+          enum:
+          - Average
+          - Minimum
+          - Maximum
+          x-cs-enum-type: ScheduleRecommendationStatisticalMethod
+        schedule_periods:
+          type: array
+          description: List of from_times or days for the recommendation
+          items:
+            type: string
+        schedule_status:
+          type: string
+          description: Schedule status of the recommendation
+        day:
+          type: string
+          example: MONDAY
+          enum:
+          - MONDAY
+          - TUESDAY
+          - WEDNESDAY
+          - THURSDAY
+          - FRIDAY
+          - SATURDAY
+          - SUNDAY
+          x-cs-enum-type: DayOfWeek
+        from_time:
+          type: string
+          format: date-time
+          description: Schedule Start Time
+        to_time:
+          type: string
+          format: date-time
+          description: Schedule End Time
+      type: object
+    ScheduleRecommendationFiltersResponse:
+      properties:
+        currencies:
+          type: array
+          description: Currencies
+          items:
+            type: string
+            description: currency of the cost. Example 'currency':'USD'
+            example: AED
+            enum:
+            - AED
+            - ALL
+            - ARS
+            - AUD
+            - BAM
+            - BDT
+            - BGN
+            - BHD
+            - BRL
+            - CAD
+            - CHF
+            - CLP
+            - CNY
+            - COP
+            - CRC
+            - CZK
+            - DKK
+            - EGP
+            - EUR
+            - GBP
+            - HKD
+            - HRK
+            - HUF
+            - IDR
+            - ILS
+            - INR
+            - ISK
+            - JPY
+            - KES
+            - KRW
+            - KWD
+            - KZT
+            - MOP
+            - MVR
+            - MXN
+            - MYR
+            - NOK
+            - NZD
+            - OMR
+            - PEN
+            - PHP
+            - PKR
+            - PLN
+            - QAR
+            - RON
+            - RSD
+            - RUB
+            - SAR
+            - SEK
+            - SGD
+            - THB
+            - TRY
+            - TWD
+            - USD
+            - VND
+            - ZAR
+            x-cs-enum-type: Currency
+        services:
+          type: array
+          description: Service Names
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        tenant_ids:
+          type: array
+          description: Tenant Ids
+          items:
+            type: string
+        service_account_ids:
+          type: array
+          description: Service Account Ids
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    ScheduleRecommendationScheduleRequest:
+      required:
+      - currencies
+      - services
+      - tenant_ids
+      properties:
+        tenant_ids:
+          type: array
+          description: Tenant Ids
+          items:
+            type: string
+        currencies:
+          type: array
+          description: Currencies
+          items:
+            type: string
+            description: currency of the cost. Example 'currency':'USD'
+            example: AED
+            enum:
+            - AED
+            - ALL
+            - ARS
+            - AUD
+            - BAM
+            - BDT
+            - BGN
+            - BHD
+            - BRL
+            - CAD
+            - CHF
+            - CLP
+            - CNY
+            - COP
+            - CRC
+            - CZK
+            - DKK
+            - EGP
+            - EUR
+            - GBP
+            - HKD
+            - HRK
+            - HUF
+            - IDR
+            - ILS
+            - INR
+            - ISK
+            - JPY
+            - KES
+            - KRW
+            - KWD
+            - KZT
+            - MOP
+            - MVR
+            - MXN
+            - MYR
+            - NOK
+            - NZD
+            - OMR
+            - PEN
+            - PHP
+            - PKR
+            - PLN
+            - QAR
+            - RON
+            - RSD
+            - RUB
+            - SAR
+            - SEK
+            - SGD
+            - THB
+            - TRY
+            - TWD
+            - USD
+            - VND
+            - ZAR
+            x-cs-enum-type: Currency
+        services:
+          type: array
+          description: Service Names
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        page_number:
+          type: integer
+          description: Page Number
+        page_size:
+          type: integer
+          description: Number of records per page
+        filters:
+          description: List Schedule Filters
+          $ref: '#/components/schemas/ScheduleRecommendationScheduleRequestFilter'
+        search:
+          type: string
+          description: Search String for filter Service Accounts
+      type: object
+    ScheduleRecommendationUtilizationDefinition:
+      properties:
+        metric_name:
+          type: string
+          description: Name of the Metric
+        metric_unit:
+          type: string
+          description: Unit of the metric
+        minimum_value:
+          type: number
+          description: Minimum Metric Value
+        maximum_value:
+          type: number
+          description: Maximum Metric Value
+        low_utilization:
+          type: number
+          description: Minimum Utilization Value
+        high_utilization:
+          type: number
+          description: Maximum Utilization Value
+      type: object
+    ScheduleRecommendationResourceDetailsRequest:
+      allOf:
+      - $ref: '#/components/schemas/ScheduleRecommendationDetailsBaseRequest'
+      - properties: {}
+        type: object
+    ScheduleRecommendationResourceScheduleDetails:
+      properties:
+        schedule_recommendation_id:
+          type: string
+          description: Schedule Recommendation ID
+          x-cs-type: ObjectId
+        service_resource_inventory_id:
+          type: string
+          description: Service Resource Inventory Id
+          x-cs-type: ObjectId
+        resource_id:
+          type: string
+          description: Cloud Resource Identifier
+        resource_name:
+          type: string
+          description: Name of the resource
+        resource_type:
+          type: string
+          description: Name of the resource component
+        currency:
+          type: string
+          description: Currency
+          example: AED
+          enum:
+          - AED
+          - ALL
+          - ARS
+          - AUD
+          - BAM
+          - BDT
+          - BGN
+          - BHD
+          - BRL
+          - CAD
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CZK
+          - DKK
+          - EGP
+          - EUR
+          - GBP
+          - HKD
+          - HRK
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - ISK
+          - JPY
+          - KES
+          - KRW
+          - KWD
+          - KZT
+          - MOP
+          - MVR
+          - MXN
+          - MYR
+          - NOK
+          - NZD
+          - OMR
+          - PEN
+          - PHP
+          - PKR
+          - PLN
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - SAR
+          - SEK
+          - SGD
+          - THB
+          - TRY
+          - TWD
+          - USD
+          - VND
+          - ZAR
+          x-cs-enum-type: Currency
+        info:
+          type: string
+          description: recommendation confidence based on statistical method
+        potential_cost_savings_daily:
+          type: number
+          description: Daily Cost Savings
+        potential_cost_savings_monthly:
+          type: number
+          description: Monthly Cost Savings
+        potential_cost_savings_yearly:
+          type: number
+          description: Yearly Cost Savings
+        schedule_finding:
+          type: string
+          description: Schedule Finding Type
+          example: hourly
+          enum:
+          - hourly
+          - weekly
+          x-cs-enum-type: ScheduleFinding
+        statistical_method:
+          type: string
+          description: Schedule Recommendation Statistical Method Name
+          example: Average
+          enum:
+          - Average
+          - Minimum
+          - Maximum
+          x-cs-enum-type: ScheduleRecommendationStatisticalMethod
+      type: object
+    ResourceDetailsOverview:
+      properties:
+        cpu:
+          type: array
+          description: Resource Details By CPU
+          items:
+            $ref: '#/components/schemas/ResourceRecord'
+        memory:
+          type: array
+          description: Resource Details by Memory
+          items:
+            $ref: '#/components/schemas/ResourceRecord'
+      type: object
+    ScheduleRecommendationResourceScheduleRequest:
+      required:
+      - service_account_ids
+      properties:
+        service_account_ids:
+          type: array
+          description: Service Account Ids
+          items:
+            type: string
+            x-cs-type: ObjectId
+        schedule_finding:
+          type: string
+          description: Schedule Finding Type
+          example: hourly
+          enum:
+          - hourly
+          - weekly
+          x-cs-enum-type: ScheduleFinding
+        statistical_method:
+          type: string
+          description: Schedule Recommendation Statistical Method Name
+          example: Average
+          enum:
+          - Average
+          - Minimum
+          - Maximum
+          x-cs-enum-type: ScheduleRecommendationStatisticalMethod
+        min_saving:
+          type: number
+          description: Minimum Cost Savings Filter
+        max_saving:
+          type: number
+          description: Maximum Cost Savings Filter
+        search:
+          type: string
+          description: Search resource_name and resource_type fields
+      type: object
+    ResourceUtilizationSummary:
+      properties:
+        from_time:
+          type: integer
+          description: Utilization Start Hour Of Day (0-23)
+        day:
+          type: string
+          example: MONDAY
+          enum:
+          - MONDAY
+          - TUESDAY
+          - WEDNESDAY
+          - THURSDAY
+          - FRIDAY
+          - SATURDAY
+          - SUNDAY
+          x-cs-enum-type: DayOfWeek
+        utilization:
+          type: number
+          description: Utilization Value
+      type: object
+    ScheduleRecommendationFiltersRequest:
+      properties:
+        tenant_ids:
+          type: array
+          description: Tenant Ids
+          items:
+            type: string
+        service_account_ids:
+          type: array
+          description: Service Account Ids
+          items:
+            type: string
+        service_names:
+          type: array
+          description: Service Names
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+      type: object
+    ScheduleRecommendationReactivateRequest:
+      allOf:
+      - $ref: '#/components/schemas/ScheduleRecommendationActionBaseRequest'
+      - properties: {}
+        type: object
+    ScheduleRecommendationDetailsBaseRequest:
+      required:
+      - resource_id
+      - schedule_finding
+      - service_account_id
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant Id
+        service_account_id:
+          type: string
+          description: Service Account Id
+        resource_id:
+          type: string
+          description: Unique Resource Id of Inventory
+        schedule_finding:
+          type: string
+          description: Schedule Finding Type
+          example: hourly
+          enum:
+          - hourly
+          - weekly
+          x-cs-enum-type: ScheduleFinding
+      type: object
+    ScheduleRecommendationSummaryRequest:
+      properties:
+        tenant_ids:
+          type: array
+          description: Tenant Ids
+          items:
+            type: string
+            x-cs-type: ObjectId
+        service_account_ids:
+          type: array
+          description: Service Account Ids
+          items:
+            type: string
+            x-cs-type: ObjectId
+        service_names:
+          type: array
+          description: Service Names
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        currency:
+          type: string
+          description: Currency
+          example: AED
+          enum:
+          - AED
+          - ALL
+          - ARS
+          - AUD
+          - BAM
+          - BDT
+          - BGN
+          - BHD
+          - BRL
+          - CAD
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CZK
+          - DKK
+          - EGP
+          - EUR
+          - GBP
+          - HKD
+          - HRK
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - ISK
+          - JPY
+          - KES
+          - KRW
+          - KWD
+          - KZT
+          - MOP
+          - MVR
+          - MXN
+          - MYR
+          - NOK
+          - NZD
+          - OMR
+          - PEN
+          - PHP
+          - PKR
+          - PLN
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - SAR
+          - SEK
+          - SGD
+          - THB
+          - TRY
+          - TWD
+          - USD
+          - VND
+          - ZAR
+          x-cs-enum-type: Currency
+      type: object
+    ResourceUtilizationOverview:
+      properties:
+        from_time:
+          type: integer
+          description: Utilization Start Hour Of Day (0-23)
+        to_time:
+          type: integer
+          description: Utilization End Hour Of Day (0-23)
+        day:
+          type: string
+          example: MONDAY
+          enum:
+          - MONDAY
+          - TUESDAY
+          - WEDNESDAY
+          - THURSDAY
+          - FRIDAY
+          - SATURDAY
+          - SUNDAY
+          x-cs-enum-type: DayOfWeek
+        utilization:
+          type: string
+          description: Schedule Recommendation Utilization
+          example: LOW
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          x-cs-enum-type: ScheduleRecommendationUtilization
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ScheduleRecommendationScheduleResponse:
+      properties:
+        recommendations:
+          type: array
+          description: Recommendation Details By Account
+          items:
+            $ref: '#/components/schemas/ScheduleRecommendationDetails'
+        overall_savings_percentage:
+          type: number
+          description: Overall Savings Percentage
+        total_count:
+          type: integer
+          description: Total Count of Resources
+      type: object
+    ScheduleRecommendationCalculateCostSavings:
+      required:
+      - service_account_ids
+      properties:
+        service_account_ids:
+          type: array
+          description: Service Account Ids
+          items:
+            type: string
+      type: object
+    ScheduleRecommendationDetails:
+      properties:
+        service_account_id:
+          type: string
+          description: Service Account Id
+          x-cs-type: ObjectId
+        potential_cost_savings_daily:
+          type: number
+          description: Daily Cost Savings
+        potential_cost_savings_monthly:
+          type: number
+          description: Monthly Cost Savings
+        potential_cost_savings_yearly:
+          type: number
+          description: Yearly Cost Savings
+        savings_percentage:
+          type: number
+          description: Potential Savings Percentage
+        resources_count:
+          type: integer
+          description: Count of recommendations resources
+        hourly_recommendations:
+          type: integer
+          description: Count of hourly recommendations
+        weekly_recommendations:
+          type: integer
+          description: Count of weekly recommendations
+      type: object
+    ScheduleRecommendationRemediateRequest:
+      allOf:
+      - $ref: '#/components/schemas/ScheduleRecommendationActionBaseRequest'
+      - required:
+        - emails
+        - resource_id
+        - service_account_id
+        properties:
+          service_account_id:
+            type: string
+            description: Service Account Id
+          resource_id:
+            type: string
+            description: Unique Resource Id of Inventory
+          emails:
+            type: array
+            description: Email addresses to notify
+            items:
+              type: string
+          day:
+            type: string
+            example: MONDAY
+            enum:
+            - MONDAY
+            - TUESDAY
+            - WEDNESDAY
+            - THURSDAY
+            - FRIDAY
+            - SATURDAY
+            - SUNDAY
+            x-cs-enum-type: DayOfWeek
+          start_time:
+            type: string
+            format: date-time
+            description: Schedule Start Time
+          end_time:
+            type: string
+            format: date-time
+            description: Schedule End Time
+        type: object
+    ScheduleRecommendationPostponeRequest:
+      allOf:
+      - $ref: '#/components/schemas/ScheduleRecommendationActionBaseRequest'
+      - required:
+        - duration
+        - emails
+        - unit
+        properties:
+          duration:
+            type: integer
+            description: Duration of Delay to perform postpone
+          unit:
+            type: string
+            description: Unit for duration
+            example: hours
+            enum:
+            - hours
+            - days
+            x-cs-enum-type: ScheduleRecommendationDurationUnit
+          emails:
+            type: array
+            description: Email addresses to notify
+            items:
+              type: string
+          resource_type:
+            type: string
+            description: Name of the resource component
+          resource:
+            type: string
+            description: Name of the resource
+          day:
+            type: string
+            example: MONDAY
+            enum:
+            - MONDAY
+            - TUESDAY
+            - WEDNESDAY
+            - THURSDAY
+            - FRIDAY
+            - SATURDAY
+            - SUNDAY
+            x-cs-enum-type: DayOfWeek
+          from_time:
+            type: string
+            format: date-time
+            description: FromTime of the calculation
+          to_time:
+            type: string
+            format: date-time
+            description: ToTime of the calculation
+          potential_cost_savings_monthly:
+            type: number
+            description: Monthly Cost Savings of the Recommendation
+        type: object
+    ScheduleRecommendationUtilizationMetric:
+      properties:
+        time:
+          type: string
+          format: date-time
+          description: StartTime of Utilization
+        day:
+          type: string
+          example: MONDAY
+          enum:
+          - MONDAY
+          - TUESDAY
+          - WEDNESDAY
+          - THURSDAY
+          - FRIDAY
+          - SATURDAY
+          - SUNDAY
+          x-cs-enum-type: DayOfWeek
+        utilization:
+          type: number
+          description: Utilization Value
+      type: object
+    ScheduleRecommendationRejectRequest:
+      allOf:
+      - $ref: '#/components/schemas/ScheduleRecommendationActionBaseRequest'
+      - required:
+        - service_account_id
+        properties:
+          service_account_id:
+            type: string
+            description: Service Account Id
+          reason:
+            type: string
+            description: Reason for Rejection
+        type: object
+    ScheduleRecommendationSummaryResponse:
+      properties:
+        potential_savings:
+          type: number
+          description: Potential Cost Savings
+        weekly_recommendations:
+          type: integer
+          description: Count of Weekly Recommendations
+        hourly_recommendations:
+          type: integer
+          description: Count of Hourly Recommendations
+        impacting_resources:
+          type: integer
+          description: Count of Impacting Resources
+      type: object
+    ScheduleRecommendationUtilizationDefinitionRequest:
+      allOf:
+      - $ref: '#/components/schemas/ScheduleRecommendationDetailsBaseRequest'
+      - properties: {}
+        type: object
+    ScheduleRecommendationDetailsOverviewResponse:
+      properties:
+        resource_utilization_level:
+          type: array
+          description: Resource Utilization Level Overview
+          items:
+            $ref: '#/components/schemas/ResourceUtilizationOverview'
+        resource_utilization_summary:
+          type: array
+          description: Utilization Summary Details
+          items:
+            $ref: '#/components/schemas/ResourceUtilizationSummary'
+        resource_details:
+          description: Resource Details By CPU and Memory
+          $ref: '#/components/schemas/ResourceDetailsOverview'
+      type: object
+    ScheduleRecommendationActionBaseRequest:
+      required:
+      - recommendation_id
+      - schedule_finding
+      - schedule_periods
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant Id
+        recommendation_id:
+          type: string
+          description: Recommendation id
+        schedule_finding:
+          type: string
+          description: Schedule Finding Type
+          example: hourly
+          enum:
+          - hourly
+          - weekly
+          x-cs-enum-type: ScheduleFinding
+        schedule_periods:
+          type: array
+          description: List of from_times or days for the recommendation
+          items:
+            type: string
+      type: object
+    ScheduleRecommendationScheduleRequestFilter:
+      properties:
+        estimate_minimum:
+          type: integer
+          description: Minimum Estimated Cost to Filter
+        estimate_maximum:
+          type: integer
+          description: Maximum Estimated Cost to Filter
+      type: object
+    ResourceRecord:
+      properties:
+        name:
+          type: string
+          description: Name of Resource Property
+        value:
+          type: string
+          description: Value of Property
+      type: object
+    ScheduleRecommendationUtilizationMetricRequest:
+      allOf:
+      - $ref: '#/components/schemas/ScheduleRecommendationDetailsBaseRequest'
+      - required:
+        - metric_name
+        properties:
+          metric_name:
+            type: string
+            description: Name of the Metric
+          elapsed_days:
+            type: integer
+            description: Number of Days to return Utilization Metrics
+        type: object
+    ScheduleRecommendationDetailsOverviewRequest:
+      allOf:
+      - $ref: '#/components/schemas/ScheduleRecommendationDetailsBaseRequest'
+      - properties: {}
+        type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

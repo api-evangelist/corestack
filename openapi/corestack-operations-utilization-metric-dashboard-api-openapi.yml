@@ -1,0 +1,612 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Operations Utilization Metric Dashboard API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Dashboard For Utilization Metrics
+servers:
+- url: /
+tags:
+- name: Operations Utilization Metric Dashboard
+  description: Dashboard For Utilization Metrics
+paths:
+  /v2/operations/resource_utilization_metrics/aggregate_trend:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UtilizationMetricsAggregateResult'
+      summary: Utilization metric aggregate trend endpoint
+      description: Retrieve the Utilization metric Data for the given period of time in the granularity provided.
+      operationId: UtilizationMetricAggregateTrend
+      security:
+      - auth_token: []
+      tags:
+      - Operations Utilization Metric Dashboard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UtilizationMetricsAggregateTrendRequest'
+        required: true
+components:
+  schemas:
+    UtilizationMetricsAggregateTrendRequest:
+      required:
+      - end_date
+      - granularity
+      - start_date
+      properties:
+        start_date:
+          type: string
+          format: date-time
+          description: specify the start date.
+        end_date:
+          type: string
+          format: date-time
+          description: specify the end date.
+        granularity:
+          type: integer
+          description: specify the granularity in seconds. Allowed values are 60, 300, 3600.
+        filters:
+          description: Query expression to filter.
+          $ref: '#/components/schemas/QueryOperator'
+      type: object
+    UtilizationMetricSeries:
+      properties:
+        maximum:
+          type: array
+          description: List of maximum utilization metrics.
+          items:
+            type: number
+        minimum:
+          type: array
+          description: List of minimum utilization metrics.
+          items:
+            type: number
+        average:
+          type: array
+          description: List of average utilization metrics.
+          items:
+            type: number
+        sum:
+          type: array
+          description: List of total (sum) utilization values.
+          items:
+            type: number
+        count:
+          type: array
+          description: The count (number) of data points used for the statistical calculation.
+          items:
+            type: integer
+      type: object
+    QueryOperator:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: QueryOperatorTrue
+        subtype_name: QueryOperatorTrue
+      - subtype_model: QueryOperatorFalse
+        subtype_name: QueryOperatorFalse
+      - subtype_model: QueryOperatorBinary
+        subtype_name: QueryOperatorBinary
+      - subtype_model: QueryOperatorBinaryLogic
+        subtype_name: QueryOperatorBinaryLogic
+      - subtype_model: QueryOperatorNary
+        subtype_name: QueryOperatorNary
+      - subtype_model: QueryOperatorNaryLogic
+        subtype_name: QueryOperatorNaryLogic
+      - subtype_model: QueryOperatorComparator
+        subtype_name: QueryOperatorComparator
+      - subtype_model: QueryOperatorComparatorLogic
+        subtype_name: QueryOperatorComparatorLogic
+      - subtype_model: QueryOperatorUnary
+        subtype_name: QueryOperatorUnary
+      - subtype_model: QueryOperatorUnaryNot
+        subtype_name: QueryOperatorUnaryNot
+      - subtype_model: QueryOperatorBinaryForGraph
+        subtype_name: QueryOperatorBinaryForGraph
+      - subtype_model: QueryOperatorBinaryLogicForGraph
+        subtype_name: QueryOperatorBinaryLogicForGraph
+      - subtype_model: QueryOperatorNaryForGraph
+        subtype_name: QueryOperatorNaryForGraph
+      - subtype_model: QueryOperatorNaryLogicForGraph
+        subtype_name: QueryOperatorNaryLogicForGraph
+      - subtype_model: QueryOperatorUnaryForGraph
+        subtype_name: QueryOperatorUnaryForGraph
+      - subtype_model: QueryOperatorUnaryNotForGraph
+        subtype_name: QueryOperatorUnaryNotForGraph
+      - subtype_model: ServiceAccountQueryOperator
+        subtype_name: ServiceAccountQueryOperator
+      - subtype_model: TenantQueryOperator
+        subtype_name: TenantQueryOperator
+      - subtype_model: DescendantServiceAccountQueryOperator
+        subtype_name: DescendantServiceAccountQueryOperator
+      - subtype_model: DescendantServiceAccountInTenantQueryOperator
+        subtype_name: DescendantServiceAccountInTenantQueryOperator
+      - subtype_model: TenantTagKeyQueryOperator
+        subtype_name: TenantTagKeyQueryOperator
+      - subtype_model: TenantTagKeyValueQueryOperator
+        subtype_name: TenantTagKeyValueQueryOperator
+      - subtype_model: LocationQueryOperator
+        subtype_name: LocationQueryOperator
+      - subtype_model: AvailabilityZoneQueryOperator
+        subtype_name: AvailabilityZoneQueryOperator
+      - subtype_model: BillingSourceQueryOperator
+        subtype_name: BillingSourceQueryOperator
+      - subtype_model: CurrencyQueryOperator
+        subtype_name: CurrencyQueryOperator
+      - subtype_model: ProductCategoryQueryOperator
+        subtype_name: ProductCategoryQueryOperator
+      - subtype_model: ProductFamilyQueryOperator
+        subtype_name: ProductFamilyQueryOperator
+      - subtype_model: ProductServiceCodeQueryOperator
+        subtype_name: ProductServiceCodeQueryOperator
+      - subtype_model: ProductSkuQueryOperator
+        subtype_name: ProductSkuQueryOperator
+      - subtype_model: PublisherQueryOperator
+        subtype_name: PublisherQueryOperator
+      - subtype_model: ResourceCategoryQueryOperator
+        subtype_name: ResourceCategoryQueryOperator
+      - subtype_model: ResourceIdQueryOperator
+        subtype_name: ResourceIdQueryOperator
+      - subtype_model: ResourceGroupQueryOperator
+        subtype_name: ResourceGroupQueryOperator
+      - subtype_model: ResourceNameQueryOperator
+        subtype_name: ResourceNameQueryOperator
+      - subtype_model: ResourceOperationQueryOperator
+        subtype_name: ResourceOperationQueryOperator
+      - subtype_model: ResourceQueryExtraPresence
+        subtype_name: ResourceQueryExtraPresence
+      - subtype_model: ResourceQueryExtraKey
+        subtype_name: ResourceQueryExtraKey
+      - subtype_model: ScopeContainsTenantQueryOperator
+        subtype_name: ScopeContainsTenantQueryOperator
+      - subtype_model: ScopeContainsServiceAccountQueryOperator
+        subtype_name: ScopeContainsServiceAccountQueryOperator
+      - subtype_model: ScopeIsQueryOperator
+        subtype_name: ScopeIsQueryOperator
+      - subtype_model: ServiceCategoryQueryOperator
+        subtype_name: ServiceCategoryQueryOperator
+      - subtype_model: ServiceTypeQueryOperator
+        subtype_name: ServiceTypeQueryOperator
+      - subtype_model: CompartmentNameQueryOperator
+        subtype_name: CompartmentNameQueryOperator
+      - subtype_model: ResourceQueryExtraKeyValue
+        subtype_name: ResourceQueryExtraKeyValue
+      - subtype_model: WorkFlowIdQueryOperator
+        subtype_name: WorkFlowIdQueryOperator
+      - subtype_model: RecommendationSubClassificationQueryOperator
+        subtype_name: RecommendationSubClassificationQueryOperator
+      - subtype_model: ServiceNowCmdbQuerySyncLogResourceId
+        subtype_name: ServiceNowCmdbQuerySyncLogResourceId
+      - subtype_model: ServiceNowCmdbQuerySyncLogResourceType
+        subtype_name: ServiceNowCmdbQuerySyncLogResourceType
+      - subtype_model: ServiceNowCmdbQuerySyncLogAction
+        subtype_name: ServiceNowCmdbQuerySyncLogAction
+      - subtype_model: ServiceNowCmdbQuerySyncLogStatus
+        subtype_name: ServiceNowCmdbQuerySyncLogStatus
+      - subtype_model: ServiceNowCmdbQuerySyncLogService
+        subtype_name: ServiceNowCmdbQuerySyncLogService
+      - subtype_model: ServiceAccountNativeDetailsQueryOperator
+        subtype_name: ServiceAccountNativeDetailsQueryOperator
+      - subtype_model: ServiceAccountStatusQueryOperator
+        subtype_name: ServiceAccountStatusQueryOperator
+      - subtype_model: ServiceAccountTagKeyQueryOperator
+        subtype_name: ServiceAccountTagKeyQueryOperator
+      - subtype_model: ServiceAccountTagKeyRegexQueryOperator
+        subtype_name: ServiceAccountTagKeyRegexQueryOperator
+      - subtype_model: ServiceAccountTagKeyValueQueryOperator
+        subtype_name: ServiceAccountTagKeyValueQueryOperator
+      - subtype_model: ApplicableHealthMetricsQueryOperator
+        subtype_name: ApplicableHealthMetricsQueryOperator
+      - subtype_model: EpssScoreRangeQueryOperator
+        subtype_name: EpssScoreRangeQueryOperator
+      - subtype_model: CvssMetricScoreRangeQueryOperator
+        subtype_name: CvssMetricScoreRangeQueryOperator
+      - subtype_model: GraphionScoreRangeQueryOperator
+        subtype_name: GraphionScoreRangeQueryOperator
+      - subtype_model: AppSecopsApplicationIdQueryOperator
+        subtype_name: AppSecopsApplicationIdQueryOperator
+      - subtype_model: AppSecopsPortfolioIdQueryOperator
+        subtype_name: AppSecopsPortfolioIdQueryOperator
+      - subtype_model: AppSecopsProjectIdQueryOperator
+        subtype_name: AppSecopsProjectIdQueryOperator
+      - subtype_model: AppSecopsSbomComponentIdQueryOperator
+        subtype_name: AppSecopsSbomComponentIdQueryOperator
+      - subtype_model: AppSecopsSbomVersionIdQueryOperator
+        subtype_name: AppSecopsSbomVersionIdQueryOperator
+      - subtype_model: AppSecopsComponentProductQueryOperator
+        subtype_name: AppSecopsComponentProductQueryOperator
+      - subtype_model: AppSecopsSbomComponentTypeQueryOperator
+        subtype_name: AppSecopsSbomComponentTypeQueryOperator
+      - subtype_model: AppSecopsSbomVersionSubmittedByQueryOperator
+        subtype_name: AppSecopsSbomVersionSubmittedByQueryOperator
+      - subtype_model: AppSecopsSbomVersionSubmittedDateQueryOperator
+        subtype_name: AppSecopsSbomVersionSubmittedDateQueryOperator
+      - subtype_model: AppSecopsSbomVersionBuildIdQueryOperator
+        subtype_name: AppSecopsSbomVersionBuildIdQueryOperator
+      - subtype_model: AppSecopsSbomNameQueryOperator
+        subtype_name: AppSecopsSbomNameQueryOperator
+      - subtype_model: AppSecopsCveIdQueryOperator
+        subtype_name: AppSecopsCveIdQueryOperator
+      - subtype_model: AppSecopsEpssScoreQueryOperator
+        subtype_name: AppSecopsEpssScoreQueryOperator
+      - subtype_model: AppSecopsCvssScoreQueryOperator
+        subtype_name: AppSecopsCvssScoreQueryOperator
+      - subtype_model: AppSecopsGraphionScoreQueryOperator
+        subtype_name: AppSecopsGraphionScoreQueryOperator
+      - subtype_model: SecopsVulnerabilitySeverityQueryOperator
+        subtype_name: SecopsVulnerabilitySeverityQueryOperator
+      - subtype_model: AppSecopsIsKnownExploitedVulnerabilityQueryOperator
+        subtype_name: AppSecopsIsKnownExploitedVulnerabilityQueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricAttackVectorV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricAttackVectorV31QueryOperator
+      - subtype_model: AppSecopsFixAvailableQueryOperator
+        subtype_name: AppSecopsFixAvailableQueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricAttackComplexityV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricAttackComplexityV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricPrivilegesRequiredV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricPrivilegesRequiredV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricScopeV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricScopeV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityUserInteractionV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityUserInteractionV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityImpactMetricConfidentialityImpactV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityImpactMetricConfidentialityImpactV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityImpactMetricIntegrityImpactV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityImpactMetricIntegrityImpactV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityImpactMetricAvailabilityImpactV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityImpactMetricAvailabilityImpactV31QueryOperator
+      - subtype_model: AppSecopsContainerFindingsSBOMVersionIdsQueryOperator
+        subtype_name: AppSecopsContainerFindingsSBOMVersionIdsQueryOperator
+      - subtype_model: AppSecopsContainerFindingsCategoryQueryOperator
+        subtype_name: AppSecopsContainerFindingsCategoryQueryOperator
+      - subtype_model: AppSecopsContainerFindingsExecutionPhaseQueryOperator
+        subtype_name: AppSecopsContainerFindingsExecutionPhaseQueryOperator
+      - subtype_model: AppSecopsContainerFindingsSeverityQueryOperator
+        subtype_name: AppSecopsContainerFindingsSeverityQueryOperator
+      - subtype_model: AppSecopsContainerFindingsStatusQueryOperator
+        subtype_name: AppSecopsContainerFindingsStatusQueryOperator
+      - subtype_model: DimensionSourceQueryOperator
+        subtype_name: DimensionSourceQueryOperator
+      - subtype_model: DimensionQueryOperator
+        subtype_name: DimensionQueryOperator
+      - subtype_model: ResourceTypeQueryOperator
+        subtype_name: ResourceTypeQueryOperator
+      - subtype_model: PodIdRegexQueryOperator
+        subtype_name: PodIdRegexQueryOperator
+      - subtype_model: PodNameRegexQueryOperator
+        subtype_name: PodNameRegexQueryOperator
+      - subtype_model: ContainerIdRegexQueryOperator
+        subtype_name: ContainerIdRegexQueryOperator
+      - subtype_model: PodNamesQueryOperator
+        subtype_name: PodNamesQueryOperator
+      - subtype_model: PodIdsQueryOperator
+        subtype_name: PodIdsQueryOperator
+      - subtype_model: UtilizationTypeQueryOperator
+        subtype_name: UtilizationTypeQueryOperator
+      - subtype_model: ResourceIdRegexQueryOperator
+        subtype_name: ResourceIdRegexQueryOperator
+      - subtype_model: ResourceNameRegexQueryOperator
+        subtype_name: ResourceNameRegexQueryOperator
+      - subtype_model: ExtrasValueRegexQueryOperator
+        subtype_name: ExtrasValueRegexQueryOperator
+      - subtype_model: TagKeyValueRegexQueryOperator
+        subtype_name: TagKeyValueRegexQueryOperator
+      - subtype_model: ResourceQueryTagKeyKind
+        subtype_name: ResourceQueryTagKeyKind
+      - subtype_model: ResourceQueryTagKeyValuesKind
+        subtype_name: ResourceQueryTagKeyValuesKind
+      - subtype_model: TagKeyStringValueRegexQueryOperator
+        subtype_name: TagKeyStringValueRegexQueryOperator
+      - subtype_model: TagKindStringKeyRegexQueryOperator
+        subtype_name: TagKindStringKeyRegexQueryOperator
+      - subtype_model: ServiceAccountNameRegexQueryOperator
+        subtype_name: ServiceAccountNameRegexQueryOperator
+      - subtype_model: TenantNameRegexQueryOperator
+        subtype_name: TenantNameRegexQueryOperator
+      - subtype_model: PlatFormAccountQueryOperator
+        subtype_name: PlatFormAccountQueryOperator
+      - subtype_model: BillingLineItemTypeQueryOperator
+        subtype_name: BillingLineItemTypeQueryOperator
+      - subtype_model: BillingEntityQueryOperator
+        subtype_name: BillingEntityQueryOperator
+      - subtype_model: LineItemDescriptionQueryOperator
+        subtype_name: LineItemDescriptionQueryOperator
+      - subtype_model: LineItemDescriptionRegexQueryOperator
+        subtype_name: LineItemDescriptionRegexQueryOperator
+      - subtype_model: MeterSubCategoryQueryOperator
+        subtype_name: MeterSubCategoryQueryOperator
+      - subtype_model: PricingCategoryQueryOperator
+        subtype_name: PricingCategoryQueryOperator
+      - subtype_model: PricingPurchaseOptionQueryOperator
+        subtype_name: PricingPurchaseOptionQueryOperator
+      - subtype_model: TagKeyRegexQueryOperator
+        subtype_name: TagKeyRegexQueryOperator
+      - subtype_model: BillingLineItemTypeRegexQueryOperator
+        subtype_name: BillingLineItemTypeRegexQueryOperator
+      - subtype_model: ResourceGroupRegexQueryOperator
+        subtype_name: ResourceGroupRegexQueryOperator
+      - subtype_model: ResourceCategoryRegexQueryOperator
+        subtype_name: ResourceCategoryRegexQueryOperator
+      - subtype_model: ProductCategoryRegexQueryOperator
+        subtype_name: ProductCategoryRegexQueryOperator
+      - subtype_model: BillingEntityRegexQueryOperator
+        subtype_name: BillingEntityRegexQueryOperator
+      - subtype_model: ResourceOperationRegexQueryOperator
+        subtype_name: ResourceOperationRegexQueryOperator
+      - subtype_model: ResourceQueryFieldPresence
+        subtype_name: ResourceQueryFieldPresence
+      - subtype_model: AssessmentRunReportDetailQuerySection
+        subtype_name: AssessmentRunReportDetailQuerySection
+      - subtype_model: AssessmentRunReportSummaryQuerySection
+        subtype_name: AssessmentRunReportSummaryQuerySection
+      - subtype_model: AssessmentQueryAssessmentName
+        subtype_name: AssessmentQueryAssessmentName
+      - subtype_model: AssessmentQueryAssessmentOwner
+        subtype_name: AssessmentQueryAssessmentOwner
+      - subtype_model: AssessmentQueryAssessmentApprover
+        subtype_name: AssessmentQueryAssessmentApprover
+      - subtype_model: AssessmentQueryWorkload
+        subtype_name: AssessmentQueryWorkload
+      - subtype_model: AssessmentQueryFramework
+        subtype_name: AssessmentQueryFramework
+      - subtype_model: AssessmentQueryPillar
+        subtype_name: AssessmentQueryPillar
+      - subtype_model: AssessmentViewQueryNature
+        subtype_name: AssessmentViewQueryNature
+      - subtype_model: AssessmentViewQueryQuestionRisk
+        subtype_name: AssessmentViewQueryQuestionRisk
+      - subtype_model: AssessmentViewQueryBestPracticeRisk
+        subtype_name: AssessmentViewQueryBestPracticeRisk
+      - subtype_model: AssessmentViewQueryQuestionStatus
+        subtype_name: AssessmentViewQueryQuestionStatus
+      - subtype_model: AssessmentViewQueryBestPracticeStatus
+        subtype_name: AssessmentViewQueryBestPracticeStatus
+      - subtype_model: AssessmentViewQueryOwner
+        subtype_name: AssessmentViewQueryOwner
+      - subtype_model: AssessmentViewQueryAssignedTo
+        subtype_name: AssessmentViewQueryAssignedTo
+      - subtype_model: AssessmentViewQueryComment
+        subtype_name: AssessmentViewQueryComment
+      - subtype_model: AssessmentReportQueryAssessmentName
+        subtype_name: AssessmentReportQueryAssessmentName
+      - subtype_model: AssessmentReportQueryFramework
+        subtype_name: AssessmentReportQueryFramework
+      - subtype_model: AssessmentReportQueryReportType
+        subtype_name: AssessmentReportQueryReportType
+      - subtype_model: AssessmentReportQueryWorkloadId
+        subtype_name: AssessmentReportQueryWorkloadId
+      - subtype_model: ScheduleQueryName
+        subtype_name: ScheduleQueryName
+      - subtype_model: ScheduleQueryCreatedBy
+        subtype_name: ScheduleQueryCreatedBy
+      - subtype_model: ScheduleQueryEmailRecipients
+        subtype_name: ScheduleQueryEmailRecipients
+      - subtype_model: ScheduleQueryRecurrence
+        subtype_name: ScheduleQueryRecurrence
+      - subtype_model: ScheduleQueryReportType
+        subtype_name: ScheduleQueryReportType
+      - subtype_model: ScheduleQueryNextGenReportType
+        subtype_name: ScheduleQueryNextGenReportType
+      - subtype_model: ScheduleQueryAssessmentAgentReportType
+        subtype_name: ScheduleQueryAssessmentAgentReportType
+      - subtype_model: AutomationTemplateQueryEngineType
+        subtype_name: AutomationTemplateQueryEngineType
+      - subtype_model: AutomationTemplateQueryRepoType
+        subtype_name: AutomationTemplateQueryRepoType
+      - subtype_model: AutomationTemplateQueryService
+        subtype_name: AutomationTemplateQueryService
+      - subtype_model: AutomationTemplateQueryTenant
+        subtype_name: AutomationTemplateQueryTenant
+      - subtype_model: AwsSecurityHubFindingQueryLocation
+        subtype_name: AwsSecurityHubFindingQueryLocation
+      - subtype_model: AwsSecurityHubFindingQuerySeverity
+        subtype_name: AwsSecurityHubFindingQuerySeverity
+      - subtype_model: AwsSecurityHubFindingQueryProductName
+        subtype_name: AwsSecurityHubFindingQueryProductName
+      - subtype_model: AwsSecurityHubFindingQueryResource
+        subtype_name: AwsSecurityHubFindingQueryResource
+      - subtype_model: AwsSecurityHubFindingQueryCloudAccount
+        subtype_name: AwsSecurityHubFindingQueryCloudAccount
+      - subtype_model: AwsSecurityHubFindingQueryRecordState
+        subtype_name: AwsSecurityHubFindingQueryRecordState
+      - subtype_model: AwsSsmDocumentQueryCloudAccount
+        subtype_name: AwsSsmDocumentQueryCloudAccount
+      - subtype_model: AwsSsmDocumentQueryRegion
+        subtype_name: AwsSsmDocumentQueryRegion
+      - subtype_model: AwsSsmDocumentQueryOwner
+        subtype_name: AwsSsmDocumentQueryOwner
+      - subtype_model: AwsSsmDocumentQueryCategory
+        subtype_name: AwsSsmDocumentQueryCategory
+      - subtype_model: AwsSsmDocumentQueryStatus
+        subtype_name: AwsSsmDocumentQueryStatus
+      - subtype_model: AwsSsmDocumentQueryName
+        subtype_name: AwsSsmDocumentQueryName
+      - subtype_model: AwsSsmDocumentQueryExecutedBy
+        subtype_name: AwsSsmDocumentQueryExecutedBy
+      - subtype_model: ComplianceURIQueryOperator
+        subtype_name: ComplianceURIQueryOperator
+      - subtype_model: DurationInMonthsQueryOperator
+        subtype_name: DurationInMonthsQueryOperator
+      - subtype_model: UniqueIdQueryOperator
+        subtype_name: UniqueIdQueryOperator
+      - subtype_model: ThreatVulnerabilityStatusQueryOperator
+        subtype_name: ThreatVulnerabilityStatusQueryOperator
+      - subtype_model: ThreatVulnerabilitySeverityQueryOperator
+        subtype_name: ThreatVulnerabilitySeverityQueryOperator
+      - subtype_model: ThreatVulnerabilityIssueTypeQueryOperator
+        subtype_name: ThreatVulnerabilityIssueTypeQueryOperator
+      - subtype_model: ThreatIntentQueryOperator
+        subtype_name: ThreatIntentQueryOperator
+      - subtype_model: VulnerabilityReferenceIdQueryOperator
+        subtype_name: VulnerabilityReferenceIdQueryOperator
+      - subtype_model: CostAnomalyStatusQueryOperator
+        subtype_name: CostAnomalyStatusQueryOperator
+      - subtype_model: CurrencyExchangeConfigurationQuerySourceCurrency
+        subtype_name: CurrencyExchangeConfigurationQuerySourceCurrency
+      - subtype_model: CurrencyExchangeConfigurationQueryTargetCurrency
+        subtype_name: CurrencyExchangeConfigurationQueryTargetCurrency
+      - subtype_model: CurrencyExchangeConfigurationQueryScope
+        subtype_name: CurrencyExchangeConfigurationQueryScope
+      - subtype_model: MetricValuesOperator
+        subtype_name: MetricValuesOperator
+      - subtype_model: PatchReadinessStatusQueryOperator
+        subtype_name: PatchReadinessStatusQueryOperator
+      - subtype_model: MasterAccountBillingQueryMasterAccounts
+        subtype_name: MasterAccountBillingQueryMasterAccounts
+      - subtype_model: MasterAccountBillingQueryTenants
+        subtype_name: MasterAccountBillingQueryTenants
+      - subtype_model: MasterAccountBillingQueryUsers
+        subtype_name: MasterAccountBillingQueryUsers
+      - subtype_model: MasterAccountBillingQueryConversations
+        subtype_name: MasterAccountBillingQueryConversations
+      - subtype_model: MasterAccountBillingQueryTransactionType
+        subtype_name: MasterAccountBillingQueryTransactionType
+      - subtype_model: PolicyResourceRecommendationStatusQueryOperator
+        subtype_name: PolicyResourceRecommendationStatusQueryOperator
+      - subtype_model: PolicyResourceRecommendationPolicyIdsQueryOperator
+        subtype_name: PolicyResourceRecommendationPolicyIdsQueryOperator
+      - subtype_model: PolicyResourceRecommendationSeverityQueryOperator
+        subtype_name: PolicyResourceRecommendationSeverityQueryOperator
+      - subtype_model: PolicyRecommendationClassificationQueryOperator
+        subtype_name: PolicyRecommendationClassificationQueryOperator
+      - subtype_model: InfraResourceTrendResourceChangeStatusQueryOperator
+        subtype_name: InfraResourceTrendResourceChangeStatusQueryOperator
+      - subtype_model: VmAgentsQueryOsTypes
+        subtype_name: VmAgentsQueryOsTypes
+      - subtype_model: VmAgentsQueryInstantState
+        subtype_name: VmAgentsQueryInstantState
+      - subtype_model: VmAgentsQueryQualysStatus
+        subtype_name: VmAgentsQueryQualysStatus
+      - subtype_model: VmAgentsQueryCrowdStrikeStatus
+        subtype_name: VmAgentsQueryCrowdStrikeStatus
+      - subtype_model: VmAgentsQuerySplunkStatus
+        subtype_name: VmAgentsQuerySplunkStatus
+      - subtype_model: StacksMarketplaceStackQueryArchived
+        subtype_name: StacksMarketplaceStackQueryArchived
+      - subtype_model: StacksMarketplaceStackQueryAutoApproved
+        subtype_name: StacksMarketplaceStackQueryAutoApproved
+      - subtype_model: StacksMarketplaceStackQueryOwner
+        subtype_name: StacksMarketplaceStackQueryOwner
+      - subtype_model: StacksMarketplaceStackQueryName
+        subtype_name: StacksMarketplaceStackQueryName
+      - subtype_model: StacksMarketplaceStackQueryProduct
+        subtype_name: StacksMarketplaceStackQueryProduct
+      - subtype_model: StacksMarketplaceDeploymentQueryName
+        subtype_name: StacksMarketplaceDeploymentQueryName
+      - subtype_model: StacksMarketplaceDeploymentQueryStack
+        subtype_name: StacksMarketplaceDeploymentQueryStack
+      - subtype_model: StacksMarketplaceDeploymentQueryAccount
+        subtype_name: StacksMarketplaceDeploymentQueryAccount
+      - subtype_model: StacksMarketplaceDeploymentQueryRegion
+        subtype_name: StacksMarketplaceDeploymentQueryRegion
+      - subtype_model: StacksMarketplaceStackDeploymentQueryExecutionStatus
+        subtype_name: StacksMarketplaceStackDeploymentQueryExecutionStatus
+      - subtype_model: MetricNameQueryOperator
+        subtype_name: MetricNameQueryOperator
+      - subtype_model: ResourceQueryCategory
+        subtype_name: ResourceQueryCategory
+      - subtype_model: ResourceQueryLocation
+        subtype_name: ResourceQueryLocation
+      - subtype_model: ResourceQueryResource
+        subtype_name: ResourceQueryResource
+      - subtype_model: ResourceQueryResourceGroup
+        subtype_name: ResourceQueryResourceGroup
+      - subtype_model: ResourceQueryResourceName
+        subtype_name: ResourceQueryResourceName
+      - subtype_model: ResourceQueryResourceType
+        subtype_name: ResourceQueryResourceType
+      - subtype_model: ResourceQueryTagPresence
+        subtype_name: ResourceQueryTagPresence
+      - subtype_model: ResourceQueryTagKey
+        subtype_name: ResourceQueryTagKey
+      - subtype_model: ResourceQueryTagKeyValue
+        subtype_name: ResourceQueryTagKeyValue
+      - subtype_model: WorkloadQueryWorkloadName
+        subtype_name: WorkloadQueryWorkloadName
+      - subtype_model: WorkloadQueryWorkloadOwner
+        subtype_name: WorkloadQueryWorkloadOwner
+      - subtype_model: WorkloadQueryCloud
+        subtype_name: WorkloadQueryCloud
+      - subtype_model: WorkloadQueryCloudAccount
+        subtype_name: WorkloadQueryCloudAccount
+      - subtype_model: WorkloadQueryWorkloadType
+        subtype_name: WorkloadQueryWorkloadType
+      - subtype_model: WorkloadQueryWorkloadId
+        subtype_name: WorkloadQueryWorkloadId
+    UtilizationMetricsAggregateResult:
+      properties:
+        identity:
+          description: Identity of the result group.
+          $ref: '#/components/schemas/UtilizationMetricIdentity'
+        metric_series:
+          description: Statistical summary of utilization metric data.
+          $ref: '#/components/schemas/UtilizationMetricSeries'
+        timestamps:
+          type: array
+          description: timestamps
+          items:
+            type: string
+            format: date-time
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    UtilizationMetricIdentity:
+      properties:
+        service_account_id:
+          type: string
+          description: service account id
+          x-cs-type: ObjectId
+        resource_region:
+          type: string
+          description: resource region
+        resource_id:
+          type: string
+          description: resource id
+        metric_name:
+          type: string
+          description: metric name
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

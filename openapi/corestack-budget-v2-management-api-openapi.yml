@@ -1,0 +1,1671 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Budget V2 Management API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Budget V2 Management
+servers:
+- url: /
+tags:
+- name: Budget V2 Management
+  description: Budget V2 Management
+paths:
+  /budget/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetCreateUpdateResponse'
+      summary: Create Budget
+      description: Budget Create
+      operationId: BudgetCreate
+      security:
+      - auth_token: []
+      tags:
+      - Budget V2 Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BudgetCreateUpdateRequest'
+        required: true
+  /budget/dashboard/budget_alert_exceeds_count:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetAlertsExceedResponse'
+      summary: View Count Budget Alert Exceeds Summary
+      description: Budget Alert Exceed Count
+      operationId: BudgetAlertExceedsData
+      security:
+      - auth_token: []
+      tags:
+      - Budget V2 Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BudgetSummaryRequest'
+        required: true
+  /budget/dashboard/budget_summary_count:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetSummaryResponse'
+      summary: View Count Budget Summary
+      description: Budget Summary Count
+      operationId: BudgetSummary
+      security:
+      - auth_token: []
+      tags:
+      - Budget V2 Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BudgetSummaryRequest'
+        required: true
+  /budget/dashboard/list_budgets:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetListResponse'
+      summary: View Budget Dashboard
+      description: List Budget Management
+      operationId: ListBudget
+      security:
+      - auth_token: []
+      tags:
+      - Budget V2 Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BudgetListRequest'
+        required: true
+  /budget/filter_values:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetListConstraintsResponse'
+      summary: View Create Budget Advanced Filters
+      description: Filter Budget Management
+      operationId: ListBudgetConstraints
+      security:
+      - auth_token: []
+      tags:
+      - Budget V2 Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BudgetListConstraintsRequest'
+        required: true
+  /budget/item/{budget_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Budget
+      description: Delete Budget
+      operationId: Delete Budget
+      parameters:
+      - name: budget_id
+        in: path
+        required: true
+        description: Specify the budget ID.This is a unique ID and can be retrieved using the create budget
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Budget V2 Management
+  /budget/update:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetCreateUpdateResponse'
+      summary: Update Budget
+      description: Budget Update
+      operationId: BudgetUpdate
+      security:
+      - auth_token: []
+      tags:
+      - Budget V2 Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BudgetCreateUpdateRequest'
+        required: true
+  /budget/{budget_id}/budget_history:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetHistoryResponse'
+      summary: List Budget History
+      description: Budget History
+      operationId: BudgetHistory
+      parameters:
+      - name: budget_id
+        in: path
+        required: true
+        description: Specify the budget ID.This is a unique ID and can be retrieved using the create budget
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Budget V2 Management
+  /budget/{budget_id}/view:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetViewResponse'
+      summary: List Budget Detail
+      description: View Budget
+      operationId: ViewBudget
+      parameters:
+      - name: budget_id
+        in: path
+        required: true
+        description: Specify the budget ID.This is a unique ID and can be retrieved using the create budget
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Budget V2 Management
+  /budgets/threshold_alerts/update:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThresholdAlertUpdateResponse'
+      summary: Update Budget Threshold Alerts
+      description: ThresholdAlert Update
+      operationId: ThresholdAlertUpdate
+      security:
+      - auth_token: []
+      tags:
+      - Budget V2 Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThresholdAlertUpdateRequest'
+        required: true
+  /budgets/threshold_alerts/view:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThresholdAlertListResponse'
+      summary: View Budget Threshold Alerts
+      description: ThresholdAlert View
+      operationId: ThresholdAlertList
+      parameters:
+      - description: to view threshold list data
+        required: false
+        name: expand
+        in: query
+        schema:
+          type: boolean
+      security:
+      - auth_token: []
+      tags:
+      - Budget V2 Management
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThresholdAlertViewListRequest'
+        required: true
+components:
+  schemas:
+    BudgetHistoryDataModel:
+      required:
+      - actual_amount
+      - budget_amount
+      - budget_id
+      - budget_variance
+      - budget_variance_percentage
+      - currency
+      - date
+      properties:
+        budget_variance_percentage:
+          type: number
+          description: budget variance percentage
+        budget_variance:
+          type: number
+          description: budget variance
+        actual_amount:
+          type: number
+          description: actual amount
+        budget_amount:
+          type: number
+          description: budget amount
+        date:
+          type: string
+          description: budget amount until this date
+        currency:
+          type: string
+          description: budget currency
+        budget_id:
+          type: string
+          description: budget history of budget id
+      type: object
+    BudgetListRequest:
+      required:
+      - currency
+      properties:
+        filters:
+          description: filter budgets based on filter data
+          $ref: '#/components/schemas/BudgetFilterModel'
+        status:
+          type: array
+          description: Budget status. Allowed values are pending/in_progress/completed/expired
+          items:
+            type: string
+            description: "The status of the budget corresponds to its budget ID and can be in one of the following states: \npending: This is the state before the budget has been synchronized.\nin_Progress: This is the state when the budget is currently being synchronized.\ncompleted: This is the state when the budget has successfully completed its synchronization.\n"
+            example: pending
+            enum:
+            - pending
+            - in_progress
+            - completed
+            - expired
+            - draft
+            x-cs-enum-type: BudgetStatus
+        billing_source:
+          type: string
+          description: Cost metric used to calculate the budget amount
+        budget_engine:
+          type: string
+          description: budget engine can be Cloud_Native or System
+          example: Cloud_Native
+          enum:
+          - Cloud_Native
+          - System
+          x-cs-enum-type: BudgetEngine
+        service_name:
+          type: array
+          description: The name of the cloud service. For example, AWS.
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        cloud_account_id:
+          type: array
+          description: Specify the cloud account id to view, cloud account id is unique and can be obtained from the list cloud account api.
+          items:
+            type: string
+        project_id:
+          type: array
+          description: Tenant ids
+          items:
+            type: string
+        dimension_id:
+          type: array
+          description: Dimension IDs for the budget. This is a unique ID and can be retrieved using
+          items:
+            type: string
+        grouping_rule_ids:
+          type: array
+          description: List of grouping rule IDs to be associated with the budget. This is a unique.
+          items:
+            type: string
+        currency:
+          type: string
+          description: currency of the cost. Example 'currency':'USD'
+          example: AED
+          enum:
+          - AED
+          - ALL
+          - ARS
+          - AUD
+          - BAM
+          - BDT
+          - BGN
+          - BHD
+          - BRL
+          - CAD
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CZK
+          - DKK
+          - EGP
+          - EUR
+          - GBP
+          - HKD
+          - HRK
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - ISK
+          - JPY
+          - KES
+          - KRW
+          - KWD
+          - KZT
+          - MOP
+          - MVR
+          - MXN
+          - MYR
+          - NOK
+          - NZD
+          - OMR
+          - PEN
+          - PHP
+          - PKR
+          - PLN
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - SAR
+          - SEK
+          - SGD
+          - THB
+          - TRY
+          - TWD
+          - USD
+          - VND
+          - ZAR
+          x-cs-enum-type: Currency
+        active_only:
+          type: boolean
+          description: When true, returns only active budgets.
+          default: false
+        start_date:
+          type: string
+          format: date-time
+          description: ISO 8601 UTC datetime. When provided with end_date, filters to budgets whose period overlaps the given range.
+        end_date:
+          type: string
+          format: date-time
+          description: ISO 8601 UTC datetime. When provided with start_date, filters to budgets whose period overlaps the given range.
+      type: object
+    BudgetSummaryResponse:
+      required:
+      - total_budgets_count
+      properties:
+        total_budgets_count:
+          type: integer
+          description: budget count
+      type: object
+    BudgetAmountModel:
+      required:
+      - amount
+      properties:
+        amount:
+          type: integer
+          description: budget amount
+        type:
+          type: string
+          description: type of budget amount. Allowed values will be auto_increment/auto_suggest/fixed
+        planned_budget_limit:
+          type: array
+          description: planned budget_limit for auto_suggest/auto_increment type
+          items:
+            $ref: '#/components/schemas/BudgetLimitModel'
+        budget_growth:
+          type: number
+          description: Percentage value for auto_increment type only
+      type: object
+    BudgetViewResponse:
+      required:
+      - budget_event_type
+      - budget_frequency
+      - budget_name
+      - budget_type
+      - budget_uri
+      - created_at
+      - created_by
+      - updated_at
+      - updated_by
+      properties:
+        threshold_uri:
+          type: array
+          description: threshold uri
+          items:
+            type: string
+        cloud:
+          type: array
+          description: The name of the cloud service. For example, AWS.
+          items:
+            type: string
+        cloud_account_id:
+          type: array
+          description: Cloud account id
+          items:
+            type: string
+        created_at:
+          type: string
+          description: budget created at
+        updated_at:
+          type: string
+          description: budget updated at
+        created_by:
+          type: string
+          description: Name of the user who created the budget
+        updated_by:
+          type: string
+          description: Name of the user who updated the budget
+        tenant_id:
+          type: string
+          description: tenant id
+        is_corestack_created:
+          type: boolean
+          description: true if budget created in corestack
+        is_tenant_level:
+          type: boolean
+          description: true if budget is system budget
+        budget_name:
+          type: string
+          description: budget name
+        alias_budget_name:
+          type: string
+          description: budget name
+        status:
+          type: string
+          description: budget creation status
+        budget_type:
+          type: string
+          description: budget type
+        budget_frequency:
+          type: string
+          description: 'Specify the budget frequency. Example: budget frequency'':''Daily'' Allowed values - Daily,Monthly,Quarterly,Annually'
+        budget_engine:
+          type: string
+          description: budget engine
+        budget_event_type:
+          type: string
+          description: budget event type
+        budget_uri:
+          type: string
+          description: budget uri
+        metadata:
+          description: metadata to maintain step
+          $ref: '#/components/schemas/BudgetMetaModel'
+        currency:
+          type: string
+          description: Name of the currency
+        summary:
+          description: budget summary data
+          $ref: '#/components/schemas/BudgetViewSummaryModel'
+      type: object
+    ThresholdAlertUpdateResponse:
+      required:
+      - threshold_details
+      properties:
+        threshold_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThresholdAlertDetailsModel'
+      type: object
+    BudgetThresholdViewModel:
+      properties:
+        percentage:
+          type: number
+          description: threshold percentage
+        type:
+          type: string
+          description: threshold type like actual/forecasted
+        amount:
+          type: number
+          description: threshold amount (0.0 if set by percentage)
+          default: 0.0
+      type: object
+    BudgetAlertsExceedResponse:
+      required:
+      - total_alerts_exceed_budgets_count
+      properties:
+        total_alerts_exceed_budgets_count:
+          type: integer
+          description: alert exceeded budget count
+      type: object
+    NotificationDetailsModel:
+      required:
+      - notification_input
+      - notification_type
+      properties:
+        notification_type:
+          type: string
+          description: notification type like emails/ITSM/Webhook
+        notification_input:
+          description: Notification Input
+          $ref: '#/components/schemas/NotificationInputModel'
+      type: object
+    FilterIdNameModel:
+      required:
+      - id
+      - name
+      properties:
+        id:
+          type: string
+          description: Id of filter key
+        name:
+          type: string
+          description: Id of filter name
+      type: object
+    BudgetCreateFiltersModel:
+      properties:
+        resource_type:
+          type: array
+          description: resource_type with id name. Id and name can be obtained from /budget/filter_values API
+          items:
+            $ref: '#/components/schemas/FilterIdNameModel'
+        tags:
+          type: object
+          description: tag filter values.Format should key nad list of values
+      type: object
+    BudgetDimensionDetailsModel:
+      required:
+      - entity
+      - grouping_rule_ids
+      - name
+      - sys_id
+      - values
+      properties:
+        sys_id:
+          type: string
+          description: Dimension ID for the budget. This is a unique ID and can be retrieved using the List Dimensions API.
+        name:
+          type: string
+          description: Dimension name for the budget. This is a unique name and can be retrieved using the List Dimensions API.
+        values:
+          type: array
+          description: Dimension value for the budget. This is a unique value and can be retrieved using.
+          items:
+            type: string
+        grouping_rule_ids:
+          type: array
+          description: List of grouping rule IDs to be associated with the budget. This is a unique ID and can be retrieved using the List Grouping Rules API.
+          items:
+            type: string
+        entity:
+          type: string
+          description: Entity type for the dimension. This is a unique entity type and can be retrieved.
+      type: object
+    BudgetCreateUpdateRequest:
+      required:
+      - budget_event_type
+      - budget_frequency
+      - budget_name
+      - budget_type
+      properties:
+        budget_name:
+          type: string
+          description: Provide a name for your budget
+        budget_id:
+          type: string
+          description: Id of Budget to create budget data
+        status:
+          type: string
+          description: "The status of the budget corresponds to its budget ID and can be in one of the following states: \npending: This is the state before the budget has been synchronized.\nin_Progress: This is the state when the budget is currently being synchronized.\ncompleted: This is the state when the budget has successfully completed its synchronization.\n"
+          example: pending
+          enum:
+          - pending
+          - in_progress
+          - completed
+          - expired
+          - draft
+          x-cs-enum-type: BudgetStatus
+        tenant_id:
+          type: string
+          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        budget_event_type:
+          type: string
+          description: budget event type.
+          example: create
+          enum:
+          - create
+          - update
+          x-cs-enum-type: BudgetEventType
+        budget_frequency:
+          type: string
+          description: 'Specify the budget frequency. Example: ''budget frequency'':''Daily'' Allowed values - Daily,Monthly,Quarterly,Annually'
+        budget_type:
+          type: string
+          description: Budget type will Be COST for AWS and Cost for Azure
+        budget_details:
+          description: Get details of a specific budget id within a given budget id
+          $ref: '#/components/schemas/BudgetDetailsModel'
+        metadata:
+          description: Metadata like file name, file format
+          $ref: '#/components/schemas/BudgetMetaModel'
+        budget_amount:
+          description: 'example: Currency of the cost. Example ''currency’: ‘USD’'
+          $ref: '#/components/schemas/BudgetAmountModel'
+      type: object
+    ThresholdAlertDetailsModel:
+      required:
+      - threshold_name
+      - threshold_uri
+      properties:
+        threshold_name:
+          type: string
+          description: threshold name
+        threshold_uri:
+          type: string
+          description: threshold uri
+      type: object
+    BudgetScopeDetails:
+      properties:
+        cloud:
+          type: array
+          items:
+            type: string
+            description: cloud name
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        filters:
+          description: advanced filters details of the specific budget mentioned
+          $ref: '#/components/schemas/BudgetAdvancedFilter'
+        tenant:
+          type: array
+          items:
+            type: string
+            description: tenant name
+        cloud_account:
+          type: array
+          items:
+            type: string
+        service_account_ids:
+          type: array
+          description: Service account Ids.
+          items:
+            type: string
+            x-cs-type: ObjectId
+        grouping_rule_ids:
+          type: array
+          items:
+            type: string
+            description: grouping rule id
+        dimension_id:
+          type: string
+          description: dimension id
+        name:
+          type: string
+          description: name of the budget scope
+        entity:
+          type: string
+          description: entity type for the budget scope. This is a unique entity type and can be retrieved.
+        values:
+          type: array
+          items:
+            type: string
+            description: values of the budget scope
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    NotificationConfigurationModel:
+      required:
+      - name
+      - notification_details
+      properties:
+        name:
+          type: string
+          description: notification name
+        notification_details:
+          type: array
+          description: Notification Details
+          items:
+            $ref: '#/components/schemas/NotificationDetailsModel'
+      type: object
+    BudgetSummaryFilterModel:
+      properties:
+        cloud:
+          type: array
+          description: The name of the cloud service. For example, AWS.
+          items:
+            type: string
+        cloud_account_id:
+          type: array
+          description: Specify the cloud account ID to view, cloud account ID is unique can be obtained from the list cloud account api.
+          items:
+            type: string
+        currency:
+          type: string
+          description: currency of the cost. Example 'currency':'USD'
+          example: AED
+          enum:
+          - AED
+          - ALL
+          - ARS
+          - AUD
+          - BAM
+          - BDT
+          - BGN
+          - BHD
+          - BRL
+          - CAD
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CZK
+          - DKK
+          - EGP
+          - EUR
+          - GBP
+          - HKD
+          - HRK
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - ISK
+          - JPY
+          - KES
+          - KRW
+          - KWD
+          - KZT
+          - MOP
+          - MVR
+          - MXN
+          - MYR
+          - NOK
+          - NZD
+          - OMR
+          - PEN
+          - PHP
+          - PKR
+          - PLN
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - SAR
+          - SEK
+          - SGD
+          - THB
+          - TRY
+          - TWD
+          - USD
+          - VND
+          - ZAR
+          x-cs-enum-type: Currency
+      type: object
+    ListBudgetsModel:
+      required:
+      - actual_amount
+      - budget_amount
+      - budget_frequency
+      - budget_id
+      - budget_name
+      - budget_type
+      - budget_uri
+      - created_at
+      - currency
+      - end_date
+      - forecasted_amount
+      - metadata
+      - start_date
+      - status
+      properties:
+        budget_name:
+          type: string
+          description: budget name
+        billing_source:
+          type: string
+          description: Cost metric used to calculate the budget amount
+        budget_type:
+          type: string
+          description: budget type
+        budget_frequency:
+          type: string
+          description: 'Specify the budget frequency. Example: ''budget frequency'':''Daily'' Allowed values - Daily,Monthly,Quarterly,Annually'
+        budget_amount:
+          type: number
+          description: budget amount
+        actual_amount:
+          type: number
+          description: budget actual amount
+        forecasted_amount:
+          type: number
+          description: budget forecasted amount
+        currency:
+          type: string
+          description: budget currency
+        start_date:
+          type: string
+          description: budget start data
+        end_date:
+          type: string
+          description: budget end date
+        last_threshold:
+          type: string
+          format: date-time
+          description: last threshold
+        status:
+          type: string
+          description: budget created status
+        budget_uri:
+          type: string
+          description: budget uri
+        created_at:
+          type: string
+          description: budget created at
+        metadata:
+          type: object
+          description: metadata to maintain step
+        budget_id:
+          type: string
+          description: budget id
+        budget_engine:
+          type: string
+          description: budget engine can be Cloud_Native or System
+          example: Cloud_Native
+          enum:
+          - Cloud_Native
+          - System
+          x-cs-enum-type: BudgetEngine
+        budget_scope:
+          type: string
+          description: budget scope
+          example: cloud
+          enum:
+          - cloud
+          - tenant
+          - custom
+          x-cs-enum-type: BudgetScope
+        scope:
+          description: scope of the budget further defined for each scope
+          $ref: '#/components/schemas/BudgetScopeDetails'
+      type: object
+    BudgetSummaryRequest:
+      properties:
+        filter_params:
+          description: filter budgets based on filter data
+          $ref: '#/components/schemas/BudgetSummaryFilterModel'
+        tenant_ids:
+          type: array
+          description: Tenant ids
+          items:
+            type: string
+        type:
+          type: string
+          description: Type of filter.Type will be budget_summary/alert_exceeds_summary
+          example: budget_summary
+          enum:
+          - budget_summary
+          - alert_exceeds_summary
+          x-cs-enum-type: BudgetSummaryType
+      type: object
+    BudgetLimitModel:
+      properties:
+        amount:
+          type: integer
+          description: budget amount for that period
+        month:
+          type: string
+          description: month format should be Jun-2015 and for annually 2020
+      type: object
+    ThresholdDetailsModel:
+      required:
+      - alert_action_details
+      - alert_notification_details
+      - configuration_type
+      - created_at
+      - created_by
+      - id
+      - tenant_id
+      - threshold_name
+      - threshold_percentage
+      - updated_at
+      - updated_by
+      properties:
+        threshold_percentage:
+          type: number
+          description: threshold percentage
+        threshold_name:
+          type: string
+          description: threshold name
+        alert_notification_details:
+          description: alert notification details
+          $ref: '#/components/schemas/ThresholdNotificationConfigurationModel'
+        configuration_type:
+          type: string
+          description: Configuration type
+        alert_action_details:
+          description: alert action details
+          $ref: '#/components/schemas/ThresholdActionConfigurationModel'
+        tenant_id:
+          type: string
+          description: tenant id
+        created_by:
+          type: string
+          description: Name of the user who created the threshold alert.
+        created_at:
+          type: string
+          description: Created time to create threshold alert
+        updated_by:
+          type: string
+          description: Name of the user who updated the the threshold alert.
+        updated_at:
+          type: string
+          description: Updated time to create threshold alert
+        id:
+          type: string
+          description: Threshold alert id which can be retrieved from View Budget Threshold Alerts API
+      type: object
+    BudgetAdvancedFilterDetails:
+      properties:
+        id:
+          type: string
+          description: tag id
+        name:
+          type: string
+          description: tag name
+      type: object
+    BudgetViewSummaryModel:
+      properties:
+        budget_details:
+          description: budget details
+          $ref: '#/components/schemas/BudgetDetailsModel'
+        budget_amount:
+          description: budget amount data
+          $ref: '#/components/schemas/BudgetAmountModel'
+        threshold_details:
+          type: array
+          description: threshold details
+          items:
+            $ref: '#/components/schemas/BudgetThresholdViewModel'
+      type: object
+    BudgetListConstraintsResponse:
+      required:
+      - data
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: budget filter list status
+        message:
+          type: string
+          description: budget filter list status message
+        data:
+          type: object
+          description: constraints listed for given filter key, cloud_account_id and tenant_id
+      type: object
+    BudgetListConstraintsRequest:
+      required:
+      - cloud_account_id
+      - filter_key
+      - tenant_id
+      properties:
+        filter_key:
+          type: string
+          description: List constraints based on filter key. Allowed values are region/resource_group/linked_accounts/projects/resource_type/tags
+        tenant_id:
+          type: string
+          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        cloud_account_id:
+          type: array
+          description: Specify the cloud account id to view, cloud account id is unique can be obtained from the list cloud account api.
+          items:
+            type: string
+      type: object
+    BudgetCreateUpdateResponse:
+      required:
+      - budget_id
+      - budget_uri
+      properties:
+        tenant_id:
+          type: string
+          description: tenant id
+        budget_name:
+          type: string
+          description: created/updated budget name
+        is_corestack_created:
+          type: boolean
+          description: true if budget created in corestack
+        is_recurring:
+          type: boolean
+          description: true if recurring budget
+        budget_id:
+          type: string
+          description: Specify the budget ID.This is a unique ID and can be retrieved using the create budget_UI
+        budget_engine:
+          type: string
+          description: budget engine
+        budget_frequency:
+          type: string
+          description: 'Specify the budget frequency. Example: ''budget frequency'':''Daily'' Allowed values - Daily,Monthly,Quarterly,Annually'
+        budget_type:
+          type: string
+          description: budget type
+        budget_uri:
+          type: string
+          description: budget uri
+      type: object
+    ThresholdActionConfigurationModel:
+      properties:
+        action_configuration:
+          type: array
+          description: action configuration
+          items:
+            type: string
+        action_uri:
+          type: array
+          description: action uri
+          items:
+            type: string
+      type: object
+    ThresholdAlertViewListRequest:
+      required:
+      - budget_uri
+      properties:
+        budget_uri:
+          type: string
+          description: budget uri
+        project_id:
+          type: string
+          description: tenant ID
+        dimension_id:
+          type: array
+          description: dimension ID
+          items:
+            type: string
+      type: object
+    BudgetTrackingModel:
+      properties:
+        next_step:
+          type: integer
+          description: next step no
+      type: object
+    AlertNotificationDetailsModel:
+      required:
+      - is_template
+      - name
+      - notification_details
+      - notification_uri
+      properties:
+        name:
+          type: string
+          description: notification name
+        notification_uri:
+          type: string
+          description: notification name
+        is_template:
+          type: boolean
+          description: notification name
+        notification_details:
+          type: array
+          description: Notification Details
+          items:
+            $ref: '#/components/schemas/NotificationDetailsModel'
+      type: object
+    BudgetMetaModel:
+      properties:
+        tracking:
+          description: tracking details
+          $ref: '#/components/schemas/BudgetTrackingModel'
+      type: object
+    BudgetDetailsModel:
+      required:
+      - currency
+      - from_date
+      - is_recurring
+      properties:
+        is_recurring:
+          type: boolean
+          description: give false for non-recurring budget
+        currency:
+          type: string
+          description: currency of the cost. Example 'currency':'USD'
+          example: AED
+          enum:
+          - AED
+          - ALL
+          - ARS
+          - AUD
+          - BAM
+          - BDT
+          - BGN
+          - BHD
+          - BRL
+          - CAD
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CZK
+          - DKK
+          - EGP
+          - EUR
+          - GBP
+          - HKD
+          - HRK
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - ISK
+          - JPY
+          - KES
+          - KRW
+          - KWD
+          - KZT
+          - MOP
+          - MVR
+          - MXN
+          - MYR
+          - NOK
+          - NZD
+          - OMR
+          - PEN
+          - PHP
+          - PKR
+          - PLN
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - SAR
+          - SEK
+          - SGD
+          - THB
+          - TRY
+          - TWD
+          - USD
+          - VND
+          - ZAR
+          x-cs-enum-type: Currency
+        from_date:
+          type: string
+          description: 'from date for that rule. Example: ''end_date'': ''2021-04-01T12:00:00.000Z'
+        to_date:
+          type: string
+          description: 'to date for that rule. Example: ''end_date'': ''2021-04-01T12:00:00.000Z'
+        cloud:
+          type: array
+          description: The name of the cloud service. for example, AWS.
+          items:
+            type: string
+        cloud_account_id:
+          type: array
+          description: Specify the cloud account id to view, cloud account id is unique can be obtained from the list cloud account api.
+          items:
+            type: string
+        dimension:
+          description: Dimension details for the budget. This is a unique ID and can be retrieved using the List Dimensions API.
+          $ref: '#/components/schemas/BudgetDimensionDetailsModel'
+        filters:
+          description: budget filters
+          $ref: '#/components/schemas/BudgetCreateFiltersModel'
+      type: object
+    BudgetFilterModel:
+      properties:
+        budget_frequency:
+          type: string
+          description: 'Specify the budget frequency. Example: ''budget frequency'':''Daily'' Allowed values - Daily,Monthly,Quarterly,Annually'
+      type: object
+    BudgetAdvancedFilter:
+      properties:
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/BudgetAdvancedFilterDetails'
+        compartments:
+          type: array
+          items:
+            $ref: '#/components/schemas/BudgetAdvancedFilterDetails'
+        regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/BudgetAdvancedFilterDetailsRegions'
+      type: object
+    BudgetListResponse:
+      required:
+      - budgets_list
+      - total_budgets_count
+      properties:
+        total_budgets_count:
+          type: integer
+          description: Total Budgets count
+        budgets_list:
+          type: array
+          description: Details of violation
+          items:
+            $ref: '#/components/schemas/ListBudgetsModel'
+      type: object
+    BudgetAdvancedFilterDetailsRegions:
+      properties:
+        region:
+          type: array
+          items:
+            $ref: '#/components/schemas/BudgetFilterRegion'
+      type: object
+    ThresholdAlertListResponse:
+      required:
+      - threshold_details
+      properties:
+        threshold_details:
+          type: array
+          description: Threshold Details
+          items:
+            $ref: '#/components/schemas/ThresholdAlertListModel'
+      type: object
+    ThresholdAlertUpdateRequest:
+      required:
+      - budget_uri
+      - threshold_details
+      properties:
+        budget_uri:
+          type: string
+          description: budget uri
+        threshold_details:
+          type: array
+          description: Threshold Details
+          items:
+            $ref: '#/components/schemas/ThresholdDetailsModel'
+      type: object
+    BudgetHistoryResponse:
+      required:
+      - budget_history
+      properties:
+        budget_history:
+          type: array
+          description: Budget History data
+          items:
+            $ref: '#/components/schemas/BudgetHistoryDataModel'
+      type: object
+    NotificationInputModel:
+      properties:
+        emails:
+          type: array
+          description: Email id List
+          items:
+            type: string
+        webhook_urls:
+          type: array
+          description: Webhook Urls to send alerts
+          items:
+            type: string
+      type: object
+    ThresholdAlertListModel:
+      required:
+      - alert_notification_details
+      - budget_uri
+      - configuration_type
+      - created_at
+      - created_by
+      - id
+      - name
+      - tenant_id
+      - threshold_amount
+      - threshold_percentage
+      - threshold_uri
+      - updated_at
+      - updated_by
+      properties:
+        id:
+          type: string
+          description: threshold id
+        tenant_id:
+          type: string
+          description: tenant id
+        created_by:
+          type: string
+          description: Name of the user who created the threshold alert.
+        created_at:
+          type: string
+          description: Created time to create threshold alert
+        updated_by:
+          type: string
+          description: Name of the user who updated the the threshold alert.
+        updated_at:
+          type: string
+          description: Updated time to create threshold alert
+        threshold_uri:
+          type: string
+          description: threshold uri
+        threshold_percentage:
+          type: number
+          description: threshold percentage
+        threshold_amount:
+          type: number
+          description: threshold amount
+        configuration_type:
+          type: string
+          description: Configuration type
+        alert_action_details:
+          type: array
+          description: alert action details
+          items:
+            type: string
+        budget_uri:
+          type: string
+          description: threshold uri
+        name:
+          type: string
+          description: Threshold Action name
+        alert_notification_details:
+          type: array
+          description: Alert Notification Details
+          items:
+            $ref: '#/components/schemas/AlertNotificationDetailsModel'
+      type: object
+    ThresholdNotificationConfigurationModel:
+      properties:
+        notification_configuration:
+          type: array
+          description: notification configuration
+          items:
+            $ref: '#/components/schemas/NotificationConfigurationModel'
+        notification_uri:
+          type: array
+          description: notification uri
+          items:
+            type: string
+      type: object
+    BudgetFilterRegion:
+      properties:
+        type:
+          type: string
+          description: Type of region
+        id:
+          type: string
+          description: Id of the region
+        name:
+          type: string
+          description: Name of the region
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

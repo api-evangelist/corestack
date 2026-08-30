@@ -1,0 +1,2374 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Compliance API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Corestack compliance Rest API
+servers:
+- url: /
+tags:
+- name: Compliance
+  description: Corestack compliance Rest API
+paths:
+  /compliance/compliance_control_mapping/assessment_summary_by_job:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceAssessmentHistorySummary'
+      summary: Get compliance assessment summary by assessment job number
+      description: To get the summary of compliance assessment for the given assessment job number.
+      operationId: ComplianceMappingSummary
+      parameters:
+      - description: Specify the assessment_job_number.This can be fetched from List Compliance Control Assessment History API.
+        required: true
+        name: assessment_job_number
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+  /compliance/executive_dashboard/compliance:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SecurityDashboardComplianceStatus'
+      summary: Compliance Security Dashboard Summary
+      description: Security Dashboard Compliance
+      operationId: SecurityDashboardByCompliance
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SecurityDashboardRequest'
+        required: true
+  /compliance/executive_dashboard/control_health:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SecurityDashboardComplianceControlHealth'
+      summary: Compliance Control Health by Control Categories
+      description: Compliance Control Health
+      operationId: ComplianceControlHealth
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SecurityDashboardRequest'
+        required: true
+  /compliance/executive_dashboard/risk:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SecurityDashboardCompliance'
+      summary: Compliance Risks By Cloud Accounts
+      description: Compliance Risk by Cloud Accounts
+      operationId: ComplianceRiskByCloudAccounts
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SecurityDashboardRequest'
+        required: true
+  /compliance/posture_summary/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssessmentPostureSummaryResponse'
+      summary: Get Compliance assessment posture Summary
+      description: objective is to return the compliance assessment posture summary of all the applicable tenants
+      operationId: ComplianceAssessmentPostureSummaryList
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+  /compliance/{tenant_id}/assessment_history/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssessmentHistoryResponse'
+      summary: List Compliance Control Assessment History
+      description: objective is to return all of the compliance assessment triggered in the tenant
+      operationId: AssessmentHistoryList
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: 'Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API. '
+        schema:
+          type: string
+      - description: Number of records to display
+        name: limit
+        in: query
+        schema:
+          type: integer
+          enum:
+          - '10'
+          - '25'
+          - '50'
+          - '100'
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+      - description: search assessment
+        required: false
+        name: search
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+  /compliance/{tenant_id}/compliance_control_mapping/get_assessment_job_details:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyJobExecutionStatusResponse'
+      summary: List compliance control mapping, get_assessment_job_details
+      description: objective is to return Policy Job execution status  for given, the tenant,assessment job number, policy id as input
+      operationId: PolicyJobExecutionStatus
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: 'Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API. '
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyJobExecutionStatusRequest'
+        required: true
+  /compliance/{tenant_id}/compliance_control_mapping/get_on_audit_entries:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceMappingResponse'
+      summary: List compliance control mapping, get_on_audit_entries
+      description: objective is to return all of the compliance Mapping get_on_audit_entries given, the tenant,assessment job number as input
+      operationId: ComplianceMapping
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: 'Specify the tenant ID. This is a unique ID and can be retrieved using theList Tenants API. '
+        schema:
+          type: string
+      - description: Specify the assessment_job_number.This can be fetched from List Compliance Control Assessment History API.
+        required: true
+        name: assessment_job_number
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+  /compliance/{tenant_id}/control_mapping/on_demand_execute_control:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceControlResponse'
+      summary: Compliance On Demand Control_execute
+      description: Compliance On Demand Control_execute
+      operationId: ComplianceOnDemandControl
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComplianceControlRequest'
+        required: true
+  /compliance/{tenant_id}/control_mapping/on_demand_execute_standard:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceStandardResponse'
+      summary: Compliance On Demand Standard_execute
+      description: Compliance On Demand Standard_execute
+      operationId: ComplianceOnDemandStandard
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComplianceStandardRequest'
+        required: true
+  /compliance/{tenant_id}/controls/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ControlsListResponse'
+      summary: List Compliance Controls
+      description: Objective is to return all of the compliance controls given, the tenant and compliance standard as input
+      operationId: ListControls
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: Number of records to display
+        required: true
+        name: limit
+        in: query
+        schema:
+          type: integer
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+      - description: uri of compliance standard, This can be fetched from the compliance standards list API call.
+        required: true
+        name: compliance_uri
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+  /compliance/{tenant_id}/mapping/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ControlsListMappingResponse'
+      summary: List Compliance Control Mappings
+      description: objective is to return all of the compliance control mappings given, the tenant and compliance standard as input
+      operationId: ListControlMappings
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: 'Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API. '
+        schema:
+          type: string
+      - description: Number of records to display
+        name: limit
+        in: query
+        schema:
+          type: integer
+      - description: type of data requested
+        name: caller
+        in: query
+        schema:
+          type: string
+          default: control
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+      - description: uri of compliance standard This can be fetched from the compliance standards list API call.
+        name: compliance_uri
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+  /compliance/{tenant_id}/standards:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceStandardsResponse'
+      summary: List Compliance Standards
+      description: Objective is to return all of the compliance standards given, the tenant as input
+      operationId: ListStandards
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: 'Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API. '
+        schema:
+          type: string
+      - description: Select the Type of Compliance Standard
+        name: type
+        in: query
+        schema:
+          type: string
+          enum:
+          - all
+          - marketplace
+          - my_standard
+      - description: Select a Valid Service Type
+        in: query
+        x-cs-enum-type: CloudServiceName
+        required: false
+        name: valid_service_type
+        schema:
+          type: string
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          default: AWS
+      - description: Select the scope of Compliance Standard
+        name: scope
+        in: query
+        schema:
+          type: string
+          enum:
+          - account
+          - tenant
+      - description: true/false flag to fetch framework standards
+        name: framework
+        in: query
+        schema:
+          type: boolean
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+  /compliance/{tenant_id}/visibility:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceVisibilityResponse'
+      summary: List Compliance Visibility
+      description: objective is to return all of the compliance visibility given, the tenant as input
+      operationId: ComplianceVisibility
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: 'Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API. '
+        schema:
+          type: string
+      - description: ID of the cloud account. This can be fetched from ListCloudAccounts API
+        name: service_account_id
+        in: query
+        schema:
+          type: string
+      - description: Select a Valid Compliance Type
+        name: compliance_type
+        in: query
+        schema:
+          type: string
+          enum:
+          - service
+          - standard
+      - description: Specify the service resource type,this can be fetched from the corestack
+        name: service_resource_type
+        in: query
+        schema:
+          type: string
+      - description: uri of compliance standard, This can be fetched from the compliance standards list API call.
+        name: compliance_uri
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+  /compliance_posture/detail_for_policy/{policy_id}:
+    parameters:
+    - name: policy_id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceDetailsForPoliciesResponse'
+      summary: List Compliance posture DetailsForPolicies
+      description: Objective is to return all of the compliance posture DetailsForPolicies
+      operationId: DetailsForPolicies
+      parameters:
+      - description: status of resource to filter
+        name: status
+        in: query
+        schema:
+          type: string
+      - description: Allowed values:resource_type, resource_name, resource_id
+        name: search
+        in: query
+        schema:
+          type: string
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+      - description: Number of records to display
+        name: limit
+        in: query
+        schema:
+          type: integer
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComplianceDetailsForPoliciesRequest'
+        required: true
+  /compliance_posture/filters:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceFilterResponse'
+      summary: List Compliance Filter
+      description: objective is to return all of the compliance Filter given, the tenant as input
+      operationId: ListFilter
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComplianceFilterRequest'
+        required: true
+  /compliance_posture/filters/by_policy:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceFilterByPolicyResponse'
+      summary: List Compliance Filter For Heatstack
+      description: Objective is to return all of the compliance Filter given, the tenant as input
+      operationId: CompliancePostureFilter
+      parameters:
+      - description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        name: tenant_id
+        in: query
+        schema:
+          type: string
+      - description: true/false flag to get policies filter as well
+        name: policy_filters
+        in: query
+        schema:
+          type: boolean
+          enum:
+          - 'true'
+          - 'false'
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+  /compliance_posture/policy_filters:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceFilterPolicyResponse'
+      summary: List Compliance Filter_Policy
+      description: Objective is to return all of the compliance Filter Policy given, the tenant as input
+      operationId: CompliancePostureFilterPolicy
+      parameters:
+      - description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        required: true
+        name: tenant_id
+        in: query
+        schema:
+          type: string
+      - description: compliance standards to filter policies
+        name: standards
+        in: query
+        schema:
+          type: string
+      - description: severity filter
+        name: severity
+        in: query
+        schema:
+          type: string
+      - description: 'matches policy name, display_name, engine_type, severity, services, resource_type and service_resource '
+        name: search
+        in: query
+        schema:
+          type: string
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+      - description: Number of records to display
+        name: limit
+        in: query
+        schema:
+          type: integer
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+  /compliance_posture/summary_by_accounts:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceSummary'
+      summary: List compliance_posture summary_by_accounts
+      description: objective is to return all of the compliance summary_by_accounts
+      operationId: ComplianceSummaryByAccounts
+      parameters:
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+      - description: Number of records to display
+        name: limit
+        in: query
+        schema:
+          type: integer
+          enum:
+          - '10'
+          - '25'
+          - '50'
+          - '100'
+      - description: Allowed values:account,standard,service
+        name: search
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComplianceSummaryRequest'
+        required: true
+  /compliance_posture/summary_by_policies:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceSummaryByPoliciesResponse'
+      summary: List Compliance posture SummaryByPolicies
+      description: Objective is to return all of the compliance posture SummaryByPolicies
+      operationId: SummaryByPolicies
+      parameters:
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+      - description: Number of records to display
+        name: limit
+        in: query
+        schema:
+          type: integer
+      - description: Allowed values:account,standard,service
+        name: search
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComplianceSummaryByPoliciesRequest'
+        required: true
+  /v1/compliance/control_mapping/cleanup_policy_data:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompliancePolicyDataCleanUpResponse'
+      summary: Clean Up Unmapped Policy Data
+      description: Cleanup the data in compliance that was created by deprecated policy
+      operationId: CleanupCompliancePolicyData
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompliancePolicyDataCleanUpRequest'
+        required: true
+  /{tenant_id}/assessment_history:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceControlMappingResponse'
+      summary: Get compliance standard assessments
+      description: Objective is to return all of the compliance control mapping, the tenant as input
+      operationId: ComplianceControlMapping
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+      - description: Number of records to display
+        name: limit
+        in: query
+        schema:
+          type: integer
+      - description: Allowed values:account,standard,service
+        name: search
+        in: query
+        schema:
+          type: string
+      - description: uri of compliance standard, This can be fetched from the compliance standards list API call.
+        name: compliance_uri
+        in: query
+        schema:
+          type: string
+      - description: ID of the cloud account. This can be fetched from ListCloudAccounts API
+        name: service_account
+        in: query
+        schema:
+          type: string
+      - description: Specify the assessment_status.
+        name: assessment_status
+        in: query
+        schema:
+          type: string
+          enum:
+          - COMPLETED
+          - IN_PROGRESS
+          - PENDING
+      - description: Specify the assessment_type.
+        name: assessment_type
+        in: query
+        schema:
+          type: string
+          enum:
+          - standard
+          - control
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+  /{tenant_id}/compliance_posture/{service_account_id}/visibility:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: service_account_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompliancePostureVisibilityResponse'
+      summary: compliance posture visibility
+      description: Objective is to return all of the compliance Visibility
+      operationId: CompliancePostureVisibility
+      parameters:
+      - description: uri of compliance standard This can be fetched from the compliance standards list API call.
+        required: true
+        name: compliance_uri
+        in: query
+        schema:
+          type: string
+      - description: 'Group by attribute (Allowed Values: control_family, resource_type, severity, region) '
+        name: group_by
+        in: query
+        schema:
+          type: string
+          default: control_family
+      - description: 'Allowed Values: control, policy and resource.'
+        name: count_by
+        in: query
+        schema:
+          type: string
+          default: control
+      - description: allowed values for selected group by
+        name: group_by_filter
+        in: query
+        schema:
+          type: string
+      - description: true/false flag to identify whether filters is required or not
+        name: filters_required
+        in: query
+        schema:
+          type: boolean
+          enum:
+          - 'true'
+          - 'false'
+      - description: true/false flag to identify whether detail is required or not
+        name: details_required
+        in: query
+        schema:
+          type: boolean
+          enum:
+          - 'true'
+          - 'false'
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+  /{tenant_id}/compliance_posture/{service_account_id}/visibility_trend:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: service_account_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComplianceVisibilityTrendResponse'
+      summary: compliance visibility trend
+      description: Objective is to return all of the compliance VisibilityTrend
+      operationId: ComplianceVisibilityTrend
+      parameters:
+      - description: uri of compliance standard This can be fetched from the compliance standards list API call.
+        required: true
+        name: compliance_uri
+        in: query
+        schema:
+          type: string
+      - description: 'date range filter (Allowed values: current_month, previous_month, last_3_months, last_10_assessments) '
+        name: period
+        in: query
+        schema:
+          type: string
+          default: last_10_assessments
+      - description: 'Allowed Values: control, policy and resource'
+        name: count_by
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Compliance
+components:
+  schemas:
+    ReferenceResponse:
+      required:
+      - Abstracted Control URI
+      - Control Baseline
+      - Control Family
+      - Control Name
+      - Control Statement
+      - Services
+      properties:
+        Control Baseline:
+          description: Control Baseline
+          $ref: '#/components/schemas/ReferenceModelList'
+        Control Family:
+          description: Control Family
+          $ref: '#/components/schemas/ReferenceModelList'
+        Control Statement:
+          description: Control Statement
+          $ref: '#/components/schemas/ReferenceModelList'
+        Control Name:
+          description: Control Name
+          $ref: '#/components/schemas/ReferenceModelList'
+        Abstracted Control URI:
+          description: Abstracted Control URI
+          $ref: '#/components/schemas/ReferenceModelList'
+        Services:
+          description: Services
+          $ref: '#/components/schemas/ReferenceModelList'
+      type: object
+    SecurityDashboardCompliance:
+      properties:
+        cloud_account_id:
+          type: string
+          description: Cloud Account Id
+        high:
+          $ref: '#/components/schemas/SecurityDashboardComplianceSeverity'
+        medium:
+          $ref: '#/components/schemas/SecurityDashboardComplianceSeverity'
+        low:
+          $ref: '#/components/schemas/SecurityDashboardComplianceSeverity'
+      type: object
+    ComplianceFilterByPolicyResponse:
+      required:
+      - compliance_standards
+      - policies
+      - resource_type
+      - severity
+      - tenants
+      properties:
+        resource_type:
+          type: array
+          description: Return all of the Resource type given the tenant as input
+          items:
+            type: object
+        tenants:
+          description: Tenants data for compliance posture filters
+          $ref: '#/components/schemas/ComplianceStandard'
+        policies:
+          type: array
+          description: Policies for compliance posture filters
+          items:
+            type: object
+        compliance_standards:
+          type: array
+          description: Compliance standards for compliance posture filters
+          items:
+            type: object
+        severity:
+          type: array
+          description: severity for compliance posture filters
+          items:
+            type: object
+      type: object
+    ComplianceAssessmentHistorySummary:
+      required:
+      - assessment_job_status
+      - categorized_count
+      - policy_success_percentage
+      - status
+      - total_count
+      properties:
+        status:
+          type: string
+          description: Status response of api hit to fetch the summary of compliance assessment.
+        assessment_job_status:
+          type: string
+          description: Status of the assessment job number given as input params.
+        total_count:
+          type: integer
+          description: Totally number of policies in assessment.
+        policy_success_percentage:
+          type: number
+          description: Percentage of policies in success status by total policies in assessment.
+        categorized_count:
+          description: Number of policies status wise detail.
+          $ref: '#/components/schemas/PolicyCounts'
+      type: object
+    CompliancePolicyDataCleanUpRequest:
+      properties:
+        policy_uris:
+          type: array
+          description: Compliance Policy uris
+          items:
+            type: string
+      type: object
+    ControlsListMappingResponse:
+      required:
+      - Control_records
+      - Total_count
+      properties:
+        Total_count:
+          type: integer
+          description: Number of controls in the standard
+        Control_records:
+          description: list of application details.
+          $ref: '#/components/schemas/ControlMappingsListData'
+      type: object
+    SecurityDashboardComplianceControlHealthTrend:
+      properties:
+        month:
+          type: string
+          format: date
+          description: Control Health Month
+        measured_risk:
+          type: string
+          description: Compliance Measured Risk Levels
+          example: High
+          enum:
+          - High
+          - Medium
+          - Low
+          - Not_Assessed
+          x-cs-enum-type: ComplianceMeasuredRisk
+      type: object
+    ReferenceModelList:
+      required:
+      - visible
+      properties:
+        visible:
+          type: boolean
+          description: Visible
+      type: object
+    ComplianceMappingResponse:
+      required:
+      - data
+      - message
+      - page_count
+      - status
+      - total_count
+      properties:
+        status:
+          type: string
+          description: success
+        message:
+          type: string
+          description: compliance control mappings list
+        total_count:
+          type: string
+          description: Total count
+        page_count:
+          type: string
+          description: page count
+        data:
+          type: object
+          description: compliance control mappings list.
+      type: object
+    CompliancePostureVisibilityResponse:
+      required:
+      - data
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: success
+        message:
+          type: string
+          description: Compliance Standard Visibility For Cloud Account
+        data:
+          type: object
+          description: data for compliance posture visibility
+      type: object
+    ComplianceStandardsResponse:
+      required:
+      - data
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: Response status for compliance standards
+        message:
+          type: string
+          description: Response message for compliance standards
+        data:
+          type: array
+          description: Compliance Standards data list
+          items:
+            $ref: '#/components/schemas/ComplianceStandards'
+      type: object
+    PolicyJobExecutionStatusRequest:
+      required:
+      - assessment_job_number
+      - policy_id
+      properties:
+        assessment_job_number:
+          type: string
+          description: Specify the assessment_job_number.This can be fetched from List Compliance Control Assessment History API.
+        policy_id:
+          type: string
+          description: Specify the policy ID. This can be fetched from List compliance control mapping, get_on_audit_entries API.
+      type: object
+    SecurityDashboardComplianceStatus:
+      properties:
+        compliance_name:
+          type: string
+          description: Name of Compliance
+        cloud_accounts_status:
+          type: array
+          description: Security Dashboard Compliance
+          items:
+            $ref: '#/components/schemas/SecurityDashboardCompliance'
+      type: object
+    ControlsListResponse:
+      required:
+      - Control_records
+      - Total_count
+      properties:
+        Total_count:
+          type: integer
+          description: Number of controls in the standard
+        Control_records:
+          description: list of application details.
+          $ref: '#/components/schemas/ControlsListData'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    SecurityDashboardRequest:
+      properties:
+        filter:
+          $ref: '#/components/schemas/SecurityDashboardAccountFilters'
+      type: object
+    ComplianceSummaryByPoliciesRequest:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: array
+          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API
+          items:
+            type: string
+        standards:
+          type: array
+          description: compliance standards to filter policies
+          items:
+            type: string
+        policy_id:
+          type: array
+          description: policies to  filter
+          items:
+            type: string
+        services:
+          type: array
+          description: Allowed services
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        cloud_accounts:
+          type: array
+          description: ID of the cloud account. This can be fetched from list cloud accounts API
+          items:
+            type: string
+        severity:
+          type: array
+          description: severities to filter policies
+          items:
+            type: string
+        resource_type:
+          type: array
+          description: resource types to filter policies
+          items:
+            type: string
+      type: object
+    ComplianceStandards:
+      required:
+      - compliance_name
+      - compliance_number
+      - compliance_uri
+      - created_at
+      - created_by
+      - description
+      - id
+      - is_deleted
+      - is_internal
+      - logo
+      - reference
+      - scope
+      - updated_at
+      - updated_by
+      - valid_service_types
+      - version
+      properties:
+        id:
+          type: string
+          description: ID
+        is_internal:
+          type: boolean
+          description: is_internal
+        is_deleted:
+          type: boolean
+          description: is_deleted
+        description:
+          type: string
+          description: Description for Compliance Standard
+        reference:
+          description: Reference
+          $ref: '#/components/schemas/ReferenceResponse'
+        compliance_name:
+          type: string
+          description: Name of the Compliance Standard
+        updated_at:
+          type: string
+          description: Date and Time of Update
+        created_by:
+          type: string
+          description: Creator of the particular Compliance
+        version:
+          type: array
+          description: Version
+          items:
+            type: string
+        compliance_uri:
+          type: string
+          description: Compliance URI
+        compliance_number:
+          type: string
+          description: Compliance Number
+        valid_service_types:
+          type: array
+          description: Valid Service Types
+          items:
+            type: string
+        scope:
+          type: string
+          description: Scope
+        created_at:
+          type: string
+          description: Date and Time of Creation
+        updated_by:
+          type: string
+          description: Updated By
+        logo:
+          type: string
+          description: Logo of standard
+      type: object
+    SecurityDashboardComplianceSeverity:
+      properties:
+        total:
+          type: integer
+          description: Total Severity Count
+        violations:
+          type: integer
+          description: Total Violations Count
+      type: object
+    PolicyCounts:
+      properties:
+        violations:
+          type: string
+          description: Number of policies which are in violation status.
+        success:
+          type: string
+          description: Number of policies which are in success status.
+        error:
+          type: string
+          description: Number of policies which are in error status.
+        in_progress:
+          type: string
+          description: Number of policies which are in in_progress status.
+        none:
+          type: string
+          description: Number of policies which are not having any status or in none status
+      type: object
+    ComplianceStandardRequest:
+      required:
+      - cloud_accounts
+      - compliance_uri
+      properties:
+        cloud_accounts:
+          type: array
+          description: ID of the cloud account. The ID is unique, it can be obtained from the list cloud account api.
+          items:
+            type: string
+        compliance_uri:
+          type: string
+          description: uri of compliance standard This can be fetched from the compliance standards list API call.
+      type: object
+    AssessmentPostureSummaryResponse:
+      required:
+      - data
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: success
+        message:
+          type: string
+          description: compliance governance summary listed successfully
+        data:
+          type: object
+          description: list of assessment posture summary enteries.
+      type: object
+    ComplianceFilterPolicyResponse:
+      required:
+      - data
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: success
+        message:
+          type: string
+          description: Compliance Posture Policies list
+        data:
+          type: object
+          description: data for Compliance Posture Policies list
+      type: object
+    AssessmentHistory:
+      properties:
+        compliance_uri:
+          type: string
+          description: URI of compliance standard
+        assessment_job_number:
+          type: string
+          description: Unique Assessment job number of assessment triggered
+        tenant_id:
+          type: string
+          description: Id of tenant
+        created_at:
+          type: string
+          format: date-time
+          description: When was the assessment trigger created
+        created_by:
+          type: string
+          description: Name of the user who triggered assessment
+        updated_at:
+          type: string
+          format: date-time
+          description: When was the assessment trigger updated
+        updated_by:
+          type: string
+          description: Name of the user who triggered assessment
+        service_account_id:
+          type: string
+          description: Id of service account
+          x-cs-type: ObjectId
+        assessment_status:
+          type: string
+          description: Status of assessment trigger
+          example: COMPLETED
+          enum:
+          - COMPLETED
+          - FAILED
+          - IN_PROGRESS
+          - PENDING
+          x-cs-enum-type: AssessmentStatus
+        all_trails_processed:
+          type: boolean
+          description: Whether all audit trails processed
+        assessment_type:
+          type: string
+          description: Type of assessment
+          example: standard
+          enum:
+          - standard
+          - control
+          x-cs-enum-type: AssessmentType
+        execution_type:
+          type: string
+          description: Type of execution.
+          example: on_demand
+          enum:
+          - on_demand
+          - scheduled
+          x-cs-enum-type: AssessmentExecutionType
+        assessment_summary:
+          description: Summary of Assessment
+          $ref: '#/components/schemas/AssessmentSummaryData'
+        is_archive:
+          type: boolean
+          description: Archive status
+        compliance_name:
+          type: string
+          description: Name of compliance standard
+        service_account_name:
+          type: string
+          description: Name of Service account
+      type: object
+    ComplianceStandard:
+      required:
+      - cloud_accounts
+      - id
+      - name
+      - services
+      properties:
+        services:
+          type: object
+          description: Return all of the Services given the tenant as input
+        cloud_accounts:
+          type: object
+          description: Return all of the Cloud accounts given the tenant as input
+        id:
+          type: string
+          description: ID for tenant
+        name:
+          type: string
+      type: object
+    ComplianceDetailsForPoliciesResponse:
+      required:
+      - definition_id
+      - impact
+      - page_count
+      - policy_name
+      - resolution_status
+      - resource_counts
+      - skip_allowed
+      - total_count
+      properties:
+        skip_allowed:
+          type: string
+          description: Skip allowed true/false
+        resolution_status:
+          type: string
+          description: resolution_status
+        total_count:
+          type: string
+          description: total_count
+        page_count:
+          type: string
+          description: page_count
+        actions:
+          type: array
+          description: actions
+          items:
+            type: object
+        policy_name:
+          type: string
+          description: policy_name
+        resource_counts:
+          type: string
+          description: resource_counts
+        impact:
+          type: string
+          description: impact
+        definition_id:
+          type: string
+          description: definition_id
+      type: object
+    ComplianceSummary:
+      required:
+      - page
+      - page_count
+      - records
+      - total_count
+      properties:
+        total_count:
+          type: string
+        page_count:
+          type: string
+          description: page count
+        page:
+          type: string
+          description: page
+        records:
+          type: object
+          description: records
+      type: object
+    SecurityDashboardComplianceControlHealth:
+      properties:
+        control_family:
+          type: string
+          description: Name of Compliance Control Family
+        trend:
+          type: array
+          items:
+            $ref: '#/components/schemas/SecurityDashboardComplianceControlHealthTrend'
+      type: object
+    ControlMappingsListData:
+      required:
+      - Compliance_control_uri
+      - Compliance_uri
+      - Control_action_attributes
+      - Control_attributes
+      - Control_family
+      - Control_name
+      - Id
+      - Policy_mappings
+      - Severity
+      properties:
+        Control_action_attributes:
+          type: object
+          description: attributes of controls which dictate actions specific to corestack
+        Control_family:
+          type: string
+          description: security risk family that control belongs to
+        Compliance_control_uri:
+          type: string
+          description: the unique identifier of the control in the tenant
+        Control_attributes:
+          type: object
+          description: attributes associated with the controls unique to the standard
+        Severity:
+          type: string
+          description: severity of control data
+        Policy_mappings:
+          type: object
+          description: attributes of controls which dictate actions specific to corestack
+        Compliance_uri:
+          type: string
+          description: the compliance standard associated with the control
+        Control_name:
+          type: string
+          description: name of the control
+        Id:
+          type: object
+          description: unique DB id of the control
+      type: object
+    ControlsListData:
+      required:
+      - Audit_status
+      - Compliance_control_uri
+      - Compliance_uri
+      - Control_action_attributes
+      - Control_attributes
+      - Count_of_status
+      - Id
+      - Policy_mappings
+      properties:
+        Control_action_attributes:
+          type: object
+          description: attributes of controls which dictate actions specific to corestack
+        Count_of_status:
+          type: integer
+          description: the count of assessed service accounts for the control
+        Compliance_control_uri:
+          type: string
+          description: the unique identifier of the control in the tenant
+        Control_attributes:
+          type: object
+          description: attributes associated with the controls unique to the standard
+        Policy_mappings:
+          type: integer
+          description: count of policies mapped to the control
+        Compliance_uri:
+          type: string
+          description: the compliance standard associated with the control
+        Audit_status:
+          type: string
+          description: current audit status of the control
+        Id:
+          type: object
+          description: unique DB id of the control
+      type: object
+    ComplianceFilterResponse:
+      required:
+      - tenants
+      properties:
+        tenants:
+          description: Tenants data for compliance posture filters
+          $ref: '#/components/schemas/ComplianceStandard'
+      type: object
+    SecurityDashboardAccountFilters:
+      properties:
+        tenants:
+          type: array
+          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+          items:
+            type: string
+        clouds:
+          type: array
+          description: Define the Cloud Providers to include.
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        cloud_accounts:
+          type: array
+          description: Specify the Cloud Account IDs.
+          items:
+            type: string
+      type: object
+    ComplianceVisibilityTrendResponse:
+      required:
+      - data
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: success
+        message:
+          type: string
+          description: Compliance Standard Trend
+        data:
+          type: object
+          description: data for compliance visibility trend
+      type: object
+    PolicyFailureData:
+      required:
+      - assessment_by
+      - policy_execution_status
+      - policy_job_id
+      - policy_name
+      - region
+      - resource_group
+      - status_reason
+      properties:
+        policy_name:
+          type: string
+          description: policy job name
+        policy_job_id:
+          type: string
+          description: policy job id
+        policy_execution_status:
+          type: string
+          description: policy execution status
+        status_reason:
+          type: string
+          description: status reason
+        assessment_by:
+          type: string
+          description: assessment by
+        region:
+          type: string
+          description: region
+        resource_group:
+          type: string
+          description: resource group
+      type: object
+    AssessmentSummaryData:
+      properties:
+        violations:
+          type: integer
+          description: Number of controls violated
+        failures:
+          type: integer
+          description: Number of controls that failed
+        completed:
+          type: integer
+          description: Number of controls that executed successfully
+        in_progress:
+          type: integer
+          description: Number of controls currently in progress
+      type: object
+    AssessmentHistoryResponse:
+      properties:
+        total_count:
+          type: integer
+          description: Number of controls in the standard
+        page_count:
+          type: integer
+          description: Page number
+        assessment_history:
+          type: array
+          description: list of assessment history entries.
+          items:
+            $ref: '#/components/schemas/AssessmentHistory'
+      type: object
+    ComplianceVisibilityResponse:
+      required:
+      - data
+      - status
+      properties:
+        status:
+          type: string
+          description: success
+        data:
+          type: object
+          description: list of visibility summary.
+      type: object
+    ComplianceControlMappingResponse:
+      required:
+      - data
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: success
+        message:
+          type: string
+          description: compliance control mappings list
+        data:
+          type: object
+          description: data for compliance control mappings list
+      type: object
+    ComplianceSummaryByPoliciesResponse:
+      required:
+      - page_count
+      - policies
+      - total_count
+      properties:
+        total_count:
+          type: string
+          description: total_count
+        page_count:
+          type: string
+          description: page_count
+        policies:
+          type: object
+          description: policies
+      type: object
+    ComplianceSummaryRequest:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: array
+          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API
+          items:
+            type: string
+        services:
+          type: array
+          description: Allowed services
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        cloud_accounts:
+          type: array
+          description: ID of the cloud account. This can be fetched from list cloud accounts API
+          items:
+            type: string
+        compliance_uri:
+          type: array
+          description: uri of compliance standard This can be fetched from the compliance standards list API call
+          items:
+            type: string
+      type: object
+    ComplianceDetailsForPoliciesRequest:
+      properties:
+        tenant_id:
+          type: array
+          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API
+          items:
+            type: string
+        services:
+          type: array
+          description: Allowed services
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        cloud_accounts:
+          type: array
+          description: ID of the cloud account. This can be fetched from list cloud accounts API
+          items:
+            type: string
+      type: object
+    ComplianceStandardResponse:
+      required:
+      - assessment_jobs_by_account
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: success
+        message:
+          type: string
+          description: summary listed successfully
+        assessment_jobs_by_account:
+          type: object
+          description: execute data.
+      type: object
+    ComplianceControlRequest:
+      required:
+      - cloud_accounts
+      - compliance_control_uri
+      properties:
+        cloud_accounts:
+          type: array
+          description: ID of the cloud account. The ID is unique, it can be obtained from the list cloud account api.
+          items:
+            type: string
+        compliance_control_uri:
+          type: string
+          description: URI of compliance_control. This can be fetched from controls mapped under standards.
+      type: object
+    ComplianceControlResponse:
+      required:
+      - assessment_jobs_by_account
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: success
+        message:
+          type: string
+          description: compliance control execute triggered
+        assessment_jobs_by_account:
+          type: object
+          description: execute data.
+      type: object
+    ComplianceFilterRequest:
+      required:
+      - tenant_ids
+      properties:
+        tenant_ids:
+          type: array
+          description: Specify the tenant IDs. This can be retrieved using the List Tenants API.
+          items:
+            type: string
+      type: object
+    CompliancePolicyDataCleanUpResponse:
+      properties:
+        policy_uris:
+          type: array
+          description: Compliance Policy uris
+          items:
+            type: string
+      type: object
+    PolicyJobExecutionStatusResponse:
+      properties:
+        total_count:
+          type: string
+        page_count:
+          type: string
+          description: page count
+        failures:
+          type: array
+          description: Reason for policy failure
+          items:
+            $ref: '#/components/schemas/PolicyFailureData'
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

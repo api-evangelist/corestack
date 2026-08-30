@@ -1,0 +1,301 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Billing Commitment API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Billing commitment
+servers:
+- url: /
+tags:
+- name: Billing Commitment
+  description: Billing commitment
+paths:
+  /v1/billing/commitment:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingCommitmentBatchResponse'
+      summary: Get billing commitment details
+      description: Retrieve billing commitment details for Azure, supported only for EA account types.
+      operationId: GetBillingCommitment
+      security:
+      - auth_token: []
+      tags:
+      - Billing Commitment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingCommitmentRequest'
+        required: true
+  /v1/billing/commitment/events:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BillingCommitmentEvent'
+      summary: List all billing commitment events
+      description: List all billing commitment events for the cloud account, supported only for Azure EA account types.
+      operationId: ListBillingCommitmentEvents
+      security:
+      - auth_token: []
+      tags:
+      - Billing Commitment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingCommitmentEventsRequest'
+        required: true
+components:
+  schemas:
+    BillingCommitmentDetail:
+      properties:
+        billing_commitments:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingCommitmentDefinition'
+      type: object
+    BillingCommitmentEventsRequest:
+      required:
+      - service_account_id
+      properties:
+        service_account_id:
+          type: string
+          description: Service Account IDs
+          x-cs-type: ObjectId
+        start_date:
+          type: string
+          format: date
+          description: Start Date of Billing commitment
+        end_date:
+          type: string
+          format: date
+          description: End Date of Billing commitment
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    BillingCommitmentRequest:
+      required:
+      - service_account_ids
+      properties:
+        service_account_ids:
+          type: array
+          items:
+            type: string
+            description: List of Service account ids
+            x-cs-type: ObjectId
+      type: object
+    BillingCommitmentEvent:
+      allOf:
+      - $ref: '#/components/schemas/BillingCommitmentBase'
+      - properties:
+          billing_account_name:
+            type: string
+            description: Billing Account Name
+          billing_profile_name:
+            type: string
+            description: Billing Profile Name
+          description:
+            type: string
+            description: Billing Commitment Description
+          charges:
+            type: number
+            description: Billing Charges
+          transaction_date:
+            type: string
+            format: date-time
+            description: Event Transaction Date
+        type: object
+    BillingCommitmentBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/BillingCommitmentDetail'
+      type: object
+    BillingCommitmentBase:
+      properties:
+        remaining_commitment_amount:
+          type: number
+          description: Remaining Billing Commitment Amount
+        currency:
+          type: string
+          description: Billing Currency
+          example: AED
+          enum:
+          - AED
+          - ALL
+          - ARS
+          - AUD
+          - BAM
+          - BDT
+          - BGN
+          - BHD
+          - BRL
+          - CAD
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CZK
+          - DKK
+          - EGP
+          - EUR
+          - GBP
+          - HKD
+          - HRK
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - ISK
+          - JPY
+          - KES
+          - KRW
+          - KWD
+          - KZT
+          - MOP
+          - MVR
+          - MXN
+          - MYR
+          - NOK
+          - NZD
+          - OMR
+          - PEN
+          - PHP
+          - PKR
+          - PLN
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - SAR
+          - SEK
+          - SGD
+          - THB
+          - TRY
+          - TWD
+          - USD
+          - VND
+          - ZAR
+          x-cs-enum-type: Currency
+      type: object
+    BillingCommitmentDefinition:
+      allOf:
+      - $ref: '#/components/schemas/BillingCommitmentBase'
+      - properties:
+          name:
+            type: string
+            description: Billing Commitment Name
+          status:
+            type: string
+            description: Billing Commitment Status
+            example: active
+            enum:
+            - active
+            - canceled
+            - completed
+            - expired
+            x-cs-enum-type: BillingCommitmentStatus
+          commitment_amount:
+            type: number
+            description: Billing Commitment Amount
+          purchased_date:
+            type: string
+            format: date-time
+            description: Purchased Date of Billing commitment
+          start_date:
+            type: string
+            format: date-time
+            description: Start Date of Billing commitment
+          expiry_date:
+            type: string
+            format: date-time
+            description: Expiry Date of Billing commitment
+        type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

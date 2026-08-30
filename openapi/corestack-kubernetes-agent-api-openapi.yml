@@ -1,0 +1,639 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Kubernetes Agent API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Kubernetes Agent
+servers:
+- url: /
+tags:
+- name: Kubernetes Agent
+  description: Kubernetes Agent
+paths:
+  /v1/resource/item/{service_account_id}/complete_upload:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Completed
+      summary: Complete the Multiple Parts upload for the Kubernetes agent
+      description: Complete the Multiple Parts of a kubernetes agent upload to the bucket
+      operationId: CompletePartPreSignedUrlForForKubernetesAgent
+      parameters:
+      - name: service_account_id
+        in: path
+        required: true
+        description: Specify the account id
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Kubernetes Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KubernetesAgentCompletePartPreSignedUrlRequest'
+        required: true
+  /v1/resource/item/{service_account_id}/generate_kubernetes_secrets_yaml:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KubernetesManifestResponse'
+      summary: Get the attachment ID for the Kubernetes secrets configuration based on the given service account id
+      description: Generate a Kubernetes secrets manifest for the provided Kubernetes cluster account.
+      operationId: GenerateKubernetesSecretsManifest
+      parameters:
+      - name: service_account_id
+        in: path
+        required: true
+        description: Specify the account id
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Kubernetes Agent
+  /v1/resource/item/{service_account_id}/generate_presigned_url:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KubernetesAgentPreSignedUrlResponse'
+      summary: Get the Presigned url and other details for the Kubernetes agent
+      description: Generate Presigned_Url for Kubernetes agent to access the bucket
+      operationId: GeneratePreSignedUrlForKubernetesAgent
+      parameters:
+      - name: service_account_id
+        in: path
+        required: true
+        description: Specify the account id
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Kubernetes Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KubernetesAgentPreSignedUrlRequest'
+        required: true
+  /v1/resource/item/{service_account_id}/kubernetes_manifest:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KubernetesManifestResponse'
+      summary: Get the attachment ID for the Kubernetes deployment configuration based on the given service account id
+      description: Generate a Kubernetes manifest for the provided Kubernetes cluster account.
+      operationId: GenerateKubernetesManifest
+      parameters:
+      - name: service_account_id
+        in: path
+        required: true
+        description: Specify the account id
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Kubernetes Agent
+  /v1/resource/item/{service_account_id}/sync:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgressDetailsForKubernetesAgentSyncStatus'
+      summary: Get the Job Sync Status of Kubernetes Cluster
+      description: Get the Job Sync Status of Kubernetes Cluster
+      operationId: GetJobSyncStatusForKubernetesAgent
+      parameters:
+      - name: service_account_id
+        in: path
+        required: true
+        description: Specify the account id
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Kubernetes Agent
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Update the Sync Status of Kubernetes Cluster
+      description: Update the Sync Status of Kubernetes Cluster
+      operationId: UpdateSyncStatusForKubernetesAgent
+      parameters:
+      - name: service_account_id
+        in: path
+        required: true
+        description: Specify the account id
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Kubernetes Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KubernetesClusterSyncUpdateRequest'
+        required: true
+  /v1/resource/kubernetes/item/{service_account_id}/configuration:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GovernanceConfigurationForKubernetesCluster'
+      summary: Get the current configuration of the Kubernetes Agent
+      description: Retrieve the current configuration of the Kubernetes Agent
+      operationId: GetConfigurationForKubernetesAgent
+      parameters:
+      - name: service_account_id
+        in: path
+        required: true
+        description: Specify the service account ID to read, ID which can be obtained from the list service account API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Kubernetes Agent
+components:
+  schemas:
+    KubernetesClusterSyncUpdateRequest:
+      allOf:
+      - $ref: '#/components/schemas/ProgressDetailsForKubernetesAgentSyncStatus'
+      - required:
+        - syncer_type
+        properties:
+          syncer_type:
+            type: string
+            description: Kubernetes Sync Status Types
+            example: heartbeat
+            enum:
+            - heartbeat
+            - data_sync
+            x-cs-enum-type: KubernetesSyncStatusTypes
+        type: object
+    ProgressDetailsForKubernetesAgentSyncStatus:
+      allOf:
+      - $ref: '#/components/schemas/ProgressDetails'
+      - properties:
+          run_id:
+            type: string
+            description: run id from the agent about the sync
+          log_trace:
+            type: array
+            description: log trace from the agent about the sync
+            items:
+              type: string
+          data_collection_start:
+            type: string
+            format: date-time
+            description: Data Collection Start Datetime
+          data_collection_end:
+            type: string
+            format: date-time
+            description: Data Collection end Datetime
+        type: object
+    ClusterFrequencyTimeDetails:
+      properties:
+        day:
+          type: string
+          description: Cost Resolution Frequency Day
+        hour:
+          type: string
+          description: Cost Resolution Frequency Hour
+        minute:
+          type: string
+          description: Cost Resolution Frequency Minute
+      type: object
+    FileDetails:
+      properties:
+        file_name:
+          type: string
+          description: Name of the file
+        file_size:
+          type: integer
+          description: Size of the file
+        multipart_metadata:
+          description: Multi part upload metadata details
+          $ref: '#/components/schemas/MultipartUploadMetadata'
+      type: object
+    ProgressDetails:
+      properties:
+        status:
+          type: string
+          description: Sync status. This is a required field.
+          example: completed
+          enum:
+          - completed
+          - failed
+          - in_progress
+          x-cs-enum-type: AccountSyncProgressStatus
+        initiated_at:
+          type: string
+          format: date-time
+          description: Sync initiated time.
+        completed_at:
+          type: string
+          format: date-time
+          description: Sync completion time.
+        message:
+          type: string
+          description: Sync information.
+        background_job_id:
+          description: Background Job Id of the run
+          $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    MultiPartDetail:
+      properties:
+        part_number:
+          type: integer
+          description: Part number of the file part
+        etag:
+          type: string
+          description: ETag of the uploaded part
+      type: object
+    KubernetesAgentCompletePartPreSignedUrlRequest:
+      properties:
+        file_name:
+          type: string
+          description: Name of the file
+        upload_id:
+          type: string
+          description: Upload ID for the multipart upload
+        multi_parts:
+          type: array
+          items:
+            $ref: '#/components/schemas/MultiPartDetail'
+      type: object
+    PresignedUrlDetails:
+      properties:
+        part_number:
+          type: integer
+          description: Part number of the file part
+        url:
+          type: string
+          description: Presigned URL for uploading the file part
+      type: object
+    KubernetesAgentPreSignedUrlResponse:
+      properties:
+        signed_url_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/SignedUrlDetails'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    MultipartUploadMetadata:
+      properties:
+        upload_id:
+          type: string
+          description: Unique identifier for the multipart upload session
+        part_number:
+          type: integer
+          description: The sequential number of the current part in the multipart upload.
+        upload_part_size:
+          type: integer
+          description: Size of each uploaded part in bytes.
+      type: object
+    KubernetesCostWeightage:
+      properties:
+        cpu_weight:
+          type: number
+          description: CPU cost weight
+        memory_weight:
+          type: number
+          description: Memory cost weight
+        gpu_weight:
+          type: number
+          description: GPU cost weight
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    KubernetesManifestResponse:
+      properties:
+        attachment_id:
+          type: string
+          description: Yaml content
+      type: object
+    KubernetesAgentPreSignedUrlRequest:
+      properties:
+        file_data:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileDetails'
+      type: object
+    GovernanceConfigurationForKubernetesCluster:
+      allOf:
+      - $ref: '#/components/schemas/GovernanceConfigurationBaseForResource'
+      - properties:
+          frequency:
+            description: Kubernetes Cluster Frequency configuration.
+            $ref: '#/components/schemas/KubernetesClusterFrequency'
+          cost_weightage:
+            description: Kubernetes Cluster Cost weightage configuration.
+            $ref: '#/components/schemas/KubernetesCostWeightage'
+        type: object
+      x-cs-type-name: GovernanceConfigurationForKubernetesCluster
+    GovernanceConfigurationBase:
+      required:
+      - type
+      properties:
+        version_number:
+          type: integer
+          description: Version number of this setting
+      discriminator:
+        propertyName: type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: GovernanceConfigurationForCostAnomaly
+        subtype_name: GovernanceConfigurationForCostAnomaly
+      - subtype_model: GovernanceConfigurationForCompliance
+        subtype_name: GovernanceConfigurationForCompliance
+      - subtype_model: GovernanceConfigurationForCostRecommendationAzure
+        subtype_name: GovernanceConfigurationForCostRecommendationAzure
+      - subtype_model: GovernanceConfigurationForEDPAws
+        subtype_name: GovernanceConfigurationForEDPAws
+      - subtype_model: GovernanceConfigurationForActivityLogAws
+        subtype_name: GovernanceConfigurationForActivityLogAws
+      - subtype_model: GovernanceConfigurationForActivityLogAzure
+        subtype_name: GovernanceConfigurationForActivityLogAzure
+      - subtype_model: GovernanceConfigurationForActivityLogGcp
+        subtype_name: GovernanceConfigurationForActivityLogGcp
+      - subtype_model: GovernanceConfigurationForActivityLogOci
+        subtype_name: GovernanceConfigurationForActivityLogOci
+      - subtype_model: GovernanceConfigurationForAlertsAws
+        subtype_name: GovernanceConfigurationForAlertsAws
+      - subtype_model: GovernanceConfigurationForAlertsAzure
+        subtype_name: GovernanceConfigurationForAlertsAzure
+      - subtype_model: GovernanceConfigurationForAlertsGcp
+        subtype_name: GovernanceConfigurationForAlertsGcp
+      - subtype_model: GovernanceConfigurationForAlertsOci
+        subtype_name: GovernanceConfigurationForAlertsOci
+      - subtype_model: GovernanceConfigurationForLogAnalyticsWorkspacesAzure
+        subtype_name: GovernanceConfigurationForLogAnalyticsWorkspacesAzure
+      - subtype_model: GovernanceConfigurationForPatchManagementAzure
+        subtype_name: GovernanceConfigurationForPatchManagementAzure
+      - subtype_model: GovernanceConfigurationForMetricData
+        subtype_name: GovernanceConfigurationForMetricData
+      - subtype_model: GovernanceConfigurationForThreatsAws
+        subtype_name: GovernanceConfigurationForThreatsAws
+      - subtype_model: GovernanceConfigurationForThreatsAzure
+        subtype_name: GovernanceConfigurationForThreatsAzure
+      - subtype_model: GovernanceConfigurationForThreatsGcp
+        subtype_name: GovernanceConfigurationForThreatsGcp
+      - subtype_model: GovernanceConfigurationForThreatsOci
+        subtype_name: GovernanceConfigurationForThreatsOci
+      - subtype_model: GovernanceConfigurationForVulnerabilitiesAws
+        subtype_name: GovernanceConfigurationForVulnerabilitiesAws
+      - subtype_model: GovernanceConfigurationForVulnerabilitiesAzure
+        subtype_name: GovernanceConfigurationForVulnerabilitiesAzure
+      - subtype_model: GovernanceConfigurationForVulnerabilitiesGcp
+        subtype_name: GovernanceConfigurationForVulnerabilitiesGcp
+      - subtype_model: GovernanceConfigurationForVulnerabilitiesOci
+        subtype_name: GovernanceConfigurationForVulnerabilitiesOci
+      - subtype_model: GovernanceConfigurationForSecurityRecommendationAws
+        subtype_name: GovernanceConfigurationForSecurityRecommendationAws
+      - subtype_model: GovernanceConfigurationForServiceNowChangeManagement
+        subtype_name: GovernanceConfigurationForServiceNowChangeManagement
+      - subtype_model: GovernanceConfigurationForServiceNowIncidentManagement
+        subtype_name: GovernanceConfigurationForServiceNowIncidentManagement
+      - subtype_model: GovernanceConfigurationForServiceNowRequestManagement
+        subtype_name: GovernanceConfigurationForServiceNowRequestManagement
+      - subtype_model: GovernanceConfigurationForJiraDataCenterIncidentManagement
+        subtype_name: GovernanceConfigurationForJiraDataCenterIncidentManagement
+      - subtype_model: GovernanceConfigurationForJiraServiceDeskIncidentManagement
+        subtype_name: GovernanceConfigurationForJiraServiceDeskIncidentManagement
+      - subtype_model: GovernanceConfigurationForZohoServiceDeskIncidentManagement
+        subtype_name: GovernanceConfigurationForZohoServiceDeskIncidentManagement
+      - subtype_model: GovernanceConfigurationForTclItsmUserConfiguration
+        subtype_name: GovernanceConfigurationForTclItsmUserConfiguration
+      - subtype_model: GovernanceConfigurationForTclItsmCmdbConfiguration
+        subtype_name: GovernanceConfigurationForTclItsmCmdbConfiguration
+      - subtype_model: GovernanceConfigurationForPolicyAws
+        subtype_name: GovernanceConfigurationForPolicyAws
+      - subtype_model: GovernanceConfigurationForPolicyAzure
+        subtype_name: GovernanceConfigurationForPolicyAzure
+      - subtype_model: GovernanceConfigurationForFreshserviceIncidentManagement
+        subtype_name: GovernanceConfigurationForFreshserviceIncidentManagement
+      - subtype_model: GovernanceConfigurationForJiraServiceManagementIncidentManagement
+        subtype_name: GovernanceConfigurationForJiraServiceManagementIncidentManagement
+      - subtype_model: GovernanceConfigurationForJiraServiceManagementChangeManagement
+        subtype_name: GovernanceConfigurationForJiraServiceManagementChangeManagement
+      - subtype_model: GovernanceConfigurationForGithubProActiveScanner
+        subtype_name: GovernanceConfigurationForGithubProActiveScanner
+      - subtype_model: GovernanceConfigurationForGithubCopilot
+        subtype_name: GovernanceConfigurationForGithubCopilot
+      - subtype_model: GovernanceConfigurationForCostSavings
+        subtype_name: GovernanceConfigurationForCostSavings
+      - subtype_model: GovernanceConfigurationForKubernetesCluster
+        subtype_name: GovernanceConfigurationForKubernetesCluster
+    SignedUrlDetails:
+      properties:
+        file_name:
+          type: string
+          description: Name of the file to generate re signed url
+        file_size:
+          type: integer
+          description: Size of the file to be uploaded
+        upload_id:
+          type: string
+          description: Upload ID for the multipart upload
+        upload_part_size:
+          type: integer
+          description: Upload part size in bytes
+        pre_signed_urls:
+          type: array
+          items:
+            $ref: '#/components/schemas/PresignedUrlDetails'
+      type: object
+    KubernetesClusterFrequency:
+      properties:
+        cost_resolution:
+          description: Cost Resolution Details
+          $ref: '#/components/schemas/ClusterFrequencyTimeDetails'
+      type: object
+    GovernanceConfigurationBaseForResource:
+      allOf:
+      - $ref: '#/components/schemas/GovernanceConfigurationBase'
+      - properties: {}
+        type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

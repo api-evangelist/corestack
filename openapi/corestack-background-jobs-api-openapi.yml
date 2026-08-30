@@ -1,0 +1,2100 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Background Jobs API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage Background Jobs
+servers:
+- url: /
+tags:
+- name: Background Jobs
+  description: Manage Background Jobs
+paths:
+  /v1/admin/background_job/activation:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Sets the next activation time for the Background Job
+      description: Changes the activation of a Background Job
+      operationId: BackgroundJobActivation
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundJobUpdateActivationRequest'
+        required: true
+  /v1/admin/background_job/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackgroundJobBatchResponse'
+      summary: Returns a batch of BackgroundJobs
+      description: Get details for the Background Job ids passed in the request
+      operationId: BackgroundJobBatch
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundJobBatchRequest'
+        required: true
+  /v1/admin/background_job/cancel:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Cancelled
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Requests the cancellation of a job
+      description: Request a Background Job to stop processing as soon as possible
+      operationId: BackgroundJobCancel
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordIdentity'
+        required: true
+  /v1/admin/background_job/forwarding_check:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Checked
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackgroundJobForwardingCheckResponse'
+      summary: Internal
+      description: Verify federation route
+      operationId: BackgroundJobForwardingCheck
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundJobForwardingCheckRequest'
+        required: true
+  /v1/admin/background_job/invalidation:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Invalidated
+          content:
+            application/json:
+              schema:
+                type: boolean
+      description: Request a Background Job to stop processing as soon as possible
+      operationId: BackgroundJobInvalidation
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundJobInvalidation'
+        required: true
+  /v1/admin/background_job/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDetailedResponse'
+      summary: Returns a list of BackgroundJobs ids
+      description: Get the list of all Background Jobs.
+      operationId: BackgroundJobList
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundJobListRequest'
+        required: true
+  /v1/admin/background_job/log:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Unknown Background Job
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackgroundJobLogResponse'
+      summary: Returns a batch of log entries for BackgroundJob
+      description: Get log entries for the Background Job passed in the request
+      operationId: BackgroundJobLog
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundJobLogRequest'
+        required: true
+  /v1/admin/background_job/logger/set-level:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackgroundJobLogger'
+      summary: Sets the level of a logger
+      description: Set the level of a logger for Background Jobs workers.
+      operationId: BackgroundJobLoggerSet
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundJobLogger'
+        required: true
+  /v1/admin/background_job/loggers:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BackgroundJobLogger'
+      summary: Returns a list of BackgroundJobs threads
+      description: Get loggers from all Background Jobs workers.
+      operationId: BackgroundJobLoggers
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundJobLoggerRequest'
+        required: true
+  /v1/admin/background_job/priority:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Sets the priority on Background Job
+      description: Changes the priority of a Background Job
+      operationId: BackgroundJobPriority
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundJobUpdatePriorityRequest'
+        required: true
+  /v1/admin/background_job/queue:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Queue outcome
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackgroundJobQueueResponse'
+      summary: Queues a Background Job
+      description: Queue a Background Job
+      operationId: BackgroundJobQueue
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundJobQueueRequest'
+        required: true
+  /v1/admin/background_job/stacktrace:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Unknown Background Job
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackgroundJobThread'
+      summary: Returns the frames for the executing BackgroundJob
+      description: Get the stack trace for the executing Background Job passed in the request
+      operationId: BackgroundJobStackTrace
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordIdentity'
+        required: true
+  /v1/admin/background_job/stats:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackgroundJobStatisticsResponse'
+      summary: Returns statistics about the selected executors
+      description: Get statistics from all Background Jobs workers.
+      operationId: BackgroundJobStats
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundJobStatisticsRequest'
+        required: true
+  /v1/admin/background_job/threads:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BackgroundJobThread'
+      summary: Returns a list of BackgroundJobs threads
+      description: Get threads from all Background Jobs workers.
+      operationId: BackgroundJobThreads
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundJobThreadRequest'
+        required: true
+  /v1/background_job_handler/configuration:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackgroundJobHandlerConfiguration'
+      summary: Fetch the configuration of a Background Job Handler
+      description: Request the configuration for a Background Job Handler
+      operationId: GetBackgroundJobHandlerConfiguration
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundJobHandlerConfigurationRequest'
+        required: true
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackgroundJobHandlerConfiguration'
+      summary: Update the configuration of a Background Job Handler
+      description: Update the configuration for a Background Job Handler
+      operationId: UpdateBackgroundJobHandlerConfiguration
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundJobHandlerConfigurationUpdateRequest'
+        required: true
+  /v1/background_job_handler/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackgroundJobHandlerListResponse'
+      summary: Lists the active Background Job Handlers
+      description: List the active Background Job Handlers
+      operationId: ListBackgroundJobHandlers
+      security:
+      - auth_token: []
+      tags:
+      - Background Jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackgroundJobHandlerConfigurationRequest'
+        required: true
+components:
+  schemas:
+    BackgroundJobLogger:
+      properties:
+        executor:
+          type: string
+          description: Executor owning the logger
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        name:
+          type: string
+          description: Name of the logger
+        level:
+          type: string
+          description: Level of a Background Job Logger
+          example: CRITICAL
+          enum:
+          - CRITICAL
+          - ERROR
+          - WARNING
+          - INFO
+          - DEBUG
+          - DEBUG_VERBOSE
+          - DEBUG_OBNOXIOUS
+          - NOTSET
+          x-cs-enum-type: BackgroundJobLoggerLevel
+        effective_level:
+          type: string
+          description: Level of a Background Job Logger
+          example: CRITICAL
+          enum:
+          - CRITICAL
+          - ERROR
+          - WARNING
+          - INFO
+          - DEBUG
+          - DEBUG_VERBOSE
+          - DEBUG_OBNOXIOUS
+          - NOTSET
+          x-cs-enum-type: BackgroundJobLoggerLevel
+      type: object
+    BackgroundJobHandlerListResponse:
+      properties:
+        payload_types:
+          type: array
+          description: Active Background Job Handlers
+          items:
+            type: string
+      type: object
+    BackgroundJobHeapAnalysis:
+      properties:
+        started_at:
+          type: string
+          format: date-time
+          description: When the Background Job was created
+        completed_at:
+          type: string
+          format: date-time
+          description: When the Background Job was created
+        processes:
+          type: array
+          description: Process data
+          items:
+            $ref: '#/components/schemas/BackgroundJobHeapAnalysisProcess'
+      type: object
+    BackgroundJobUpdateActivationRequest:
+      properties:
+        job:
+          description: Background Job to update
+          $ref: '#/components/schemas/RecordIdentity'
+        next_activation:
+          type: string
+          format: date-time
+          description: When the Background Job will execute
+      type: object
+    BackgroundJobHandlerConfigurationRequest:
+      properties:
+        executor:
+          type: string
+          description: Target executor
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        payload_type:
+          type: string
+          description: Target payload type
+      type: object
+    BackgroundJobStatisticsResponse:
+      properties:
+        workers:
+          type: object
+          description: Map from identifier to service statistics model
+          additionalProperties:
+            $ref: '#/components/schemas/BackgroundJobStatistics'
+      type: object
+    BackgroundJobInvalidation:
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: When the invalidation message was created
+        sent_at:
+          type: string
+          format: date-time
+          description: When the invalidation message was sent
+        executors:
+          type: array
+          description: Sources of the event
+          items:
+            type: string
+            description: Executor of the Background Job
+            example: AI
+            enum:
+            - AI
+            - AI_AGENT
+            - AI_BG
+            - BROKER
+            - COMPLIANCE
+            - COST
+            - COST_BG
+            - COST_BG_CLOUD_BILLING
+            - COST_BG_K8S_BILLING
+            - FEATURE_FLAGS
+            - GOVERNANCE
+            - HEATSTACK
+            - HEATSTACK_BG
+            - IDENTITY
+            - IDENTITY_BG
+            - OPERATIONS
+            - REPORT_GENERATION
+            - RESOURCE_INVENTORY
+            - RESOURCE_INVENTORY_BG
+            - SECURITY
+            x-cs-enum-type: BackgroundJobExecutor
+        jobs:
+          type: array
+          description: Job context
+          items:
+            $ref: '#/components/schemas/BackgroundJobIdentityWithStatus'
+        domains:
+          type: array
+          description: Domain context
+          items:
+            type: string
+      type: object
+    BackgroundJobBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/BackgroundJob'
+      type: object
+    BackgroundJobBatchRequest:
+      allOf:
+      - $ref: '#/components/schemas/RecordIdentityBatchRequest'
+      - properties:
+          include_details:
+            type: boolean
+            description: Include payload details if true
+          include_only_status:
+            type: boolean
+            description: Include just the status field if true
+        type: object
+    BackgroundJobQueryCounter:
+      properties:
+        identifier:
+          type: string
+          description: Counter identifier
+        action:
+          type: string
+          description: Operation
+        parametrized_query:
+          type: object
+          description: Summarized query
+        query_planner:
+          type: object
+          description: Query Plan
+        hits:
+          type: integer
+          description: Total number of calls
+        execution_time:
+          type: number
+          description: Total execution time in seconds
+      type: object
+    BackgroundJobHandlerConfiguration:
+      properties:
+        max_parallel_jobs:
+          type: integer
+          description: Maximum number of concurrent jobs to process
+        max_processes:
+          type: integer
+          description: Maximum number of workers to run jobs
+        default_max_parallel_jobs:
+          type: integer
+          description: Default value for number of concurrent jobs to process
+        default_max_processes:
+          type: integer
+          description: Default value for number of workers to run jobs
+        override_expiration:
+          type: string
+          format: date-time
+          description: Override defaults until expiration
+      type: object
+    BackgroundJobQueueRequest:
+      properties:
+        executor:
+          type: string
+          description: Target Executor for the job
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        payload:
+          description: Data associated with the Background Job
+          $ref: '#/components/schemas/BackgroundJobPayloadBase'
+        priority:
+          type: integer
+          description: Priority of the Background Job
+        next_activation:
+          type: string
+          format: date-time
+          description: When the Background Job will execute
+        synchronize_federation:
+          type: boolean
+          description: Ensure all the federation updates are sent
+        check_for_queued_job:
+          type: boolean
+          description: Only queue if no other job is already queued. Queue if other job is already running
+        check_for_running_job:
+          type: boolean
+          description: Only queue if no matching job is found
+        queue_after_running_job:
+          type: boolean
+          description: Queue to run after any matching job
+        auto_retries:
+          type: integer
+          description: Number of auto retries left for this Background Job
+        auto_retry_delay:
+          type: number
+          description: Number of seconds to wait before a retry for this Background Job
+        waiting_on:
+          type: array
+          description: Background Jobs this job is dependent for
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    BackgroundJobHeapAnalysisModule:
+      properties:
+        name:
+          type: string
+          description: Module name
+        size:
+          type: integer
+          description: Bytes used in module
+        count:
+          type: integer
+          description: Object counted in module
+      type: object
+    BackgroundJobQueryCounterPerCaller:
+      properties:
+        frames:
+          type: array
+          description: Stack frames for the thread
+          items:
+            $ref: '#/components/schemas/BackgroundJobThreadFrame'
+        hits:
+          type: integer
+          description: Total number of calls
+        execution_time:
+          type: number
+          description: Total execution time in seconds
+      type: object
+    BackgroundJobUpdatePriorityRequest:
+      properties:
+        job:
+          description: Background Job to update
+          $ref: '#/components/schemas/RecordIdentity'
+        priority:
+          type: integer
+          description: New priority of the Background Job
+      type: object
+    ListDetailedResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    BackgroundJobFilter:
+      properties:
+        executor:
+          type: string
+          description: Limit results to jobs from this executor
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        payload_type:
+          type: string
+          description: Limit results to jobs with the same payload type
+        payload_identifier:
+          type: string
+          description: Limit results to jobs with the same payload identifier
+        status:
+          type: array
+          description: Sets of Status values to filter on
+          items:
+            type: string
+            description: Status of Background Job
+            example: Ready
+            enum:
+            - Ready
+            - Pending
+            - Waiting
+            - Failed
+            - Completed
+            - Cancelled
+            x-cs-enum-type: BackgroundJobStatus
+      type: object
+    BackgroundJobLog:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: When the log entry was created
+        logger:
+          type: string
+          description: Name of the logger
+        logger_level:
+          type: string
+          description: Level of the log entry
+        code_context:
+          type: string
+          description: Where the log entry was generated
+        message:
+          type: string
+          description: Content of the log
+      type: object
+    BackgroundJobLogRequest:
+      properties:
+        id:
+          description: The background job to extract the log for
+          $ref: '#/components/schemas/RecordIdentity'
+        offset:
+          type: integer
+          description: First log entry to extract
+        limit:
+          type: integer
+          description: Maximum number of log entries to return
+      type: object
+    BackgroundJobThreadFrame:
+      properties:
+        filename:
+          type: string
+          description: Name of the file for the function
+        lineno:
+          type: integer
+          description: Number line for the function
+        name:
+          type: string
+          description: Name of the function
+        line:
+          type: string
+          description: Text of the line
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    BackgroundJobSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          - NextActivation
+          - PayloadClass
+          x-cs-enum-type: BackgroundJobSortColumn
+        ascending:
+          type: boolean
+      type: object
+    BackgroundJobStatisticsRequest:
+      properties:
+        executor:
+          type: string
+          description: Filter to threads in this executor
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        include_invalidations:
+          type: boolean
+          description: If true, invalidation counters will be returned
+        include_query_counters:
+          type: boolean
+          description: If true, query counters will be returned
+        include_query_counters_per_caller:
+          type: string
+          description: If set, query counters per caller will be returned for the selected context
+        trigger_heap_analysis:
+          type: boolean
+          description: If true, a new heap analysis is started
+        include_heap_analysis:
+          type: boolean
+          description: If true, the historical heap analysis will be returned
+      type: object
+    BackgroundJobLoggerRequest:
+      properties:
+        executor:
+          type: string
+          description: Filter to loggers in this executor
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+      type: object
+    BackgroundJobForwardingCheckRequest:
+      properties:
+        target_executor:
+          type: string
+          description: Target Executor for the job
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        path_executors:
+          type: array
+          description: Path of the request
+          items:
+            type: string
+            description: Executor of the Background Job
+            example: AI
+            enum:
+            - AI
+            - AI_AGENT
+            - AI_BG
+            - BROKER
+            - COMPLIANCE
+            - COST
+            - COST_BG
+            - COST_BG_CLOUD_BILLING
+            - COST_BG_K8S_BILLING
+            - FEATURE_FLAGS
+            - GOVERNANCE
+            - HEATSTACK
+            - HEATSTACK_BG
+            - IDENTITY
+            - IDENTITY_BG
+            - OPERATIONS
+            - REPORT_GENERATION
+            - RESOURCE_INVENTORY
+            - RESOURCE_INVENTORY_BG
+            - SECURITY
+            x-cs-enum-type: BackgroundJobExecutor
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    BackgroundJobThreadRequest:
+      properties:
+        executor:
+          type: string
+          description: Filter to threads in this executor
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    BackgroundJobThread:
+      properties:
+        executor:
+          type: string
+          description: Executor of the Background Job
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        process_id:
+          type: integer
+          description: ID of the process
+        process_name:
+          type: string
+          description: Name of the process
+        thread_id:
+          type: integer
+          description: ID of the thread
+        thread_name:
+          type: string
+          description: Name of the thread
+        frames:
+          type: array
+          description: Stack frames for the thread
+          items:
+            $ref: '#/components/schemas/BackgroundJobThreadFrame'
+      type: object
+    BackgroundJobIdentityWithStatus:
+      allOf:
+      - $ref: '#/components/schemas/RecordIdentity'
+      - properties:
+          status:
+            type: string
+            description: Status of Background Job
+            example: Ready
+            enum:
+            - Ready
+            - Pending
+            - Waiting
+            - Failed
+            - Completed
+            - Cancelled
+            x-cs-enum-type: BackgroundJobStatus
+        type: object
+    BackgroundJobStatistics:
+      properties:
+        executing_jobs:
+          type: integer
+          description: Number of jobs currently executing
+        processed_jobs:
+          type: integer
+          description: Number of jobs processed
+        restarted_jobs:
+          type: integer
+          description: Number of jobs restarted
+        failed_jobs:
+          type: integer
+          description: Number of jobs that failed
+        invalidations:
+          type: object
+          description: Map from context to number of invalidations
+          additionalProperties:
+            type: integer
+        query_counters:
+          type: object
+          description: Map from context to counter details
+          additionalProperties:
+            $ref: '#/components/schemas/BackgroundJobQueryCounters'
+        query_counters_per_caller:
+          type: array
+          description: Query counters by callers for selected context
+          items:
+            $ref: '#/components/schemas/BackgroundJobQueryCounterPerCaller'
+        heap_analysis_pending:
+          type: boolean
+          description: If true, heap processing is ongoing
+        heap_analysis:
+          type: array
+          description: Historical heap analysis
+          items:
+            $ref: '#/components/schemas/BackgroundJobHeapAnalysis'
+      type: object
+    BackgroundJob:
+      properties:
+        id:
+          $ref: '#/components/schemas/RecordIdentity'
+        created_at:
+          type: string
+          format: date-time
+          description: When the Background Job was created
+        updated_at:
+          type: string
+          format: date-time
+          description: When the Background Job was last updated
+        cancel_requested:
+          type: boolean
+          description: If True, the Background Job should stop processing as soon as possible
+        status:
+          type: string
+          description: Status of Background Job
+          example: Ready
+          enum:
+          - Ready
+          - Pending
+          - Waiting
+          - Failed
+          - Completed
+          - Cancelled
+          x-cs-enum-type: BackgroundJobStatus
+        priority:
+          type: integer
+          description: Priority of the Background Job
+        next_activation:
+          type: string
+          format: date-time
+          description: When the Background Job will execute
+        worker_id:
+          type: string
+          description: Identifier of the worker processing this job
+        execution_start:
+          type: string
+          format: date-time
+          description: When the Background Job started executing
+        execution_end:
+          type: string
+          format: date-time
+          description: When the Background Job completed execution
+        auto_retries:
+          type: integer
+          description: Number of auto retries left for this Background Job
+        auto_retry_delay:
+          type: number
+          description: Number of seconds to wait before a retry for this Background Job
+        failure:
+          type: object
+          description: Details in case the execution of the job failed
+        waiting_set:
+          type: array
+          description: Background Jobs this job is waiting for
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+        waited_set:
+          type: array
+          description: Background Jobs this job waited on
+          items:
+            $ref: '#/components/schemas/BackgroundJobIdentityWithStatus'
+        waited_set_failed:
+          type: array
+          description: Failed Background Jobs this job waited on
+          items:
+            $ref: '#/components/schemas/BackgroundJobIdentityWithStatus'
+        payload:
+          description: Data associated with the Background Job
+          $ref: '#/components/schemas/BackgroundJobPayloadBase'
+      type: object
+    BackgroundJobListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/BackgroundJobSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/BackgroundJobFilter'
+      type: object
+    BackgroundJobQueryCounters:
+      properties:
+        entries:
+          type: array
+          description: Frequency by action and filter
+          items:
+            $ref: '#/components/schemas/BackgroundJobQueryCounter'
+      type: object
+    BackgroundJobHandlerConfigurationUpdateRequest:
+      allOf:
+      - $ref: '#/components/schemas/BackgroundJobHandlerConfigurationRequest'
+      - properties:
+          config:
+            description: New configuration
+            $ref: '#/components/schemas/BackgroundJobHandlerConfiguration'
+        type: object
+    BackgroundJobPayloadBase:
+      required:
+      - __type
+      properties:
+        identifier:
+          type: string
+          description: Optional sub-key for payload.
+        resume_target:
+          type: string
+        resume_args:
+          type: array
+          items:
+            type: string
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: BackgroundJobPayloadForGenericTask
+        subtype_name: BackgroundJobPayloadForGenericTask
+      - subtype_model: BackgroundJobPayloadForReactiveTask
+        subtype_name: BackgroundJobPayloadForReactiveTask
+      - subtype_model: BackgroundJobPayloadForEngineTest
+        subtype_name: BackgroundJobPayloadForEngineTest
+      - subtype_model: BackgroundJobPayloadForAssessmentFramework
+        subtype_name: BackgroundJobPayloadForAssessmentFramework
+      - subtype_model: BackgroundJobPayloadForAssessmentFrameworkRun
+        subtype_name: BackgroundJobPayloadForAssessmentFrameworkRun
+      - subtype_model: BackgroundJobPayloadForAssessmentFrameworkOntologySync
+        subtype_name: BackgroundJobPayloadForAssessmentFrameworkOntologySync
+      - subtype_model: BackgroundJobPayloadForAssessmentReportOntologyMigration
+        subtype_name: BackgroundJobPayloadForAssessmentReportOntologyMigration
+      - subtype_model: BackgroundJobPayloadForPeriodicBudgetAlert
+        subtype_name: BackgroundJobPayloadForPeriodicBudgetAlert
+      - subtype_model: BackgroundJobPayloadForBudgetAlertNotification
+        subtype_name: BackgroundJobPayloadForBudgetAlertNotification
+      - subtype_model: BackgroundJobPayloadForBudgetAlertTrigger
+        subtype_name: BackgroundJobPayloadForBudgetAlertTrigger
+      - subtype_model: BackgroundJobPayloadForPeriodicCrpRecommendations
+        subtype_name: BackgroundJobPayloadForPeriodicCrpRecommendations
+      - subtype_model: BackgroundJobPayloadForCrpRecommendations
+        subtype_name: BackgroundJobPayloadForCrpRecommendations
+      - subtype_model: BackgroundJobPayloadForPeriodicBillingEntryCleanup
+        subtype_name: BackgroundJobPayloadForPeriodicBillingEntryCleanup
+      - subtype_model: BackgroundJobPayloadForPeriodicCloudUsageBilling
+        subtype_name: BackgroundJobPayloadForPeriodicCloudUsageBilling
+      - subtype_model: BackgroundJobPayloadForPeriodicSaasCostProcessing
+        subtype_name: BackgroundJobPayloadForPeriodicSaasCostProcessing
+      - subtype_model: BackgroundJobPayloadForPeriodicSavingsPlans
+        subtype_name: BackgroundJobPayloadForPeriodicSavingsPlans
+      - subtype_model: BackgroundJobPayloadForPeriodicScheduleRecommendation
+        subtype_name: BackgroundJobPayloadForPeriodicScheduleRecommendation
+      - subtype_model: BackgroundJobPayloadForBillingEntryCleanup
+        subtype_name: BackgroundJobPayloadForBillingEntryCleanup
+      - subtype_model: BackgroundJobPayloadForCloudUsageBilling
+        subtype_name: BackgroundJobPayloadForCloudUsageBilling
+      - subtype_model: BackgroundJobPayloadForCloudUsageBillingMigration
+        subtype_name: BackgroundJobPayloadForCloudUsageBillingMigration
+      - subtype_model: BackgroundJobPayloadForCloudUsageBillingMigrationPropagation
+        subtype_name: BackgroundJobPayloadForCloudUsageBillingMigrationPropagation
+      - subtype_model: BackgroundJobPayloadForUpdateUnitRate
+        subtype_name: BackgroundJobPayloadForUpdateUnitRate
+      - subtype_model: BackgroundJobPayloadForKubernetesClusterBilling
+        subtype_name: BackgroundJobPayloadForKubernetesClusterBilling
+      - subtype_model: BackgroundJobPayloadForKubernetesClusterUsageBilling
+        subtype_name: BackgroundJobPayloadForKubernetesClusterUsageBilling
+      - subtype_model: BackgroundJobPayloadForKubernetesClusterUsageBillingFullRefresh
+        subtype_name: BackgroundJobPayloadForKubernetesClusterUsageBillingFullRefresh
+      - subtype_model: BackgroundJobPayloadForSaasCostProcessing
+        subtype_name: BackgroundJobPayloadForSaasCostProcessing
+      - subtype_model: BackgroundJobPayloadForCloudUsageBillingAggregation
+        subtype_name: BackgroundJobPayloadForCloudUsageBillingAggregation
+      - subtype_model: BackgroundJobPayloadForPeriodicProviderRecommendations
+        subtype_name: BackgroundJobPayloadForPeriodicProviderRecommendations
+      - subtype_model: BackgroundJobPayloadForProviderRecommendations
+        subtype_name: BackgroundJobPayloadForProviderRecommendations
+      - subtype_model: BackgroundJobPayloadForReportGeneration
+        subtype_name: BackgroundJobPayloadForReportGeneration
+      - subtype_model: BackgroundJobPayloadForWorkFlowReconciller
+        subtype_name: BackgroundJobPayloadForWorkFlowReconciller
+      - subtype_model: BackgroundJobPayloadForPeriodicCustomWorkflowManager
+        subtype_name: BackgroundJobPayloadForPeriodicCustomWorkflowManager
+      - subtype_model: BackgroundJobPayloadForPeriodicServiceNowChangeStatusTracker
+        subtype_name: BackgroundJobPayloadForPeriodicServiceNowChangeStatusTracker
+      - subtype_model: BackgroundJobPayloadForPeriodicServiceAccountMaintenance
+        subtype_name: BackgroundJobPayloadForPeriodicServiceAccountMaintenance
+      - subtype_model: BackgroundJobPayloadForServiceAccountFeaturePropagation
+        subtype_name: BackgroundJobPayloadForServiceAccountFeaturePropagation
+      - subtype_model: BackgroundJobPayloadForServiceAccountSyncStatusPropagation
+        subtype_name: BackgroundJobPayloadForServiceAccountSyncStatusPropagation
+      - subtype_model: BackgroundJobPayloadForServiceAccountGovernancePropagation
+        subtype_name: BackgroundJobPayloadForServiceAccountGovernancePropagation
+      - subtype_model: BackgroundJobPayloadForPeriodicRecommendationV2Processor
+        subtype_name: BackgroundJobPayloadForPeriodicRecommendationV2Processor
+      - subtype_model: BackgroundJobPayloadForPeriodicReservedInstance
+        subtype_name: BackgroundJobPayloadForPeriodicReservedInstance
+      - subtype_model: BackgroundJobPayloadForReservedInstance
+        subtype_name: BackgroundJobPayloadForReservedInstance
+      - subtype_model: BackgroundJobPayloadForPeriodicSyncBudgets
+        subtype_name: BackgroundJobPayloadForPeriodicSyncBudgets
+      - subtype_model: BackgroundJobPayloadForSyncBudgets
+        subtype_name: BackgroundJobPayloadForSyncBudgets
+      - subtype_model: BackgroundJobPayloadForPeriodicAccessGovernance
+        subtype_name: BackgroundJobPayloadForPeriodicAccessGovernance
+      - subtype_model: BackgroundJobPayloadForAccessGovernance
+        subtype_name: BackgroundJobPayloadForAccessGovernance
+      - subtype_model: BackgroundJobPayloadForPeriodicMasterDataTtlGeneration
+        subtype_name: BackgroundJobPayloadForPeriodicMasterDataTtlGeneration
+      - subtype_model: BackgroundJobPayloadForPeriodicServiceImpactAnalysis
+        subtype_name: BackgroundJobPayloadForPeriodicServiceImpactAnalysis
+      - subtype_model: BackgroundJobPayloadForAiAgentReportHandler
+        subtype_name: BackgroundJobPayloadForAiAgentReportHandler
+      - subtype_model: BackgroundJobPayloadForMasterDataTtlGeneration
+        subtype_name: BackgroundJobPayloadForMasterDataTtlGeneration
+      - subtype_model: BackgroundJobPayloadForServiceImpactAnalysis
+        subtype_name: BackgroundJobPayloadForServiceImpactAnalysis
+      - subtype_model: BackgroundJobPayloadForPeriodicCloudHealthMonitoring
+        subtype_name: BackgroundJobPayloadForPeriodicCloudHealthMonitoring
+      - subtype_model: BackgroundJobPayloadForCloudHealthMonitoring
+        subtype_name: BackgroundJobPayloadForCloudHealthMonitoring
+      - subtype_model: BackgroundJobPayloadForCloudHealthMonitoringParserOnDemand
+        subtype_name: BackgroundJobPayloadForCloudHealthMonitoringParserOnDemand
+      - subtype_model: BackgroundJobPayloadForCloudHealthMonitoringMetricSyncerStateless
+        subtype_name: BackgroundJobPayloadForCloudHealthMonitoringMetricSyncerStateless
+      - subtype_model: BackgroundJobPayloadForAppSecopsEntityBulkUpdate
+        subtype_name: BackgroundJobPayloadForAppSecopsEntityBulkUpdate
+      - subtype_model: BackgroundJobPayloadForSbomParser
+        subtype_name: BackgroundJobPayloadForSbomParser
+      - subtype_model: BackgroundJobPayloadForSbomToResourceMappingAutomatic
+        subtype_name: BackgroundJobPayloadForSbomToResourceMappingAutomatic
+      - subtype_model: BackgroundJobPayloadForResourceToSbomMappingAutomatic
+        subtype_name: BackgroundJobPayloadForResourceToSbomMappingAutomatic
+      - subtype_model: BackgroundJobPayloadForPeriodicVulnerabilitySourceUpdate
+        subtype_name: BackgroundJobPayloadForPeriodicVulnerabilitySourceUpdate
+      - subtype_model: BackgroundJobPayloadForContainerFindingsParser
+        subtype_name: BackgroundJobPayloadForContainerFindingsParser
+      - subtype_model: BackgroundJobPayloadForGraphionRiskScoreUpdate
+        subtype_name: BackgroundJobPayloadForGraphionRiskScoreUpdate
+      - subtype_model: BackgroundJobPayloadForExecutiveDashboardReport
+        subtype_name: BackgroundJobPayloadForExecutiveDashboardReport
+      - subtype_model: BackgroundJobPayloadForNextGenReportHandler
+        subtype_name: BackgroundJobPayloadForNextGenReportHandler
+      - subtype_model: BackgroundJobPayloadForAutoAssessment
+        subtype_name: BackgroundJobPayloadForAutoAssessment
+      - subtype_model: BackgroundJobPayloadForAssessmentRun
+        subtype_name: BackgroundJobPayloadForAssessmentRun
+      - subtype_model: BackgroundJobPayloadForAssessmentRunScan
+        subtype_name: BackgroundJobPayloadForAssessmentRunScan
+      - subtype_model: BackgroundJobPayloadForAssessmentRunReport
+        subtype_name: BackgroundJobPayloadForAssessmentRunReport
+      - subtype_model: BackgroundJobPayloadForAssessmentRunTtlGeneration
+        subtype_name: BackgroundJobPayloadForAssessmentRunTtlGeneration
+      - subtype_model: BackgroundJobPayloadForWorkloadTtlGeneration
+        subtype_name: BackgroundJobPayloadForWorkloadTtlGeneration
+      - subtype_model: BackgroundJobPayloadForAssessmentRunTtlRefresh
+        subtype_name: BackgroundJobPayloadForAssessmentRunTtlRefresh
+      - subtype_model: BackgroundJobPayloadForPeriodicAccessValidation
+        subtype_name: BackgroundJobPayloadForPeriodicAccessValidation
+      - subtype_model: BackgroundJobPayloadForPeriodicCloudAccountTagSync
+        subtype_name: BackgroundJobPayloadForPeriodicCloudAccountTagSync
+      - subtype_model: BackgroundJobPayloadForPeriodicGovernanceConfigurationValidation
+        subtype_name: BackgroundJobPayloadForPeriodicGovernanceConfigurationValidation
+      - subtype_model: BackgroundJobPayloadForPeriodicOnboardAndUpdateGCPAndAWSHierarchy
+        subtype_name: BackgroundJobPayloadForPeriodicOnboardAndUpdateGCPAndAWSHierarchy
+      - subtype_model: BackgroundJobPayloadForPeriodicSyncAccountSubscriptionAndMetadata
+        subtype_name: BackgroundJobPayloadForPeriodicSyncAccountSubscriptionAndMetadata
+      - subtype_model: BackgroundJobPayloadForPeriodicUpdateCSPAuthDetails
+        subtype_name: BackgroundJobPayloadForPeriodicUpdateCSPAuthDetails
+      - subtype_model: BackgroundJobPayloadForPeriodicUpdateSkippedAlertAndJobIdStatus
+        subtype_name: BackgroundJobPayloadForPeriodicUpdateSkippedAlertAndJobIdStatus
+      - subtype_model: BackgroundJobPayloadForPeriodicUpdateUnitPriceForViolations
+        subtype_name: BackgroundJobPayloadForPeriodicUpdateUnitPriceForViolations
+      - subtype_model: BackgroundJobPayloadForPeriodicValidateCredentials
+        subtype_name: BackgroundJobPayloadForPeriodicValidateCredentials
+      - subtype_model: BackgroundJobPayloadForScheduledTask
+        subtype_name: BackgroundJobPayloadForScheduledTask
+      - subtype_model: BackgroundJobPayloadForBlueprintExecution
+        subtype_name: BackgroundJobPayloadForBlueprintExecution
+      - subtype_model: BackgroundJobPayloadForScriptExecution
+        subtype_name: BackgroundJobPayloadForScriptExecution
+      - subtype_model: BackgroundJobPayloadForTemplateExecution
+        subtype_name: BackgroundJobPayloadForTemplateExecution
+      - subtype_model: BackgroundJobPayloadForMistralTemplateExecution
+        subtype_name: BackgroundJobPayloadForMistralTemplateExecution
+      - subtype_model: BackgroundJobPayloadForTerraformTemplateExecution
+        subtype_name: BackgroundJobPayloadForTerraformTemplateExecution
+      - subtype_model: BackgroundJobPayloadForCfnTemplateExecution
+        subtype_name: BackgroundJobPayloadForCfnTemplateExecution
+      - subtype_model: BackgroundJobPayloadForPeriodicAwsSecurityHubFindingsSync
+        subtype_name: BackgroundJobPayloadForPeriodicAwsSecurityHubFindingsSync
+      - subtype_model: BackgroundJobPayloadForPeriodicAwsSsmAutomationExecutionProgress
+        subtype_name: BackgroundJobPayloadForPeriodicAwsSsmAutomationExecutionProgress
+      - subtype_model: BackgroundJobPayloadForPeriodicAwsSsmCommandExecutionProgress
+        subtype_name: BackgroundJobPayloadForPeriodicAwsSsmCommandExecutionProgress
+      - subtype_model: BackgroundJobPayloadForPeriodicAwsSsmDocuments
+        subtype_name: BackgroundJobPayloadForPeriodicAwsSsmDocuments
+      - subtype_model: BackgroundJobPayloadForAwsSsmAutomationExecutionJobs
+        subtype_name: BackgroundJobPayloadForAwsSsmAutomationExecutionJobs
+      - subtype_model: BackgroundJobPayloadForAwsSsmCommandExecution
+        subtype_name: BackgroundJobPayloadForAwsSsmCommandExecution
+      - subtype_model: BackgroundJobPayloadForAwsSsmCommandExecutionJobs
+        subtype_name: BackgroundJobPayloadForAwsSsmCommandExecutionJobs
+      - subtype_model: BackgroundJobPayloadForAwsSsmDocuments
+        subtype_name: BackgroundJobPayloadForAwsSsmDocuments
+      - subtype_model: BackgroundJobPayloadForBillingOntologySync
+        subtype_name: BackgroundJobPayloadForBillingOntologySync
+      - subtype_model: BackgroundJobPayloadForBillingOntologySyncAdhoc
+        subtype_name: BackgroundJobPayloadForBillingOntologySyncAdhoc
+      - subtype_model: BackgroundJobPayloadForBillingOntologyBudgetSync
+        subtype_name: BackgroundJobPayloadForBillingOntologyBudgetSync
+      - subtype_model: BackgroundJobPayloadForBillingOntologyBudgetSyncAdhoc
+        subtype_name: BackgroundJobPayloadForBillingOntologyBudgetSyncAdhoc
+      - subtype_model: BackgroundJobPayloadForPeriodicMarkupAndDiscountMigration
+        subtype_name: BackgroundJobPayloadForPeriodicMarkupAndDiscountMigration
+      - subtype_model: BackgroundJobPayloadForBillingPlanEvaluation
+        subtype_name: BackgroundJobPayloadForBillingPlanEvaluation
+      - subtype_model: BackgroundJobPayloadForPeriodicBudgetCost
+        subtype_name: BackgroundJobPayloadForPeriodicBudgetCost
+      - subtype_model: BackgroundJobPayloadForPeriodicBudgetSettings
+        subtype_name: BackgroundJobPayloadForPeriodicBudgetSettings
+      - subtype_model: BackgroundJobPayloadForBudgetCost
+        subtype_name: BackgroundJobPayloadForBudgetCost
+      - subtype_model: BackgroundJobPayloadForBudgetSettings
+        subtype_name: BackgroundJobPayloadForBudgetSettings
+      - subtype_model: BackgroundJobPayloadForPeriodicAwsWorkspace
+        subtype_name: BackgroundJobPayloadForPeriodicAwsWorkspace
+      - subtype_model: BackgroundJobPayloadForPeriodicAzureSentinelUpdate
+        subtype_name: BackgroundJobPayloadForPeriodicAzureSentinelUpdate
+      - subtype_model: BackgroundJobPayloadForPeriodicBudgetInsights
+        subtype_name: BackgroundJobPayloadForPeriodicBudgetInsights
+      - subtype_model: BackgroundJobPayloadForPeriodicCloudOpsInsight
+        subtype_name: BackgroundJobPayloadForPeriodicCloudOpsInsight
+      - subtype_model: BackgroundJobPayloadForPeriodicCostSavingsCalculation
+        subtype_name: BackgroundJobPayloadForPeriodicCostSavingsCalculation
+      - subtype_model: BackgroundJobPayloadForPeriodicCredentialExpirationCheck
+        subtype_name: BackgroundJobPayloadForPeriodicCredentialExpirationCheck
+      - subtype_model: BackgroundJobPayloadForPeriodicGovernanceInstanceStatus
+        subtype_name: BackgroundJobPayloadForPeriodicGovernanceInstanceStatus
+      - subtype_model: BackgroundJobPayloadForPeriodicGovernanceNotification
+        subtype_name: BackgroundJobPayloadForPeriodicGovernanceNotification
+      - subtype_model: BackgroundJobPayloadForPeriodicParseNetworkDetails
+        subtype_name: BackgroundJobPayloadForPeriodicParseNetworkDetails
+      - subtype_model: BackgroundJobPayloadForPeriodicRefreshUtilizationSummary
+        subtype_name: BackgroundJobPayloadForPeriodicRefreshUtilizationSummary
+      - subtype_model: BackgroundJobPayloadForPeriodicServiceAccountDelete
+        subtype_name: BackgroundJobPayloadForPeriodicServiceAccountDelete
+      - subtype_model: BackgroundJobPayloadForPeriodicZabbixGovernance
+        subtype_name: BackgroundJobPayloadForPeriodicZabbixGovernance
+      - subtype_model: BackgroundJobPayloadForActivityExecutor
+        subtype_name: BackgroundJobPayloadForActivityExecutor
+      - subtype_model: BackgroundJobPayloadForIntegratedToolsAlert
+        subtype_name: BackgroundJobPayloadForIntegratedToolsAlert
+      - subtype_model: BackgroundJobPayloadForRefreshRecommendation
+        subtype_name: BackgroundJobPayloadForRefreshRecommendation
+      - subtype_model: BackgroundJobPayloadForServiceAccountDelete
+        subtype_name: BackgroundJobPayloadForServiceAccountDelete
+      - subtype_model: BackgroundJobPayloadForPeriodicComplianceRefresh
+        subtype_name: BackgroundJobPayloadForPeriodicComplianceRefresh
+      - subtype_model: BackgroundJobPayloadForComplianceControl
+        subtype_name: BackgroundJobPayloadForComplianceControl
+      - subtype_model: BackgroundJobPayloadForComplianceStandard
+        subtype_name: BackgroundJobPayloadForComplianceStandard
+      - subtype_model: BackgroundJobPayloadForPolicyJobStatusUpdate
+        subtype_name: BackgroundJobPayloadForPolicyJobStatusUpdate
+      - subtype_model: BackgroundJobPayloadForBulkPolicyTrigger
+        subtype_name: BackgroundJobPayloadForBulkPolicyTrigger
+      - subtype_model: BackgroundJobPayloadForThreatVulnerabilityGraphDBSummarySync
+        subtype_name: BackgroundJobPayloadForThreatVulnerabilityGraphDBSummarySync
+      - subtype_model: BackgroundJobPayloadForPeriodicAzureSecurityGraph
+        subtype_name: BackgroundJobPayloadForPeriodicAzureSecurityGraph
+      - subtype_model: BackgroundJobPayloadForPeriodicCloudNativeThreatSync
+        subtype_name: BackgroundJobPayloadForPeriodicCloudNativeThreatSync
+      - subtype_model: BackgroundJobPayloadForPeriodicCloudNativeVulnerabilitySync
+        subtype_name: BackgroundJobPayloadForPeriodicCloudNativeVulnerabilitySync
+      - subtype_model: BackgroundJobPayloadForPeriodicTenableNessus
+        subtype_name: BackgroundJobPayloadForPeriodicTenableNessus
+      - subtype_model: BackgroundJobPayloadForPeriodicThreatsVulnerabilityGraphDBSummarySync
+        subtype_name: BackgroundJobPayloadForPeriodicThreatsVulnerabilityGraphDBSummarySync
+      - subtype_model: BackgroundJobPayloadForThreatResourceActiveRefresh
+        subtype_name: BackgroundJobPayloadForThreatResourceActiveRefresh
+      - subtype_model: BackgroundJobPayloadForCopilotGovernanceMetricsProcessor
+        subtype_name: BackgroundJobPayloadForCopilotGovernanceMetricsProcessor
+      - subtype_model: BackgroundJobPayloadForPeriodicCopilotGovernanceMetricsProcessor
+        subtype_name: BackgroundJobPayloadForPeriodicCopilotGovernanceMetricsProcessor
+      - subtype_model: BackgroundJobPayloadForRemediationTemplateExecutor
+        subtype_name: BackgroundJobPayloadForRemediationTemplateExecutor
+      - subtype_model: BackgroundJobPayloadForCostAnomalyDetector
+        subtype_name: BackgroundJobPayloadForCostAnomalyDetector
+      - subtype_model: BackgroundJobPayloadForCostAnomalyDetectorForResources
+        subtype_name: BackgroundJobPayloadForCostAnomalyDetectorForResources
+      - subtype_model: BackgroundJobPayloadForCostAnomalyDetectorGraphDBSync
+        subtype_name: BackgroundJobPayloadForCostAnomalyDetectorGraphDBSync
+      - subtype_model: BackgroundJobPayloadForCostAnomalyDetectorGraphDBSyncAdhoc
+        subtype_name: BackgroundJobPayloadForCostAnomalyDetectorGraphDBSyncAdhoc
+      - subtype_model: BackgroundJobPayloadForPeriodicCostAnomalyDailySummaryNotification
+        subtype_name: BackgroundJobPayloadForPeriodicCostAnomalyDailySummaryNotification
+      - subtype_model: BackgroundJobPayloadForCostAnomalyDailySummaryNotification
+        subtype_name: BackgroundJobPayloadForCostAnomalyDailySummaryNotification
+      - subtype_model: BackgroundJobPayloadForPeriodicCostAnomalyDetectorForDimensions
+        subtype_name: BackgroundJobPayloadForPeriodicCostAnomalyDetectorForDimensions
+      - subtype_model: BackgroundJobPayloadForCostAnomalyDetectorForDimensions
+        subtype_name: BackgroundJobPayloadForCostAnomalyDetectorForDimensions
+      - subtype_model: BackgroundJobPayloadForCostAnomalyDailySummaryNotificationForDimensions
+        subtype_name: BackgroundJobPayloadForCostAnomalyDailySummaryNotificationForDimensions
+      - subtype_model: BackgroundJobPayloadForPeriodicCustomMetricConfigurationSync
+        subtype_name: BackgroundJobPayloadForPeriodicCustomMetricConfigurationSync
+      - subtype_model: BackgroundJobPayloadForCustomMetricConfigurationSync
+        subtype_name: BackgroundJobPayloadForCustomMetricConfigurationSync
+      - subtype_model: BackgroundJobPayloadForPeriodicPolicyRefresh
+        subtype_name: BackgroundJobPayloadForPeriodicPolicyRefresh
+      - subtype_model: BackgroundJobPayloadForPeriodicDailyPolicyRecommendationGraphDBSync
+        subtype_name: BackgroundJobPayloadForPeriodicDailyPolicyRecommendationGraphDBSync
+      - subtype_model: BackgroundJobPayloadForPolicyExecution
+        subtype_name: BackgroundJobPayloadForPolicyExecution
+      - subtype_model: BackgroundJobPayloadForPolicyResourceRecommendationRemoval
+        subtype_name: BackgroundJobPayloadForPolicyResourceRecommendationRemoval
+      - subtype_model: BackgroundJobPayloadForPolicyOntologyMigration
+        subtype_name: BackgroundJobPayloadForPolicyOntologyMigration
+      - subtype_model: BackgroundJobPayloadForPeriodicDiskUtilization
+        subtype_name: BackgroundJobPayloadForPeriodicDiskUtilization
+      - subtype_model: BackgroundJobPayloadForPeriodicMetricsUtilization
+        subtype_name: BackgroundJobPayloadForPeriodicMetricsUtilization
+      - subtype_model: BackgroundJobPayloadForPeriodicMarketPlacePoller
+        subtype_name: BackgroundJobPayloadForPeriodicMarketPlacePoller
+      - subtype_model: BackgroundJobPayloadForPeriodicJiraChangeManagementHandler
+        subtype_name: BackgroundJobPayloadForPeriodicJiraChangeManagementHandler
+      - subtype_model: BackgroundJobPayloadForOnpremMetricDataParser
+        subtype_name: BackgroundJobPayloadForOnpremMetricDataParser
+      - subtype_model: BackgroundJobPayloadForOnpremAlertChecker
+        subtype_name: BackgroundJobPayloadForOnpremAlertChecker
+      - subtype_model: BackgroundJobPayloadForPeriodicOnpremResourceParserCleanup
+        subtype_name: BackgroundJobPayloadForPeriodicOnpremResourceParserCleanup
+      - subtype_model: BackgroundJobPayloadForPeriodicAlertConfiguration
+        subtype_name: BackgroundJobPayloadForPeriodicAlertConfiguration
+      - subtype_model: BackgroundJobPayloadForPeriodicApplicationPerformanceMonitoring
+        subtype_name: BackgroundJobPayloadForPeriodicApplicationPerformanceMonitoring
+      - subtype_model: BackgroundJobPayloadForPeriodicCreateActivityMasterTemplate
+        subtype_name: BackgroundJobPayloadForPeriodicCreateActivityMasterTemplate
+      - subtype_model: BackgroundJobPayloadForPeriodicCreateAlertForNewResources
+        subtype_name: BackgroundJobPayloadForPeriodicCreateAlertForNewResources
+      - subtype_model: BackgroundJobPayloadForPeriodicCreateMetricMasterTemplate
+        subtype_name: BackgroundJobPayloadForPeriodicCreateMetricMasterTemplate
+      - subtype_model: BackgroundJobPayloadForPeriodicLogAnalyticsWorkspace
+        subtype_name: BackgroundJobPayloadForPeriodicLogAnalyticsWorkspace
+      - subtype_model: BackgroundJobPayloadForPeriodicLogAnalyticsWorkspaceSync
+        subtype_name: BackgroundJobPayloadForPeriodicLogAnalyticsWorkspaceSync
+      - subtype_model: BackgroundJobPayloadForPeriodicMetricsToAnomalyDetection
+        subtype_name: BackgroundJobPayloadForPeriodicMetricsToAnomalyDetection
+      - subtype_model: BackgroundJobPayloadForPeriodicMetricValueStorage
+        subtype_name: BackgroundJobPayloadForPeriodicMetricValueStorage
+      - subtype_model: BackgroundJobPayloadForPeriodicOperationAssessment
+        subtype_name: BackgroundJobPayloadForPeriodicOperationAssessment
+      - subtype_model: BackgroundJobPayloadForPeriodicProcessAlertTemplateStatusUpdate
+        subtype_name: BackgroundJobPayloadForPeriodicProcessAlertTemplateStatusUpdate
+      - subtype_model: BackgroundJobPayloadForPeriodicProcessOrphanedConfigurationRecords
+        subtype_name: BackgroundJobPayloadForPeriodicProcessOrphanedConfigurationRecords
+      - subtype_model: BackgroundJobPayloadForMetricValueStorage
+        subtype_name: BackgroundJobPayloadForMetricValueStorage
+      - subtype_model: BackgroundJobPayloadForResourceAlertConfiguration
+        subtype_name: BackgroundJobPayloadForResourceAlertConfiguration
+      - subtype_model: BackgroundJobPayloadForOperationAssessment
+        subtype_name: BackgroundJobPayloadForOperationAssessment
+      - subtype_model: BackgroundJobPayloadForOrphanedCloudMonitoringAlert
+        subtype_name: BackgroundJobPayloadForOrphanedCloudMonitoringAlert
+      - subtype_model: BackgroundJobPayloadForPeriodicAlertReconciliation
+        subtype_name: BackgroundJobPayloadForPeriodicAlertReconciliation
+      - subtype_model: BackgroundJobPayloadForAlertReconciliation
+        subtype_name: BackgroundJobPayloadForAlertReconciliation
+      - subtype_model: BackgroundJobPayloadForPeriodicPatchManager
+        subtype_name: BackgroundJobPayloadForPeriodicPatchManager
+      - subtype_model: BackgroundJobPayloadForPeriodicProActiveScannerDetailsParser
+        subtype_name: BackgroundJobPayloadForPeriodicProActiveScannerDetailsParser
+      - subtype_model: BackgroundJobPayloadForProActiveScannerDetailsParserOnDemand
+        subtype_name: BackgroundJobPayloadForProActiveScannerDetailsParserOnDemand
+      - subtype_model: BackgroundJobPayloadForOnDemandApplyRecommendationExclusionRules
+        subtype_name: BackgroundJobPayloadForOnDemandApplyRecommendationExclusionRules
+      - subtype_model: BackgroundJobPayloadForPeriodicBackupConfiguration
+        subtype_name: BackgroundJobPayloadForPeriodicBackupConfiguration
+      - subtype_model: BackgroundJobPayloadForPeriodicDailyCostReport
+        subtype_name: BackgroundJobPayloadForPeriodicDailyCostReport
+      - subtype_model: BackgroundJobPayloadForPeriodicDailyGovernanceReport
+        subtype_name: BackgroundJobPayloadForPeriodicDailyGovernanceReport
+      - subtype_model: BackgroundJobPayloadForPeriodicDailyInventoryReport
+        subtype_name: BackgroundJobPayloadForPeriodicDailyInventoryReport
+      - subtype_model: BackgroundJobPayloadForPeriodicMonthlyCostReport
+        subtype_name: BackgroundJobPayloadForPeriodicMonthlyCostReport
+      - subtype_model: BackgroundJobPayloadForPeriodicRecoveryConfiguration
+        subtype_name: BackgroundJobPayloadForPeriodicRecoveryConfiguration
+      - subtype_model: BackgroundJobPayloadForPeriodicSecureScoresConfiguration
+        subtype_name: BackgroundJobPayloadForPeriodicSecureScoresConfiguration
+      - subtype_model: BackgroundJobPayloadForBackupConfiguration
+        subtype_name: BackgroundJobPayloadForBackupConfiguration
+      - subtype_model: BackgroundJobPayloadForDailyCostReport
+        subtype_name: BackgroundJobPayloadForDailyCostReport
+      - subtype_model: BackgroundJobPayloadForDailyGovernanceReport
+        subtype_name: BackgroundJobPayloadForDailyGovernanceReport
+      - subtype_model: BackgroundJobPayloadForDailyInventoryReport
+        subtype_name: BackgroundJobPayloadForDailyInventoryReport
+      - subtype_model: BackgroundJobPayloadForMonthlyCostReport
+        subtype_name: BackgroundJobPayloadForMonthlyCostReport
+      - subtype_model: BackgroundJobPayloadForRecoveryConfiguration
+        subtype_name: BackgroundJobPayloadForRecoveryConfiguration
+      - subtype_model: BackgroundJobPayloadForSecureScoresConfiguration
+        subtype_name: BackgroundJobPayloadForSecureScoresConfiguration
+      - subtype_model: BackgroundJobPayloadForPeriodicInventoryUnitRate
+        subtype_name: BackgroundJobPayloadForPeriodicInventoryUnitRate
+      - subtype_model: BackgroundJobPayloadForPeriodicServiceResourceBillingCategory
+        subtype_name: BackgroundJobPayloadForPeriodicServiceResourceBillingCategory
+      - subtype_model: BackgroundJobPayloadForPeriodicSynchronizeNirmata
+        subtype_name: BackgroundJobPayloadForPeriodicSynchronizeNirmata
+      - subtype_model: BackgroundJobPayloadForPeriodicUnitPriceRate
+        subtype_name: BackgroundJobPayloadForPeriodicUnitPriceRate
+      - subtype_model: BackgroundJobPayloadForPeriodicTagDiscovery
+        subtype_name: BackgroundJobPayloadForPeriodicTagDiscovery
+      - subtype_model: BackgroundJobPayloadForExtendedResourceDiscovery
+        subtype_name: BackgroundJobPayloadForExtendedResourceDiscovery
+      - subtype_model: BackgroundJobPayloadForResourcesDuplicationRemoval
+        subtype_name: BackgroundJobPayloadForResourcesDuplicationRemoval
+      - subtype_model: BackgroundJobPayloadForInventoryUnitRate
+        subtype_name: BackgroundJobPayloadForInventoryUnitRate
+      - subtype_model: BackgroundJobPayloadForResourceActivityLogSync
+        subtype_name: BackgroundJobPayloadForResourceActivityLogSync
+      - subtype_model: BackgroundJobPayloadForResourceTagRemediation
+        subtype_name: BackgroundJobPayloadForResourceTagRemediation
+      - subtype_model: BackgroundJobPayloadForUnitRateCrawler
+        subtype_name: BackgroundJobPayloadForUnitRateCrawler
+      - subtype_model: BackgroundJobPayloadForTagDiscovery
+        subtype_name: BackgroundJobPayloadForTagDiscovery
+      - subtype_model: BackgroundJobPayloadForPeriodicCloudWatchMetrics
+        subtype_name: BackgroundJobPayloadForPeriodicCloudWatchMetrics
+      - subtype_model: BackgroundJobPayloadForPeriodicCloudWatchMetricsConfiguration
+        subtype_name: BackgroundJobPayloadForPeriodicCloudWatchMetricsConfiguration
+      - subtype_model: BackgroundJobPayloadForResourceLockSync
+        subtype_name: BackgroundJobPayloadForResourceLockSync
+      - subtype_model: BackgroundJobPayloadForPeriodicAssessmentDataCollection
+        subtype_name: BackgroundJobPayloadForPeriodicAssessmentDataCollection
+      - subtype_model: BackgroundJobPayloadForPeriodicAssessmentGovernanceCost
+        subtype_name: BackgroundJobPayloadForPeriodicAssessmentGovernanceCost
+      - subtype_model: BackgroundJobPayloadForPeriodicResourceDiscovery
+        subtype_name: BackgroundJobPayloadForPeriodicResourceDiscovery
+      - subtype_model: BackgroundJobPayloadForAssessmentDataCollection
+        subtype_name: BackgroundJobPayloadForAssessmentDataCollection
+      - subtype_model: BackgroundJobPayloadForResourceDashboard
+        subtype_name: BackgroundJobPayloadForResourceDashboard
+      - subtype_model: BackgroundJobPayloadForResourceDiscovery
+        subtype_name: BackgroundJobPayloadForResourceDiscovery
+      - subtype_model: BackgroundJobPayloadForResourceDiscoveryExecution
+        subtype_name: BackgroundJobPayloadForResourceDiscoveryExecution
+      - subtype_model: BackgroundJobPayloadForResourceDependencyRelationship
+        subtype_name: BackgroundJobPayloadForResourceDependencyRelationship
+      - subtype_model: BackgroundJobPayloadForPeriodicVirtualMachinesAgents
+        subtype_name: BackgroundJobPayloadForPeriodicVirtualMachinesAgents
+      - subtype_model: BackgroundJobPayloadForVirtualMachinesAgents
+        subtype_name: BackgroundJobPayloadForVirtualMachinesAgents
+      - subtype_model: BackgroundJobPayloadForScheduleRecommendation
+        subtype_name: BackgroundJobPayloadForScheduleRecommendation
+      - subtype_model: BackgroundJobPayloadForStacksMarketplaceStackDeploymentExecution
+        subtype_name: BackgroundJobPayloadForStacksMarketplaceStackDeploymentExecution
+      - subtype_model: BackgroundJobPayloadForStacksMarketplaceStackVersionCostEstimateExecution
+        subtype_name: BackgroundJobPayloadForStacksMarketplaceStackVersionCostEstimateExecution
+      - subtype_model: BackgroundJobPayloadForTagPosture
+        subtype_name: BackgroundJobPayloadForTagPosture
+      - subtype_model: BackgroundJobPayloadForTagPostureSync
+        subtype_name: BackgroundJobPayloadForTagPostureSync
+      - subtype_model: BackgroundJobPayloadForPeriodicWorkloadAssessmentCleanup
+        subtype_name: BackgroundJobPayloadForPeriodicWorkloadAssessmentCleanup
+      - subtype_model: BackgroundJobPayloadForWorkloadOntologyMigration
+        subtype_name: BackgroundJobPayloadForWorkloadOntologyMigration
+      - subtype_model: BackgroundJobPayloadForPeriodicWorkloadVulnerabilityThreatSummaryDaily
+        subtype_name: BackgroundJobPayloadForPeriodicWorkloadVulnerabilityThreatSummaryDaily
+      - subtype_model: BackgroundJobPayloadForWorkloadResourceSync
+        subtype_name: BackgroundJobPayloadForWorkloadResourceSync
+      - subtype_model: BackgroundJobPayloadForPeriodicWorkloadResourceSnapshotDaily
+        subtype_name: BackgroundJobPayloadForPeriodicWorkloadResourceSnapshotDaily
+      - subtype_model: BackgroundJobPayloadForWorkloadResourceSnapshot
+        subtype_name: BackgroundJobPayloadForWorkloadResourceSnapshot
+      - subtype_model: BackgroundJobPayloadForPeriodicWorkloadVulnerabilityThreatSummaryMonthly
+        subtype_name: BackgroundJobPayloadForPeriodicWorkloadVulnerabilityThreatSummaryMonthly
+      - subtype_model: BackgroundJobPayloadForDefaultWorkloadCreation
+        subtype_name: BackgroundJobPayloadForDefaultWorkloadCreation
+      - subtype_model: BackgroundJobPayloadForPeriodicWorkloadRecommendationSnapshotDaily
+        subtype_name: BackgroundJobPayloadForPeriodicWorkloadRecommendationSnapshotDaily
+    BackgroundJobForwardingCheckResponse:
+      properties:
+        hops:
+          type: integer
+          description: Number of hops to react executor
+      type: object
+    BackgroundJobLogResponse:
+      properties:
+        count:
+          type: integer
+          description: Total number of log entries
+        entries:
+          type: array
+          description: Requested log entries
+          items:
+            $ref: '#/components/schemas/BackgroundJobLog'
+      type: object
+    BackgroundJobHeapAnalysisProcess:
+      properties:
+        name:
+          type: string
+          description: Process name
+        modules:
+          type: array
+          description: Module data
+          items:
+            $ref: '#/components/schemas/BackgroundJobHeapAnalysisModule'
+      type: object
+    BackgroundJobQueueResponse:
+      properties:
+        created:
+          description: Background Job that got created
+          $ref: '#/components/schemas/RecordIdentity'
+        existing:
+          description: Background Job that matched identifier
+          $ref: '#/components/schemas/RecordIdentity'
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

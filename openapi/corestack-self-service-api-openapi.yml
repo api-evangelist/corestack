@@ -1,0 +1,769 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Self Service API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Self Service Pillar
+servers:
+- url: /
+tags:
+- name: Self Service
+  description: Self Service Pillar
+paths:
+  /self_service/dashboard/{tenant_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerDashboardReportModel'
+      summary: Self Service Customer Dashboard
+      description: CustomerDashboard
+      operationId: CustomerDashboard
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: Select action
+        name: action
+        in: query
+        schema:
+          type: string
+          enum:
+          - consumer_dashboard
+      security:
+      - auth_token: []
+      tags:
+      - Self Service
+  /self_service/orders/{tenant_id}/{action}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderHistoryReportModel'
+      summary: Self Service Order History
+      description: OrderHistory
+      operationId: OrderHistory
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: action
+        in: path
+        required: true
+        description: Select action
+        schema:
+          type: string
+          enum:
+          - myrequests
+      security:
+      - auth_token: []
+      tags:
+      - Self Service
+  /self_service/resource_catalogs/{tenant_id}/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCatalogCreateDataModel'
+      summary: Create Resource Catalog
+      description: Resource Catalog Create
+      operationId: ResourceCatalogCreate
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Self Service
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceCatalogServiceLevelDataModel'
+        required: true
+  /self_service/resource_catalogs/{tenant_id}/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCatalogGetDataModel'
+      summary: List Resource Catalog
+      description: Resource Catalog list
+      operationId: ResourceCatalogList
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Self Service
+  /self_service/resource_catalogs/{tenant_id}/{catalog_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Resource Catalog
+      description: Resource Catalog Delete
+      operationId: ResourceCatalogDelete
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: catalog_id
+        in: path
+        required: true
+        description: Catalog ID
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Self Service
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Update Resource Catalog
+      description: Resource Catalog Modify
+      operationId: ResourceCatalogModify
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: catalog_id
+        in: path
+        required: true
+        description: Catalog ID
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Self Service
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceCatalogServiceLevelDataModel'
+        required: true
+  /self_service/workspace/{tenant_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkSpaceReportModel'
+      summary: List Workspaces
+      description: WorkSpace
+      operationId: WorkSpace
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: Select the action
+        name: action
+        in: query
+        schema:
+          type: string
+          enum:
+          - dashboard
+      - description: Select the request type
+        name: type
+        in: query
+        schema:
+          type: string
+          enum:
+          - myrequest
+      - description: Select to true to display false one also
+        name: show_failed
+        in: query
+        schema:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+      security:
+      - auth_token: []
+      tags:
+      - Self Service
+  /self_service/{tenant_id}/catalog/{cloud_account_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Service Catalog
+      description: Service Catalog list
+      operationId: ServiceCatalogDelete
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: cloud_account_id
+        in: path
+        required: true
+        description: Cloud Account ID
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Self Service
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceCatalogGetDataModel'
+      summary: Create Service Catalog
+      description: Get Service Catalog
+      operationId: serviceCatalogCreate
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: cloud_account_id
+        in: path
+        required: true
+        description: Cloud Account ID
+        schema:
+          type: string
+      - description: action
+        name: action
+        in: query
+        schema:
+          type: string
+          enum:
+          - default_values
+      security:
+      - auth_token: []
+      tags:
+      - Self Service
+  /v2/self_service/catalogs/hierarchy:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SelfServiceCatalogHierarchyComponent'
+      summary: View Self Service Catalog Hierarchy
+      description: View Self Service Catalog Hierarchy
+      operationId: ViewSelfServiceCatalogHierarchy
+      security:
+      - auth_token: []
+      tags:
+      - Self Service
+  /v2/self_service/request/attributes:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      summary: View Self Service Request Attributes
+      description: View Self Service Request Attributes for Action
+      operationId: ViewSelfServiceRequestAttributesForAction
+      security:
+      - auth_token: []
+      tags:
+      - Self Service
+  /v2/self_service/request/attributes/{action}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      summary: View Self Service Request Action Attributes
+      description: View Self Service Request Action Attributes
+      operationId: viewSelfServiceRequestActionAttributes
+      parameters:
+      - name: action
+        in: path
+        required: true
+        description: Corestack self service request action
+        schema:
+          type: string
+          enum:
+          - create
+          - modify
+          - re_order
+          - approve
+          - terminate
+      security:
+      - auth_token: []
+      tags:
+      - Self Service
+components:
+  schemas:
+    SelfServiceCatalogHierarchyComponent:
+      properties:
+        level1:
+          type: string
+          description: Catalog Classification First Level
+        level2:
+          type: string
+          description: Catalog Classification Second Level
+        level3:
+          type: string
+          description: Catalog Classification Third Level
+        classification_name:
+          type: string
+          description: Catalog Classification Name
+      type: object
+    ServiceCatalogGetDataModel:
+      required:
+      - data
+      properties:
+        data:
+          type: string
+          description: catalog type
+      type: object
+    CustomerDashboardReportModel:
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          description: catalog type
+      type: object
+    ResourceCatalogCostDataModel:
+      required:
+      - value
+      properties:
+        value:
+          type: integer
+          description: Cloud account resource cost. for example, 0.1, 10, etc
+      type: object
+    OrderHistoryReportModel:
+      required:
+      - data
+      properties:
+        data:
+          type: string
+          description: Order details
+      type: object
+    ResourceCatalogServiceLevelDataModel:
+      required:
+      - classification
+      - name
+      - resource
+      - resource_attributes
+      - resource_type
+      - scope
+      - service_account
+      - service_levels
+      properties:
+        classification:
+          type: string
+          description: Account classification is by default its 'default'. for example, default
+        name:
+          type: string
+          description: Cloud account catalog name.
+        resource:
+          type: string
+          description: Specify the resource, This can be retrieved using the List Resource Catalog API
+        resource_attributes:
+          description: Resource attributes includes.
+          $ref: '#/components/schemas/ResourceCatalogAttributeDataModel'
+        resource_type:
+          type: string
+          description: Cloud account resource type. for example, disk_sku
+        scope:
+          type: string
+          description: Cloud account scope . for example, tenant, private, etc
+        service_account:
+          type: string
+          description: Cloud service account id . for example, '60xxxxxxxxxxxxxxxxxxxxxxxx0b'
+        service_levels:
+          type: array
+          description: Update Activity Request Body. Example:["gold, silver, bronze, iron"]
+          items:
+            type: string
+        tenant_info:
+          description: tenants information.
+          $ref: '#/components/schemas/ResourceCatalogTenantDataModel'
+      type: object
+    ResourceCatalogGetDataModel:
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          description: Resource Data
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ResourceCatalogTenantDataModel:
+      properties:
+        location:
+          type: string
+          description: Location.for example, /subscriptions/subscription_id->'eg:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'/location/location->'eg:northeurope
+        resourcegroup:
+          type: string
+          description: Resource group. for example, /subscriptions/subscription_id->'eg:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'/resourceGroups/rg_name->'eg:default_rg
+      type: object
+    ResourceCatalogCreateDataModel:
+      required:
+      - data
+      - message
+      properties:
+        message:
+          type: string
+          description: Resource created
+        data:
+          type: string
+          description: Catalog Id
+      type: object
+    WorkSpaceReportModel:
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          description: Returned Workspace
+      type: object
+    ResourceCatalogAttributeDataModel:
+      required:
+      - cost
+      - name
+      - resource
+      - resource_id
+      properties:
+        DiskSize:
+          type: string
+          description: Disk size
+          example: '32'
+          enum:
+          - '32'
+          - '64'
+          - '128'
+          - '256'
+          - '512'
+          - '1024'
+          - '2048'
+          - '4096'
+          - '8192'
+          - '16384'
+          - '32767'
+          x-cs-enum-type: DiskSize
+        disk_type:
+          type: string
+          description: Disk type
+          example: Premium SSD
+          enum:
+          - Premium SSD
+          - Standard HDD
+          - Standard SSD
+          x-cs-enum-type: DiskType
+        cost:
+          description: Cost attribute.
+          $ref: '#/components/schemas/ResourceCatalogCostDataModel'
+        name:
+          type: string
+          description: Cloud account catalog name.
+        resource:
+          type: string
+          description: Specify the resource, This can be retrieved using the List Resource Catalog API
+        resource_id:
+          type: string
+          description: Specify the resource_id, This can be retrieved using the List Resource Catalog API
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

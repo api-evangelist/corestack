@@ -1,0 +1,1007 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Billing Metric API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage Billing Metrics
+servers:
+- url: /
+tags:
+- name: Billing Metric
+  description: Manage Billing Metrics
+paths:
+  /v2/billing_metrics/access/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BillingMetricAccess'
+      summary: Batch of Billing Metric Access
+      description: Get a Batch of Billing Metric Access
+      operationId: BillingMetricBatch
+      security:
+      - auth_token: []
+      tags:
+      - Billing Metric
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+        required: true
+  /v2/billing_metrics/access/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingMetricAccess'
+      summary: Create new Billing Metric Access
+      description: Create Billing Metric Access.
+      operationId: BillingMetricAccessCreate
+      security:
+      - auth_token: []
+      tags:
+      - Billing Metric
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingMetricAccess'
+        required: true
+  /v2/billing_metrics/access/item/{access_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+      summary: Delete Billing Metric Access
+      description: Deletes a billing metric.
+      operationId: BillingMetricsAccessDelete
+      parameters:
+      - name: access_id
+        in: path
+        required: true
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Billing Metric
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingMetricAccess'
+      summary: Update Billing Metric Access
+      description: Update Billing Metrics.
+      operationId: BillingMetricsAccessUpdate
+      parameters:
+      - name: access_id
+        in: path
+        required: true
+        description: The Id of Billing Metric access to update.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Billing Metric
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingMetricAccess'
+        required: true
+  /v2/billing_metrics/access/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+      summary: List Billing Metric Access
+      description: List Billing Metric Access.
+      operationId: BillingMetricAccessList
+      security:
+      - auth_token: []
+      tags:
+      - Billing Metric
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingMetricAccessListRequest'
+        required: true
+  /v2/billing_metrics/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BillingMetrics'
+      summary: Batch of Billing Metrics
+      description: Get a Batch of Billing Metrics
+      operationId: BillingMetricsBatch
+      security:
+      - auth_token: []
+      tags:
+      - Billing Metric
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+        required: true
+  /v2/billing_metrics/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingMetrics'
+      summary: Create new Billing Metrics
+      description: Create Billing Metrics.
+      operationId: BillingMetricsCreate
+      security:
+      - auth_token: []
+      tags:
+      - Billing Metric
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingMetrics'
+        required: true
+  /v2/billing_metrics/item/{billing_metrics_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+      summary: Delete Billing Metrics
+      description: Deletes a billing metric.
+      operationId: BillingMetricsDelete
+      parameters:
+      - name: billing_metrics_id
+        in: path
+        required: true
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Billing Metric
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingMetrics'
+      summary: Update Billing Metrics
+      description: Update Billing Metrics.
+      operationId: BillingMetricsUpdate
+      parameters:
+      - name: billing_metrics_id
+        in: path
+        required: true
+        description: The Id of Billing Metrics to update.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Billing Metric
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingMetrics'
+        required: true
+  /v2/billing_metrics/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+      summary: List Billing Metrics
+      description: List Billing Metrics.
+      operationId: BillingMetricsList
+      security:
+      - auth_token: []
+      tags:
+      - Billing Metric
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingMetricListRequest'
+        required: true
+components:
+  schemas:
+    BillingMetricAccessBase:
+      properties:
+        metric_sys_id:
+          type: string
+          description: The Sys ID of the metric
+        native_detail_type:
+          description: Cloud account native details type
+          $ref: '#/components/schemas/ServiceAccountNativeDetailsBaseForCloud'
+      type: object
+    ServiceNowCmdbAttributeMapping:
+      required:
+      - target_column
+      properties:
+        target_column:
+          type: string
+          description: Column Name in ServiceNow Cmdb table
+        literal_value:
+          type: string
+          description: Literal Value
+        attribute_id:
+          type: string
+          description: Identifier for the Inventory attribute
+      type: object
+    BillingMetricAccessListRequest:
+      allOf:
+      - $ref: '#/components/schemas/BillingMetricAccessBase'
+      - properties:
+          filters:
+            description: Filters for the Billing Metrics
+            $ref: '#/components/schemas/BillingMetricAccessFilters'
+        type: object
+    ServiceNowCmdbResourceMapping:
+      required:
+      - resource
+      - resource_category
+      - resource_type
+      properties:
+        resource_category:
+          type: string
+          description: Resource Category
+        resource_type:
+          type: string
+          description: Resource Type
+        resource:
+          type: string
+          description: Resource
+        cmdb_ci_class_name:
+          type: string
+          description: Name of the ServiceNow Cmdb CI Instance Class
+        attribute_mapping:
+          description: ServiceNow Cmdb CI attributes mapping
+          $ref: '#/components/schemas/ServiceNowCmdbActionResourceMapping'
+      type: object
+    BillingMetricAccess:
+      allOf:
+      - $ref: '#/components/schemas/BillingMetricAccessBase'
+      - required:
+        - denied_identities
+        properties:
+          sys_id:
+            type: string
+            description: The Sys ID of the access assignment
+          denied_identities:
+            $ref: '#/components/schemas/DeniedRolesAndUserGroups'
+        type: object
+    BillingMetrics:
+      required:
+      - billing_metric_type
+      - name
+      properties:
+        sys_id:
+          type: string
+          description: The Sys ID of the metric
+        source_sys_id:
+          type: string
+          description: Specifies the source metrics. Only system metrics can have an empty source and cannot be removed.
+        created_on:
+          type: string
+          format: date-time
+          description: Created on
+        created_by:
+          type: string
+          description: Username who created the Billing Metrics.
+        updated_on:
+          type: string
+          format: date-time
+          description: Updated on
+        updated_by:
+          type: string
+          description: Username who updated the Billing Metrics.
+        name:
+          type: string
+          description: Name of the billing metrics
+        billing_metric_type:
+          type: string
+          description: Types of Billing Metric.
+          example: margin_savings
+          enum:
+          - margin_savings
+          - native_cost
+          - rate
+          - system_cost
+          - true_cost
+          - usage
+          x-cs-enum-type: BillingMetricType
+        category:
+          type: string
+          description: Categories of Billing Metric.
+          example: Customer
+          enum:
+          - Customer
+          - Dimension
+          - Distributor
+          - Partner
+          x-cs-enum-type: BillingMetricCategory
+      type: object
+    ServiceNowCmdbActionResourceMapping:
+      properties:
+        create:
+          type: array
+          description: ServiceNow Cmdb CI create attributes mapping
+          items:
+            $ref: '#/components/schemas/ServiceNowCmdbAttributeMapping'
+        update:
+          type: array
+          description: ServiceNow Cmdb CI update attributes mapping
+          items:
+            $ref: '#/components/schemas/ServiceNowCmdbAttributeMapping'
+        delete:
+          type: array
+          description: ServiceNow Cmdb CI delete attributes mapping
+          items:
+            $ref: '#/components/schemas/ServiceNowCmdbAttributeMapping'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    BillingMetricFilters:
+      properties:
+        service_account_ids:
+          type: array
+          description: Service Account IDs to filter
+          items:
+            type: string
+            x-cs-type: ObjectId
+        descendant_service_account_query:
+          description: Descendant service account query filter
+          $ref: '#/components/schemas/DescendantServiceAccountQuery'
+      type: object
+    ServiceNowCmdbConfigBaseRequest:
+      allOf:
+      - $ref: '#/components/schemas/ServiceNowCmdbScopeDetails'
+      - properties: {}
+        type: object
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    BillingMetricListRequest:
+      properties:
+        filters:
+          description: Filters for the Billing Metrics
+          $ref: '#/components/schemas/BillingMetricFilters'
+      type: object
+    BatchRequest:
+      properties:
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
+      type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    ServiceNowCmdbServiceConfig:
+      properties:
+        resource_mapping:
+          type: array
+          description: ServiceNow Cmdb sync resource level mapping
+          items:
+            $ref: '#/components/schemas/ServiceNowCmdbResourceMapping'
+        rule_mapping:
+          description: ServiceNow Cmdb Sync Configuration Rule Details
+          $ref: '#/components/schemas/ServiceNowCmdbRuleMapping'
+      type: object
+    ServiceAccountNativeDetailsBase:
+      required:
+      - type
+      properties: {}
+      discriminator:
+        propertyName: type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ServiceAccountNativeDetailsBaseForCostCenter
+        subtype_name: ServiceAccountNativeDetailsBaseForCostCenter
+      - subtype_model: ServiceAccountNativeDetailsBaseForStructure
+        subtype_name: ServiceAccountNativeDetailsBaseForStructure
+      - subtype_model: ServiceAccountNativeDetailsBaseForCostCenterCloud
+        subtype_name: ServiceAccountNativeDetailsBaseForCostCenterCloud
+      - subtype_model: ServiceAccountNativeDetailsBaseForCostCenterDimension
+        subtype_name: ServiceAccountNativeDetailsBaseForCostCenterDimension
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterDimension
+        subtype_name: ServiceAccountNativeDetailsForCostCenterDimension
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterDimensionGroupingRule
+        subtype_name: ServiceAccountNativeDetailsForCostCenterDimensionGroupingRule
+      - subtype_model: ServiceAccountNativeDetailsBaseForCloud
+        subtype_name: ServiceAccountNativeDetailsBaseForCloud
+      - subtype_model: ServiceAccountNativeDetailsBaseForAws
+        subtype_name: ServiceAccountNativeDetailsBaseForAws
+      - subtype_model: ServiceAccountNativeDetailsForAwsOrganizationUnit
+        subtype_name: ServiceAccountNativeDetailsForAwsOrganizationUnit
+      - subtype_model: ServiceAccountNativeDetailsForAwsManagementAccount
+        subtype_name: ServiceAccountNativeDetailsForAwsManagementAccount
+      - subtype_model: ServiceAccountNativeDetailsForAwsMemberAccount
+        subtype_name: ServiceAccountNativeDetailsForAwsMemberAccount
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterAws
+        subtype_name: ServiceAccountNativeDetailsForCostCenterAws
+      - subtype_model: ServiceAccountNativeDetailsBaseForAzure
+        subtype_name: ServiceAccountNativeDetailsBaseForAzure
+      - subtype_model: ServiceAccountNativeDetailsForAzureCspMaster
+        subtype_name: ServiceAccountNativeDetailsForAzureCspMaster
+      - subtype_model: ServiceAccountNativeDetailsForAzureCspPartner
+        subtype_name: ServiceAccountNativeDetailsForAzureCspPartner
+      - subtype_model: ServiceAccountNativeDetailsForAzureCspCustomer
+        subtype_name: ServiceAccountNativeDetailsForAzureCspCustomer
+      - subtype_model: ServiceAccountNativeDetailsBaseForAzureSubscription
+        subtype_name: ServiceAccountNativeDetailsBaseForAzureSubscription
+      - subtype_model: ServiceAccountNativeDetailsForAzureSubscription
+        subtype_name: ServiceAccountNativeDetailsForAzureSubscription
+      - subtype_model: ServiceAccountNativeDetailsForAzureCspSubscription
+        subtype_name: ServiceAccountNativeDetailsForAzureCspSubscription
+      - subtype_model: ServiceAccountNativeDetailsBaseForAzureEaMaster
+        subtype_name: ServiceAccountNativeDetailsBaseForAzureEaMaster
+      - subtype_model: ServiceAccountNativeDetailsForAzureEaApiKeyMaster
+        subtype_name: ServiceAccountNativeDetailsForAzureEaApiKeyMaster
+      - subtype_model: ServiceAccountNativeDetailsForAzureEaApplicationMaster
+        subtype_name: ServiceAccountNativeDetailsForAzureEaApplicationMaster
+      - subtype_model: ServiceAccountNativeDetailsForAzureEaDepartment
+        subtype_name: ServiceAccountNativeDetailsForAzureEaDepartment
+      - subtype_model: ServiceAccountNativeDetailsForAzureEaAccount
+        subtype_name: ServiceAccountNativeDetailsForAzureEaAccount
+      - subtype_model: ServiceAccountNativeDetailsForAzureEaSubscription
+        subtype_name: ServiceAccountNativeDetailsForAzureEaSubscription
+      - subtype_model: ServiceAccountNativeDetailsForAzureMcaBillingAccount
+        subtype_name: ServiceAccountNativeDetailsForAzureMcaBillingAccount
+      - subtype_model: ServiceAccountNativeDetailsForAzureMcaBillingProfile
+        subtype_name: ServiceAccountNativeDetailsForAzureMcaBillingProfile
+      - subtype_model: ServiceAccountNativeDetailsForAzureMcaInvoiceSection
+        subtype_name: ServiceAccountNativeDetailsForAzureMcaInvoiceSection
+      - subtype_model: ServiceAccountNativeDetailsForAzureMcaSubscription
+        subtype_name: ServiceAccountNativeDetailsForAzureMcaSubscription
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterAzure
+        subtype_name: ServiceAccountNativeDetailsForCostCenterAzure
+      - subtype_model: ServiceAccountNativeDetailsBaseForGcp
+        subtype_name: ServiceAccountNativeDetailsBaseForGcp
+      - subtype_model: ServiceAccountNativeDetailsForGcpBillingAccount
+        subtype_name: ServiceAccountNativeDetailsForGcpBillingAccount
+      - subtype_model: ServiceAccountNativeDetailsForGcpParentBillingAccount
+        subtype_name: ServiceAccountNativeDetailsForGcpParentBillingAccount
+      - subtype_model: ServiceAccountNativeDetailsForGcpBillingSubAccount
+        subtype_name: ServiceAccountNativeDetailsForGcpBillingSubAccount
+      - subtype_model: ServiceAccountNativeDetailsForGcpOrganization
+        subtype_name: ServiceAccountNativeDetailsForGcpOrganization
+      - subtype_model: ServiceAccountNativeDetailsForGcpFolder
+        subtype_name: ServiceAccountNativeDetailsForGcpFolder
+      - subtype_model: ServiceAccountNativeDetailsForGcpProject
+        subtype_name: ServiceAccountNativeDetailsForGcpProject
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterGcp
+        subtype_name: ServiceAccountNativeDetailsForCostCenterGcp
+      - subtype_model: ServiceAccountNativeDetailsForOciTenancy
+        subtype_name: ServiceAccountNativeDetailsForOciTenancy
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterOci
+        subtype_name: ServiceAccountNativeDetailsForCostCenterOci
+      - subtype_model: ServiceAccountNativeDetailsForAzureStack
+        subtype_name: ServiceAccountNativeDetailsForAzureStack
+      - subtype_model: ServiceAccountNativeDetailsForCloudstack
+        subtype_name: ServiceAccountNativeDetailsForCloudstack
+      - subtype_model: ServiceAccountNativeDetailsForOpenstack
+        subtype_name: ServiceAccountNativeDetailsForOpenstack
+      - subtype_model: ServiceAccountNativeDetailsForRackspace
+        subtype_name: ServiceAccountNativeDetailsForRackspace
+      - subtype_model: ServiceAccountNativeDetailsForVmware
+        subtype_name: ServiceAccountNativeDetailsForVmware
+      - subtype_model: ServiceAccountNativeDetailsForVcenter
+        subtype_name: ServiceAccountNativeDetailsForVcenter
+      - subtype_model: ServiceAccountNativeDetailsForMsVmm
+        subtype_name: ServiceAccountNativeDetailsForMsVmm
+      - subtype_model: ServiceAccountNativeDetailsForVmwareVcdMaster
+        subtype_name: ServiceAccountNativeDetailsForVmwareVcdMaster
+      - subtype_model: ServiceAccountNativeDetailsForVmwareVcdOrganization
+        subtype_name: ServiceAccountNativeDetailsForVmwareVcdOrganization
+      - subtype_model: ServiceAccountNativeDetailsForVmwareVcdOrganizationVdc
+        subtype_name: ServiceAccountNativeDetailsForVmwareVcdOrganizationVdc
+      - subtype_model: ServiceAccountNativeDetailsForPrivateCloud
+        subtype_name: ServiceAccountNativeDetailsForPrivateCloud
+      - subtype_model: ServiceAccountNativeDetailsBaseForIntegratedTool
+        subtype_name: ServiceAccountNativeDetailsBaseForIntegratedTool
+      - subtype_model: ServiceAccountNativeDetailsForAppDynamics
+        subtype_name: ServiceAccountNativeDetailsForAppDynamics
+      - subtype_model: ServiceAccountNativeDetailsForAppInsights
+        subtype_name: ServiceAccountNativeDetailsForAppInsights
+      - subtype_model: ServiceAccountNativeDetailsForAzureDevops
+        subtype_name: ServiceAccountNativeDetailsForAzureDevops
+      - subtype_model: ServiceAccountNativeDetailsForAzureSecurityGraph
+        subtype_name: ServiceAccountNativeDetailsForAzureSecurityGraph
+      - subtype_model: ServiceAccountNativeDetailsForAzureSentinel
+        subtype_name: ServiceAccountNativeDetailsForAzureSentinel
+      - subtype_model: ServiceAccountNativeDetailsForCorestack
+        subtype_name: ServiceAccountNativeDetailsForCorestack
+      - subtype_model: ServiceAccountNativeDetailsForDockerHub
+        subtype_name: ServiceAccountNativeDetailsForDockerHub
+      - subtype_model: ServiceAccountNativeDetailsForElasticSearch
+        subtype_name: ServiceAccountNativeDetailsForElasticSearch
+      - subtype_model: ServiceAccountNativeDetailsForFreshservice
+        subtype_name: ServiceAccountNativeDetailsForFreshservice
+      - subtype_model: ServiceAccountNativeDetailsBaseForJiraServiceManagement
+        subtype_name: ServiceAccountNativeDetailsBaseForJiraServiceManagement
+      - subtype_model: ServiceAccountNativeDetailsForJiraServiceManagementParent
+        subtype_name: ServiceAccountNativeDetailsForJiraServiceManagementParent
+      - subtype_model: ServiceAccountNativeDetailsForJiraServiceManagementProject
+        subtype_name: ServiceAccountNativeDetailsForJiraServiceManagementProject
+      - subtype_model: ServiceAccountNativeDetailsForGithub
+        subtype_name: ServiceAccountNativeDetailsForGithub
+      - subtype_model: ServiceAccountNativeDetailsForJiraDataCenter
+        subtype_name: ServiceAccountNativeDetailsForJiraDataCenter
+      - subtype_model: ServiceAccountNativeDetailsForJiraServiceDesk
+        subtype_name: ServiceAccountNativeDetailsForJiraServiceDesk
+      - subtype_model: ServiceAccountNativeDetailsForJenkins
+        subtype_name: ServiceAccountNativeDetailsForJenkins
+      - subtype_model: ServiceAccountNativeDetailsForLogstash
+        subtype_name: ServiceAccountNativeDetailsForLogstash
+      - subtype_model: ServiceAccountNativeDetailsForMicrosoftTeams
+        subtype_name: ServiceAccountNativeDetailsForMicrosoftTeams
+      - subtype_model: ServiceAccountNativeDetailsForNagios
+        subtype_name: ServiceAccountNativeDetailsForNagios
+      - subtype_model: ServiceAccountNativeDetailsForNewrelic
+        subtype_name: ServiceAccountNativeDetailsForNewrelic
+      - subtype_model: ServiceAccountNativeDetailsForPrometheus
+        subtype_name: ServiceAccountNativeDetailsForPrometheus
+      - subtype_model: ServiceAccountNativeDetailsForQualys
+        subtype_name: ServiceAccountNativeDetailsForQualys
+      - subtype_model: ServiceAccountNativeDetailsForRedhatSatellite
+        subtype_name: ServiceAccountNativeDetailsForRedhatSatellite
+      - subtype_model: ServiceAccountNativeDetailsForServiceNow
+        subtype_name: ServiceAccountNativeDetailsForServiceNow
+      - subtype_model: ServiceAccountNativeDetailsForArrowSphere
+        subtype_name: ServiceAccountNativeDetailsForArrowSphere
+      - subtype_model: ServiceAccountNativeDetailsForTclItsm
+        subtype_name: ServiceAccountNativeDetailsForTclItsm
+      - subtype_model: ServiceAccountNativeDetailsForTenableNessus
+        subtype_name: ServiceAccountNativeDetailsForTenableNessus
+      - subtype_model: ServiceAccountNativeDetailsForZohoServiceDesk
+        subtype_name: ServiceAccountNativeDetailsForZohoServiceDesk
+      - subtype_model: ServiceAccountNativeDetailsBaseForResource
+        subtype_name: ServiceAccountNativeDetailsBaseForResource
+      - subtype_model: ServiceAccountNativeDetailsBaseForKubernetesCluster
+        subtype_name: ServiceAccountNativeDetailsBaseForKubernetesCluster
+      - subtype_model: ServiceAccountNativeDetailsBaseForKubernetesClusterCloud
+        subtype_name: ServiceAccountNativeDetailsBaseForKubernetesClusterCloud
+      - subtype_model: ServiceAccountNativeDetailsBaseForKubernetesClusterOthers
+        subtype_name: ServiceAccountNativeDetailsBaseForKubernetesClusterOthers
+      - subtype_model: ServiceAccountNativeDetailsForAwsEksCluster
+        subtype_name: ServiceAccountNativeDetailsForAwsEksCluster
+      - subtype_model: ServiceAccountNativeDetailsForAzureAksCluster
+        subtype_name: ServiceAccountNativeDetailsForAzureAksCluster
+      - subtype_model: ServiceAccountNativeDetailsForGcpGkeCluster
+        subtype_name: ServiceAccountNativeDetailsForGcpGkeCluster
+      - subtype_model: ServiceAccountNativeDetailsForOciOkeCluster
+        subtype_name: ServiceAccountNativeDetailsForOciOkeCluster
+      - subtype_model: ServiceAccountNativeDetailsForSelfManagedCluster
+        subtype_name: ServiceAccountNativeDetailsForSelfManagedCluster
+      - subtype_model: ServiceAccountNativeDetailsBaseForSaas
+        subtype_name: ServiceAccountNativeDetailsBaseForSaas
+      - subtype_model: ServiceAccountNativeDetailsBaseForSaasAiServices
+        subtype_name: ServiceAccountNativeDetailsBaseForSaasAiServices
+      - subtype_model: ServiceAccountNativeDetailsForOpenAI
+        subtype_name: ServiceAccountNativeDetailsForOpenAI
+      - subtype_model: ServiceAccountNativeDetailsForAnthropic
+        subtype_name: ServiceAccountNativeDetailsForAnthropic
+      - subtype_model: ServiceAccountNativeDetailsBaseForSaasDataServices
+        subtype_name: ServiceAccountNativeDetailsBaseForSaasDataServices
+      - subtype_model: ServiceAccountNativeDetailsForSnowflake
+        subtype_name: ServiceAccountNativeDetailsForSnowflake
+      - subtype_model: ServiceAccountNativeDetailsForDataBricks
+        subtype_name: ServiceAccountNativeDetailsForDataBricks
+      - subtype_model: ServiceAccountNativeDetailsBaseForSaasOtherServices
+        subtype_name: ServiceAccountNativeDetailsBaseForSaasOtherServices
+      - subtype_model: ServiceAccountNativeDetailsForDataDog
+        subtype_name: ServiceAccountNativeDetailsForDataDog
+      - subtype_model: ServiceAccountNativeDetailsForSplunk
+        subtype_name: ServiceAccountNativeDetailsForSplunk
+      - subtype_model: ServiceAccountNativeDetailsForCircleCI
+        subtype_name: ServiceAccountNativeDetailsForCircleCI
+      - subtype_model: ServiceAccountNativeDetailsForElastic
+        subtype_name: ServiceAccountNativeDetailsForElastic
+      - subtype_model: ServiceAccountNativeDetailsForSaasMicrosoftTeams
+        subtype_name: ServiceAccountNativeDetailsForSaasMicrosoftTeams
+      - subtype_model: ServiceAccountNativeDetailsForSalesForceSalesCloud
+        subtype_name: ServiceAccountNativeDetailsForSalesForceSalesCloud
+      - subtype_model: ServiceAccountNativeDetailsForDropbox
+        subtype_name: ServiceAccountNativeDetailsForDropbox
+      - subtype_model: ServiceAccountNativeDetailsForOkta
+        subtype_name: ServiceAccountNativeDetailsForOkta
+      - subtype_model: ServiceAccountNativeDetailsForSaasNewRelic
+        subtype_name: ServiceAccountNativeDetailsForSaasNewRelic
+      - subtype_model: ServiceAccountNativeDetailsForDynatrace
+        subtype_name: ServiceAccountNativeDetailsForDynatrace
+      - subtype_model: ServiceAccountNativeDetailsForGrafana
+        subtype_name: ServiceAccountNativeDetailsForGrafana
+      - subtype_model: ServiceAccountNativeDetailsForIbmTencent
+        subtype_name: ServiceAccountNativeDetailsForIbmTencent
+      - subtype_model: ServiceAccountNativeDetailsForCustomSaasTool
+        subtype_name: ServiceAccountNativeDetailsForCustomSaasTool
+      - subtype_model: ServiceAccountNativeDetailsForZabbix
+        subtype_name: ServiceAccountNativeDetailsForZabbix
+    DescendantServiceAccountQuery:
+      required:
+      - service_account_ids
+      properties:
+        service_account_ids:
+          type: array
+          description: Service account IDs that belong to the ancestors of matching accounts.
+          items:
+            type: string
+            x-cs-type: ObjectId
+        include_self:
+          type: boolean
+          description: Include the given service accounts in the result set
+        include_billing_as_parent:
+          type: boolean
+          description: Also include accounts whose billing_account_id matches any of the given accounts.
+        include_resource_as_parent:
+          type: boolean
+          description: Also include accounts whose resource_service_account_id matches any of the given accounts.
+        include_commercial_as_parent:
+          type: boolean
+          description: Also include AWS GovCloud accounts whose commercial_account_id matches any of the given accounts.
+        exclude_service_account_ids:
+          type: array
+          description: Service account IDs to excluded with descendants.
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    DeniedRolesAndUserGroups:
+      properties:
+        role_ids:
+          type: array
+          description: Role IDs explicitly denied access
+          items:
+            type: string
+            x-cs-type: ObjectId
+        user_group_ids:
+          type: array
+          description: User groups explicitly denied access
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    ServiceAccountNativeDetailsBaseForCloud:
+      allOf:
+      - $ref: '#/components/schemas/ServiceAccountNativeDetailsBase'
+      - properties:
+          access_type:
+            type: string
+            description: Cloud access type to select
+            example: read
+            enum:
+            - read
+            - write
+            x-cs-enum-type: CloudAccountAccessType
+          servicenow_cmdb_configuration:
+            description: ServiceNow CMDB Configuration
+            $ref: '#/components/schemas/ServiceNowCmdbConfigCreateRequest'
+        type: object
+      x-cs-type-name: ServiceAccountNativeDetailsBaseForCloud
+    ServiceNowCmdbRuleMapping:
+      properties:
+        locations:
+          type: array
+          description: List of locations to filter
+          items:
+            type: string
+        cloud_accounts:
+          type: array
+          description: List of Cloud Account to filter
+          items:
+            type: string
+        tags:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+      type: object
+    ServiceNowCmdbScopeDetails:
+      required:
+      - scope
+      properties:
+        scope:
+          type: string
+          description: Scope to Apply
+          example: master_account
+          enum:
+          - master_account
+          - tenant
+          - cloud_account
+          x-cs-enum-type: ServiceNowCmdbScope
+        master_account_id:
+          type: string
+          description: Master Account Id
+        tenant_id:
+          type: string
+          description: Id of the tenants that user has access to
+        cloud_account_id:
+          type: string
+          description: Id of the Cloud Account
+      type: object
+    BillingMetricAccessFilters:
+      properties:
+        metric_sys_id:
+          type: string
+          description: The Sys ID of the metric
+        native_detail_type:
+          description: Cloud account native details type
+          $ref: '#/components/schemas/ServiceAccountNativeDetailsBaseForCloud'
+      type: object
+    ServiceNowCmdbConfigCreateRequest:
+      allOf:
+      - $ref: '#/components/schemas/ServiceNowCmdbConfigBaseRequest'
+      - required:
+        - cmdb_account_id
+        - cmdb_service
+        - configuration
+        properties:
+          cmdb_account_id:
+            type: string
+            description: Id of the ServiceNow Account
+          cmdb_service:
+            type: string
+            description: Name of the Cmdb Service
+          configuration:
+            type: object
+            description: ServiceNow Cmdb Sync Configuration, indexed by CloudServiceName
+            additionalProperties:
+              $ref: '#/components/schemas/ServiceNowCmdbServiceConfig'
+        type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

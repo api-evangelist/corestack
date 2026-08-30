@@ -1,0 +1,216 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Summary Dashboard API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Summary Dashboard APIs
+servers:
+- url: /
+tags:
+- name: SummaryDashboard
+  description: Summary Dashboard APIs
+paths:
+  /v1/summary_dashboard/cloud_wise_usage:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudWiseUsageResponse'
+      summary: Get cloud-wise cost usage and top resource consumption data for the service accounts in a tenant
+      description: Get cloud-wise cost usage and top resource consumption data for the service accounts in a tenant
+      operationId: CloudWiseUsage
+      security:
+      - auth_token: []
+      tags:
+      - SummaryDashboard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CloudWiseUsageRequest'
+        required: true
+components:
+  schemas:
+    InventoryWiseUsage:
+      properties:
+        service_name:
+          type: string
+          description: Name of the service
+        tenant_name:
+          type: string
+          description: Name of the tenant
+        service_accounts:
+          type: array
+          items:
+            type: string
+            description: List of cloud accounts
+        total_count:
+          type: integer
+          description: Total count of the inventory usage
+        top_consumption:
+          type: array
+          description: List of top consumption usage data
+          items:
+            $ref: '#/components/schemas/TopConsumptionUsage'
+      type: object
+    TopConsumptionUsage:
+      properties:
+        category:
+          type: string
+          description: Category of the top consumption usage
+        component:
+          type: string
+          description: Component associated with the top consumption usage
+        resource:
+          type: string
+          description: Resource associated with the top consumption usage
+        count:
+          type: integer
+          description: Count of the top consumption usage
+      type: object
+    ProductCategoryWiseUsage:
+      properties:
+        name:
+          type: string
+          description: Product category of the usage
+        cost:
+          type: number
+          description: Cost of the resource in the usage
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    CloudWiseUsageRequest:
+      required:
+      - group_by
+      - tenant_id
+      - time_range
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID for the request
+        service_account_ids:
+          type: array
+          items:
+            type: string
+            description: List of service account IDs for the request
+        group_by:
+          type: string
+          description: The field by which the usage data is grouped.
+          example: day
+          enum:
+          - day
+          - month
+          - year
+          x-cs-enum-type: CloudWiseUsageGroupBy
+        is_markup:
+          type: boolean
+          description: Flag to indicate if the cost includes markup
+        time_range:
+          type: string
+          description: The Range of time for which the usage data is requested.
+          example: Day
+          enum:
+          - Day
+          - Month
+          x-cs-enum-type: CloudWiseUsageTimeRange
+        include_forecast_cost:
+          type: boolean
+          description: Flag to indicate if the cost is projected
+      type: object
+    ServiceNameWiseUsage:
+      properties:
+        service_name:
+          type: string
+          description: Name of the service
+        group_by:
+          type: string
+          description: Group by field for the service usage
+        day:
+          type: string
+          description: Day of the usage data
+        service_accounts:
+          type: array
+          description: List of cloud account-wise usage data
+          items:
+            $ref: '#/components/schemas/CloudAccountWiseUsage'
+      type: object
+    CloudAccountWiseUsage:
+      properties:
+        service_account_name:
+          type: string
+          description: Name of the cloud account
+        service_account_id:
+          type: string
+          description: Linked account ID for the cloud account
+        actual_cost:
+          type: number
+          description: Actual cost incurred for the cloud account
+        forecast_cost:
+          type: number
+          description: Projected cost for the cloud account
+        service_name:
+          type: string
+          description: Name of the service of the cloud account
+        account_type:
+          type: string
+          description: Type of the account
+        product_category_wise:
+          type: array
+          description: List of category-wise usage data
+          items:
+            $ref: '#/components/schemas/ProductCategoryWiseUsage'
+      type: object
+    CloudWiseUsageResponse:
+      properties:
+        cost_details:
+          type: array
+          description: List of service name-wise usage data
+          items:
+            $ref: '#/components/schemas/ServiceNameWiseUsage'
+        inventory_details:
+          type: array
+          description: List of inventory-wise usage data
+          items:
+            $ref: '#/components/schemas/InventoryWiseUsage'
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

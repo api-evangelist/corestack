@@ -1,0 +1,331 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Platform Task API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Assign Platform related background tasks to service accounts
+servers:
+- url: /
+tags:
+- name: PlatformTask
+  description: Assign Platform related background tasks to service accounts
+paths:
+  /v2/platform/task/assign:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Assign Platform Task to Service Account
+      description: Assign platform related background tasks to service accounts
+      operationId: PlatformTaskAssign
+      security:
+      - auth_token: []
+      tags:
+      - PlatformTask
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlatformTaskRequest'
+        required: true
+  /v2/platform/{service_account_id}/logs:
+    parameters:
+    - name: service_account_id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlatformLogsResponse'
+      summary: Send Logs from Platform Agent for Service Account
+      description: Send the logs from the platform agent for a service account
+      operationId: PlatformLogs
+      security:
+      - auth_token: []
+      tags:
+      - PlatformTask
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlatformLogsRequest'
+        required: true
+  /v2/platform/{service_account_id}/task:
+    parameters:
+    - name: service_account_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlatformTaskResponse'
+      summary: Check Assigned Platform Task for Service Account
+      description: Check assigned platform related background tasks for a service account
+      operationId: PlatformTaskCheck
+      security:
+      - auth_token: []
+      tags:
+      - PlatformTask
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Update Assigned Platform Task for Service Account
+      description: Update assigned platform related background tasks for a service account
+      operationId: PlatformTaskUpdate
+      security:
+      - auth_token: []
+      tags:
+      - PlatformTask
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlatformTaskUpdateRequest'
+        required: true
+components:
+  schemas:
+    PlatformLogsResponse:
+      properties:
+        message:
+          type: string
+          description: Additional information about the log submission
+      type: object
+    PlatformTaskProperties:
+      properties:
+        days:
+          type: integer
+          description: Number of days for backfill
+          default: 30
+      type: object
+    PlatformLogsRequest:
+      properties:
+        logs_list:
+          type: array
+          description: List of log entries
+          items:
+            $ref: '#/components/schemas/PlatformLogs'
+      type: object
+    PlatformTaskRequest:
+      required:
+      - service_account_id
+      - task
+      properties:
+        service_account_id:
+          type: string
+          description: Service Account ID
+        task:
+          type: string
+          description: Platform related background tasks
+          example: backfill
+          enum:
+          - backfill
+          - push_logs
+          - restart
+          x-cs-enum-type: PlatformTasks
+        properties:
+          description: Task specific properties (number of days for backfill)
+          $ref: '#/components/schemas/PlatformTaskProperties'
+      type: object
+    PlatformTaskResponse:
+      properties:
+        service_account_id:
+          type: string
+          description: Service Account ID
+        assigned_tasks:
+          type: array
+          description: Assigned tasks
+          items:
+            $ref: '#/components/schemas/PlatformAssignedTasks'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    PlatformLogs:
+      properties:
+        log_type:
+          type: string
+          description: Type of logs to push
+        timestamp:
+          type: string
+          format: date-time
+          description: Start time for logs to be pushed
+        message:
+          type: string
+          description: Log message to be pushed
+        trace_back:
+          type: string
+          description: Traceback information if any
+        run_id:
+          type: string
+          description: Run ID associated with the log
+        cluster:
+          type: string
+          description: Cluster name
+        namespace:
+          type: string
+          description: Namespace name
+        pod_name:
+          type: string
+          description: Pod name
+        container:
+          type: string
+          description: Container name
+        node:
+          type: string
+          description: Node name
+      type: object
+    PlatformAssignedTasks:
+      properties:
+        task_id:
+          type: string
+          description: Unique ID of the assigned task
+        assigned_task:
+          type: string
+          description: Assigned task
+          example: backfill
+          enum:
+          - backfill
+          - push_logs
+          - restart
+          x-cs-enum-type: PlatformTasks
+        properties:
+          description: Task specific properties (number of days for backfill)
+          $ref: '#/components/schemas/PlatformTaskProperties'
+      type: object
+    PlatformTaskUpdateRequest:
+      required:
+      - status
+      - task
+      - task_id
+      properties:
+        task_id:
+          type: string
+          description: Unique ID of the task to be updated
+        task:
+          type: string
+          description: Task to be updated
+          example: backfill
+          enum:
+          - backfill
+          - push_logs
+          - restart
+          x-cs-enum-type: PlatformTasks
+        status:
+          type: string
+          description: Updated status of the task
+          example: new
+          enum:
+          - new
+          - in_progress
+          - completed
+          - failed
+          x-cs-enum-type: PlatformTaskStatus
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

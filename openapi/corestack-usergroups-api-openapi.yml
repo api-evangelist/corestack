@@ -1,0 +1,457 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External User Groups API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: User Group Management
+servers:
+- url: /
+tags:
+- name: UserGroups
+  description: User Group Management
+paths:
+  /v1/master_accounts/{master_account_id}/user_groups:
+    parameters:
+    - name: master_account_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MasterAccountUserGroupSummary'
+      summary: User Group List By Master Account
+      description: User Group List By Master Account
+      operationId: UserGroupListByMasterAccount
+      security:
+      - auth_token: []
+      tags:
+      - UserGroups
+  /v2/user_groups:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Create UserGroup
+      description: Creates a user group within a CoreStack tenant and assign different set of roles to different users.There can be multiple user groups within a CoreStack tenant. User group will be created at the tenant level
+      operationId: CreateUserGroup
+      security:
+      - auth_token: []
+      tags:
+      - UserGroups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserGroupRequest'
+        required: true
+  /v2/user_groups/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGroupBatchResponse'
+      summary: User Group Batch
+      description: User Group Batch
+      operationId: UserGroupBatch
+      security:
+      - auth_token: []
+      tags:
+      - UserGroups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectIdBatchRequest'
+        required: true
+  /v2/user_groups/item/{group_id}:
+    parameters:
+    - name: group_id
+      in: path
+      required: true
+      schema:
+        type: string
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete UserGroup
+      description: Delete User Group by ID
+      operationId: DeleteUserGroup
+      security:
+      - auth_token: []
+      tags:
+      - UserGroups
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGroupDetails'
+      summary: Get UserGroup
+      description: Get User Group by ID
+      operationId: GetUserGroup
+      security:
+      - auth_token: []
+      tags:
+      - UserGroups
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGroupDetails'
+      summary: Update UserGroup
+      description: user group update within a CoreStack tenant and assign different set of roles to different users.There can be multiple user groups within a CoreStack tenant. User group will be updated at the tenant level
+      operationId: UpdateUserGroup
+      security:
+      - auth_token: []
+      tags:
+      - UserGroups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserGroupRequest'
+        required: true
+  /v2/user_groups/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGroupListResponse'
+      summary: User Group List
+      description: List User Groups
+      operationId: ListUserGroups
+      security:
+      - auth_token: []
+      tags:
+      - UserGroups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserGroupListRequest'
+        required: true
+components:
+  schemas:
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    UserGroupBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/UserGroupDetails'
+      type: object
+    UserGroupFilters:
+      properties:
+        tenant_ids:
+          type: array
+          items:
+            type: string
+            description: Filter By tenants
+      type: object
+    MasterAccountUserGroupSummary:
+      properties:
+        id:
+          type: string
+          description: UserGroup id
+        name:
+          type: string
+          description: Name of UserGroup
+      type: object
+    UserGroupDetails:
+      properties:
+        created_by:
+          type: string
+          description: Name of the user who created this user group
+        created_at:
+          type: string
+          format: date-time
+          description: When the user group was created
+        updated_by:
+          type: string
+          description: Name of the user last updated this user group
+        updated_at:
+          type: string
+          format: date-time
+          description: When the user group was last updated
+        group_name:
+          type: string
+          description: Name of the user group
+        tenant_ids:
+          type: array
+          description: ID of tenants within the CoreStack account
+          items:
+            type: string
+        roles:
+          type: array
+          description: List of role IDs assigned to UserGroup
+          items:
+            type: string
+        users:
+          type: array
+          description: List of users IDs assigned to UserGroup
+          items:
+            type: string
+      type: object
+    UserGroupListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+            x-cs-type: ObjectId
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    UserGroupRequest:
+      required:
+      - group_name
+      - roles
+      - tenant_ids
+      - users
+      properties:
+        group_name:
+          type: string
+          description: The unique group name for the user group to be created.
+        tenant_ids:
+          type: array
+          description: ID of tenants to assign to UserGroup
+          items:
+            type: string
+        roles:
+          type: array
+          description: List of role IDs to assign to UserGroup
+          items:
+            type: string
+        users:
+          type: array
+          description: List of users IDs to assign to UserGroup
+          items:
+            type: string
+      type: object
+    UserGroupSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: Name
+          enum:
+          - Name
+          - CreatedAt
+          x-cs-enum-type: UserGroupSortColumn
+        ascending:
+          type: boolean
+      type: object
+    UserGroupListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/UserGroupSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/UserGroupFilters'
+      type: object
+    ObjectIdBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

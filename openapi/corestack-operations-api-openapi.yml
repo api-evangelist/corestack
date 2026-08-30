@@ -1,0 +1,1892 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Operations API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Operations Pillar
+servers:
+- url: /
+tags:
+- name: Operations
+  description: Operations Pillar
+paths:
+  /operation/posture/dashboard_summary:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationPostureResponse'
+      summary: List Operation Posture Details For Mobile Site
+      description: Operation posture dashboard
+      operationId: OperationPostureDashboard
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OperationPostureRequest'
+        required: true
+  /operation/posture/dashboard_summary/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationPostureResponse'
+      summary: List Operation Posture Details
+      description: operation posture dashboard
+      operationId: ListOperationOpsPosture
+      parameters:
+      - description: to filter data by cloud provider or cloud account wise.By default tenant wise data displayed
+        required: true
+        name: filter_by
+        in: query
+        schema:
+          type: string
+          enum:
+          - cloud_account
+          - cloud_provider
+      - description: Number of records to display
+        name: limit
+        in: query
+        schema:
+          type: integer
+          default: 10
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+  /operation/{tenant_id}/visibility/{cloud}/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationVisibilityResponse'
+      summary: List Operation Visibility Details
+      description: operation visibility dashboard
+      operationId: ListOperationOpsVisibility
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: cloud
+        in: path
+        required: true
+        description: Specify the cloud service name to get the visibility details
+        schema:
+          type: string
+          enum:
+          - AWS
+          - GCP
+          - Azure
+      - description: to filter operation data count by region, resource or zone or account
+        required: true
+        name: filter_by
+        in: query
+        schema:
+          type: string
+          enum:
+          - resource
+          - region
+          - resource_group
+          - zone
+          - account
+          default: account
+      - description: filter data by alerts or activity
+        required: true
+        name: visibility_by
+        in: query
+        schema:
+          type: string
+          enum:
+          - activity
+          - alerts
+          - automation_failures
+          default: activity
+      - description: filter data by cloud account.Invalid if filter by value is account
+        name: service_account_id
+        in: query
+        schema:
+          type: string
+      - description: enable this option to list the visibility data for alerts or activity or automation failures
+        name: view_list
+        in: query
+        schema:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+      - description: to list visibility by  resource. valid if view_list option is true and region/resource_group/zone should be false/empty
+        name: resource
+        in: query
+        schema:
+          type: string
+      - description: to list visibility by region.valid if view_list option is true and cloud is AWS and resource/resource_group/zone should be false/empty
+        name: region
+        in: query
+        schema:
+          type: string
+      - description: to list visibility by resource group. valid if view_list option is true and cloud is Azure and resource/region/zone should be false/empty
+        name: resource_group
+        in: query
+        schema:
+          type: string
+      - description: to list visibility by zone.valid if view_list option is true and cloud is GCP and resource/region/resource_group should be false/empty
+        name: zone
+        in: query
+        schema:
+          type: string
+      - description: Number of records to display
+        name: limit
+        in: query
+        schema:
+          type: integer
+          default: 10
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+  /operations/activity/{cloud_name}/get_resource_detail:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetResourceDetailsResponse'
+      summary: Get Operations Resource Details
+      description: Get the resource details for the specified cloud service name
+      operationId: GetResourceDetails
+      parameters:
+      - name: cloud_name
+        in: path
+        required: true
+        description: Specify the cloud service name to get the resource details. Allowed Values - AWS, Azure, GCP
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+  /operations/activity/{tenant_id}/list_activity_operations:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOperationsResponse'
+      summary: List Operations Activity Details by Resource & Resource Type
+      description: List the operations based on resource and resource_type specified
+      operationId: ListActivityOperations
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - required: true
+        name: action
+        in: query
+        schema:
+          type: string
+          default: list_operations
+      - description: Service by which the cloud accounts and their configurations are segregated.
+        in: query
+        x-cs-enum-type: CloudServiceName
+        required: true
+        name: service
+        schema:
+          type: string
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          default: AWS
+      - description: 'Resource name of the corresponding cloud service. Resource can be fetched from Get Resource Detail API '
+        required: true
+        name: resource
+        in: query
+        schema:
+          type: string
+      - description: Resource type of the corresponding cloud service. Resource Type can be obtained from List Operation Visibility Details
+        required: true
+        name: resource_type
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+  /operations/azure_patch_management/report/trigger:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Azure Patch Management Report Trigger
+      description: Trigger Azure Patch Management report
+      operationId: AzurePatchManagementReportTrigger
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AzurePatchManagementReportTriggerRequest'
+        required: true
+  /operations/monitoring_and_alerts/cloud_accounts/{tenant_id}/apply_template:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Applied
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Apply Operations Alert Configuration
+      description: Apply Template
+      operationId: ApplyTemplate
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplyTemplateRequest'
+        required: true
+  /operations/monitoring_and_alerts/cloud_accounts/{tenant_id}/list_cloud_account_configurations:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListCloudAccountConfiguration'
+      summary: List Operations Alert Configuration by Cloud Account
+      description: List cloud account configurations
+      operationId: ListCloudAccountConfigurations
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+  /operations/monitoring_and_alerts/cloud_accounts/{tenant_id}/list_cloud_account_details:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetServiceDetails'
+      summary: Get Service Details For Operations Alert Configuration
+      description: Get Service Details
+      operationId: GetServiceDetails
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+  /operations/monitoring_and_alerts/cloud_accounts/{tenant_id}/view_applied:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewAppliedResponse'
+      summary: View Applied Operations Alert Configuration
+      description: View what is applied
+      operationId: ViewApplied
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: Number of records to display
+        name: limit
+        in: query
+        schema:
+          type: integer
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ViewAppliedRequest'
+        required: true
+  /operations/monitoring_and_alerts/monitoring_templates/{tenant_id}/clone_template:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloneTemplateResponse'
+      summary: Clone Operations Alert Configuration Templates
+      description: Clone Template
+      operationId: CloneTemplate
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CloneTemplateRequest'
+        required: true
+  /operations/monitoring_and_alerts/monitoring_templates/{tenant_id}/create_template:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAlertTemplateResponse'
+      summary: Create Operations Alert Configuration Templates
+      description: Create Template
+      operationId: OperationsAlertConfigurationCreateTemplate
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAlertTemplateRequest'
+        required: true
+  /operations/monitoring_and_alerts/monitoring_templates/{tenant_id}/edit_template:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Update Operations Alert Configuration Template
+      description: Edit Template
+      operationId: EditTemplate
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: Specify the monitoring_template_uri of the template which the name to be edited
+        required: true
+        name: monitoring_template_uri
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditTemplateRequest'
+        required: true
+  /operations/monitoring_and_alerts/monitoring_templates/{tenant_id}/edit_template_name:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Update Operations Alert Configuration Template Name
+      description: Edit Template Name
+      operationId: EditTemplateName
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: Specify the monitoring_template_uri of the template which the name to be edited
+        required: true
+        name: monitoring_template_uri
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditTemplateNameRequest'
+        required: true
+  /operations/monitoring_and_alerts/monitoring_templates/{tenant_id}/enable_default_template:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Set
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Set Default Options Operations Alert Configuration
+      description: Option to Set Template as Default
+      operationId: SetDefaultOptions
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetDefaultRequest'
+        required: true
+  /operations/monitoring_and_alerts/monitoring_templates/{tenant_id}/list_alert_templates:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAlertTemplates'
+      summary: List Operations Alert Configuration Templates
+      description: List Alert templates
+      operationId: ListAlertTemplates
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+  /operations/monitoring_and_alerts/monitoring_templates/{tenant_id}/resource_metric_hierarchy_configuration:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceMetricHierarchyResponse'
+      summary: List Operations Resource Metric Hierarchy Configuration
+      description: resource metric hierarchy configuration listing
+      operationId: ResourceMetricHierarchyConfiguration
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: Specify the criticality
+        required: false
+        name: criticality
+        in: query
+        schema:
+          type: string
+          enum:
+          - all
+          - High
+          - Medium
+          - Low
+      - description: Specify the status
+        required: false
+        name: status
+        in: query
+        schema:
+          type: string
+          enum:
+          - all
+          - configured
+          - unconfigured
+      - description: Specify the metric_type
+        required: false
+        name: metric_type
+        in: query
+        schema:
+          type: string
+          enum:
+          - all
+          - Availability
+          - Capacity
+          - Failure
+          - Performance
+          - Security
+          - Success
+          - Utilization
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceMetricHierarchyRequest'
+        required: true
+  /operations/monitoring_and_alerts/monitoring_templates/{tenant_id}/view_configuration:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewConfigurationResponse'
+      summary: View Operations Configuration Details
+      description: view configuration listing
+      operationId: ViewConfiguration
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: Specify the criticality
+        required: true
+        name: criticality
+        in: query
+        schema:
+          type: string
+          enum:
+          - all
+          - High
+          - Medium
+          - Low
+          default: all
+      - description: Specify the status
+        required: false
+        name: status
+        in: query
+        schema:
+          type: string
+          enum:
+          - all
+          - configured
+          - unconfigured
+          default: all
+      - description: Specify the metric_type
+        required: true
+        name: metric_type
+        in: query
+        schema:
+          type: string
+          enum:
+          - all
+          - Availability
+          - Capacity
+          - Failure
+          - Performance
+          - Security
+          - Success
+          - Utilization
+          default: all
+      security:
+      - auth_token: []
+      tags:
+      - Operations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ViewConfigurationRequest'
+        required: true
+components:
+  schemas:
+    OperationPostureRequest:
+      properties:
+        filter_by:
+          type: string
+          description: to filter data by cloud provider or cloud account wise or tenant.By default tenant wise data displayed
+          example: cloud_account
+          enum:
+          - cloud_account
+          - cloud_provider
+          - tenant
+          x-cs-enum-type: OperationPostureFilter
+        tenant_ids:
+          type: string
+          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        service_name:
+          type: string
+          description: select the cloud account type
+          example: AWS
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          x-cs-enum-type: CloudServiceName
+        limit:
+          type: integer
+          description: Limit
+        page:
+          type: integer
+          description: Page
+        search:
+          type: string
+          description: Search by account_name wise
+      type: object
+    GetResourceDetailsResponse:
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          description: Resource Details
+      type: object
+    ViewConfigurationResponse:
+      required:
+      - data
+      - message
+      properties:
+        message:
+          type: string
+          description: Message of View Configuration
+        data:
+          type: object
+          description: View Configuration Listing
+      type: object
+    OperationResourceGroupModel:
+      required:
+      - count
+      - resource_group
+      properties:
+        resource_group:
+          type: string
+          description: resource group name
+        count:
+          type: integer
+          description: total count details
+      type: object
+    CloneTemplateRequest:
+      required:
+      - clone_template_name
+      - is_default
+      - scope
+      - source_monitoring_template_uri
+      properties:
+        clone_template_name:
+          type: string
+          description: Provide the clone template name.
+        is_default:
+          type: boolean
+          description: Boolean value to set template as default not not
+        cloud_account_id:
+          type: array
+          description: Provide cloud_account_id when scope is selected as cloud_account scope
+          items:
+            type: string
+        regions:
+          type: array
+          description: Select regions when scope is selected as region for an AWS cloud
+          items:
+            type: string
+        resource_groups:
+          type: array
+          description: Select resource_groups when scope is selected as resource_group for an Azure cloud
+          items:
+            type: string
+        apply_to_existing_resource:
+          type: boolean
+          description: Select the check box, if wish to apply the configuration for existing resources also
+        scope:
+          type: string
+          description: scope for the template to be cloned
+        source_monitoring_template_uri:
+          type: string
+          description: monitoring_template_uri of a template from which it is being cloned
+        constraints:
+          description: Provide the constraints, if the template need to be mapped with constraints
+          $ref: '#/components/schemas/ConstraintsRequest'
+      type: object
+    ConstraintsRequest:
+      properties:
+        option:
+          type: string
+          description: Option Value of Tag Details
+          example: new
+          enum:
+          - new
+          - existing
+          x-cs-enum-type: ConstraintsOption
+        type:
+          type: string
+          description: Type of Template Details
+          example: tag
+          enum:
+          - tag
+          x-cs-enum-type: ConstraintsType
+        tags:
+          type: object
+          description: Tag keys and Tag values of Template Details. eg) {"XZV":["ZNCDF", "dfsgsg"]}
+      type: object
+    OperationPostureResponse:
+      required:
+      - cloud_account_data
+      - clouds
+      - tenants
+      - total_count
+      properties:
+        total_count:
+          type: integer
+          description: count details
+        tenants:
+          type: array
+          description: List of tenant data
+          items:
+            $ref: '#/components/schemas/OperationPostureTenant'
+        cloud_account_data:
+          type: array
+          description: List of cloud account data
+          items:
+            $ref: '#/components/schemas/OperationPostureCloudData'
+        clouds:
+          type: array
+          description: List of tenant data
+          items:
+            $ref: '#/components/schemas/OperationPostureCloudProvider'
+      type: object
+    OperationVisibilityResponse:
+      required:
+      - account_wise_count
+      - region_wise_count
+      - resource_group_wise_count
+      - resource_list_data
+      - resource_wise_count
+      - total_count
+      - zone_wise_count
+      properties:
+        total_count:
+          type: integer
+          description: count details
+        account_wise_count:
+          type: array
+          description: List of account wise count data
+          items:
+            $ref: '#/components/schemas/OperationAccountModel'
+        resource_wise_count:
+          type: array
+          description: List of resource wise count data
+          items:
+            $ref: '#/components/schemas/OperationResourceModel'
+        region_wise_count:
+          type: array
+          description: List of region wise count data
+          items:
+            $ref: '#/components/schemas/OperationRegionModel'
+        resource_group_wise_count:
+          type: array
+          description: List of resource group wise data
+          items:
+            $ref: '#/components/schemas/OperationResourceGroupModel'
+        zone_wise_count:
+          type: array
+          description: List of zone wise count data
+          items:
+            $ref: '#/components/schemas/ZoneModel'
+        resource_list_data:
+          type: array
+          description: List of account wise count data
+          items:
+            $ref: '#/components/schemas/OperationResourceListModel'
+      type: object
+    EditTemplateNameRequest:
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Provide the name for the template to be updated
+      type: object
+    OperationPostureCloudCounts:
+      properties:
+        GCP:
+          type: number
+          description: GCP count
+        AWS:
+          type: number
+          description: AWS count
+        Azure:
+          type: number
+          description: Azure count
+        OCI:
+          type: number
+          description: OCI count
+      type: object
+    CreateAlertTemplateRequest:
+      required:
+      - create_template_name
+      - is_default
+      - scope
+      - service
+      properties:
+        service:
+          type: string
+          description: Specify the cloud service
+        create_template_name:
+          type: string
+          description: Provide the create template name.
+        is_default:
+          type: boolean
+          description: Boolean value to set template as default not not
+        cloud_account_id:
+          type: array
+          description: Provide cloud_account_id when scope is selected as cloud_account scope
+          items:
+            type: string
+        regions:
+          type: array
+          description: Select regions when scope is selected as region for an AWS cloud
+          items:
+            type: string
+        resource_groups:
+          type: array
+          description: Select resource_groups when scope is selected as resource_group for an Azure cloud
+          items:
+            type: string
+        apply_to_existing_resource:
+          type: boolean
+          description: Select the check box, if wish to apply the configuration for existing resource also
+        scope:
+          type: string
+          description: scope for the template to be created
+        constraints:
+          description: Provide the constraints, if the template need to be mapped with constraints
+          $ref: '#/components/schemas/ConstraintsRequest'
+      type: object
+    CloneTemplateResponse:
+      required:
+      - data
+      - message
+      properties:
+        message:
+          type: string
+          description: Clone template response
+        data:
+          type: object
+          description: Create Monitoring Template Details
+      type: object
+    ApplyTemplateRequest:
+      required:
+      - cloud_accounts
+      - monitoring_template_uri
+      properties:
+        cloud_accounts:
+          type: array
+          description: Specify the cloud_account_id to which the template to be applied
+          items:
+            type: string
+        regions:
+          type: array
+          description: Select the regions to which the template to be applied, when the AWS cloud account is selected
+          items:
+            type: string
+        resource_groups:
+          type: array
+          description: Select the resource_groups to which the template to be applied, when the Azure cloud account is selected
+          items:
+            type: string
+        monitoring_template_uri:
+          type: string
+          description: Specify the monitoring_template_uri of the template to be applied
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ListOperationsResponse:
+      required:
+      - data
+      properties:
+        data:
+          type: array
+          description: Operations List
+          items:
+            type: string
+      type: object
+    ViewAppliedResponseItem:
+      properties:
+        resource:
+          type: string
+          description: Resource details retrieved successfully
+        metric_name:
+          type: string
+          description: Metric name retrieved successfully
+        criticality:
+          type: string
+          description: Criticality retrieved successfully
+        metric_type:
+          type: string
+          description: metric_type retrieved successfully
+        resource_filter:
+          type: string
+          description: Resource filter retrieved successfully
+        status:
+          type: string
+          description: Status retrieved successfully
+        metric_configurations:
+          description: Metric Configurations retrieved successfully
+          $ref: '#/components/schemas/MetricConfigItems'
+        last_applied_date:
+          type: string
+          description: Last applied date retrieved successfully
+        resource_type:
+          type: string
+          description: Resource type retrieved successfully
+        status_message:
+          type: string
+          description: Status message retrieved successfully
+      type: object
+    ResourceMetricHierarchyResponse:
+      required:
+      - data
+      - message
+      properties:
+        message:
+          type: string
+          description: Message of Resource Metric Hierarchy
+        data:
+          type: object
+          description: Resource Metric Hierarchy Listing
+      type: object
+    MetricConfigItems:
+      properties:
+        EvaluationPeriods:
+          type: integer
+          description: Evaluation periods retrieved successfully
+        Dimensions:
+          type: array
+          description: Dimensions retrieved successfully
+          items:
+            type: string
+        AlarmActions:
+          type: array
+          description: Alarm actions retrieved successfully
+          items:
+            type: string
+        AlarmDescription:
+          type: string
+          description: Alarm description retrieved successfully
+        Namespace:
+          type: string
+          description: Namespace retrieved successfully
+        Period:
+          type: integer
+          description: Period retrieved successfully
+        ComparisonOperator:
+          type: string
+          description: Comparison Operator retrieved successfully
+        Statistic:
+          type: string
+          description: Statistic retrieved successfully
+        Threshold:
+          type: integer
+          description: Threshold retrieved successfully
+        OKActions:
+          type: array
+          description: Okactions retrieved successfully
+          items:
+            type: string
+      type: object
+    EditTemplateRequest:
+      required:
+      - configuration_data
+      properties:
+        configuration_data:
+          type: object
+          description: "Refer the View configuration response for data formation\n                                                                             For AWS\n                                                                             ex:\n                                                                             {\n                                                                             \"Compute\": {\n                                                                                 \"EC2\": {\n                                                                                     \"Instances\": [{\n                                                                                         \"threshold_settings\": {\n                                                                                             \"EvaluationPeriods\": 2,\n                                                                                             \"Dimensions\": [],\n                                                                                             \"AlarmActions\": [],\n                                                                                             \"AlarmDescription\": \"\",\n                                                                                             \"Namespace\": \"\",\n                                                                                             \"Period\": 5,\n                                                                                             \"ComparisonOperator\": \"GreaterThanOrEqualToThreshold\",\n                                                                                             \"Statistic\": \"Average\",\n                                                                                             \"Threshold\": 75,\n                                                                                             \"OKActions\": []\n                                                                                         },\n                                                                                         \"service_resource_metric_uri\": \"AWS/Compute/EC2/Instances/CPUUtilization\",\n                                                                                         \"status\": \"enabled/disabled\",\n                                                                                         \"metric_name\": \"CPUUtilization\"\n                                                                                     }]\n                                                                                 }\n                                                                             }\n                                                                             For Azure\n                                                                             ex:\n                                                                             {\n                                                                             \"Compute\": {\n                                                                                 \"Virtual_Machines\": {\n                                                                                     \"Virtual_Machines\": [{\n                                                                                         \"threshold_settings\": {\n                                                                                             \"threshold\" : 95,\n                                                                                             \"operator\" : \"GreaterThan\",\n                                                                                             \"window_size\" : \"PT15M\",\n                                                                                             \"aggregation\" : \"Total\"\n                                                                                         },\n                                                                                         \"service_resource_metric_uri\": \"Azure/Compute/Virtual_Machines/Virtual_Machines/Percentage CPU\",\n                                                                                         \"status\": \"enabled/disabled\",\n                                                                                         \"metric_name\": \"Percentage CPU\"\n                                                                                     }]\n                                                                                 }\n                                                                             }\n                                                                             }\n                                                                             For GCP\n                                                                             ex:\n                                                                             {\n                                                                             \"Compute\": {\n                                                                                 \"Compute_Engine\": {\n                                                                                     \"VM_Instances\": [{\n                                                                                         \"threshold_settings\": {\n                                                                                             \"Comparison\" : \"COMPARISON_GT\",\n                                                                                             \"Aggregator\" : \"REDUCE_MEAN\",\n                                                                                             \"Period\" : 5,\n                                                                                             \"Aligner\" : \"ALIGN_MEAN\",\n                                                                                             \"Threshold\" : 90,\n                                                                                             \"Duration\" : 1\n                                                                                         },\n                                                                                         \"service_resource_metric_uri\": \"GCP/Compute/Compute_Engine/VM_Instances/compute.googleapis.com/instance/cpu/utilization\",\n                                                                                         \"status\": \"enabled/disabled\",\n                                                                                         \"metric_name\": \"compute.googleapis.com/instance/cpu/utilization\"\n                                                                                     }]\n                                                                                 }\n                                                                             }\n                                                                             }\n                                                                             "
+      type: object
+    ResourceMetricHierarchyRequest:
+      required:
+      - service
+      - template_uri
+      properties:
+        template_uri:
+          type: string
+          description: Template URI
+        service:
+          type: string
+          description: Cloud Service Name
+          example: AWS
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          x-cs-enum-type: CloudServiceName
+      type: object
+    AzurePatchManagementReportTriggerRequest:
+      required:
+      - service_account_id
+      properties:
+        service_account_id:
+          type: string
+          description: Provide service_account_id to trigger the azure patch report generation
+          x-cs-type: ObjectId
+      type: object
+    OperationPostureCloudProvider:
+      properties:
+        alerts:
+          description: alerts count
+          $ref: '#/components/schemas/OperationPostureCloudCounts'
+        activities:
+          description: activities cost
+          $ref: '#/components/schemas/OperationPostureCloudCounts'
+        automation_failures:
+          description: automation count
+          $ref: '#/components/schemas/OperationPostureCloudCounts'
+      type: object
+    CreateAlertTemplateResponse:
+      required:
+      - data
+      - message
+      properties:
+        message:
+          type: string
+          description: Create template response
+        data:
+          type: object
+          description: Create Monitoring Template Details
+      type: object
+    ViewAppliedRequest:
+      required:
+      - cloud_account_id
+      - monitoring_template_uri
+      properties:
+        monitoring_template_uri:
+          type: string
+          description: Specify the monitoring_template_uri of the applied template to view what is applied. Template URI can be obtained from List operation alert configuration templates
+        cloud_account_id:
+          type: string
+          description: Cloud account id is unique can be obtained from the list cloud account api.
+        resource_type:
+          type: string
+          description: Resource Type can be obtained from List Operation visibility details
+        resource:
+          type: string
+          description: Resource can be obtained from get operations resource details
+        metric_name:
+          type: string
+          description: Metric name can be obtained from List Operation visibility details
+        criticality:
+          type: string
+          description: Specify the criticality
+          example: High
+          enum:
+          - High
+          - Low
+          - Medium
+          x-cs-enum-type: TemplateAlertCriticality
+        metric_type:
+          type: string
+          description: Specify the metric_type
+          example: Availability
+          enum:
+          - Availability
+          - Capacity
+          - Failure
+          - Performance
+          - Security
+          - Success
+          - Utilization
+          x-cs-enum-type: TemplateAlertMetricType
+        status:
+          type: string
+          description: The data to be filtered based on the specified status
+          example: completed
+          enum:
+          - completed
+          - delete_failed
+          - delete_in_progress
+          - deleted
+          - enabled
+          - failed
+          - skipped
+          x-cs-enum-type: AppliedAlertStatus
+      type: object
+    SetDefaultRequest:
+      required:
+      - monitoring_template_uri
+      properties:
+        monitoring_template_uri:
+          type: string
+          description: Specify the monitoring_template_uri of the template to mark it as default
+      type: object
+    ViewConfigurationRequest:
+      required:
+      - template_uri
+      properties:
+        template_uri:
+          type: string
+          description: Template URI
+      type: object
+    ListAlertTemplates:
+      required:
+      - metric_alert_templates
+      - page_count
+      - total_count
+      properties:
+        total_count:
+          type: integer
+          description: total records count
+        page_count:
+          type: integer
+          description: Count of number of pages
+        metric_alert_templates:
+          type: array
+          items:
+            type: object
+      type: object
+    GetServiceDetails:
+      required:
+      - data
+      - message
+      properties:
+        message:
+          type: string
+        data:
+          type: object
+          description: get service details response
+      type: object
+    OperationRegionModel:
+      required:
+      - count
+      - region
+      properties:
+        region:
+          type: string
+          description: region name
+        count:
+          type: integer
+          description: total count details
+      type: object
+    OperationAccountModel:
+      required:
+      - cloud_account_name
+      - count
+      properties:
+        cloud_account_name:
+          type: string
+          description: cloud account name
+        count:
+          type: integer
+          description: total count details
+      type: object
+    OperationPostureCloudData:
+      required:
+      - cloud_account_id
+      - cloud_account_name
+      properties:
+        cloud_account_name:
+          type: string
+          description: cloud account name
+        cloud_account_id:
+          type: string
+          description: cloud account id
+        alerts:
+          type: integer
+          description: alerts count
+        activities:
+          type: integer
+          description: activities cost
+        automation_failures:
+          type: integer
+          description: automation count
+        tenant_name:
+          type: string
+          description: Name of the tenant
+        cloud:
+          type: string
+          description: cloud name
+      type: object
+    OperationResourceModel:
+      required:
+      - count
+      - resource
+      properties:
+        resource:
+          type: string
+          description: resource name
+        count:
+          type: integer
+          description: total count details
+      type: object
+    ZoneModel:
+      required:
+      - count
+      - zone
+      properties:
+        zone:
+          type: string
+          description: zone name
+        count:
+          type: integer
+          description: total count details
+      type: object
+    OperationResourceListModel:
+      required:
+      - alert_type
+      - analysis
+      - blueprint_id
+      - cloud_account_id
+      - cloud_account_name
+      - description
+      - eventDataId
+      - event_action
+      - event_creation_time
+      - job_type
+      - location
+      - metric_name
+      - metric_value
+      - operator
+      - region
+      - resource
+      - resourceGroupId
+      - resourceId
+      - resource_group
+      - resource_name
+      - resource_type
+      - snooze
+      - status
+      - template_id
+      - threshold
+      - username
+      - windowSize
+      - zone
+      properties:
+        cloud_account_name:
+          type: string
+          description: cloud account name
+        cloud_account_id:
+          type: string
+          description: cloud account id
+        tenant_name:
+          type: string
+          description: Name of the tenant
+        tenant_id:
+          type: string
+          description: Id of the tenant
+        username:
+          type: string
+          description: user name
+        alert_type:
+          type: string
+          description: alert type
+        eventDataId:
+          type: string
+          description: event data id
+        resource_name:
+          type: string
+          description: resource_name
+        region:
+          type: string
+          description: region name
+        resource_group:
+          type: string
+          description: resource_group name
+        zone:
+          type: string
+          description: zone name
+        location:
+          type: string
+          description: location name
+        resourceId:
+          type: string
+          description: resource id name
+        resourceGroupId:
+          type: string
+          description: resource group id name
+        status:
+          type: string
+          description: status
+        description:
+          type: string
+          description: description
+        resource:
+          type: string
+          description: resource
+        event_action:
+          type: object
+          description: event_action
+        resource_type:
+          type: string
+          description: resource_type name
+        event_creation_time:
+          type: string
+          description: event creation time (UTC)
+        metric_name:
+          type: string
+          description: metric name
+        metric_value:
+          type: string
+          description: metric value
+        threshold:
+          type: string
+          description: threshold
+        operator:
+          type: string
+          description: operator
+        windowSize:
+          type: string
+          description: windowSize
+        snooze:
+          type: string
+          description: snooze
+        analysis:
+          type: string
+          description: analysis
+        action:
+          type: array
+          description: action
+          items:
+            type: string
+        cloud:
+          type: string
+          description: cloud name
+        job_type:
+          type: string
+          description: job type
+        template_id:
+          type: string
+          description: Id of template
+        blueprint_id:
+          type: string
+          description: Id of blueprint
+      type: object
+    ViewAppliedResponse:
+      required:
+      - applied_records
+      - page_count
+      - total_count
+      properties:
+        total_count:
+          type: integer
+          description: total records count
+        page_count:
+          type: integer
+          description: Count of number of pages
+        applied_records:
+          description: view applied response data
+          $ref: '#/components/schemas/ViewAppliedResponseItem'
+      type: object
+    ListCloudAccountConfiguration:
+      required:
+      - cloud_account_configuration
+      - page_count
+      - total_count
+      properties:
+        total_count:
+          type: integer
+          description: total records count
+        page_count:
+          type: integer
+          description: Count of number of pages
+        cloud_account_configuration:
+          type: array
+          items:
+            type: object
+      type: object
+    OperationPostureTenant:
+      required:
+      - tenant_id
+      - tenant_name
+      properties:
+        tenant_name:
+          type: string
+          description: Name of the tenant
+        tenant_id:
+          type: string
+          description: Id of the tenant
+        alerts:
+          type: integer
+          description: alerts count
+        activities:
+          type: integer
+          description: activities cost
+        automation_failures:
+          type: integer
+          description: automation count
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

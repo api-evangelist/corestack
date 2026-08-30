@@ -1,0 +1,5153 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External App Sec Ops API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Application Security
+servers:
+- url: /
+tags:
+- name: AppSecOps
+  description: Application Security
+paths:
+  /v1/appsecops/applications/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsApplicationBatchResponse'
+      summary: List of application details
+      description: Details of the given batch of application IDs. Supports a maximum of 1000 IDs per request.
+      operationId: BatchApplication
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+        required: true
+  /v1/appsecops/applications/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsApplicationResponse'
+      summary: Creates an application
+      description: Creates an application
+      operationId: CreateApplication
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsApplicationRequest'
+        required: true
+  /v1/appsecops/applications/item/{application_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsApplicationResponse'
+      summary: Get the application details
+      description: Get details of a given application.
+      operationId: GetApplication
+      parameters:
+      - name: application_id
+        in: path
+        required: true
+        description: Specify the application ID to get the application data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsApplicationResponse'
+      summary: Update an application
+      description: Update details of the given application.
+      operationId: UpdateApplication
+      parameters:
+      - name: application_id
+        in: path
+        required: true
+        description: Specify the application ID to update the application data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsApplicationRequest'
+        required: true
+  /v1/appsecops/applications/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+      summary: List of Applications
+      description: List of applications
+      operationId: ListApplication
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsApplicationListRequest'
+        required: true
+  /v1/appsecops/bcs_questions/answers_version/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsBCSQuestionsAnswers'
+      summary: Create a new BCS answer version
+      description: Create a new BCS answer version
+      operationId: BCSAnswerVersionCreate
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsBCSQuestionsAnswersVersionRequest'
+        required: true
+  /v1/appsecops/bcs_questions/answers_version/history:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsBCSQuestionsAnswersHistoryResponse'
+      summary: Paginated history of BCS answer versions
+      description: Paginated history of BCS answer versions
+      operationId: BCSAnswerVersionHistory
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsBCSQuestionsAnswersHistoryRequest'
+        required: true
+  /v1/appsecops/bcs_questions/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppSecopsBCSQuestion'
+      summary: List of BCS questions
+      description: List of BCS questions
+      operationId: ListBCSQuestions
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+  /v1/appsecops/container/findings/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContainerFindingsResponse'
+      summary: List of container finding details
+      description: Details of the given batch of container finding IDs. Supports a maximum of 1000 IDs per request.
+      operationId: BatchContainerFindings
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectIdBatchRequest'
+        required: true
+  /v1/appsecops/container/findings/ingest:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContainerFindings'
+      summary: Ingest container security findings from external tools
+      description: Ingest container security findings from tools like Dockle and Hadolint
+      operationId: IngestContainerFindings
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsIngestContainerFindingsRequest'
+        required: true
+  /v1/appsecops/container/findings/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+      summary: List of container security findings with filtering and pagination support
+      description: List of container security findings with filtering and pagination support
+      operationId: ListContainerFindings
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContainerFindingsRequest'
+        required: true
+  /v1/appsecops/dashboard/summary/portfolio_hierarchy:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppSecopsPortfolioHierarchyResponse'
+      summary: List all Portfolios along with its associated applications and projects
+      description: List of portfolio details and associated applications and projects
+      operationId: PortfolioHierarchy
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsPortfolioHierarchyRequest'
+        required: true
+  /v1/appsecops/dashboard/summary/sbom_components:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsSbomComponentsResponse'
+      summary: List of all SBOMs along with its associated components
+      description: List of SBOM details along with associated components
+      operationId: SummarySbomComponents
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsSbomComponentRequest'
+        required: true
+  /v1/appsecops/dashboard/summary/sbom_vulnerabilities:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsSbomVulnerabilityResponse'
+      summary: List of all SBOM vulnerabilities
+      description: List of SBOM vulnerabilities
+      operationId: SummarySbomVulnerabilities
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsSbomVulnerabilityRequest'
+        required: true
+  /v1/appsecops/dashboard/summary/version_diff:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppSecopsSbomBuildDifferenceResponse'
+      summary: Summary of differences in vulnerability and component counts compared to the previous SBOM build
+      description: Retrieve the difference in vulnerability and component counts compared to the previous SBOM build.
+      operationId: SbomBuildDifferenceTrend
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsSbomBuildDifferenceTrendRequest'
+        required: true
+  /v1/appsecops/dashboard/top_actionable_issues:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsTopActionableIssuesResponse'
+      summary: List top (x) actionable issues including vulnerabilities, threats and config violations
+      description: List Top actionable issues including vulnerabilities, threats and config violations
+      operationId: TopActionableIssues
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsTopActionableIssuesRequest'
+        required: true
+  /v1/appsecops/dashboard/vulnerabilities/aggregation_by_component:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppSecopsVulnerabilityByComponent'
+      summary: List of aggregated vulnerability count by component properties
+      description: Aggregated vulnerability count by component properties
+      operationId: VulnerabilityByComponent
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsVulnerabilityByComponentRequest'
+        required: true
+  /v1/appsecops/dashboard/vulnerabilities/trend_by_severity:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppSecopsVulnerabilityTrendBySeverity'
+      summary: List of vulnerabilities count by severity
+      description: List of vulnerabilities count by severity
+      operationId: VulnerabilityTrendBySeverity
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsVulnerabilityTrendBySeverityRequest'
+        required: true
+  /v1/appsecops/portfolios/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsPortfolioBatchResponse'
+      summary: List of portfolio details
+      description: Details of the given batch of portfolio IDs. Supports a maximum of 1000 IDs per request.
+      operationId: BatchPortfolio
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+        required: true
+  /v1/appsecops/portfolios/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsPortfolioResponse'
+      summary: Creates a portfolio
+      description: Creates a portfolio
+      operationId: CreatePortfolio
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsPortfolioRequest'
+        required: true
+  /v1/appsecops/portfolios/item/{portfolio_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsPortfolioResponse'
+      summary: Get the portfolio details
+      description: Get details of a given portfolio.
+      operationId: GetPortfolio
+      parameters:
+      - name: portfolio_id
+        in: path
+        required: true
+        description: Specify the portfolio ID to get the portfolio data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsPortfolioResponse'
+      summary: Update the portfolio details
+      description: Updates the given portfolio details.
+      operationId: UpdatePortfolio
+      parameters:
+      - name: portfolio_id
+        in: path
+        required: true
+        description: Specify the portfolio Id to update the portfolio data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsPortfolioRequest'
+        required: true
+  /v1/appsecops/portfolios/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+      summary: List of portfolios
+      description: List of portfolios
+      operationId: ListPortfolio
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsPortfolioListRequest'
+        required: true
+  /v1/appsecops/projects/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsProjectBatchResponse'
+      summary: List of project details
+      description: Details of the given batch of project IDs. Supports a maximum of 1000 IDs per request.
+      operationId: BatchProject
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+        required: true
+  /v1/appsecops/projects/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsProjectResponse'
+      summary: Creates a project
+      description: Creates a project
+      operationId: CreateProject
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsProjectRequest'
+        required: true
+  /v1/appsecops/projects/item/{project_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsProjectResponse'
+      summary: Get the project details
+      description: Get details for given project ID
+      operationId: GetProject
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        description: Specify the project ID to get the project data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsProjectResponse'
+      summary: Update the project details
+      description: Update the project details for given project ID
+      operationId: UpdateProject
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        description: Specify the project ID to update the project data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsProjectRequest'
+        required: true
+  /v1/appsecops/projects/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+      summary: List of projects
+      description: List of projects
+      operationId: ListProject
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsProjectListRequest'
+        required: true
+  /v1/appsecops/sbom_components/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppSecopsSbomComponent'
+      summary: List of sbom component details
+      description: Details of the given batch of SBOM component IDs. Supports a maximum of 1000 IDs per request.
+      operationId: BatchSbomComponents
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectIdBatchRequest'
+        required: true
+  /v1/appsecops/sbom_definition/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppSecopsSbomDefinition'
+      summary: List of SBOM definition details
+      description: Details of the given batch of SBOM definition IDs. Supports a maximum of 1000 IDs per request.
+      operationId: BatchSbomDefinitions
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectIdBatchRequest'
+        required: true
+  /v1/appsecops/sbom_definition/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsSbomDefinition'
+      summary: Creates a SBOM definition
+      description: Create a SBOM definition
+      operationId: CreateSbomDefinition
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsSbomDefinitionRequest'
+        required: true
+  /v1/appsecops/sbom_definition/item/{sbom_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsSbomDefinition'
+      summary: Get SBOM definition details
+      description: Get a particular SBOM definition details for given SBOM definition ID
+      operationId: GetSbomDefinition
+      parameters:
+      - name: sbom_id
+        in: path
+        required: true
+        description: Specify the SBOM definition ID to get the SBOM definition data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsSbomDefinition'
+      summary: Update SBOM definition details
+      description: Update the SBOM definition details for given SBOM definition ID
+      operationId: UpdateSbomDefinition
+      parameters:
+      - name: sbom_id
+        in: path
+        required: true
+        description: Specify the SBOM definition ID to update the SBOM definition data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsSbomDefinitionUpdateRequest'
+        required: true
+  /v1/appsecops/sbom_definition/item/{sbom_id}/list_version:
+    parameters:
+    - name: sbom_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  x-cs-type: ObjectId
+      summary: List of versions for a SBOM definition
+      description: List of SBOM versions for a given SBOM definition ID
+      operationId: ListSbomVersions
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+  /v1/appsecops/sbom_definition/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsSbomDefinitionsListResponse'
+      summary: List of SBOM definitions
+      description: List of SBOM definitions
+      operationId: ListSbomDefinitions
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsSbomDefinitionsListRequest'
+        required: true
+  /v1/appsecops/sbom_version/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppSecopsSbomVersionResponse'
+      summary: List of SBOM version details
+      description: Details of the given batch of SBOM version IDs. Supports a maximum of 1000 IDs per request.
+      operationId: BatchSbomVersions
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectIdBatchRequest'
+        required: true
+  /v1/appsecops/sbom_version/create:
+    post:
+      responses:
+        '409':
+          description: Resource Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsSbomVersionResponse'
+      summary: Creates a SBOM Version
+      description: Create a SBOM Version
+      operationId: CreateSbomVersion
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsSbomVersionRequest'
+        required: true
+  /v1/appsecops/sbom_version/diff/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppSecopsSbomVersionDifference'
+      summary: List of SBOM version difference details between the given SBOM version IDs and its corresponding predecessor version IDs
+      description: List of SBOM version difference details for the given SBOM version IDs and predecessor version ID. Supports a maximum of 1000 IDs per request.
+      operationId: BatchSbomVersionDifference
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectIdBatchRequest'
+        required: true
+  /v1/appsecops/sbom_version/item/{version_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete SBOM version
+      description: Deletes given SBOM version
+      operationId: DeleteSbomVersion
+      parameters:
+      - name: version_id
+        in: path
+        required: true
+        description: Specify the SBOM version ID to remove the SBOM version data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsSbomVersionResponse'
+      summary: Get SBOM version details
+      description: Get a particular SBOM version for given SBOM version ID
+      operationId: GetSbomVersion
+      parameters:
+      - name: version_id
+        in: path
+        required: true
+        description: Specify the SBOM version ID to get the SBOM version data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsSbomVersionResponse'
+      summary: Update SBOM version details
+      description: Update SBOM version details (Build ID) for given SBOM Version ID
+      operationId: UpdateSbomVersion
+      parameters:
+      - name: version_id
+        in: path
+        required: true
+        description: Specify the SBOM version ID to update the SBOM version data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsSbomVersionUpdateRequest'
+        required: true
+  /v1/appsecops/sbom_version/item/{version_id}/diff:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsSbomVersionDifference'
+      summary: Fetch SBOM version component and vulnerability difference details
+      description: Retrieve the difference in vulnerability and component IDs compared from the given SBOM version to requested SBOM version. If compare version ID is not passed, fetch for previous SBOM version
+      operationId: SbomVersionDifference
+      parameters:
+      - name: version_id
+        in: path
+        required: true
+        description: Specify the SBOM version ID which is the base version to fetch the build difference
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsSbomVersionDifferenceRequest'
+        required: true
+  /v1/appsecops/sbom_version/item/{version_id}/make-release:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsSbomVersionResponse'
+      summary: Make SBOM version as the Release version
+      description: Mark this version as the release version
+      operationId: MakeSbomReleaseVersion
+      parameters:
+      - name: version_id
+        in: path
+        required: true
+        description: Specify the SBOM version ID to mark this version as the release version
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+  /v1/appsecops/sbom_version/vulnerabilities/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppSecopsSbomVersionVulnerability'
+      summary: List of SBOM version vulnerabilities details
+      description: Vulnerabilities details of the given batch of SBOM version Vulnerability ID(s). SBOM version vulnerability IDs can be obtained from the List SBOM Vulnerabilities API. Supports a maximum of 1000 IDs per request.
+      operationId: SbomVersionVulnerabilityBatch
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectIdBatchRequest'
+        required: true
+  /v1/appsecops/vulnerabilities/prevalence/organization:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppSecopsVulnerabilityOrganizationPrevalence'
+      summary: List of organization(s) details where the vulnerabilities are prevalent
+      description: List of Organizational entities (portfolio, application and project) where the provided vulnerability is prevalent
+      operationId: OrganizationalVulnerabilityPrevalence
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsVulnerabilityPrevalenceRequest'
+        required: true
+  /v1/secops/vulnerabilities/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppSecopsVulnerability'
+      summary: List of vulnerability details
+      description: Details of the given batch of vulnerability IDs. Supports a maximum of 1000 IDs per request.
+      operationId: BatchVulnerabilities
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectIdBatchRequest'
+        required: true
+  /v2/appsecops/applications/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsApplicationV2'
+      summary: Create an application with BCS scoring
+      description: Create an application with BCS scoring
+      operationId: CreateBCSApplicationV2
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsApplicationV2Request'
+        required: true
+  /v2/appsecops/applications/item/{application_id}:
+    parameters:
+    - name: application_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsApplicationV2'
+      summary: Get application details with BCS scoring
+      description: Get application details with BCS scoring
+      operationId: GetBCSApplicationV2
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSecopsApplicationV2'
+      summary: Update application with BCS scoring
+      description: Update application with BCS scoring
+      operationId: UpdateBCSApplicationV2
+      security:
+      - auth_token: []
+      tags:
+      - AppSecOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppSecopsApplicationV2Request'
+        required: true
+components:
+  schemas:
+    AppSecopsSbomVulnerabilityResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            $ref: '#/components/schemas/AppSecopsSbomVulnerability'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    AppSecopsBCSQuestionsAnswers:
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        version:
+          type: integer
+          description: Version number
+        answers:
+          type: array
+          description: Slim weight entries [{id, weight}]
+          items:
+            $ref: '#/components/schemas/AppSecopsBCSQuestionsAnswerItem'
+        created_at:
+          type: string
+          format: date-time
+          description: When this version was created
+        created_by:
+          type: string
+          description: Who created this version
+      type: object
+    AppSecopsSbomComponentDetails:
+      properties:
+        name:
+          type: string
+          description: Name of the component
+        component_id:
+          type: string
+          description: Unique identifier for the component
+          x-cs-type: ObjectId
+        dependent_component_ids:
+          type: array
+          description: List of BOM references that this component depends on
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    AppSecopsTimeRangeFilter:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsFilter'
+      - required:
+        - end_date
+        - start_date
+        properties:
+          start_date:
+            type: string
+            format: date-time
+            description: Start date of the time period
+          end_date:
+            type: string
+            format: date-time
+            description: End date of the time period
+        type: object
+    AppSecopsPortfolioSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: name
+          enum:
+          - name
+          - created_at
+          - updated_at
+          x-cs-enum-type: AppSecopsPortfolioSortColumn
+        ascending:
+          type: boolean
+      type: object
+    AppSecopsProject:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsProjectBase'
+      - properties:
+          project_id:
+            type: string
+            description: Unique ID of the project
+            x-cs-type: ObjectId
+          created_at:
+            type: string
+            format: date-time
+            description: Project created time
+          created_by:
+            type: string
+            description: Name of the user who created a project
+          updated_at:
+            type: string
+            format: date-time
+            description: Project updated time
+          updated_by:
+            type: string
+            description: Name of the user who recently updated
+        type: object
+    AppSecopsVulnerabilityCvssMetric:
+      properties:
+        version:
+          type: string
+          description: CVSS version used for scoring (e.g., 3.1)
+        vector_string:
+          type: string
+          description: Encoded CVSS vector string representing all metric values
+        access_complexity:
+          type: string
+          description: Level of complexity required for an attacker to exploit the vulnerability
+        access_vector:
+          type: string
+          description: Encoded access vector string representing all metric values
+        attack_vector:
+          type: string
+          description: Context required to exploit the vulnerability (e.g., network, local)
+        attack_requirements:
+          type: string
+          description: Specific conditions or requirements needed for a successful attack (e.g., configuration, user privileges)
+        authentication:
+          type: string
+          description: Authentication type (e.g., Basic authentication)
+        attack_complexity:
+          type: string
+          description: Level of difficulty to exploit the vulnerability
+        exploit_maturity:
+          type: string
+          description: Indicates a vulnerability is to be exploited based on exploit availability and threat intelligence.
+        privileges_required:
+          type: string
+          description: Level of privileges an attacker needs to exploit the vulnerability
+        user_interaction:
+          type: string
+          description: Indicates if user interaction is required for exploitation
+        scope:
+          type: string
+          description: Whether exploitation affects resources beyond the vulnerable component
+        confidentiality_impact:
+          type: string
+          description: Impact on confidentiality if the vulnerability is exploited
+        integrity_impact:
+          type: string
+          description: Impact on data integrity if the vulnerability is exploited
+        availability_impact:
+          type: string
+          description: Impact on system availability if the vulnerability is exploited
+        base_score:
+          type: number
+          description: CVSS base score (0–10) indicating overall severity
+        severity:
+          type: string
+          description: Severity level of the vulnerability
+          example: Critical
+          enum:
+          - Critical
+          - High
+          - Info
+          - Low
+          - Medium
+          - None
+          - Unknown
+          x-cs-enum-type: Severity
+        subsequent_availability:
+          type: string
+          description: Availability impact on dependent or downstream systems after the vulnerability is exploited
+        subsequent_confidentiality:
+          type: string
+          description: Impact on confidentiality of the system after the vulnerability is exploited
+        subsequent_integrity:
+          type: string
+          description: Integrity impact on systems that depend on or are affected by the vulnerable system.
+        vulnerable_availability:
+          type: string
+          description: Availability impact on the directly affected system after the vulnerability is exploited.
+        vulnerable_confidentiality:
+          type: string
+          description: Confidentiality impact on the directly affected system after the vulnerability is exploited.
+        vulnerable_integrity:
+          type: string
+          description: Integrity impact on the system where the vulnerability exists
+      type: object
+    AppSecopsApplicationRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsApplicationBase'
+      - properties: {}
+        type: object
+    AppSecopsSbomComponentRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AppSecopsSbomComponentFilter'
+      type: object
+    AppSecopsSbomDefinitionsListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+            x-cs-type: ObjectId
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    ContainerFindingsRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/ContainerFindingsFiltersSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/ContainerFindingsBaseFilters'
+      type: object
+    AppSecopsVulnerabilityWithComponentDetails:
+      properties:
+        vulnerability_id:
+          type: string
+          description: The Unique ID of the vulnerability
+          x-cs-type: ObjectId
+        affected_components:
+          type: array
+          description: List of component IDs which has vulnerability
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    AppSecopsApplicationListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/AppSecopsApplicationSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AppSecopsApplicationFilterBase'
+      type: object
+    AppSecopsProjectResponse:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsProject'
+      - properties: {}
+        type: object
+    AppSecopsOsvVulnerabilityAffectedPackageDetails:
+      properties:
+        name:
+          type: string
+          description: Name of the package
+        ecosystem:
+          type: string
+          description: Ecosystem of the package
+        purl:
+          type: string
+          description: Package URL
+      type: object
+    QueryOperator:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: QueryOperatorTrue
+        subtype_name: QueryOperatorTrue
+      - subtype_model: QueryOperatorFalse
+        subtype_name: QueryOperatorFalse
+      - subtype_model: QueryOperatorBinary
+        subtype_name: QueryOperatorBinary
+      - subtype_model: QueryOperatorBinaryLogic
+        subtype_name: QueryOperatorBinaryLogic
+      - subtype_model: QueryOperatorNary
+        subtype_name: QueryOperatorNary
+      - subtype_model: QueryOperatorNaryLogic
+        subtype_name: QueryOperatorNaryLogic
+      - subtype_model: QueryOperatorComparator
+        subtype_name: QueryOperatorComparator
+      - subtype_model: QueryOperatorComparatorLogic
+        subtype_name: QueryOperatorComparatorLogic
+      - subtype_model: QueryOperatorUnary
+        subtype_name: QueryOperatorUnary
+      - subtype_model: QueryOperatorUnaryNot
+        subtype_name: QueryOperatorUnaryNot
+      - subtype_model: QueryOperatorBinaryForGraph
+        subtype_name: QueryOperatorBinaryForGraph
+      - subtype_model: QueryOperatorBinaryLogicForGraph
+        subtype_name: QueryOperatorBinaryLogicForGraph
+      - subtype_model: QueryOperatorNaryForGraph
+        subtype_name: QueryOperatorNaryForGraph
+      - subtype_model: QueryOperatorNaryLogicForGraph
+        subtype_name: QueryOperatorNaryLogicForGraph
+      - subtype_model: QueryOperatorUnaryForGraph
+        subtype_name: QueryOperatorUnaryForGraph
+      - subtype_model: QueryOperatorUnaryNotForGraph
+        subtype_name: QueryOperatorUnaryNotForGraph
+      - subtype_model: ServiceAccountQueryOperator
+        subtype_name: ServiceAccountQueryOperator
+      - subtype_model: TenantQueryOperator
+        subtype_name: TenantQueryOperator
+      - subtype_model: DescendantServiceAccountQueryOperator
+        subtype_name: DescendantServiceAccountQueryOperator
+      - subtype_model: DescendantServiceAccountInTenantQueryOperator
+        subtype_name: DescendantServiceAccountInTenantQueryOperator
+      - subtype_model: TenantTagKeyQueryOperator
+        subtype_name: TenantTagKeyQueryOperator
+      - subtype_model: TenantTagKeyValueQueryOperator
+        subtype_name: TenantTagKeyValueQueryOperator
+      - subtype_model: LocationQueryOperator
+        subtype_name: LocationQueryOperator
+      - subtype_model: AvailabilityZoneQueryOperator
+        subtype_name: AvailabilityZoneQueryOperator
+      - subtype_model: BillingSourceQueryOperator
+        subtype_name: BillingSourceQueryOperator
+      - subtype_model: CurrencyQueryOperator
+        subtype_name: CurrencyQueryOperator
+      - subtype_model: ProductCategoryQueryOperator
+        subtype_name: ProductCategoryQueryOperator
+      - subtype_model: ProductFamilyQueryOperator
+        subtype_name: ProductFamilyQueryOperator
+      - subtype_model: ProductServiceCodeQueryOperator
+        subtype_name: ProductServiceCodeQueryOperator
+      - subtype_model: ProductSkuQueryOperator
+        subtype_name: ProductSkuQueryOperator
+      - subtype_model: PublisherQueryOperator
+        subtype_name: PublisherQueryOperator
+      - subtype_model: ResourceCategoryQueryOperator
+        subtype_name: ResourceCategoryQueryOperator
+      - subtype_model: ResourceIdQueryOperator
+        subtype_name: ResourceIdQueryOperator
+      - subtype_model: ResourceGroupQueryOperator
+        subtype_name: ResourceGroupQueryOperator
+      - subtype_model: ResourceNameQueryOperator
+        subtype_name: ResourceNameQueryOperator
+      - subtype_model: ResourceOperationQueryOperator
+        subtype_name: ResourceOperationQueryOperator
+      - subtype_model: ResourceQueryExtraPresence
+        subtype_name: ResourceQueryExtraPresence
+      - subtype_model: ResourceQueryExtraKey
+        subtype_name: ResourceQueryExtraKey
+      - subtype_model: ScopeContainsTenantQueryOperator
+        subtype_name: ScopeContainsTenantQueryOperator
+      - subtype_model: ScopeContainsServiceAccountQueryOperator
+        subtype_name: ScopeContainsServiceAccountQueryOperator
+      - subtype_model: ScopeIsQueryOperator
+        subtype_name: ScopeIsQueryOperator
+      - subtype_model: ServiceCategoryQueryOperator
+        subtype_name: ServiceCategoryQueryOperator
+      - subtype_model: ServiceTypeQueryOperator
+        subtype_name: ServiceTypeQueryOperator
+      - subtype_model: CompartmentNameQueryOperator
+        subtype_name: CompartmentNameQueryOperator
+      - subtype_model: ResourceQueryExtraKeyValue
+        subtype_name: ResourceQueryExtraKeyValue
+      - subtype_model: WorkFlowIdQueryOperator
+        subtype_name: WorkFlowIdQueryOperator
+      - subtype_model: RecommendationSubClassificationQueryOperator
+        subtype_name: RecommendationSubClassificationQueryOperator
+      - subtype_model: ServiceNowCmdbQuerySyncLogResourceId
+        subtype_name: ServiceNowCmdbQuerySyncLogResourceId
+      - subtype_model: ServiceNowCmdbQuerySyncLogResourceType
+        subtype_name: ServiceNowCmdbQuerySyncLogResourceType
+      - subtype_model: ServiceNowCmdbQuerySyncLogAction
+        subtype_name: ServiceNowCmdbQuerySyncLogAction
+      - subtype_model: ServiceNowCmdbQuerySyncLogStatus
+        subtype_name: ServiceNowCmdbQuerySyncLogStatus
+      - subtype_model: ServiceNowCmdbQuerySyncLogService
+        subtype_name: ServiceNowCmdbQuerySyncLogService
+      - subtype_model: ServiceAccountNativeDetailsQueryOperator
+        subtype_name: ServiceAccountNativeDetailsQueryOperator
+      - subtype_model: ServiceAccountStatusQueryOperator
+        subtype_name: ServiceAccountStatusQueryOperator
+      - subtype_model: ServiceAccountTagKeyQueryOperator
+        subtype_name: ServiceAccountTagKeyQueryOperator
+      - subtype_model: ServiceAccountTagKeyRegexQueryOperator
+        subtype_name: ServiceAccountTagKeyRegexQueryOperator
+      - subtype_model: ServiceAccountTagKeyValueQueryOperator
+        subtype_name: ServiceAccountTagKeyValueQueryOperator
+      - subtype_model: ApplicableHealthMetricsQueryOperator
+        subtype_name: ApplicableHealthMetricsQueryOperator
+      - subtype_model: EpssScoreRangeQueryOperator
+        subtype_name: EpssScoreRangeQueryOperator
+      - subtype_model: CvssMetricScoreRangeQueryOperator
+        subtype_name: CvssMetricScoreRangeQueryOperator
+      - subtype_model: GraphionScoreRangeQueryOperator
+        subtype_name: GraphionScoreRangeQueryOperator
+      - subtype_model: AppSecopsApplicationIdQueryOperator
+        subtype_name: AppSecopsApplicationIdQueryOperator
+      - subtype_model: AppSecopsPortfolioIdQueryOperator
+        subtype_name: AppSecopsPortfolioIdQueryOperator
+      - subtype_model: AppSecopsProjectIdQueryOperator
+        subtype_name: AppSecopsProjectIdQueryOperator
+      - subtype_model: AppSecopsSbomComponentIdQueryOperator
+        subtype_name: AppSecopsSbomComponentIdQueryOperator
+      - subtype_model: AppSecopsSbomVersionIdQueryOperator
+        subtype_name: AppSecopsSbomVersionIdQueryOperator
+      - subtype_model: AppSecopsComponentProductQueryOperator
+        subtype_name: AppSecopsComponentProductQueryOperator
+      - subtype_model: AppSecopsSbomComponentTypeQueryOperator
+        subtype_name: AppSecopsSbomComponentTypeQueryOperator
+      - subtype_model: AppSecopsSbomVersionSubmittedByQueryOperator
+        subtype_name: AppSecopsSbomVersionSubmittedByQueryOperator
+      - subtype_model: AppSecopsSbomVersionSubmittedDateQueryOperator
+        subtype_name: AppSecopsSbomVersionSubmittedDateQueryOperator
+      - subtype_model: AppSecopsSbomVersionBuildIdQueryOperator
+        subtype_name: AppSecopsSbomVersionBuildIdQueryOperator
+      - subtype_model: AppSecopsSbomNameQueryOperator
+        subtype_name: AppSecopsSbomNameQueryOperator
+      - subtype_model: AppSecopsCveIdQueryOperator
+        subtype_name: AppSecopsCveIdQueryOperator
+      - subtype_model: AppSecopsEpssScoreQueryOperator
+        subtype_name: AppSecopsEpssScoreQueryOperator
+      - subtype_model: AppSecopsCvssScoreQueryOperator
+        subtype_name: AppSecopsCvssScoreQueryOperator
+      - subtype_model: AppSecopsGraphionScoreQueryOperator
+        subtype_name: AppSecopsGraphionScoreQueryOperator
+      - subtype_model: SecopsVulnerabilitySeverityQueryOperator
+        subtype_name: SecopsVulnerabilitySeverityQueryOperator
+      - subtype_model: AppSecopsIsKnownExploitedVulnerabilityQueryOperator
+        subtype_name: AppSecopsIsKnownExploitedVulnerabilityQueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricAttackVectorV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricAttackVectorV31QueryOperator
+      - subtype_model: AppSecopsFixAvailableQueryOperator
+        subtype_name: AppSecopsFixAvailableQueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricAttackComplexityV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricAttackComplexityV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricPrivilegesRequiredV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricPrivilegesRequiredV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricScopeV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricScopeV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityUserInteractionV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityUserInteractionV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityImpactMetricConfidentialityImpactV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityImpactMetricConfidentialityImpactV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityImpactMetricIntegrityImpactV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityImpactMetricIntegrityImpactV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityImpactMetricAvailabilityImpactV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityImpactMetricAvailabilityImpactV31QueryOperator
+      - subtype_model: AppSecopsContainerFindingsSBOMVersionIdsQueryOperator
+        subtype_name: AppSecopsContainerFindingsSBOMVersionIdsQueryOperator
+      - subtype_model: AppSecopsContainerFindingsCategoryQueryOperator
+        subtype_name: AppSecopsContainerFindingsCategoryQueryOperator
+      - subtype_model: AppSecopsContainerFindingsExecutionPhaseQueryOperator
+        subtype_name: AppSecopsContainerFindingsExecutionPhaseQueryOperator
+      - subtype_model: AppSecopsContainerFindingsSeverityQueryOperator
+        subtype_name: AppSecopsContainerFindingsSeverityQueryOperator
+      - subtype_model: AppSecopsContainerFindingsStatusQueryOperator
+        subtype_name: AppSecopsContainerFindingsStatusQueryOperator
+      - subtype_model: DimensionSourceQueryOperator
+        subtype_name: DimensionSourceQueryOperator
+      - subtype_model: DimensionQueryOperator
+        subtype_name: DimensionQueryOperator
+      - subtype_model: ResourceTypeQueryOperator
+        subtype_name: ResourceTypeQueryOperator
+      - subtype_model: PodIdRegexQueryOperator
+        subtype_name: PodIdRegexQueryOperator
+      - subtype_model: PodNameRegexQueryOperator
+        subtype_name: PodNameRegexQueryOperator
+      - subtype_model: ContainerIdRegexQueryOperator
+        subtype_name: ContainerIdRegexQueryOperator
+      - subtype_model: PodNamesQueryOperator
+        subtype_name: PodNamesQueryOperator
+      - subtype_model: PodIdsQueryOperator
+        subtype_name: PodIdsQueryOperator
+      - subtype_model: UtilizationTypeQueryOperator
+        subtype_name: UtilizationTypeQueryOperator
+      - subtype_model: ResourceIdRegexQueryOperator
+        subtype_name: ResourceIdRegexQueryOperator
+      - subtype_model: ResourceNameRegexQueryOperator
+        subtype_name: ResourceNameRegexQueryOperator
+      - subtype_model: ExtrasValueRegexQueryOperator
+        subtype_name: ExtrasValueRegexQueryOperator
+      - subtype_model: TagKeyValueRegexQueryOperator
+        subtype_name: TagKeyValueRegexQueryOperator
+      - subtype_model: ResourceQueryTagKeyKind
+        subtype_name: ResourceQueryTagKeyKind
+      - subtype_model: ResourceQueryTagKeyValuesKind
+        subtype_name: ResourceQueryTagKeyValuesKind
+      - subtype_model: TagKeyStringValueRegexQueryOperator
+        subtype_name: TagKeyStringValueRegexQueryOperator
+      - subtype_model: TagKindStringKeyRegexQueryOperator
+        subtype_name: TagKindStringKeyRegexQueryOperator
+      - subtype_model: ServiceAccountNameRegexQueryOperator
+        subtype_name: ServiceAccountNameRegexQueryOperator
+      - subtype_model: TenantNameRegexQueryOperator
+        subtype_name: TenantNameRegexQueryOperator
+      - subtype_model: PlatFormAccountQueryOperator
+        subtype_name: PlatFormAccountQueryOperator
+      - subtype_model: BillingLineItemTypeQueryOperator
+        subtype_name: BillingLineItemTypeQueryOperator
+      - subtype_model: BillingEntityQueryOperator
+        subtype_name: BillingEntityQueryOperator
+      - subtype_model: LineItemDescriptionQueryOperator
+        subtype_name: LineItemDescriptionQueryOperator
+      - subtype_model: LineItemDescriptionRegexQueryOperator
+        subtype_name: LineItemDescriptionRegexQueryOperator
+      - subtype_model: MeterSubCategoryQueryOperator
+        subtype_name: MeterSubCategoryQueryOperator
+      - subtype_model: PricingCategoryQueryOperator
+        subtype_name: PricingCategoryQueryOperator
+      - subtype_model: PricingPurchaseOptionQueryOperator
+        subtype_name: PricingPurchaseOptionQueryOperator
+      - subtype_model: TagKeyRegexQueryOperator
+        subtype_name: TagKeyRegexQueryOperator
+      - subtype_model: BillingLineItemTypeRegexQueryOperator
+        subtype_name: BillingLineItemTypeRegexQueryOperator
+      - subtype_model: ResourceGroupRegexQueryOperator
+        subtype_name: ResourceGroupRegexQueryOperator
+      - subtype_model: ResourceCategoryRegexQueryOperator
+        subtype_name: ResourceCategoryRegexQueryOperator
+      - subtype_model: ProductCategoryRegexQueryOperator
+        subtype_name: ProductCategoryRegexQueryOperator
+      - subtype_model: BillingEntityRegexQueryOperator
+        subtype_name: BillingEntityRegexQueryOperator
+      - subtype_model: ResourceOperationRegexQueryOperator
+        subtype_name: ResourceOperationRegexQueryOperator
+      - subtype_model: ResourceQueryFieldPresence
+        subtype_name: ResourceQueryFieldPresence
+      - subtype_model: AssessmentRunReportDetailQuerySection
+        subtype_name: AssessmentRunReportDetailQuerySection
+      - subtype_model: AssessmentRunReportSummaryQuerySection
+        subtype_name: AssessmentRunReportSummaryQuerySection
+      - subtype_model: AssessmentQueryAssessmentName
+        subtype_name: AssessmentQueryAssessmentName
+      - subtype_model: AssessmentQueryAssessmentOwner
+        subtype_name: AssessmentQueryAssessmentOwner
+      - subtype_model: AssessmentQueryAssessmentApprover
+        subtype_name: AssessmentQueryAssessmentApprover
+      - subtype_model: AssessmentQueryWorkload
+        subtype_name: AssessmentQueryWorkload
+      - subtype_model: AssessmentQueryFramework
+        subtype_name: AssessmentQueryFramework
+      - subtype_model: AssessmentQueryPillar
+        subtype_name: AssessmentQueryPillar
+      - subtype_model: AssessmentViewQueryNature
+        subtype_name: AssessmentViewQueryNature
+      - subtype_model: AssessmentViewQueryQuestionRisk
+        subtype_name: AssessmentViewQueryQuestionRisk
+      - subtype_model: AssessmentViewQueryBestPracticeRisk
+        subtype_name: AssessmentViewQueryBestPracticeRisk
+      - subtype_model: AssessmentViewQueryQuestionStatus
+        subtype_name: AssessmentViewQueryQuestionStatus
+      - subtype_model: AssessmentViewQueryBestPracticeStatus
+        subtype_name: AssessmentViewQueryBestPracticeStatus
+      - subtype_model: AssessmentViewQueryOwner
+        subtype_name: AssessmentViewQueryOwner
+      - subtype_model: AssessmentViewQueryAssignedTo
+        subtype_name: AssessmentViewQueryAssignedTo
+      - subtype_model: AssessmentViewQueryComment
+        subtype_name: AssessmentViewQueryComment
+      - subtype_model: AssessmentReportQueryAssessmentName
+        subtype_name: AssessmentReportQueryAssessmentName
+      - subtype_model: AssessmentReportQueryFramework
+        subtype_name: AssessmentReportQueryFramework
+      - subtype_model: AssessmentReportQueryReportType
+        subtype_name: AssessmentReportQueryReportType
+      - subtype_model: AssessmentReportQueryWorkloadId
+        subtype_name: AssessmentReportQueryWorkloadId
+      - subtype_model: ScheduleQueryName
+        subtype_name: ScheduleQueryName
+      - subtype_model: ScheduleQueryCreatedBy
+        subtype_name: ScheduleQueryCreatedBy
+      - subtype_model: ScheduleQueryEmailRecipients
+        subtype_name: ScheduleQueryEmailRecipients
+      - subtype_model: ScheduleQueryRecurrence
+        subtype_name: ScheduleQueryRecurrence
+      - subtype_model: ScheduleQueryReportType
+        subtype_name: ScheduleQueryReportType
+      - subtype_model: ScheduleQueryNextGenReportType
+        subtype_name: ScheduleQueryNextGenReportType
+      - subtype_model: ScheduleQueryAssessmentAgentReportType
+        subtype_name: ScheduleQueryAssessmentAgentReportType
+      - subtype_model: AutomationTemplateQueryEngineType
+        subtype_name: AutomationTemplateQueryEngineType
+      - subtype_model: AutomationTemplateQueryRepoType
+        subtype_name: AutomationTemplateQueryRepoType
+      - subtype_model: AutomationTemplateQueryService
+        subtype_name: AutomationTemplateQueryService
+      - subtype_model: AutomationTemplateQueryTenant
+        subtype_name: AutomationTemplateQueryTenant
+      - subtype_model: AwsSecurityHubFindingQueryLocation
+        subtype_name: AwsSecurityHubFindingQueryLocation
+      - subtype_model: AwsSecurityHubFindingQuerySeverity
+        subtype_name: AwsSecurityHubFindingQuerySeverity
+      - subtype_model: AwsSecurityHubFindingQueryProductName
+        subtype_name: AwsSecurityHubFindingQueryProductName
+      - subtype_model: AwsSecurityHubFindingQueryResource
+        subtype_name: AwsSecurityHubFindingQueryResource
+      - subtype_model: AwsSecurityHubFindingQueryCloudAccount
+        subtype_name: AwsSecurityHubFindingQueryCloudAccount
+      - subtype_model: AwsSecurityHubFindingQueryRecordState
+        subtype_name: AwsSecurityHubFindingQueryRecordState
+      - subtype_model: AwsSsmDocumentQueryCloudAccount
+        subtype_name: AwsSsmDocumentQueryCloudAccount
+      - subtype_model: AwsSsmDocumentQueryRegion
+        subtype_name: AwsSsmDocumentQueryRegion
+      - subtype_model: AwsSsmDocumentQueryOwner
+        subtype_name: AwsSsmDocumentQueryOwner
+      - subtype_model: AwsSsmDocumentQueryCategory
+        subtype_name: AwsSsmDocumentQueryCategory
+      - subtype_model: AwsSsmDocumentQueryStatus
+        subtype_name: AwsSsmDocumentQueryStatus
+      - subtype_model: AwsSsmDocumentQueryName
+        subtype_name: AwsSsmDocumentQueryName
+      - subtype_model: AwsSsmDocumentQueryExecutedBy
+        subtype_name: AwsSsmDocumentQueryExecutedBy
+      - subtype_model: ComplianceURIQueryOperator
+        subtype_name: ComplianceURIQueryOperator
+      - subtype_model: DurationInMonthsQueryOperator
+        subtype_name: DurationInMonthsQueryOperator
+      - subtype_model: UniqueIdQueryOperator
+        subtype_name: UniqueIdQueryOperator
+      - subtype_model: ThreatVulnerabilityStatusQueryOperator
+        subtype_name: ThreatVulnerabilityStatusQueryOperator
+      - subtype_model: ThreatVulnerabilitySeverityQueryOperator
+        subtype_name: ThreatVulnerabilitySeverityQueryOperator
+      - subtype_model: ThreatVulnerabilityIssueTypeQueryOperator
+        subtype_name: ThreatVulnerabilityIssueTypeQueryOperator
+      - subtype_model: ThreatIntentQueryOperator
+        subtype_name: ThreatIntentQueryOperator
+      - subtype_model: VulnerabilityReferenceIdQueryOperator
+        subtype_name: VulnerabilityReferenceIdQueryOperator
+      - subtype_model: CostAnomalyStatusQueryOperator
+        subtype_name: CostAnomalyStatusQueryOperator
+      - subtype_model: CurrencyExchangeConfigurationQuerySourceCurrency
+        subtype_name: CurrencyExchangeConfigurationQuerySourceCurrency
+      - subtype_model: CurrencyExchangeConfigurationQueryTargetCurrency
+        subtype_name: CurrencyExchangeConfigurationQueryTargetCurrency
+      - subtype_model: CurrencyExchangeConfigurationQueryScope
+        subtype_name: CurrencyExchangeConfigurationQueryScope
+      - subtype_model: MetricValuesOperator
+        subtype_name: MetricValuesOperator
+      - subtype_model: PatchReadinessStatusQueryOperator
+        subtype_name: PatchReadinessStatusQueryOperator
+      - subtype_model: MasterAccountBillingQueryMasterAccounts
+        subtype_name: MasterAccountBillingQueryMasterAccounts
+      - subtype_model: MasterAccountBillingQueryTenants
+        subtype_name: MasterAccountBillingQueryTenants
+      - subtype_model: MasterAccountBillingQueryUsers
+        subtype_name: MasterAccountBillingQueryUsers
+      - subtype_model: MasterAccountBillingQueryConversations
+        subtype_name: MasterAccountBillingQueryConversations
+      - subtype_model: MasterAccountBillingQueryTransactionType
+        subtype_name: MasterAccountBillingQueryTransactionType
+      - subtype_model: PolicyResourceRecommendationStatusQueryOperator
+        subtype_name: PolicyResourceRecommendationStatusQueryOperator
+      - subtype_model: PolicyResourceRecommendationPolicyIdsQueryOperator
+        subtype_name: PolicyResourceRecommendationPolicyIdsQueryOperator
+      - subtype_model: PolicyResourceRecommendationSeverityQueryOperator
+        subtype_name: PolicyResourceRecommendationSeverityQueryOperator
+      - subtype_model: PolicyRecommendationClassificationQueryOperator
+        subtype_name: PolicyRecommendationClassificationQueryOperator
+      - subtype_model: InfraResourceTrendResourceChangeStatusQueryOperator
+        subtype_name: InfraResourceTrendResourceChangeStatusQueryOperator
+      - subtype_model: VmAgentsQueryOsTypes
+        subtype_name: VmAgentsQueryOsTypes
+      - subtype_model: VmAgentsQueryInstantState
+        subtype_name: VmAgentsQueryInstantState
+      - subtype_model: VmAgentsQueryQualysStatus
+        subtype_name: VmAgentsQueryQualysStatus
+      - subtype_model: VmAgentsQueryCrowdStrikeStatus
+        subtype_name: VmAgentsQueryCrowdStrikeStatus
+      - subtype_model: VmAgentsQuerySplunkStatus
+        subtype_name: VmAgentsQuerySplunkStatus
+      - subtype_model: StacksMarketplaceStackQueryArchived
+        subtype_name: StacksMarketplaceStackQueryArchived
+      - subtype_model: StacksMarketplaceStackQueryAutoApproved
+        subtype_name: StacksMarketplaceStackQueryAutoApproved
+      - subtype_model: StacksMarketplaceStackQueryOwner
+        subtype_name: StacksMarketplaceStackQueryOwner
+      - subtype_model: StacksMarketplaceStackQueryName
+        subtype_name: StacksMarketplaceStackQueryName
+      - subtype_model: StacksMarketplaceStackQueryProduct
+        subtype_name: StacksMarketplaceStackQueryProduct
+      - subtype_model: StacksMarketplaceDeploymentQueryName
+        subtype_name: StacksMarketplaceDeploymentQueryName
+      - subtype_model: StacksMarketplaceDeploymentQueryStack
+        subtype_name: StacksMarketplaceDeploymentQueryStack
+      - subtype_model: StacksMarketplaceDeploymentQueryAccount
+        subtype_name: StacksMarketplaceDeploymentQueryAccount
+      - subtype_model: StacksMarketplaceDeploymentQueryRegion
+        subtype_name: StacksMarketplaceDeploymentQueryRegion
+      - subtype_model: StacksMarketplaceStackDeploymentQueryExecutionStatus
+        subtype_name: StacksMarketplaceStackDeploymentQueryExecutionStatus
+      - subtype_model: MetricNameQueryOperator
+        subtype_name: MetricNameQueryOperator
+      - subtype_model: ResourceQueryCategory
+        subtype_name: ResourceQueryCategory
+      - subtype_model: ResourceQueryLocation
+        subtype_name: ResourceQueryLocation
+      - subtype_model: ResourceQueryResource
+        subtype_name: ResourceQueryResource
+      - subtype_model: ResourceQueryResourceGroup
+        subtype_name: ResourceQueryResourceGroup
+      - subtype_model: ResourceQueryResourceName
+        subtype_name: ResourceQueryResourceName
+      - subtype_model: ResourceQueryResourceType
+        subtype_name: ResourceQueryResourceType
+      - subtype_model: ResourceQueryTagPresence
+        subtype_name: ResourceQueryTagPresence
+      - subtype_model: ResourceQueryTagKey
+        subtype_name: ResourceQueryTagKey
+      - subtype_model: ResourceQueryTagKeyValue
+        subtype_name: ResourceQueryTagKeyValue
+      - subtype_model: WorkloadQueryWorkloadName
+        subtype_name: WorkloadQueryWorkloadName
+      - subtype_model: WorkloadQueryWorkloadOwner
+        subtype_name: WorkloadQueryWorkloadOwner
+      - subtype_model: WorkloadQueryCloud
+        subtype_name: WorkloadQueryCloud
+      - subtype_model: WorkloadQueryCloudAccount
+        subtype_name: WorkloadQueryCloudAccount
+      - subtype_model: WorkloadQueryWorkloadType
+        subtype_name: WorkloadQueryWorkloadType
+      - subtype_model: WorkloadQueryWorkloadId
+        subtype_name: WorkloadQueryWorkloadId
+    AppSecopsVulnerabilityOrganizationPrevalence:
+      properties:
+        vulnerability_id:
+          type: string
+          description: Unique ID of the vulnerability
+          x-cs-type: ObjectId
+        application_id:
+          type: string
+          description: Application ID
+          x-cs-type: ObjectId
+        appsecops_project_id:
+          type: string
+          description: Appsecops project ID
+          x-cs-type: ObjectId
+        portfolio_id:
+          type: string
+          description: Portfolio ID
+          x-cs-type: ObjectId
+      type: object
+    AppSecopsApplication:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsApplicationBase'
+      - properties:
+          application_id:
+            type: string
+            description: Application ID
+            x-cs-type: ObjectId
+          created_at:
+            type: string
+            format: date-time
+            description: Application created time
+          created_by:
+            type: string
+            description: Name of the user who created the application
+          updated_by:
+            type: string
+            description: Name of the user who recently updated the application
+          updated_at:
+            type: string
+            format: date-time
+            description: Application recently updated time
+        type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    AppSecopsPortfolioHierarchyResponse:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsPortfolio'
+      - properties:
+          applications:
+            type: array
+            description: The application details associated with the portfolio
+            items:
+              $ref: '#/components/schemas/AppSecopsDashboardApplicationDetails'
+        type: object
+    AppSecopsSbomDefinitionsListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/AppSecopsSbomDefinitionsSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AppSecopsSbomDefinitionsFilter'
+      type: object
+    AppSecopsSbomResourceMappingDetails:
+      properties:
+        mapped_resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsMappedResource'
+        status:
+          type: string
+          description: Status of Resource Mapping
+          example: success
+          enum:
+          - success
+          - error
+          x-cs-enum-type: AppSecopsSbomResourceMappingStatus
+        message:
+          type: string
+          description: Message of Resource Mapping
+        last_mapped_at:
+          type: string
+          format: date-time
+          description: The most recent date and time of automated resource mapping to the SBOM.
+        background_job_id:
+          description: Id of background job which performs the mapping of resources to SBOM.
+          $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    AppSecopsLicenseDetails:
+      properties:
+        name:
+          type: string
+          description: Unique identifier for the license
+        terms:
+          type: string
+          description: Terms of the license
+      type: object
+    VulnerabilityNvdDescription:
+      properties:
+        lang:
+          type: string
+          description: Language of the description
+        value:
+          type: string
+          description: Value of the description
+      type: object
+    AppSecopsBCSQuestionsAnswersVersionRequest:
+      required:
+      - answers
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        answers:
+          type: array
+          description: All question weights; must sum to 100
+          items:
+            $ref: '#/components/schemas/AppSecopsBCSQuestionsAnswerItem'
+      type: object
+    AppSecopsApplicationV2Request:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsApplication'
+      - required:
+        - selected
+        properties:
+          selected:
+            type: array
+            description: BCS questionnaire answers
+            items:
+              $ref: '#/components/schemas/AppSecopsApplicationV2BCSSelectedItem'
+        type: object
+    AppSecopsComponentReference:
+      properties:
+        sbom_version_id:
+          type: string
+          description: SBOM reference
+          x-cs-type: ObjectId
+        component_ids:
+          type: array
+          description: List of IDs used to refer to the component elsewhere in the BOM.
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    AppSecopsSbomVersionBase:
+      required:
+      - attachment_id
+      - sbom_definition_id
+      - sbom_file_format
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        sbom_definition_id:
+          type: string
+          description: Unique ID of the SBOM
+          x-cs-type: ObjectId
+        attachment_id:
+          type: string
+          description: Unique ID of the attachment to identify the SBOM version file
+          x-cs-type: ObjectId
+        build_id:
+          type: string
+          description: Unique ID of the build associated with the SBOM version
+        sbom_file_format:
+          description: File format of the SBOM version
+          $ref: '#/components/schemas/AppSecopsSbomVersionFileFormat'
+      type: object
+    AppSecopsApplicationBase:
+      required:
+      - business_criticality
+      - name
+      - owner
+      - portfolio_id
+      - tenant_id
+      properties:
+        name:
+          type: string
+          description: Name of the application
+        owner:
+          type: array
+          description: Owners of the application
+          items:
+            type: string
+        business_criticality:
+          type: number
+          description: Indicates the application's importance to the business in terms of criticality.
+        description:
+          type: string
+          description: Description of the application
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        portfolio_id:
+          type: string
+          description: Portfolio to which the application belongs.
+          x-cs-type: ObjectId
+        dev_tool:
+          type: string
+          description: Application Deployed DevTool
+          example: Jenkins
+          enum:
+          - Jenkins
+          - GitLab
+          - Git
+          - Azure DevOps
+          - CircleCI
+          - Bamboo
+          x-cs-enum-type: DevToolName
+        service_name:
+          type: string
+          description: Cloud Provider to select
+          example: AWS
+          enum:
+          - AWS
+          - Azure
+          - GCP
+          - OCI
+          x-cs-enum-type: AppSecopsApplicationCloudProvider
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+        workload_ids:
+          type: array
+          description: List of workload ids to which the application belongs.
+          items:
+            type: string
+      type: object
+    AppSecopsBCSQuestion:
+      properties:
+        id:
+          type: string
+          description: Question ID
+        order:
+          type: integer
+          description: Display order
+        title:
+          type: string
+          description: Short title
+        question:
+          type: string
+          description: Full question text
+        description:
+          type: string
+          description: Additional info
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsBCSQuestionOption'
+        default_weight:
+          type: integer
+          description: Default weight
+        weight:
+          type: integer
+          description: Effective weight (tenant override of default_weight)
+        multi_select:
+          type: boolean
+          description: Whether this question allows multiple option selections (Q6)
+        inverted:
+          type: boolean
+          description: Whether lower answer value means higher criticality (Q9, Q10)
+      type: object
+    AppSecopsProjectBase:
+      required:
+      - application_ids
+      - name
+      - tenant_id
+      properties:
+        name:
+          type: string
+          description: Name of the application
+        description:
+          type: string
+          description: Project description
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        application_ids:
+          type: array
+          description: Project related application IDs
+          items:
+            type: string
+            x-cs-type: ObjectId
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+      type: object
+    ContainerFindingsBaseFilters:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID to which the findings are associated
+        filters:
+          description: Query based on SBOM version ID, Category, Execution Phase, Severity and Status
+          $ref: '#/components/schemas/QueryOperator'
+      type: object
+    AppSecopsTopActionableIssuesRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AppSecopsTopActionableIssuesFilter'
+      type: object
+    AppSecopsVulnerabilityCveDetail:
+      properties:
+        id:
+          type: string
+          description: ID of the vulnerability.
+        type:
+          type: string
+          description: Type of the vulnerability.
+      type: object
+    AppSecopsSbomVersionVulnerability:
+      properties:
+        sbom_version_vulnerability_id:
+          type: string
+          description: Unique ID of the vulnerabilities associated to the SBOM version.
+          x-cs-type: ObjectId
+        sbom_version_id:
+          type: string
+          description: Unique ID of the SBOM version
+          x-cs-type: ObjectId
+        vulnerability_id:
+          type: string
+          description: Unique ID for the global vulnerability reference.
+          x-cs-type: ObjectId
+        components:
+          type: array
+          description: List of affected SBOM components.
+          items:
+            $ref: '#/components/schemas/AppSecopsSbomVulnerabilityComponentDetail'
+        risk_score_by_application:
+          type: array
+          description: Risk score of the vulnerability by application.
+          items:
+            $ref: '#/components/schemas/AppSecopsSbomVersionRiskScore'
+        tenant_id:
+          type: string
+          description: Tenant ID associated with the vulnerability
+          x-cs-type: ObjectId
+        sbom_vulnerability_details_by_tenant:
+          description: Tenant ID to which the SBOM belongs to.
+          $ref: '#/components/schemas/AppSecopsSbomVulnerabilityDetailsByTenant'
+      type: object
+    AppSecopsSbomVersionParserStatus:
+      properties:
+        status:
+          type: string
+          description: Parsing status of SBOM
+          example: error
+          enum:
+          - error
+          - in_progress
+          - success
+          x-cs-enum-type: SbomParsingStatus
+        message:
+          type: string
+          description: Parsing message of SBOM
+        time_taken:
+          type: number
+          description: Time taken for parsing in seconds
+      type: object
+    AppSecopsProjectRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsProjectBase'
+      - properties: {}
+        type: object
+    AppSecopsPortfolio:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsPortfolioBase'
+      - properties:
+          created_at:
+            type: string
+            format: date-time
+            description: Portfolio created time
+          created_by:
+            type: string
+            description: Name of the user who created the portfolio
+          portfolio_id:
+            type: string
+            description: Portfolio ID
+            x-cs-type: ObjectId
+          updated_by:
+            type: string
+            description: Name of the user who recently updated the portfolio
+          updated_at:
+            type: string
+            format: date-time
+            description: Portfolio updated time
+        type: object
+    SecurityFinding:
+      required:
+      - category
+      - created_at
+      - execution_phase
+      - layer
+      - severity
+      - source_tool
+      - status
+      - title
+      - updated_at
+      properties:
+        finding_id:
+          type: string
+          description: Unique identifier for the security finding record in the system
+          x-cs-type: ObjectId
+        category:
+          type: string
+          description: High-level classification of the security finding type (Misconfiguration, Vulnerability, or Threat)
+          example: Misconfiguration
+          enum:
+          - Misconfiguration
+          - Vulnerability
+          - Threat
+          x-cs-enum-type: SecurityFindingsCategory
+        source_tool:
+          type: string
+          description: Name of the security scanning tool that originally detected and reported this finding
+          example: Hadolint
+          enum:
+          - Hadolint
+          - Dockle
+          - AzureDefender
+          - InspectorV2
+          - InspectorClassic
+          - SecurityCommandCenter
+          - CloudGuard
+          - Guardduty
+          x-cs-enum-type: SecurityFindingsSourceTool
+        execution_phase:
+          type: string
+          description: Phase in the software development lifecycle when this security issue was detected (Build or Runtime)
+          example: Build
+          enum:
+          - Build
+          - Runtime
+          x-cs-enum-type: SecurityFindingsExecutionPhase
+        layer:
+          type: string
+          description: Architectural layer where the security issue exists (Container, Infrastructure, Supplychain, or API)
+          example: Container
+          enum:
+          - Container
+          - Infrastructure
+          - Supplychain
+          - API
+          x-cs-enum-type: SecurityFindingsLayer
+        severity:
+          type: string
+          description: Normalized severity level indicating the criticality and potential impact of the security finding
+          example: critical
+          enum:
+          - critical
+          - high
+          - medium
+          - low
+          - informational
+          - none
+          x-cs-enum-type: SecurityFindingsSeverity
+        status:
+          type: string
+          description: Current resolution status of the security finding (open for unresolved, resolved for fixed)
+          example: open
+          enum:
+          - open
+          - resolved
+          x-cs-enum-type: SecurityFindingsStatus
+        title:
+          type: string
+          description: Concise, human-readable summary title describing the specific security issue found
+        description:
+          type: string
+          description: Detailed explanation of the security finding, including what was detected and why it is a concern
+        recommendation:
+          type: string
+          description: Actionable guidance and best practices for addressing and resolving the security finding
+        remediation:
+          type: string
+          description: Specific step-by-step instructions for fixing the security issue and preventing recurrence
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp indicating when this security finding was first discovered and recorded in the system
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp of the most recent modification or status change to this security finding record
+      type: object
+    AppSecopsBCSQuestionOption:
+      properties:
+        id:
+          type: string
+          description: Option ID
+        label:
+          type: string
+          description: Option label
+        value:
+          type: integer
+          description: Answer value for scoring
+        is_none:
+          type: boolean
+          description: Mutually exclusive None option (Q6)
+        high_tier:
+          type: boolean
+          description: High-tier regulatory framework flag (Q6)
+        prefill_q5a:
+          type: boolean
+          description: Whether selecting this option pre-fills Q5a to High (Q11)
+      type: object
+    AppSecopsSbomVulnerability:
+      properties:
+        sbom_version_vulnerability_ids:
+          type: array
+          description: List of sbom version vulnerability ID(s)
+          items:
+            type: string
+            x-cs-type: ObjectId
+        vulnerability_id:
+          type: string
+          description: The Unique ID of the vulnerability
+        top_cvss_metric:
+          description: Top CVSS metric of a vulnerability
+          $ref: '#/components/schemas/AppSecopsVulnerabilityCvssMetric'
+        is_kev:
+          type: boolean
+          description: Indicates whether the vulnerability is a Known Exploited Vulnerability (KEV)
+        overall_risk_score:
+          type: number
+          description: Aggregated risk score representing the overall impact of the vulnerability, considering multiple risk factors.
+        bom_references:
+          type: array
+          description: List of Bom references
+          items:
+            $ref: '#/components/schemas/AppSecopsComponentReference'
+        description_from_sbom:
+          type: string
+          description: Description of the vulnerability from the SBOM
+        references_from_sbom:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsExternalReferenceDetail'
+      type: object
+    AppSecopsSbomDefinitionUpdateRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsSbomDefinitionBase'
+      - properties:
+          resource_mapping_details:
+            description: Details of resources mapped to SBOM.
+            $ref: '#/components/schemas/AppSecopsSbomResourceMappingDetails'
+        type: object
+    AppSecopsSbomVulnerabilityRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AppSecopsFilter'
+      type: object
+    AppSecopsVulnerabilityEpssScore:
+      properties:
+        score:
+          type: number
+          description: EPSS score indicating the likelihood of exploitation (0 to 1)
+        percentile:
+          type: number
+          description: EPSS percentile ranking among all scored vulnerabilities
+        calculated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the EPSS score was generated
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the score was recently updated
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    AppSecopsPortfolioBase:
+      required:
+      - name
+      - owner
+      - tenant_id
+      properties:
+        name:
+          type: string
+          description: Name of the portfolio
+        description:
+          type: string
+          description: Portfolio description
+        owner:
+          type: array
+          description: Owners of portfolio
+          items:
+            type: string
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+      type: object
+    AppSecopsProjectListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/AppSecopsProjectSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AppSecopsProjectFilterBase'
+      type: object
+    AppSecopsSbomDefinitionsFilter:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        search:
+          type: string
+          description: Search based on name
+        filters:
+          description: Filter based on portfolio_id, application_id, appsecops_project_id
+          $ref: '#/components/schemas/QueryOperator'
+        tags:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+      type: object
+    ContainerFindingsFiltersSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: sbom_version_ids
+          enum:
+          - sbom_version_ids
+          - category
+          - severity
+          - status
+          x-cs-enum-type: ContainerFindingsFiltersSortColumn
+        ascending:
+          type: boolean
+      type: object
+    AppSecopsSbomDefinitionRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsSbomDefinitionBase'
+      - required:
+        - appsecops_project_id
+        properties:
+          appsecops_project_id:
+            type: string
+            description: SBOM related project ID
+            x-cs-type: ObjectId
+        type: object
+    AppSecopsSbomVersionFileFormat:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-type-name: AppSecopsSbomVersionFileFormat
+      x-cs-subtypes:
+      - subtype_model: AppSecopsSbomVersionFileFormatForCycloneDX
+        subtype_name: AppSecopsSbomVersionFileFormatForCycloneDX
+    AppSecopsSbomComponentsResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            $ref: '#/components/schemas/AppSecopsSbomComponentDetails'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    BatchRequest:
+      properties:
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
+      type: object
+    AppSecopsPortfolioRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsPortfolioBase'
+      - properties: {}
+        type: object
+    AppSecopsSbomVersionResponse:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsSbomVersion'
+      - properties:
+          vulnerability_ids:
+            type: array
+            description: List of vulnerability IDs detected in the components of this SBOM version
+            items:
+              type: string
+              x-cs-type: ObjectId
+          sbom_version_vulnerability_ids:
+            type: array
+            description: List of IDs that associate each vulnerability with this SBOM version, including version-specific details
+            items:
+              type: string
+              x-cs-type: ObjectId
+        type: object
+    AppSecopsVulnerabilityFixAvailableDetails:
+      properties:
+        source:
+          type: string
+          description: Source of vulnerability
+          example: NVD
+          enum:
+          - NVD
+          - SBOM
+          - KEV
+          - OSV
+          x-cs-enum-type: VulnerabilitySource
+        affected_component_ids:
+          type: array
+          description: List of component IDs that are affected by this vulnerability and for which a fix is available
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    AppSecopsSbomVulnerabilityComponentDetail:
+      properties:
+        id:
+          type: string
+          description: Unique ID for the component
+          x-cs-type: ObjectId
+        fix_available:
+          type: boolean
+          description: Indicates if a fix is available for the component in the vulnerability
+      type: object
+    AppSecopsSbomBuildDifferenceResponse:
+      properties:
+        build_id:
+          type: string
+          description: Unique ID of the build
+        version_id:
+          type: string
+          description: Unique ID of the latest SBOM build version
+          x-cs-type: ObjectId
+        compared_version_id:
+          type: string
+          description: Unique ID of the previous SBOM build version
+          x-cs-type: ObjectId
+        sbom_generated_date:
+          type: string
+          format: date-time
+          description: SBOM file generated datetime
+        new_components:
+          type: array
+          description: List of new component IDs created in the build
+          items:
+            type: string
+            x-cs-type: ObjectId
+        upgraded_components:
+          type: array
+          description: List of upgraded component IDs in the build
+          items:
+            type: string
+            x-cs-type: ObjectId
+        deleted_components:
+          type: array
+          description: List of deleted component IDs in the build
+          items:
+            type: string
+            x-cs-type: ObjectId
+        new_vulnerabilities:
+          type: array
+          description: List of new vulnerability and component details
+          items:
+            $ref: '#/components/schemas/AppSecopsVulnerabilityWithComponentDetails'
+        resolved_vulnerabilities:
+          type: array
+          description: List of resolved vulnerability unique IDs in the build
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    AppSecopsApplicationV2BCSDetail:
+      properties:
+        score:
+          type: number
+          description: BCS score (20-100)
+        bcs_question_version:
+          type: integer
+          description: BCS questions config version
+        version:
+          type: integer
+          description: Submission version
+        selected:
+          type: array
+          description: Submitted answers
+          items:
+            $ref: '#/components/schemas/AppSecopsApplicationV2BCSSelectedItem'
+        created_at:
+          type: string
+          format: date-time
+          description: When this submission was created
+        created_by:
+          type: string
+          description: Name of the user who created the submission
+      type: object
+    AppSecopsSbomDefinition:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsSbomDefinitionBase'
+      - properties:
+          sbom_definition_id:
+            type: string
+            description: Unique ID of the Sbom
+            x-cs-type: ObjectId
+          release_version_id:
+            type: string
+            description: Release version ID of SBOM
+            x-cs-type: ObjectId
+          appsecops_project_id:
+            type: string
+            description: SBOM related project ID
+            x-cs-type: ObjectId
+          created_at:
+            type: string
+            format: date-time
+            description: SBOM definition created date
+          created_by:
+            type: string
+            description: Name of the user who created the SBOM definition
+          updated_by:
+            type: string
+            description: Name of the user who recently updated the SBOM definition
+          updated_at:
+            type: string
+            format: date-time
+            description: SBOM definition updated date
+          resource_mapping_details:
+            description: Details of resources mapped to SBOM.
+            $ref: '#/components/schemas/AppSecopsSbomResourceMappingDetails'
+        type: object
+    AppSecopsPortfolioBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AppSecopsPortfolio'
+      type: object
+    AppSecopsSbomVersion:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsSbomVersionBase'
+      - properties:
+          sbom_version_id:
+            type: string
+            description: Unique ID of the SBOM version
+            x-cs-type: ObjectId
+          predecessor_version_id:
+            type: string
+            description: Unique ID of the previous SBOM version from which this version is created
+            x-cs-type: ObjectId
+          version_number:
+            type: integer
+            description: Sequence number of the SBOM version
+          created_at:
+            type: string
+            format: date-time
+            description: SBOM version created date
+          created_by:
+            type: string
+            description: Name of the user who created the SBOM version
+          updated_at:
+            type: string
+            format: date-time
+            description: SBOM version updated date
+          updated_by:
+            type: string
+            description: Name of the user who updated the SBOM version
+          metadata:
+            $ref: '#/components/schemas/AppSecopsSbomVersionMetadata'
+          parser_status:
+            $ref: '#/components/schemas/AppSecopsSbomVersionParserStatus'
+          component_ids:
+            type: array
+            description: List of IDs used to refer the components under the SBOM version
+            items:
+              type: string
+              x-cs-type: ObjectId
+        type: object
+    AppSecopsSbomVersionRiskScore:
+      properties:
+        application_id:
+          type: string
+          description: The unique ID of the application that the SBOM project is linked to.
+          x-cs-type: ObjectId
+        overall_risk_score:
+          type: number
+          description: Aggregated risk score representing the overall impact of the vulnerability, considering multiple risk factors.
+      type: object
+    AppSecopsSbomBuildDifferenceTrendRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsTimeRangeFilter'
+      - properties: {}
+        type: object
+    AppSecopsSbomVersionRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsSbomVersionBase'
+      - properties:
+          force:
+            type: boolean
+            description: If set true, allows version creation even if duplicate exists under tenant, false prevents duplicate creation
+        type: object
+    AppSecopsFilterBase:
+      required:
+      - tenant_id
+      properties:
+        name:
+          type: array
+          description: Name of the portfolio/application/project
+          items:
+            type: string
+        tags:
+          type: array
+          description: Tags for Portfolio/Application/project
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+      type: object
+    AppSecopsApplicationBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AppSecopsApplication'
+      type: object
+    AppSecopsBCSQuestionsAnswersHistoryResponse:
+      properties:
+        items:
+          type: array
+          description: List of resources matching the trend criteria.
+          items:
+            $ref: '#/components/schemas/AppSecopsBCSQuestionsAnswers'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    AppSecopsIngestContainerFindingsRequest:
+      required:
+      - container_findings
+      - sbom_version_id
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Unique identifier of the tenant submitting the container security findings
+          x-cs-type: ObjectId
+        sbom_version_id:
+          type: string
+          description: Unique identifier of the SBOM version to associate the container security findings with
+          x-cs-type: ObjectId
+        container_findings:
+          type: array
+          description: List of container security findings to be ingested, each containing tool information and attachment reference
+          items:
+            $ref: '#/components/schemas/ContainerFindings'
+      type: object
+    AppSecopsProjectSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: name
+          enum:
+          - name
+          - updated_at
+          x-cs-enum-type: AppSecopsProjectSortColumn
+        ascending:
+          type: boolean
+      type: object
+    AppSecopsSbomVersionDifferenceRequest:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        compare_version_id:
+          type: string
+          description: ID of the SBOM version against which component and vulnerability difference is fetched
+          x-cs-type: ObjectId
+      type: object
+    AppSecopsDashboardInsights:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: AppSecopsInsightsTopActionableVulnerability
+        subtype_name: AppSecopsInsightsTopActionableVulnerability
+    ContainerFindings:
+      required:
+      - __type
+      - attachment_id
+      - file_format
+      properties:
+        file_format:
+          type: string
+          description: Format of the container security findings file (JSON or plain text)
+          example: json
+          enum:
+          - json
+          - txt
+          x-cs-enum-type: ContainerFindingsFileFormat
+        attachment_id:
+          type: string
+          description: Unique identifier of the attachment containing the container security findings data
+          x-cs-type: ObjectId
+        parser_status:
+          description: Current parsing status for this specific container security tool
+          $ref: '#/components/schemas/AppSecopsSbomVersionParserStatus'
+        created_by:
+          type: string
+          description: Name of the user who recently created the container findings
+        updated_by:
+          type: string
+          description: Name of the user who recently updated the container findings
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ContainerFindingsForDockle
+        subtype_name: ContainerFindingsForDockle
+      - subtype_model: ContainerFindingsForHadolint
+        subtype_name: ContainerFindingsForHadolint
+    AppSecopsApplicationFilterBase:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsFilterBase'
+      - properties:
+          owner:
+            type: array
+            description: Owner of the Portfolio
+            items:
+              type: string
+          portfolio_ids:
+            type: array
+            description: ID of the portfolios to which the application belongs.
+            items:
+              type: string
+              x-cs-type: ObjectId
+          portfolio_names:
+            type: array
+            description: Name of the portfolios to which the application belongs.
+            items:
+              type: string
+          appsecops_project_ids:
+            type: array
+            description: ID of the appsecops project to which the application belongs.
+            items:
+              type: string
+              x-cs-type: ObjectId
+          appsecops_project_names:
+            type: array
+            description: Name of the appsecops project to which the application belongs.
+            items:
+              type: string
+          search:
+            type: string
+            description: Search based on name, description and owner
+        type: object
+    AppSecopsPortfolioResponse:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsPortfolio'
+      - properties: {}
+        type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    AppSecopsOsvVulnerabilityVersionDetail:
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsOsvVulnerabilityFixDetails'
+        type:
+          type: string
+      type: object
+    AppSecopsSbomDefinitionsSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: name
+          enum:
+          - name
+          - updated_at
+          x-cs-enum-type: AppSecopsSbomDefinitionsSortColumn
+        ascending:
+          type: boolean
+      type: object
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
+      type: object
+    AppSecopsExternalReferenceDetail:
+      properties:
+        url:
+          type: string
+          description: External reference URL
+        name:
+          type: string
+          description: Name of the external reference
+        type:
+          type: string
+          description: Type of reference (e.g., advisory, report, fix)
+        source:
+          type: string
+          description: Source of the external reference
+      type: object
+    AppSecopsSbomVersionMetadataTool:
+      properties:
+        name:
+          type: string
+          description: Name of the SBOM tool
+        version:
+          type: string
+          description: Version of the SBOM tool
+        tool_type:
+          type: string
+          description: Sbom component type
+          example: application
+          enum:
+          - application
+          - container
+          - cryptographic-asset
+          - data
+          - device
+          - device-driver
+          - file
+          - firmware
+          - framework
+          - library
+          - machine-learning-model
+          - operating-system
+          - platform
+          x-cs-enum-type: AppSecopsSbomComponentType
+        author:
+          type: string
+          description: The person or organization that authored the component tool
+      type: object
+    AppSecopsVulnerabilitySourceDetails:
+      allOf:
+      - $ref: '#/components/schemas/KnownExploitedVulnerability'
+      - properties:
+          advisories:
+            type: array
+            items:
+              $ref: '#/components/schemas/AppSecopsExternalReferenceDetail'
+          affected:
+            type: array
+            items:
+              $ref: '#/components/schemas/AppSecopsOsvVulnerabilityAffectedDetails'
+          cpe:
+            type: array
+            description: Common Platform Enumeration(CPE) of the vulnerability
+            items:
+              type: string
+          details:
+            type: string
+            description: Detailed information about the vulnerability
+          description:
+            type: string
+            description: Description of the vulnerability
+          references:
+            type: array
+            items:
+              $ref: '#/components/schemas/AppSecopsExternalReferenceDetail'
+          source:
+            type: string
+            description: Source of the vulnerability
+            example: NVD
+            enum:
+            - NVD
+            - SBOM
+            - KEV
+            - OSV
+            x-cs-enum-type: VulnerabilitySource
+          origin:
+            type: string
+            description: Origin of the vulnerability
+          related:
+            type: array
+            description: List of related vulnerability CVE IDs
+            items:
+              type: string
+          recommendation:
+            type: string
+            description: Recommendation of the vulnerability
+          url:
+            type: string
+            description: Vulnerability source URL
+          schema_version:
+            type: string
+            description: Schema version of the vulnerability
+          source_updated_at:
+            type: string
+            format: date-time
+            description: Date when the source details was last updated
+          sourceIdentifier:
+            type: string
+            description: Source identifier of the vulnerability
+          summary:
+            type: string
+            description: Summary of the vulnerability
+          modified:
+            type: string
+            format: date-time
+            description: Date when the source details was modified
+          published:
+            type: string
+            format: date-time
+            description: Date when the source details was published
+          vulnStatus:
+            type: string
+            description: Status of the vulnerability
+          vendorComments:
+            type: array
+            items:
+              $ref: '#/components/schemas/AppSecopsVulnerabilityVendorComment'
+          descriptions:
+            type: array
+            items:
+              $ref: '#/components/schemas/VulnerabilityNvdDescription'
+          lastModified:
+            type: string
+            format: date-time
+            description: Date when the source details was last modified
+          upstream:
+            type: array
+            description: List of upstream vulnerability IDs that are transitively referred to by this vulnerability entry
+            items:
+              type: string
+          updated_at:
+            type: string
+            format: date-time
+            description: Date when the vulnerability was last updated
+        type: object
+    AppSecopsFilter:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsDashboardRequestBase'
+      - properties:
+          filters:
+            description: Query based on Tenant ID, Application ID, Portfolio ID, Project ID and SBOM references
+            $ref: '#/components/schemas/QueryOperator'
+        type: object
+    AppSecopsVulnerabilityVendorComment:
+      properties:
+        organization:
+          type: string
+          description: Name of the vendor or organization providing the comment
+        comment:
+          type: string
+          description: Vendor’s statement or advisory regarding the vulnerability
+        lastModified:
+          type: string
+          format: date-time
+          description: Date and time when the comment was last updated
+      type: object
+    AppSecopsSbomComponent:
+      properties:
+        author:
+          type: string
+          description: Author of the component
+        component_id:
+          type: string
+          description: Unique identifier for the component
+          x-cs-type: ObjectId
+        cpe:
+          type: string
+          description: Common Platform Enumeration (CPE) identifier for the component
+        dependent_component_ids:
+          type: array
+          description: List of dependent component references
+          items:
+            type: string
+            x-cs-type: ObjectId
+        description:
+          type: string
+          description: Description of the component
+        external_references:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsExternalReferenceDetail'
+        licenses:
+          type: array
+          description: License for the component
+          items:
+            $ref: '#/components/schemas/AppSecopsLicenseDetails'
+        name:
+          type: string
+          description: Name of the component
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsSbomComponentProperty'
+        purl:
+          type: string
+          description: Package URL (PURL) that uniquely identifies the component across ecosystems
+        version:
+          type: string
+          description: Version of the component
+        component_type:
+          type: string
+          description: Sbom component type
+          example: application
+          enum:
+          - application
+          - container
+          - cryptographic-asset
+          - data
+          - device
+          - device-driver
+          - file
+          - firmware
+          - framework
+          - library
+          - machine-learning-model
+          - operating-system
+          - platform
+          x-cs-enum-type: AppSecopsSbomComponentType
+      type: object
+    AppSecopsSbomComponentFilter:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsFilter'
+      - properties:
+          vulnerable_components_only:
+            type: boolean
+            description: If set true, fetch only components associated with vulnerabilities
+        type: object
+    AppSecopsProjectFilterBase:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsFilterBase'
+      - properties:
+          sbom_names:
+            type: array
+            description: Name of SBOMs linked to a project.
+            items:
+              type: string
+          application_ids:
+            type: array
+            description: ID of applications to which the project belongs
+            items:
+              type: string
+              x-cs-type: ObjectId
+          application_names:
+            type: array
+            description: Name of applications to which the project belongs
+            items:
+              type: string
+          sbom_filter:
+            type: string
+            description: Filter projects based on SBOM association status
+            example: with_sbom
+            enum:
+            - with_sbom
+            - without_sbom
+            x-cs-enum-type: AppSecopsProjectSbomFilter
+          search:
+            type: string
+            description: Search based on name, description and SBOM name
+        type: object
+    AppSecopsMappedResource:
+      required:
+      - inventory_id
+      - mapping_type
+      - resource
+      - resource_category
+      - resource_id
+      - resource_type
+      - service_account_id
+      properties:
+        mapping_type:
+          type: string
+          description: Type of Resource Mapping
+          example: automatic
+          enum:
+          - automatic
+          - manual
+          x-cs-enum-type: AppSecopsSbomResourceMappingType
+        service_account_id:
+          type: string
+          description: ID of service account
+          x-cs-type: ObjectId
+        resource_category:
+          type: string
+          description: Category of the mapped resource
+        resource_type:
+          type: string
+          description: Type of the mapped resource
+        resource:
+          type: string
+          description: Mapped resource
+        inventory_id:
+          type: string
+          description: Service Resource Inventory ID
+          x-cs-type: ObjectId
+        resource_id:
+          type: string
+          description: ID of the mapped resource
+        resource_name:
+          type: string
+          description: Name of the mapped resource
+      type: object
+    AppSecopsOsvVulnerabilityAffectedDetails:
+      properties:
+        package:
+          $ref: '#/components/schemas/AppSecopsOsvVulnerabilityAffectedPackageDetails'
+        ranges:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsOsvVulnerabilityVersionDetail'
+      type: object
+    AppSecopsVulnerabilityByComponent:
+      properties:
+        days_range:
+          type: string
+          description: Time range bucket for grouping vulnerabilities based on NVD published date or SBOM created date
+          example: 0-30 days
+          enum:
+          - 0-30 days
+          - 31-60 days
+          - 61-90 days
+          - 91-365 days
+          - '> 365 days'
+          - Unknown
+          x-cs-enum-type: DaysRange
+        product:
+          type: string
+          description: SBOM component Product name
+        vendor:
+          type: string
+          description: SBOM component Vendor name
+        package_type:
+          type: string
+          description: SBOM component package type
+        severity:
+          type: string
+          description: Severity of the vulnerability
+          example: Critical
+          enum:
+          - Critical
+          - High
+          - Info
+          - Low
+          - Medium
+          - None
+          - Unknown
+          x-cs-enum-type: Severity
+        is_kev:
+          type: boolean
+          description: Indicates whether the vulnerability is a Known Exploited Vulnerability (KEV)
+        count:
+          type: integer
+          description: Total count of vulnerabilities associated with the category
+        vulnerability_ids:
+          type: array
+          description: List of vulnerability IDs associated with the component
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    AppSecopsPortfolioListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/AppSecopsPortfolioSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AppSecopsPortfolioFilter'
+      type: object
+    AppSecopsVulnerabilityTrendBySeverityRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsTimeRangeFilter'
+      - required:
+        - granularity
+        properties:
+          granularity:
+            type: string
+            description: Granularity for aggregating vulnerability trend data
+            example: day
+            enum:
+            - day
+            - week
+            - month
+            - quarter
+            - year
+            x-cs-enum-type: TrendGranularity
+        type: object
+    KnownExploitedVulnerability:
+      properties:
+        cve_id:
+          type: string
+          description: The CVE ID of the vulnerability in the format CVE-YYYY-NNNN, note that the number portion can have more than 4 digits
+        vendor_project:
+          type: string
+          description: The vendor or project name for the vulnerability
+        product:
+          type: string
+          description: The product name for the vulnerability
+        vulnerability_name:
+          type: string
+          description: The name of the vulnerability
+        vulnerability_added_date:
+          type: string
+          format: date
+          description: The date the vulnerability was added to the catalog
+        short_description:
+          type: string
+          description: A short description of the vulnerability
+        required_action:
+          type: string
+          description: The required action to address the vulnerability
+        vulnerability_due_date:
+          type: string
+          format: date
+          description: The date the required action is due
+        is_known_ransomware_campaign:
+          type: boolean
+          description: '''True'' if this vulnerability is known to have been leveraged as part of a ransomware campaign; ''False'' if CISA lacks confirmation that the vulnerability has been utilized for ransomware'
+        notes:
+          type: string
+          description: Any additional notes about the vulnerability
+        cwe_codes:
+          type: array
+          items:
+            type: string
+            description: Common Weakness Enumeration (CWE) codes associated with this vulnerability. CWEs are in the format CWE-NNNN; note that the number portion can have any number of digits
+        created_at:
+          type: string
+          format: date-time
+          description: Vulnerability created time
+        updated_at:
+          type: string
+          format: date-time
+          description: Vulnerability updated time
+      type: object
+    AppSecopsApplicationV2:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsApplication'
+      - properties:
+          bcs_details:
+            $ref: '#/components/schemas/AppSecopsApplicationV2BCSDetail'
+          bcs_history:
+            type: array
+            description: Prior BCS submissions
+            items:
+              $ref: '#/components/schemas/AppSecopsApplicationV2BCSDetail'
+        type: object
+    ObjectIdBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    AppSecopsDashboardApplicationDetails:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsApplication'
+      - properties:
+          projects:
+            type: array
+            description: Project details associated with the application
+            items:
+              $ref: '#/components/schemas/AppSecopsProject'
+        type: object
+    AppSecopsSbomVersionDifference:
+      properties:
+        base_version_id:
+          type: string
+          description: ID of the SBOM version to compare against
+          x-cs-type: ObjectId
+        compare_version_id:
+          type: string
+          description: ID of the SBOM version to compare with
+          x-cs-type: ObjectId
+        new_component_ids:
+          type: array
+          description: List of new component IDs created in the SBOM version
+          items:
+            type: string
+            x-cs-type: ObjectId
+        upgraded_component_ids:
+          type: array
+          description: List of upgraded component IDs created in the SBOM version
+          items:
+            type: string
+            x-cs-type: ObjectId
+        deleted_component_ids:
+          type: array
+          description: List of deleted component IDs in the SBOM version
+          items:
+            type: string
+            x-cs-type: ObjectId
+        new_vulnerability_ids:
+          type: array
+          description: List of new vulnerability IDs created in the SBOM version
+          items:
+            type: string
+            x-cs-type: ObjectId
+        resolved_vulnerability_ids:
+          type: array
+          description: List of resolved vulnerability IDs in the SBOM version
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    AppSecopsApplicationV2BCSSelectedItem:
+      required:
+      - question_id
+      properties:
+        question_id:
+          type: string
+          description: Question ID
+        options:
+          type: array
+          description: Selected option IDs
+          items:
+            type: string
+      type: object
+    AppSecopsSbomVersionUpdateRequest:
+      required:
+      - build_id
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        build_id:
+          type: string
+          description: Unique ID of the build associated with the SBOM version
+      type: object
+    AppSecopsBCSQuestionsAnswersHistoryRequest:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        list_context:
+          description: Pagination context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    AppSecopsVulnerabilityTrendBySeverity:
+      properties:
+        date:
+          type: string
+          format: date
+          description: date of the aggregated time interval.
+        sbom_version_ids:
+          type: array
+          description: List of sbom version ID(s) that are associated with the vulnerabilities detected in the time interval.
+          items:
+            type: string
+            x-cs-type: ObjectId
+        critical_count:
+          type: integer
+          description: Total count of vulnerabilities with critical severity.
+        high_count:
+          type: integer
+          description: Total count of vulnerabilities with high severity.
+        medium_count:
+          type: integer
+          description: Total count of vulnerabilities with medium severity.
+        low_count:
+          type: integer
+          description: Total count of vulnerabilities with low severity.
+        none_count:
+          type: integer
+          description: Total count of vulnerabilities with none severity.
+        unknown_count:
+          type: integer
+          description: Total count of vulnerabilities with unknown severity.
+        info_count:
+          type: integer
+          description: Total count of vulnerabilities with info severity.
+      type: object
+    AppSecopsOsvVulnerabilityFixDetails:
+      properties:
+        fixed:
+          type: string
+          description: Version that fixed the vulnerability
+        introduced:
+          type: string
+          description: Version that introduced the vulnerability
+        last_affected:
+          type: string
+          description: Version that last affected the vulnerability
+        limit:
+          type: string
+          description: Limit the vulnerability
+      type: object
+    AppSecopsTopActionableIssuesResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            $ref: '#/components/schemas/AppSecopsDashboardInsights'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    AppSecopsTopActionableIssuesFilter:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsDashboardRequestBase'
+      - required:
+        - categories
+        properties:
+          categories:
+            type: array
+            description: Security category
+            items:
+              type: string
+              description: Security Category to select
+              example: vulnerability
+              enum:
+              - vulnerability
+              x-cs-enum-type: SecurityCategory
+          filters:
+            description: Query based on Tenant ID, Application ID, Portfolio ID, Project ID and SBOM references
+            $ref: '#/components/schemas/QueryOperator'
+          view_by:
+            type: string
+            description: If not set, grouping is defaulted to Project. This can either be set to application or unique vulnerability.
+            example: application
+            enum:
+            - application
+            - unique_vulnerability
+            x-cs-enum-type: AppInsightsViewBy
+          search:
+            type: string
+            description: Search text to filter the actionable issues based on CVE ID
+          days_range:
+            type: string
+            description: Time range bucket for grouping vulnerabilities based on NVD published date or SBOM created date
+            example: 0-30 days
+            enum:
+            - 0-30 days
+            - 31-60 days
+            - 61-90 days
+            - 91-365 days
+            - '> 365 days'
+            - Unknown
+            x-cs-enum-type: DaysRange
+          all_version:
+            type: boolean
+            description: True if all versions are required to be considered; false considers only the latest version of SBOMs
+        type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    AppSecopsPortfolioFilter:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsFilterBase'
+      - properties:
+          owner:
+            type: array
+            description: Owner of the Portfolio
+            items:
+              type: string
+          search:
+            type: string
+            description: Search based on name, description, owner
+        type: object
+    AppSecopsVulnerabilityByComponentRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsFilter'
+      - properties:
+          category:
+            type: array
+            description: Component property category
+            items:
+              type: string
+              description: Grouping Category
+              example: product
+              enum:
+              - product
+              - vendor
+              - package_type
+              - by_nvd_published_date
+              - by_sbom_created_date
+              x-cs-enum-type: AppSecopsComponentGroupingCategory
+        type: object
+    AppSecopsDashboardRequestBase:
+      required:
+      - tenant_ids
+      properties:
+        tenant_ids:
+          type: array
+          description: List of tenant IDs
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    AppSecopsSbomDefinitionBase:
+      required:
+      - name
+      - tenant_id
+      properties:
+        name:
+          type: string
+          description: Name of the SBOM
+        description:
+          type: string
+          description: SBOM description
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        tags:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+      type: object
+    AppSecopsApplicationResponse:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsApplication'
+      - properties: {}
+        type: object
+    AppSecopsSbomVulnerabilityDetailsByTenant:
+      properties:
+        cvss_metrics:
+          description: CVSS metrics associated with the vulnerability captured from different source.
+          $ref: '#/components/schemas/AppSecopsVulnerabilityCvssMetric'
+        sbom_source_details:
+          description: SBOM vulnerability source details specific to the tenant
+          $ref: '#/components/schemas/AppSecopsVulnerabilitySourceDetails'
+        updated_at:
+          type: string
+          format: date-time
+          description: Datetime when the vulnerability details were last updated for the tenant
+      type: object
+    AppSecopsVulnerability:
+      properties:
+        id:
+          type: string
+          description: Unique ID of the vulnerability
+          x-cs-type: ObjectId
+        vulnerability_id:
+          $ref: '#/components/schemas/AppSecopsVulnerabilityCveDetail'
+        is_kev:
+          type: boolean
+          description: Indicates whether the vulnerability is a Known Exploited Vulnerability
+        epss_metric:
+          description: EPSS metrics associated with the vulnerability
+          $ref: '#/components/schemas/AppSecopsVulnerabilityEpssScore'
+        cvss_metrics:
+          type: array
+          description: CVSS metrics associated with the vulnerability captured from different source.
+          items:
+            $ref: '#/components/schemas/AppSecopsVulnerabilityCvssMetric'
+        fix_available:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsVulnerabilityFixAvailableDetails'
+        aliases:
+          type: array
+          items:
+            type: string
+            description: List of alternative identifiers for the vulnerability
+        details_from_source:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsVulnerabilitySourceDetails'
+      type: object
+    AppSecopsPortfolioHierarchyRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsDashboardRequestBase'
+      - properties: {}
+        type: object
+    AppSecopsSbomComponentProperty:
+      properties:
+        name:
+          type: string
+          description: Name of the SBOM component property
+        value:
+          type: string
+          description: value of the SBOM component
+      type: object
+    AppSecopsVulnerabilityPrevalenceRequest:
+      required:
+      - tenant_ids
+      - vulnerability_ids
+      properties:
+        tenant_ids:
+          type: array
+          description: List of tenant IDs
+          items:
+            type: string
+            x-cs-type: ObjectId
+        vulnerability_ids:
+          type: array
+          description: List of vulnerability IDs to fetch organization-wide prevalence data
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    ContainerFindingsResponse:
+      allOf:
+      - $ref: '#/components/schemas/SecurityFinding'
+      - properties:
+          sbom_version_id:
+            type: string
+            description: SBOM version ID to which the findings are associated
+          code:
+            type: string
+            description: Unique code identifying the specific finding
+          target:
+            type: string
+            description: Identifies the subject of the scan, can be either Image or Dockerfile
+          tenant_id:
+            type: string
+            description: Tenant ID to which the findings are associated
+            x-cs-type: ObjectId
+        type: object
+    AppSecopsApplicationSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: name
+          enum:
+          - name
+          - business_criticality
+          - dev_tool
+          - service_name
+          - updated_at
+          x-cs-enum-type: AppSecopsApplicationSortColumn
+        ascending:
+          type: boolean
+      type: object
+    AppSecopsBCSQuestionsAnswerItem:
+      required:
+      - question_id
+      - weight
+      properties:
+        question_id:
+          type: string
+          description: Question ID
+        weight:
+          type: integer
+          description: Question weight (0-100)
+      type: object
+    AppSecopsProjectBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AppSecopsProject'
+      type: object
+    AppSecopsSbomVersionMetadata:
+      properties:
+        component_type:
+          type: string
+          description: Sbom component type
+          example: application
+          enum:
+          - application
+          - container
+          - cryptographic-asset
+          - data
+          - device
+          - device-driver
+          - file
+          - firmware
+          - framework
+          - library
+          - machine-learning-model
+          - operating-system
+          - platform
+          x-cs-enum-type: AppSecopsSbomComponentType
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsSbomVersionMetadataTool'
+        bom_created_at:
+          type: string
+          format: date-time
+          description: SBOM build created datetime
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

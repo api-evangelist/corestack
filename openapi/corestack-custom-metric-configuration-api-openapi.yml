@@ -1,0 +1,513 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Custom Metric Configuration API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Custom Metric Configuration
+servers:
+- url: /
+tags:
+- name: Custom Metric Configuration
+  description: Custom Metric Configuration
+paths:
+  /v1/metric_configuration:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Create Custom Metric Configuration
+      description: Create Custom Metric configuration Request
+      operationId: CustomMetricConfigurationCreate
+      security:
+      - auth_token: []
+      tags:
+      - Custom Metric Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomMetricConfigurationDetails'
+        required: true
+  /v1/metric_configuration/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomMetricConfigurationBatchResponse'
+      summary: Batch of Custom Metric Configuration
+      description: List all custom metric configuration as batches
+      operationId: CustomMetricConfigurationBatch
+      security:
+      - auth_token: []
+      tags:
+      - Custom Metric Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordIdentityBatchRequest'
+        required: true
+  /v1/metric_configuration/item/{metric_configuration_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+      summary: Delete Custom Metric Configuration
+      description: Deletes a specific custom metric configuration for a cloud account.
+      operationId: CustomMetricConfigurationDelete
+      parameters:
+      - name: metric_configuration_id
+        in: path
+        required: true
+        description: Specify the Id of metric configuration to delete, metric configuration id is unique can be obtained from the list custom metrics.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Custom Metric Configuration
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Update Custom Metric Configuration
+      description: Update Custom Metric Configuration is used to update the already created custom metrics for a cloud account.
+      operationId: CustomMetricConfigurationUpdate
+      parameters:
+      - name: metric_configuration_id
+        in: path
+        required: true
+        description: Specify the Id of metric configuration to update, metric configuration id is unique can be obtained from the list custom metrics.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Custom Metric Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomMetricConfigurationDetails'
+        required: true
+  /v1/metric_configuration/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+      summary: List Custom Metric Configuration
+      description: List Custom Metric Configuration.
+      operationId: CustomMetricConfigurationList
+      security:
+      - auth_token: []
+      tags:
+      - Custom Metric Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomMetricConfigurationListRequest'
+        required: true
+  /v1/metric_configuration/sync:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Manual Sync Custom Metric Configuration
+      description: Sync custom metric Configuration for mentioned cloud accounts
+      operationId: CustomMetricConfigurationSync
+      security:
+      - auth_token: []
+      tags:
+      - Custom Metric Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomMetricConfigurationSyncRequest'
+        required: true
+components:
+  schemas:
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    CustomMetricConfigurationListRequestSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          x-cs-enum-type: CustomMetricConfigurationListRequestSortColumn
+        ascending:
+          type: boolean
+      type: object
+    CustomMetricConfigurationDetails:
+      required:
+      - metric_namespace
+      - resource
+      - resource_category
+      - resource_type
+      - service_account_id
+      properties:
+        service_account_id:
+          type: string
+          description: Cloud Account Id for which custom metrics needs to be created.
+          x-cs-type: ObjectId
+        regions:
+          type: array
+          description: Region in which custom metrics to be created.
+          items:
+            type: string
+        resource_category:
+          type: string
+          description: Name of the Resource category.
+        resource_type:
+          type: string
+          description: Type of the Resource.
+        resource:
+          type: string
+          description: Name of the Resource.
+        metric_namespace:
+          type: string
+          description: The namespace for the metric specified in metric_name.
+        metric_name:
+          type: string
+          description: The name for the metric associated with the alarm.
+        status:
+          type: string
+          description: Status of the custom Metric Configuration
+          example: completed
+          enum:
+          - completed
+          - pending
+          - in_progress
+          - error
+          x-cs-enum-type: CustomMetricConfigurationStatus
+        threshold:
+          type: integer
+          description: The value against which the specified statistics is compared.
+        comparison_operator:
+          type: string
+          description: The arithmetic operation to use when comparing the specified statistics and threshold.
+          example: GreaterThanOrEqualTo
+          enum:
+          - GreaterThanOrEqualTo
+          - GreaterThan
+          - LessThanOrEqualTo
+          - LessThan
+          x-cs-enum-type: CustomMetricThresholdOperator
+        statistic:
+          type: string
+          description: The statistics for the metric specified in MetricName.
+          example: Average
+          enum:
+          - Average
+          - Maximum
+          - Minimum
+          - SampleCount
+          - Sum
+          x-cs-enum-type: CustomMetricStatistics
+        period:
+          type: integer
+          description: Length in seconds used each time when metric is evaluated. Valid values are 10, 30 and any multiple of 60.
+        evaluation_period:
+          type: integer
+          description: The number of periods over which data is compared to the specified threshold.
+        priority:
+          type: integer
+          description: Order of priority if there is multiple rules for same metric under a cloud account for a region
+        tags:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+        events:
+          type: array
+          description: List events for a selected resource in Event subscription
+          items:
+            type: string
+            description: List of events in event subscription
+            example: maintenance
+            enum:
+            - maintenance
+            - failure
+            - migration
+            - backtrack
+            - backup
+            - deletion
+            - restoration
+            - availability
+            - recovery
+            - failover
+            - notification
+            - read_replica
+            - creation
+            - low_storage
+            - configuration_change
+            x-cs-enum-type: EventSubscriptionResourceType
+      type: object
+    CustomMetricConfigurationSyncRequest:
+      required:
+      - service_account_id
+      properties:
+        service_account_id:
+          type: string
+          description: Cloud Account ID for which the sync to be triggered.
+          x-cs-type: ObjectId
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    CustomMetricConfigurationListRequestContext:
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant id to filter configurations.
+          x-cs-type: ObjectId
+        service_account_id:
+          type: string
+          description: Cloud Account Id  associated with custom metrics.
+          x-cs-type: ObjectId
+        regions:
+          type: array
+          description: Region in which custom metrics were created
+          items:
+            type: string
+        resource:
+          type: string
+          description: Name of the Resource.
+        metric_namespace:
+          type: string
+          description: The namespace for the metric specified in metric_name.
+        status:
+          type: string
+          description: Status of the custom Metric Configuration
+          example: completed
+          enum:
+          - completed
+          - pending
+          - in_progress
+          - error
+          x-cs-enum-type: CustomMetricConfigurationStatus
+      type: object
+    CustomMetricConfigurationListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/CustomMetricConfigurationListRequestSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/CustomMetricConfigurationListRequestContext'
+      type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    CustomMetricConfigurationBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/CustomMetricConfigurationDetails'
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

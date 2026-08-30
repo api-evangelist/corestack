@@ -1,0 +1,603 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Authorization API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage Tokens
+servers:
+- url: /
+tags:
+- name: Authorization
+  description: Manage Tokens
+paths:
+  /v1/auth/tokens:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+      summary: Get Access Token
+      description: CoreStack requires Auth token to be passed in all the API headers. Auth token has to be generated and it is valid only for an hour. New token can be generated using this API. Extract Auth-token, Tenant Id & Account Id from the response. This will be required in most of the API calls
+      operationId: authToken
+      tags:
+      - Authorization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+        required: true
+  /v1/auth/tokens/refresh:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshTokenResponse'
+      summary: Get Refresh Token
+      description: Token generated in authToken API will be valid for an hour. Post that access_token will automatically expire. When the access_token is expired, there are two options. 1) use the authToken API to generate a new token 2) use refreshToken API to extend the validity of the current token.The refreshed token will also expire after an hour, refer to expires_at in the response for the validity of the token. When the refreshed token also expires, call again the refreshToken API to extend it further. Like wise a token can extended 3 times, refer to refresh_count in the response. After 3 refresh attempts, token will expire and cannot be extended any further. Need to use authToken API to generate a new token.
+      operationId: RefreshToken
+      tags:
+      - Authorization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+        required: true
+  /v1/sso_auth/tokens/{sso_name}:
+    parameters:
+    - name: sso_name
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: SSO Redirected url
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SsoRedirectResponse'
+      summary: Returns SSO Redirected url
+      description: SSO Redirected url
+      operationId: SsoRedirectUrl
+      tags:
+      - Authorization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SsoRedirectUrlRequest'
+        required: true
+  /v1/user/switch_account/{master_account_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthDetailedResponse'
+      summary: Switch Master Account
+      description: Switching Master AccountsAuth token has to be generated and it is valid only for an hour. New token can be generated using this API. Extract Auth-token.
+      operationId: SwitchMasterAccount
+      parameters:
+      - name: master_account_id
+        in: path
+        required: true
+        description: Specify the Master Account ID ,That you want to Switch.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Authorization
+  /v1/user_details:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthDetailedResponse'
+      summary: Get User session and roles details
+      description: User access details provided a valid token 1) use the authToken API to generate a new token The refreshed token will also expire after an hour, refer to expires_at in the response for the validity of the token. When the refreshed token also expires, call again the refreshToken API to extend it further. Like wise a token can extended 3 times, refer to refresh_count in the response. After 3 refresh attempts, token will expire and cannot be extended any further. Need to use authToken API to generate a new token.
+      operationId: UserSessionDetails
+      security:
+      - auth_token: []
+      tags:
+      - Authorization
+components:
+  schemas:
+    DetailTenantModel:
+      required:
+      - id
+      - is_default
+      - name
+      - policy
+      - roles
+      - service_accounts
+      - services
+      properties:
+        id:
+          type: string
+          description: Id of the tenant. This will be used for performing tenant level operations such as createPolicy, createScript, onboardCloudAccount and so on.
+        name:
+          type: string
+          description: Unique name of the tenant provided as input when creating.
+        roles:
+          type: array
+          description: Roles for a particular tenant
+          items:
+            $ref: '#/components/schemas/Role'
+        is_default:
+          type: boolean
+          description: If user created under particular tenant it will be set to True or else False
+        service_accounts:
+          type: array
+          description: Entitlements for a particular tenant
+          items:
+            type: string
+        policy:
+          type: object
+          description: Policy for a particular tenant
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        services:
+          type: object
+          description: Services applicable for a particular tenant
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        dimension_settings:
+          type: array
+          description: Dimension settings for a particular tenant
+          items:
+            $ref: '#/components/schemas/DimensionTenantSettings'
+      type: object
+    SsoRedirectUrlRequest:
+      properties:
+        email_id:
+          type: string
+          description: The unique email ID of the user.
+        redirect_url:
+          type: string
+          description: The URL to which the user will be redirected after authentication.
+        source:
+          type: string
+          description: The source system, application, or workflow initiating the SSO request.
+      type: object
+    AuditModel:
+      properties:
+        enabled:
+          type: boolean
+          description: Whether audit log is enabled or not.
+        audit_level:
+          type: string
+          description: Audit log level.
+      type: object
+    Authorization:
+      required:
+      - access_token
+      - expires_at
+      - issued_at
+      properties:
+        issued_at:
+          type: string
+          description: DateTime in UTC when the token was issued.
+        expires_at:
+          type: string
+          description: Token expiry datetime in UTC.
+        access_token:
+          type: string
+          description: This will be used as X-Auth-Token in all other APIs.
+      type: object
+    DimensionTenantSettings:
+      required:
+      - product
+      properties:
+        product:
+          type: string
+          description: Name of the product
+          example: AppSecOps
+          enum:
+          - AppSecOps
+          - Assessments
+          - CloudOps
+          - FinOps
+          - Product_Admin
+          - SecOps
+          - Self Service
+          - StackOps
+          x-cs-enum-type: ProductEnum
+        mandate_dimension_selection:
+          type: boolean
+          description: Mandate Dimension Selection
+      type: object
+    SsoRedirectResponse:
+      properties:
+        sso_redirect_url:
+          type: string
+          description: SSO Redirected URL
+      type: object
+    AuthRequest:
+      properties:
+        access_key:
+          type: string
+          description: API Access Key. This can be retrieved from the <b>My Profile</b> page. Also this will be sent over email when the keys are generated.Please enter username and password pair or access_key and secret_key pair
+        secret_key:
+          type: string
+          description: API Secret Key. This will be available in the email sent when the keys are generated. If you have lost the secret key, it cannot be retrieved. Request your admin to generate a new set of keys, if lost.Please enter username and password pair or access_key and secret_key pair
+        username:
+          type: string
+          description: User name which will be used to login to corestack.Please enter username and password pair or access_key and secret_key pair
+        password:
+          type: string
+          description: Password which will be used to login to corestack.Please enter username and password pair or access_key and secret_key pair
+      type: object
+    RefreshTokenRequest:
+      required:
+      - access_token
+      properties:
+        access_token:
+          type: string
+          description: access token obtained from the auth token api
+      type: object
+    AuthResponse:
+      required:
+      - account_id
+      - banner_logo
+      - header_logo
+      - is_account_admin
+      - tenants
+      - token
+      - user
+      properties:
+        token:
+          description: This contains the atrributes access_token, expires_at & issued_at. access_token will be  passed with X-Auth-Token header in all other  APIs for authentication.
+          $ref: '#/components/schemas/Authorization'
+        header_logo:
+          type: string
+          description: Header logo.
+        banner_logo:
+          type: string
+          description: Banner logo.
+        user:
+          description: Contains information about the user associated with the Access Key / Secret Key.
+          $ref: '#/components/schemas/UserModel'
+        account_id:
+          type: string
+          description: Id of the Account in CoreStack. There can be multiple tenats within an account, so account_id will be required for performing account level actions such as createTenant.
+        is_account_admin:
+          type: boolean
+          description: Implies the user associated with Access Key / Secret Key is an account admin in CoreStack. True means account admin.
+        tenants:
+          type: array
+          description: List of tenants within the CoreStack account. Each tenant will have an id & name that uniquely identifies it.
+          items:
+            $ref: '#/components/schemas/TokenTenantModel'
+        audit:
+          description: Audit details
+          $ref: '#/components/schemas/AuditModel'
+        user_guide_url:
+          type: string
+          description: User Guide URL
+        support_url:
+          type: string
+          description: Support URL
+        terms_and_conditions_url:
+          type: string
+          description: Terms and Conditions URL
+      type: object
+    UserModel:
+      required:
+      - active_tenant_id
+      - email
+      - id
+      - master_account_id
+      - master_account_name
+      - mcp_server_enabled
+      - mfa_enabled
+      - name
+      - timezone
+      properties:
+        name:
+          type: string
+          description: Name of the user.
+        id:
+          type: string
+          description: Id of the user. This will be used for performing user level operations such as getUser, changePassword and so on.
+        email:
+          type: string
+          description: Email Id of the user. This wil be unique.
+        active_tenant_id:
+          type: string
+          description: Active tenant id.
+        timezone:
+          description: Contains information about the timezone set for the user.
+          $ref: '#/components/schemas/TimezoneModel'
+        preferred_language:
+          type: string
+          description: Preferred language of the user.
+          example: en
+          enum:
+          - en
+          - ja
+          x-cs-enum-type: PreferredLanguage
+        mcp_server_enabled:
+          type: boolean
+          description: Checks if the account is mcp server enabled or not
+        mfa_enabled:
+          type: string
+          description: Checks if the account is mfa enabled or not
+        master_account_id:
+          type: string
+          description: Master Account ID of the user.
+        master_account_name:
+          type: string
+          description: Master Account Name of the user.
+        products:
+          type: array
+          description: Products enabled in the master account
+          items:
+            type: string
+        crm_id:
+          type: string
+          description: Customer Relationship Management ID
+        master_account_ids:
+          type: array
+          description: list of master account ids
+          items:
+            type: string
+      type: object
+    Role:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        role_type:
+          type: string
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    TimezoneModel:
+      required:
+      - id
+      - raw_offset
+      properties:
+        id:
+          type: string
+          description: Id of the Timezone such as Asia/Kolkata, Asia/Dubai and so on.
+        raw_offset:
+          type: string
+          description: Raw offset of the timezone. It means the amount of time in milliseconds to add to UTC to get standard time in the required time zone.
+      type: object
+    TokenTenantModel:
+      properties:
+        id:
+          type: string
+          description: Id of the tenant. This will be used for performing tenant level operations such as createPolicy, createScript, onboardCloudAccount and so on.
+        name:
+          type: string
+          description: Unique name of the tenant provided as input when creating.
+        master_tenant:
+          type: boolean
+          description: If user created under particular tenant it will be set to True or else False
+        roles:
+          type: object
+          description: Roles
+      type: object
+    AuthDetailedResponse:
+      required:
+      - account_id
+      - auth_method
+      - auth_type
+      - banner_logo
+      - cost_currency
+      - cost_unit
+      - footer_text
+      - header_logo
+      - is_account_admin
+      - is_product_admin
+      - require_access_key
+      - subscription_details
+      - tenants
+      - token
+      - user
+      properties:
+        auth_type:
+          type: string
+          description: Authentication type.
+        require_access_key:
+          type: boolean
+          description: Whether access key required.
+        account_id:
+          type: string
+          description: Account id.
+        is_account_admin:
+          type: boolean
+          description: Whether account admin or not.
+        header_logo:
+          type: string
+          description: Header logo.
+        banner_logo:
+          type: string
+          description: Banner logo.
+        user:
+          description: Token.
+          $ref: '#/components/schemas/UserModel'
+        auth_method:
+          type: string
+          description: Authentication method.
+        tenants:
+          type: array
+          description: Tenants list.
+          items:
+            $ref: '#/components/schemas/DetailTenantModel'
+        audit:
+          description: Audit details
+          $ref: '#/components/schemas/AuditModel'
+        cost_unit:
+          type: string
+          description: Constant unit.
+        subscription_details:
+          type: object
+          description: Subscription details.
+        is_product_admin:
+          type: boolean
+          description: Whether Product admin or not.
+        token:
+          description: Token.
+          $ref: '#/components/schemas/Authorization'
+        cost_currency:
+          type: string
+          description: Cost currency.
+        footer_text:
+          type: string
+          description: Footer text.
+        user_guide_url:
+          type: string
+          description: User Guide URL
+        support_url:
+          type: string
+          description: Support URL
+        terms_and_conditions_url:
+          type: string
+          description: Terms and Conditions URL
+      type: object
+    RefreshTokenResponse:
+      required:
+      - access_token
+      - expires_at
+      - issued_at
+      - refresh_count
+      properties:
+        access_token:
+          type: string
+          description: access token obtained from the auth token api
+        issued_at:
+          type: string
+          description: Time in UTC at which the token was issued  at
+        expires_at:
+          type: string
+          description: Time in UTC till which the token will be valid till
+        refresh_count:
+          type: integer
+          description: The count of refresh token used.It can be used for 3 max refresh count after which the token will expired.
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

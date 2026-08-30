@@ -1,0 +1,604 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Access API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Access Pillar
+servers:
+- url: /
+tags:
+- name: Access
+  description: Access Pillar
+paths:
+  /access/posture/governance_summary/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SummaryCountResponse'
+      summary: Get Access Summary Count
+      description: Displays the summary of the violations based on the cloud provider
+      operationId: AccessSummaryCount
+      parameters:
+      - description: Supported services for Access Dashboard. Select one from the dropdown to display summary for that particular service
+        in: query
+        x-cs-enum-type: CloudServiceName
+        required: true
+        name: services
+        schema:
+          type: string
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          default: AWS
+      security:
+      - auth_token: []
+      tags:
+      - Access
+  /access/posture/governance_summary_dashboard:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccessSummaryDashboard'
+      summary: Get Access Summary Dashboard Count
+      description: Displays the summary of the violations
+      operationId: AccessSummaryDashboardCount
+      parameters:
+      - description: Select one from the supported services to display summary for that particular service
+        in: query
+        x-cs-enum-type: CloudServiceName
+        required: false
+        name: services
+        schema:
+          type: string
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          default: AWS
+      - description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        required: false
+        name: tenant_id
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Access
+  /access/posture/view_violations:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewViolationResponse'
+      summary: Get Access Violations
+      description: Displays the violations based on the cloud provider
+      operationId: AccessViolations
+      parameters:
+      - description: Supported services for Access Dashboard. Select one from the dropdown to display violations of all the accounts for that particular service
+        in: query
+        x-cs-enum-type: CloudServiceName
+        required: true
+        name: services
+        schema:
+          type: string
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          default: AWS
+      - description: Specify the tenant ID as comma separated. This is a unique ID and can be retrieved using the List Tenants API.
+        required: false
+        name: tenant_ids
+        in: query
+        schema:
+          type: string
+      - description: Search by account_name wise
+        name: search
+        in: query
+        schema:
+          type: string
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+      - description: Limit of the data to be displayed
+        name: limit
+        in: query
+        schema:
+          type: integer
+      security:
+      - auth_token: []
+      tags:
+      - Access
+  /access/visibility/details:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailsResponse'
+      summary: Get Access Detail
+      description: Displays the details of individual violation
+      operationId: AccessDetails
+      parameters:
+      - description: Supported services for Access Dashboard. Select one from the dropdown to display details for that particular service
+        in: query
+        x-cs-enum-type: CloudServiceName
+        required: true
+        name: services
+        schema:
+          type: string
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          default: AWS
+      - description: Category under which a particular violation falls in a particular cloud account. Please get category from the guardrail of AccessVisibilityFilters in Access Visibility Dashboard
+        required: true
+        name: category
+        in: query
+        schema:
+          type: string
+      - description: Name of the violation. Please get name from the guardrail of AccessVisibilityFilters in Access Visibility Dashboard
+        required: true
+        name: item
+        in: query
+        schema:
+          type: string
+      - description: Page number
+        name: page
+        in: query
+        schema:
+          type: integer
+      - description: Limit of the data to be displayed
+        name: limit
+        in: query
+        schema:
+          type: integer
+      security:
+      - auth_token: []
+      tags:
+      - Access
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DetailsRequest'
+        required: true
+  /access/visibility/filter:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VisibilityFilterResponse'
+      summary: Get Access Visibility Filter
+      description: Displays the filters by tenants, cloud accounts, guardrail
+      operationId: AccessVisibilityFilters
+      parameters:
+      - description: Supported services for Access Dashboard. Select one from the dropdown to display filter for that particular service
+        in: query
+        x-cs-enum-type: CloudServiceName
+        required: true
+        name: services
+        schema:
+          type: string
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          default: AWS
+      security:
+      - auth_token: []
+      tags:
+      - Access
+components:
+  schemas:
+    VisibilityFilterResponse:
+      required:
+      - cloud_accounts
+      - guardrails
+      - tenants
+      properties:
+        cloud_accounts:
+          type: array
+          description: Service accounts to filter violations based on service accounts
+          items:
+            $ref: '#/components/schemas/ServiceAccountsModel'
+        guardrails:
+          type: array
+          description: Guardrail to filter violations based on guardrail
+          items:
+            $ref: '#/components/schemas/GuardrailModel'
+        tenants:
+          type: array
+          description: Tenants to filter violations based on tenant
+          items:
+            $ref: '#/components/schemas/ProjectsModel'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    GuardrailModel:
+      required:
+      - category
+      - label
+      - name
+      properties:
+        category:
+          type: string
+          description: Category of the guardrail
+        name:
+          type: string
+          description: Name of the guardrail
+        label:
+          type: string
+          description: Label of the guardrail
+      type: object
+    SummaryModel:
+      required:
+      - category
+      - count
+      properties:
+        count:
+          type: string
+          description: Violations count for each violation category, i.e. Utilization/Standards
+        category:
+          type: string
+          description: Category of violations i.e Utilization/Standards
+      type: object
+    SummaryCountResponse:
+      required:
+      - violations
+      properties:
+        violations:
+          description: Contains the summary of violations shared under Utilization/Standards for AWS/Azure
+          $ref: '#/components/schemas/ViolationCategoryModel'
+      type: object
+    DetailsRequest:
+      required:
+      - all_tenants
+      properties:
+        tenant_id:
+          type: string
+          description: 'ID of the tenant to filter the violation detail.
+
+            Please get tenant_id from cloud_accounts of AccessVisibilityFilters in Access Visibility Dashboard'
+        cloud_account_id:
+          type: string
+          description: 'ID of the cloud account to filter the violation detail.
+
+            Please get cloud_account_id from cloud_accounts of AccessVisibilityFilters in Access Visibility Dashboard'
+        all_tenants:
+          type: string
+          description: To get violations from all the tenants, please give Yes. If selected No, then it is mandatory to provide tenant_id and cloud_account_id
+          example: 'Yes'
+          enum:
+          - 'Yes'
+          - 'No'
+          x-cs-enum-type: YesNo
+        search:
+          type: string
+          description: Search by account_name wise
+      type: object
+    ViewViolationModel:
+      required:
+      - category
+      - cloud_account_id
+      - cloud_account_name
+      - count
+      - name
+      - severity
+      - tenant_id
+      - tenant_name
+      - violation_category
+      properties:
+        count:
+          type: integer
+          description: Count of a particular violation in a particular cloud account
+        category:
+          type: string
+          description: Category under which a particular violation falls in a particular cloud account
+        tenant_name:
+          type: string
+          description: Tenant under which the cloud account resides
+        name:
+          type: string
+          description: Name of the violation
+        cloud_account_id:
+          type: string
+          description: ID of the cloud account
+        violation_category:
+          type: string
+          description: Category of a violation i.e. standards/utilization
+        cloud_account_name:
+          type: string
+          description: Cloud account name
+        tenant_id:
+          type: string
+          description: ID of the tenant
+        severity:
+          type: string
+          description: Severity of the violation
+      type: object
+    ViewViolationResponse:
+      required:
+      - details
+      - page_count
+      - total_count
+      properties:
+        total_count:
+          type: integer
+          description: Total violations count
+        page_count:
+          type: string
+          description: Count of number of pages
+        details:
+          type: array
+          description: Details of violation
+          items:
+            $ref: '#/components/schemas/ViewViolationModel'
+      type: object
+    ServiceAccountsModel:
+      required:
+      - cloud_account_id
+      - cloud_account_name
+      - tenant_id
+      properties:
+        cloud_account_id:
+          type: string
+          description: ID of the cloud account
+        tenant_id:
+          type: string
+          description: ID of the tenant
+        cloud_account_name:
+          type: string
+          description: Name of the cloud account
+      type: object
+    ProjectsModel:
+      required:
+      - tenant_id
+      - tenant_name
+      properties:
+        tenant_name:
+          type: string
+          description: Name of the tenant
+        tenant_id:
+          type: string
+          description: ID of the tenant
+      type: object
+    ViolationCategoryModel:
+      required:
+      - standards
+      - utilization
+      properties:
+        utilization:
+          description: Contains the category and the number of violations under Utilization
+          $ref: '#/components/schemas/SummaryModel'
+        standards:
+          description: Contains the category and the number of violations under Standards
+          $ref: '#/components/schemas/SummaryModel'
+      type: object
+    DetailsResponse:
+      required:
+      - details
+      - page_count
+      - total_count
+      properties:
+        total_count:
+          type: integer
+          description: Total violations count
+        page_count:
+          type: string
+          description: Page count for the violations
+        details:
+          type: array
+          description: Details of the violation
+          items:
+            type: object
+      type: object
+    AccessSummaryDashboard:
+      required:
+      - service_name
+      - violation
+      properties:
+        service_name:
+          type: string
+          description: Name of the Service
+        violation:
+          type: object
+          description: Contains the summary of violations
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

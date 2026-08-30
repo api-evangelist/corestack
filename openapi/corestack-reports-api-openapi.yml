@@ -1,0 +1,723 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Reports API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Reports Pillar
+servers:
+- url: /
+tags:
+- name: Reports
+  description: Reports Pillar
+paths:
+  /operations/trend_analysis/backup:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupReportResponse'
+      summary: Backup Report
+      description: Fetch the backup report based on cloud account usage
+      operationId: CreateBackupReport
+      security:
+      - auth_token: []
+      tags:
+      - Reports
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBackupReport'
+        required: true
+  /operations/trend_analysis/patch_compliance:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchComplianceReportRes'
+      summary: Patch Compliance Report
+      description: Fetch the patch compliance report based on cloud account usage
+      operationId: PatchComplianceReports
+      security:
+      - auth_token: []
+      tags:
+      - Reports
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchComplianceReportReq'
+        required: true
+  /operations/trend_analysis/recovery_service:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecoveryServiceReportRes'
+      summary: RecoveryService Report
+      description: Fetch the recovery service report based on cloud account usage
+      operationId: RecoveryServiceReports
+      security:
+      - auth_token: []
+      tags:
+      - Reports
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecoveryServiceReportReq'
+        required: true
+  /secure/{tenant_id}/score:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Mapping
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SecureDetails'
+      summary: SecureScore Mapping Report
+      operationId: getSecureScores
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This needs to fetch from Azure accounts.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Reports
+  /v2/reports/pin/{report_id}:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Create pinned report
+      description: Pin Report
+      operationId: PinReport
+      parameters:
+      - name: report_id
+        in: path
+        required: true
+        description: Id of the report
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Reports
+  /v2/reports/pinned/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      summary: List pinned report
+      description: List of pinned report
+      operationId: GetPinnedReports
+      security:
+      - auth_token: []
+      tags:
+      - Reports
+  /v2/reports/unpin/{report_id}:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete pinned report
+      description: Unpin Report
+      operationId: UnpinReport
+      parameters:
+      - name: report_id
+        in: path
+        required: true
+        description: Id of the report
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Reports
+  /v2/reports/user_view/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Create view of the report
+      description: Create view of the report
+      operationId: CreateReportsUserView
+      security:
+      - auth_token: []
+      tags:
+      - Reports
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportsUserViewCreateRequest'
+        required: true
+  /v2/reports/user_view/delete:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete view of the report
+      description: Delete view of the report
+      operationId: DeleteReportsUserView
+      security:
+      - auth_token: []
+      tags:
+      - Reports
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportsUserViewDeleteRequest'
+        required: true
+  /v2/reports/user_view/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReportDetails'
+      summary: List of user report views
+      description: List views of the report
+      operationId: ListReportsUserView
+      parameters:
+      - name: report_id
+        in: query
+        schema:
+          type: string
+      - name: view_name
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Reports
+  /v2/reports/user_view/update:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Update view of the report
+      description: Update view of the report
+      operationId: UpdateReportsUserView
+      security:
+      - auth_token: []
+      tags:
+      - Reports
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportsUserViewUpdateRequest'
+        required: true
+components:
+  schemas:
+    SecureScoreDerivedDetails:
+      properties:
+        display_name:
+          type: string
+          description: Display name of policy which allow space this is to mostly show on the ui
+        healthy_resource_count:
+          type: integer
+          description: Number of healthy resources in the control
+        unhealthy_resource_count:
+          type: integer
+          description: Number of unhealthy resources in the control
+        non_applicable_resource_count:
+          type: integer
+          description: Number of not applicable resources in the control
+        score:
+          description: Secure score for the tenant
+          $ref: '#/components/schemas/SecureScore'
+        weight:
+          type: integer
+          description: Secure score for the tenant
+      type: object
+    ReportsUserViewCreateRequest:
+      properties:
+        report_id:
+          type: string
+          description: Id of the report
+        view_name:
+          type: string
+          description: Name of the View
+        state_id:
+          type: string
+          description: powerBI unique state id
+        default_view:
+          type: boolean
+          description: default view
+          default: false
+      type: object
+    ReportsUserViewUpdateRequest:
+      properties:
+        report_id:
+          type: string
+          description: Id of the report
+        view_name:
+          type: string
+          description: Name of the View
+        state_id:
+          type: string
+          description: powerBI unique state id
+        default_view:
+          type: boolean
+          description: default view
+          default: false
+      type: object
+    ReportsUserViewDeleteRequest:
+      properties:
+        report_id:
+          type: string
+          description: unique report id
+        view_name:
+          type: string
+          description: name of the view
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ReportDetails:
+      properties:
+        report_id:
+          type: string
+          description: Id of the report
+        views:
+          type: array
+          description: List of Views
+          items:
+            $ref: '#/components/schemas/ReportViewDetails'
+      type: object
+    ReportViewDetails:
+      properties:
+        view_name:
+          type: string
+          description: Name of the View
+        state_id:
+          type: string
+          description: powerBI unique state id
+        default_view:
+          type: boolean
+          description: Boolean to indicate default view
+        created_at:
+          type: string
+          format: date-time
+          description: view created datetime
+        updated_at:
+          type: string
+          format: date-time
+          description: view latest update datetime
+      type: object
+    SecureScore:
+      properties:
+        max:
+          type: integer
+          description: SecureScore max for the tenant
+        current:
+          type: number
+          description: SecureScore current for the tenant
+        percentage:
+          type: number
+          description: SecureScore percentage for the tenant
+      type: object
+    RecoveryServiceReportReq:
+      properties:
+        cloud_account_id:
+          type: string
+          description: Specify the Cloud Account ID. This can be fetched from List CloudAccounts API call.
+        tenant_id:
+          type: string
+          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+      type: object
+    CreateBackupReport:
+      properties:
+        span:
+          type: string
+          description: span name
+          example: PreviousMonth
+          enum:
+          - PreviousMonth
+          - PreviousTwoMonths
+          - CurrentMonth
+          x-cs-enum-type: BackupReportSpan
+        cloud_account_id:
+          type: string
+          description: Specify the Cloud Account ID. This can be fetched from List CloudAccounts API call.
+        tenant_id:
+          type: string
+          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+      type: object
+    BackupReportResponse:
+      properties:
+        status:
+          type: string
+          description: status response
+        message:
+          type: string
+          description: message response
+        data:
+          type: object
+          description: Backup data
+      type: object
+    PatchComplianceReportReq:
+      properties:
+        span:
+          type: string
+          description: span name
+          example: PreviousMonth
+          enum:
+          - PreviousMonth
+          - PreviousTwoMonths
+          - CurrentMonth
+          - PreviousThreeMonths
+          - PreviousSixMonths
+          x-cs-enum-type: PatchComplianceReportSpan
+        cloud_account_id:
+          type: string
+          description: Specify the Azure Cloud Account ID. This can be fetched from List CloudAccounts API call.
+        tenant_id:
+          type: string
+          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+      type: object
+    SecureScoreDetails:
+      properties:
+        id:
+          type: string
+          description: ID of the cloud account subscription
+        name:
+          type: string
+          description: Secure score name for azure subscription
+        type:
+          type: string
+          description: Microsoft api for secure scores
+        properties:
+          description: Secure score value
+          $ref: '#/components/schemas/SecureScoreDerivedDetails'
+      type: object
+    RecoveryServiceReportRes:
+      properties:
+        status:
+          type: string
+          description: status response
+        message:
+          type: string
+          description: message response
+        data:
+          type: object
+          description: recovery service data
+      type: object
+    PatchComplianceReportRes:
+      properties:
+        status:
+          type: string
+          description: status response
+        message:
+          type: string
+          description: message response
+        data:
+          type: object
+          description: compliance data
+      type: object
+    SecureDetails:
+      properties:
+        id:
+          type: string
+          description: ID
+        cloud_account_id:
+          type: string
+          description: cloud account id
+        subscription_id:
+          type: string
+          description: Azure Subscription ID.
+        created_at:
+          type: string
+          description: When the schedule is created
+        created_by:
+          type: string
+          description: Who has created the schedule
+        tenant_id:
+          type: string
+          description: Id of the tenant
+        tenant_name:
+          type: string
+          description: Name of the tenant
+        secure_scores:
+          description: secure score for the cloud account
+          $ref: '#/components/schemas/SecureScoreDetails'
+        cloud_account_name:
+          type: string
+          description: Cloud Service Name
+        cloud_name:
+          type: string
+          description: Cloud Service Name
+        subscription_name:
+          type: string
+          description: Name of the subscription from Azure
+        updated_at:
+          type: string
+          description: Date and Time of Update
+        updated_by:
+          type: string
+          description: Who has updated the secure score
+        recommendations:
+          description: Secure score deatils
+          $ref: '#/components/schemas/SecureScoreDerivedDetails'
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

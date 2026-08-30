@@ -1,0 +1,866 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Request Audit API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Analyze Request Audit
+servers:
+- url: /
+tags:
+- name: Request Audit
+  description: Analyze Request Audit
+paths:
+  /v1/admin/request_audit/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestAuditBatchResponse'
+      summary: Returns a batch of RequestAuditEntries
+      description: Get details for the request audit ids passed in the request
+      operationId: RequestAuditBatch
+      security:
+      - auth_token: []
+      tags:
+      - Request Audit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAuditBatchRequest'
+        required: true
+  /v1/admin/request_audit/cache/flush:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Clears the caching layer
+      description: Clears caching layer
+      operationId: RequestAuditFlushCache
+      security:
+      - auth_token: []
+      tags:
+      - Request Audit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAuditCacheFlushRequest'
+        required: true
+  /v1/admin/request_audit/describe:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Described
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      summary: Returns a list of endpoints active in the target executor
+      description: Describe active endpoints
+      operationId: RequestAuditDescribe
+      security:
+      - auth_token: []
+      tags:
+      - Request Audit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAuditDescribeRequest'
+        required: true
+  /v1/admin/request_audit/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Listed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestAuditListResponse'
+      summary: Returns a list of BackgroundJobs ids
+      description: Filter request audits
+      operationId: RequestAuditList
+      security:
+      - auth_token: []
+      tags:
+      - Request Audit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAuditListRequest'
+        required: true
+  /v1/admin/request_audit/profile/{request_audit_id}:
+    parameters:
+    - name: request_audit_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Found
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/InputStream'
+      summary: Streams the profiler's result for a request audit
+      description: Download a profile results
+      operationId: RequestAuditProfileDownload
+      tags:
+      - Request Audit
+  /v1/admin/request_audit/profiler/auto_trigger:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestAuditProfileAutoTrigger'
+      summary: Configures the parameters for auto triggering the collection of profiling data
+      description: Configure profiling auto trigger
+      operationId: RequestAuditProfileAutoTrigger
+      security:
+      - auth_token: []
+      tags:
+      - Request Audit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAuditProfileAutoTrigger'
+        required: true
+  /v1/admin/request_audit/profiler/config:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestAuditProfileStatus'
+      summary: Requests to profile a endpoint or resource path
+      description: Requests to profile endpoints
+      operationId: RequestAuditProfile
+      security:
+      - auth_token: []
+      tags:
+      - Request Audit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAuditProfileRequest'
+        required: true
+  /v1/admin/request_audit/profiler/status:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Queued
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestAuditProfileStatus'
+      summary: Get the list of endpoints currently profiled
+      description: Lists currently profiled endpoints
+      operationId: RequestAuditProfileDescribe
+      security:
+      - auth_token: []
+      tags:
+      - Request Audit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAuditProfileDescribeRequest'
+        required: true
+  /v1/admin/request_audit/statistics:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Collected
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestAuditEndpointStatisticsResponse'
+      summary: Returns hit counts for an endpoint or path in the target executor
+      description: Reports usage statistics for an endpoint or path
+      operationId: RequestAuditEndpointStatistics
+      security:
+      - auth_token: []
+      tags:
+      - Request Audit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestAuditEndpointStatisticsRequest'
+        required: true
+components:
+  schemas:
+    RequestAuditObservabilityStages:
+      properties:
+        path:
+          type: string
+          description: Code path taken within the handler.
+        timings:
+          type: object
+          description: Stage name to duration in milliseconds.
+          additionalProperties:
+            type: number
+        total_ms:
+          type: number
+          description: Total execution time in milliseconds.
+        counters:
+          type: object
+          description: Endpoint-specific counters (e.g. doc_count, identity_count).
+          additionalProperties:
+            type: integer
+      type: object
+    RequestAuditBatchRequest:
+      allOf:
+      - $ref: '#/components/schemas/ObjectIdBatchRequest'
+      - properties:
+          include_profile:
+            type: boolean
+            description: Include payload details if true
+        type: object
+    RequestAuditListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/RequestAuditSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/RequestAuditFilter'
+      type: object
+    ObjectIdBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    RequestAuditCacheCounters:
+      properties:
+        hits:
+          description: Counter for cache hits.
+          $ref: '#/components/schemas/RequestAuditPerformanceCounter'
+        misses:
+          description: Counter for cache misses.
+          $ref: '#/components/schemas/RequestAuditPerformanceCounter'
+        invalidations:
+          description: Counter for cache invalidations.
+          $ref: '#/components/schemas/RequestAuditPerformanceCounter'
+      type: object
+    RequestAuditEndpointObservability:
+      properties:
+        payload:
+          type: string
+          description: Compressed request payload (zstd + base64).
+        pool_stats:
+          type: array
+          description: MongoDB connection pool stats at request entry.
+          items:
+            $ref: '#/components/schemas/RequestAuditPoolServerStats'
+        stages:
+          description: Stage-level timing breakdown.
+          $ref: '#/components/schemas/RequestAuditObservabilityStages'
+        cache_key:
+          type: string
+          description: Memoization cache key (SHA-256).
+        cache_hit:
+          type: boolean
+          description: Whether served from memoization cache.
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    RequestAuditEndpointStatisticsRequest:
+      allOf:
+      - $ref: '#/components/schemas/RequestAuditBaseRequest'
+      - required:
+        - end_time
+        - start_time
+        properties:
+          endpoint:
+            type: string
+            description: Collect statistics about this endpoint
+          start_time:
+            type: string
+            format: date-time
+            description: Start time
+          end_time:
+            type: string
+            format: date-time
+            description: End time
+        type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    RequestAuditBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/RequestAuditEntry'
+      type: object
+    RequestAuditProfileStatus:
+      properties:
+        executor:
+          type: string
+          description: Target executor
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        endpoint:
+          type: string
+          description: Target endpoint
+        path:
+          type: string
+          description: Target resource path
+        activations:
+          type: integer
+          description: Number of activations.
+        execution_time_threshold:
+          type: number
+          description: Only log profiles that take longer than this time.
+      type: object
+    RequestAuditPerformanceCounter:
+      properties:
+        count:
+          type: integer
+          description: Number of events.
+        execution_time:
+          type: number
+          description: Execution time in seconds.
+        wait_time:
+          type: number
+          description: Lock contention time in seconds.
+      type: object
+    RequestAuditFilter:
+      properties:
+        executor:
+          type: string
+          description: Limit results to requests from this executor
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        endpoint:
+          type: string
+          description: Limit results to requests to this endpoint
+        status_code:
+          type: integer
+          description: Limit results to requests to this status code
+        method:
+          type: string
+          description: Limit results to requests to this method
+        path:
+          type: string
+          description: Limit results to requests to this path
+        request_id:
+          type: string
+          description: Limit results to requests to this Correlation ID
+        active_after:
+          type: string
+          format: date-time
+          description: Limit to requests active after this time
+        active_before:
+          type: string
+          format: date-time
+          description: Limit to requests active before this time
+        duration:
+          type: number
+          description: Limit to requests that took longer than this amount (it requires an activation range as well)
+        only_with_profile:
+          type: boolean
+          description: Limit to requests that have a profile trace
+      type: object
+    RequestAuditProfileDescribeRequest:
+      allOf:
+      - $ref: '#/components/schemas/RequestAuditBaseRequest'
+      - properties: {}
+        type: object
+    RequestAuditEndpointStatisticsResponse:
+      properties:
+        counts:
+          type: object
+          description: Number of calls for each endpoint or path.
+          additionalProperties:
+            type: integer
+      type: object
+    RequestAuditSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: Endpoint
+          enum:
+          - Endpoint
+          - Path
+          - StartTime
+          - EndTime
+          - Duration
+          - MemoryIncrease
+          x-cs-enum-type: RequestAuditSortColumn
+        ascending:
+          type: boolean
+      type: object
+    RequestAuditProfileRequest:
+      allOf:
+      - $ref: '#/components/schemas/RequestAuditBaseRequest'
+      - properties:
+          endpoint:
+            type: string
+            description: Target endpoint
+          path:
+            type: string
+            description: Target resource path
+          activations:
+            type: integer
+            description: Number of activations.
+          execution_time_threshold:
+            type: number
+            description: Only log profiles that take longer than this time.
+        type: object
+    RequestAuditCacheFlushRequest:
+      allOf:
+      - $ref: '#/components/schemas/RequestAuditBaseRequest'
+      - properties: {}
+        type: object
+    RequestAuditEntry:
+      properties:
+        executor:
+          type: string
+          description: The executor for this request
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        endpoint:
+          type: string
+          description: Request Endpoint
+        status_code:
+          type: integer
+          description: Result of the request
+        method:
+          type: string
+          description: Request verb
+        path:
+          type: string
+          description: Resource path
+        params:
+          type: object
+          description: Query parameters
+          additionalProperties:
+            type: string
+        source_ip:
+          type: string
+          description: Source IP
+        request_id:
+          type: string
+          description: Correlation ID
+        user_id:
+          type: string
+          description: User ID
+        user_name:
+          type: string
+          description: User name
+        from_service:
+          type: string
+          description: Source service
+        start_time:
+          type: string
+          format: date-time
+          description: Start time
+        end_time:
+          type: string
+          format: date-time
+          description: End time
+        duration:
+          type: number
+          description: Duration in seconds
+        memory_end:
+          type: integer
+          description: Memory used at the end of the request
+        memory_delta:
+          type: integer
+          description: Memory usage change during the request
+        overlapping_requests:
+          type: integer
+          description: Number of requests that happened at the same time.
+        active_requests_at_start:
+          type: integer
+          description: Number of requests active at start.
+        active_requests_at_end:
+          type: integer
+          description: Number of requests active at end.
+        cache:
+          description: Cache performance counters.
+          $ref: '#/components/schemas/RequestAuditCacheCounters'
+        has_profile:
+          type: boolean
+          description: Set if there's a profile associated with this request.
+        profile_html:
+          type: string
+          description: Profiler output
+        payload:
+          type: string
+          description: Request payload.
+        observability:
+          description: Endpoint observability data. Present when observability is enabled for the endpoint.
+          $ref: '#/components/schemas/RequestAuditEndpointObservability'
+      type: object
+    RequestAuditProfileAutoTrigger:
+      allOf:
+      - $ref: '#/components/schemas/RequestAuditBaseRequest'
+      - properties:
+          activations:
+            type: integer
+            description: Number of activations for each auto trigger run.
+          execution_time_threshold:
+            type: number
+            description: Trigger profiling only for requests that take longer than this time.
+          backoff_time:
+            type: number
+            description: Number of seconds to wait before re-enabling auto trigger.
+        type: object
+    InputStream:
+      properties:
+        bytes:
+          type: object
+      type: object
+    RequestAuditListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+            x-cs-type: ObjectId
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    RequestAuditPoolServerStats:
+      properties:
+        address:
+          type: string
+          description: Server address (host:port).
+        active:
+          type: integer
+          description: Connections checked out by application threads.
+        idle:
+          type: integer
+          description: Idle connections in the pool.
+        waiting:
+          type: integer
+          description: Threads waiting for a connection.
+      type: object
+    RequestAuditBaseRequest:
+      required:
+      - executor
+      properties:
+        executor:
+          type: string
+          description: Target executor
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+      type: object
+    RequestAuditDescribeRequest:
+      allOf:
+      - $ref: '#/components/schemas/RequestAuditBaseRequest'
+      - properties: {}
+        type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

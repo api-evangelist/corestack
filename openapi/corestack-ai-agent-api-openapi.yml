@@ -1,0 +1,2070 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External AI Agent API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: AI Agent Framework API
+servers:
+- url: /
+tags:
+- name: AI Agent
+  description: AI Agent Framework API
+paths:
+  /v1/agent/action/confirm:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+      summary: Confirm or deny a pending agent action
+      description: Confirm or deny a pending agent action. On confirm, the agent executes the action (workload creation, policy execution, etc.). On deny, the action is cancelled with no execution.
+      operationId: ConfirmAgentAction
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentActionConfirmRequest'
+        required: true
+  /v1/agent/chat/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentChatBatchResponse'
+      summary: Batch Chat Details
+      description: Retrieve the chat details for the specified ids
+      operationId: BatchChats
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+        required: true
+  /v1/agent/chat/conversations/item/{conversation_id}:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Update the conversation of the chat
+      description: Update the conversation of the chat.
+      operationId: ConversationUpdate
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        description: Specify the conversation ID to read, ID which can be obtained from the conversations API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConversationFeedbackRequest'
+        required: true
+  /v1/agent/chat/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Create a new chat
+      description: Create a new Chat
+      operationId: CreateChat
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentCreateChatRequest'
+        required: true
+  /v1/agent/chat/delete:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentChatDeleteResponse'
+      summary: Delete the Chat and the conversations associated with it
+      description: Delete the chat for the specified ids
+      operationId: DeleteChats
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentChatDeleteRequest'
+        required: true
+  /v1/agent/chat/item/{chat_id}:
+    parameters:
+    - description: Specify the chat ID to read, ID which can be obtained from the list chats API.
+      name: chat_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentChat'
+      summary: Get chat details
+      description: Retrieve the current details of the chat.
+      operationId: GetChat
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '412':
+          description: Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResults'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentChat'
+      summary: Update the details of the chat
+      description: Update the details of the chat.
+      operationId: UpdateChatName
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentChatUpdateRequest'
+        required: true
+  /v1/agent/chat/item/{chat_id}/suggestions:
+    parameters:
+    - name: chat_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentPromptSuggestionResponse'
+      description: Get the chat suggestions
+      operationId: ListChatSuggestions
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+  /v1/agent/chat/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentListChatResponse'
+      summary: List chats
+      description: Retrieve the ids of chats matching the filtering criteria
+      operationId: ListChats
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentListChatRequest'
+        required: true
+  /v1/agent/conversations/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatConversationBatchResponse'
+      summary: Batch conversations Details
+      description: Retrieve the conversations details for the specified ids
+      operationId: BatchConversations
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+        required: true
+  /v1/agent/conversations/item/{conversation_id}/interrupt:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Interrupt the processing conversation of the chat
+      description: Interrupt the processing conversation of the chat.
+      operationId: InterruptConversation
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        description: Specify the conversation ID to read, ID which can be obtained from the conversations API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+  /v1/agent/conversations/item/{conversation_id}/stream:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success - Streaming data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentStreamingResponse'
+      summary: Stream the conversation response for the specified conversation ID
+      description: 'Stream the conversation response for the specified conversation ID using Server-Sent Events (SSE).
+
+        Returns an SSE stream with real-time data chunks.'
+      operationId: StreamQueryResponse
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        description: Specify the conversation ID to read, ID which can be obtained from the conversations API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+  /v1/agent/conversations/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatConversationListResponse'
+      summary: Retrieves the conversations for the specified chat based on the given filter
+      description: Fetch the conversations for the specified chat based on the given filter.
+      operationId: ListConversations
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatConversationRequest'
+        required: true
+  /v1/agent/feed:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserQueryResponse'
+      summary: Submit a new query for the specific agent and retrieve the agent's response for the given feed query
+      description: Submit a new query for the specific agent and retrieve the agent's response for the given feed query.
+      operationId: AgenticFeed
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserQueryRequest'
+        required: true
+  /v1/agent/prompt/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptBatchResponse'
+      summary: Retrieve the saved prompt details for the specified ids
+      description: Retrieve the saved prompt details for the specified ids
+      operationId: BatchSavedPrompts
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+        required: true
+  /v1/agent/prompt/filters:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptFiltersResponse'
+      summary: List the filters for the specified agent id and prompt type
+      description: Retrieve the filters for the specified agent id and prompt type.
+      operationId: ListPromptFilters
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromptFiltersRequest'
+        required: true
+  /v1/agent/prompt/item/{prompt_id}:
+    parameters:
+    - description: Specify the prompt ID to read, ID which can be obtained from the list prompts API.
+      name: prompt_id
+      in: path
+      required: true
+      schema:
+        type: string
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete a particular custom prompt
+      description: Delete the custom prompt.
+      operationId: DeletePrompt
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+  /v1/agent/prompt/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromptListResponse'
+      summary: List saved prompts
+      description: Retrieve the ids of saved prompts matching the filtering criteria
+      operationId: ListSavedPrompts
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromptListRequest'
+        required: true
+  /v1/agent/prompt/save:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Saves the prompt
+      description: Saves the prompt.
+      operationId: SavePrompt
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromptSaveRequest'
+        required: true
+  /v1/agent/query:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Submit a new query for the specified chat and retrieve the agent's response
+      description: Submit a new query for the specified chat and retrieve the agent's response.
+      operationId: SubmitNewQuery
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserQueryRequest'
+        required: true
+  /v1/agent/report/generate:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordIdentity'
+      summary: Schedule the generation of a report for Ai agent
+      description: Generate a report for an Ai agent
+      operationId: report-create
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiAgentReportCreateRequest'
+        required: true
+  /v1/agent/report/item/{report_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiAgentReport'
+      summary: Fetch an Ai agent report by ID
+      description: Get a report for an agent.
+      operationId: report-get
+      parameters:
+      - name: report_id
+        in: path
+        required: true
+        description: ID of the report to fetch. This can be retrieved using Report Generation API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+  /v1/agent/types:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentTypeResponse'
+      summary: List the available agents types
+      description: List of Agent types.
+      operationId: AgentTypes
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+  /v1/mcp/server/item/{server_id}:
+    parameters:
+    - description: MCP server ID returned from the register API.
+      name: server_id
+      in: path
+      required: true
+      schema:
+        type: string
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Deleted
+      summary: Delete MCP server
+      description: Delete a registered MCP server.
+      operationId: DeleteMcpServer
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/McpServerItem'
+      summary: Get MCP server details
+      description: Retrieve details of a specific MCP server.
+      operationId: GetMcpServer
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+      summary: Update an MCP server's configuration
+      description: Update a registered MCP server.
+      operationId: UpdateMcpServer
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/McpServerRequest'
+        required: true
+  /v1/mcp/server/item/{server_id}/enabled:
+    parameters:
+    - description: MCP server ID returned from the register API.
+      name: server_id
+      in: path
+      required: true
+      schema:
+        type: string
+    patch:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+      summary: Enable or disable an MCP server post-registration
+      description: Enable or disable a registered MCP server without modifying its configuration.
+      operationId: SetMcpServerEnabled
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/McpServerSetEnabledRequest'
+        required: true
+  /v1/mcp/server/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/McpServerListResponse'
+      summary: List MCP servers for the current tenant
+      description: List all MCP servers registered for the current tenant.
+      operationId: ListMcpServers
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/McpServerListRequest'
+        required: true
+  /v1/mcp/server/register:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordIdentity'
+      summary: Register a new MCP server for the current tenant
+      description: Register a new MCP server for the tenant.
+      operationId: RegisterMcpServer
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/McpServerRequest'
+        required: true
+  /v1/mcp/server/tools:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/McpToolsResponse'
+      summary: Get MCP tools available for a tenant and business agent
+      description: Retrieve MCP tool metadata scoped by tenant and business agent.
+      operationId: GetMcpTools
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/McpToolsRequest'
+        required: true
+components:
+  schemas:
+    PromptListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/PromptSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/PromptFilters'
+      type: object
+    McpServerListResponse:
+      properties:
+        total_count:
+          type: integer
+          description: Total number of servers.
+        mcp_servers:
+          type: array
+          description: MCP Server list.
+          items:
+            $ref: '#/components/schemas/McpServerItem'
+      type: object
+    ChatConversationBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/ConversationDetails'
+      type: object
+    PromptListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+            x-cs-type: ObjectId
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    AgentStreamingResponse:
+      properties:
+        type:
+          type: string
+          description: Type of the streaming data
+        data:
+          type: object
+          description: Streaming data either progress data or response data
+      type: object
+    AgentChatSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: Name
+          enum:
+          - Name
+          - CreatedAt
+          - UpdatedAt
+          x-cs-enum-type: AgentChatSortColumn
+        ascending:
+          type: boolean
+      type: object
+    AgentChatDelete:
+      properties:
+        status:
+          type: boolean
+          description: Indicates if the chat is deleted
+      type: object
+    PromptFiltersRequest:
+      required:
+      - agent_ids
+      - prompt_type
+      properties:
+        agent_ids:
+          type: array
+          description: IDs of the agent
+          items:
+            type: string
+            x-cs-type: ObjectId
+        prompt_type:
+          type: string
+          description: Type of the prompt
+          example: default
+          enum:
+          - default
+          - custom
+          x-cs-enum-type: AgentPromptTypes
+      type: object
+    PromptFiltersResponse:
+      properties:
+        tags:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+      type: object
+    AgentCreateChatRequest:
+      properties:
+        name:
+          type: string
+          description: Name of the chat
+        agent_id:
+          type: string
+          description: ID of the agent
+          x-cs-type: ObjectId
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+      type: object
+    AgentResponse:
+      properties:
+        response:
+          type: array
+          description: Response from the agent
+          items:
+            $ref: '#/components/schemas/BaseForAgentResponse'
+        status:
+          type: string
+          description: Status of the response
+          example: failed
+          enum:
+          - failed
+          - in_progress
+          - success
+          x-cs-enum-type: AgentResponseStatus
+      type: object
+    PromptFilters:
+      allOf:
+      - $ref: '#/components/schemas/PromptFiltersRequest'
+      - properties:
+          prompt:
+            type: string
+            description: Name of the prompt
+          tags:
+            type: array
+            description: List of tag key/value pairs
+            items:
+              $ref: '#/components/schemas/KeyValuePair'
+        type: object
+    PromptSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          x-cs-enum-type: PromptSortColumn
+        ascending:
+          type: boolean
+      type: object
+    ChatConversationRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/ChatConversationSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/ChatConversationFilter'
+      type: object
+    AgentChatBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AgentChat'
+      type: object
+    PromptSaveRequest:
+      required:
+      - prompt
+      properties:
+        prompt:
+          type: string
+          description: Input given to the agent
+        agent_id:
+          type: string
+          description: ID of the agent
+          x-cs-type: ObjectId
+        tags:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+      type: object
+    AiAgentReport:
+      properties:
+        sys_id:
+          type: string
+          description: Unique ID for the report
+        background_job:
+          description: Identity of the background job used to generate the report, null if the job has completed
+          $ref: '#/components/schemas/RecordIdentity'
+        attachment_id:
+          type: string
+          description: ID of the attachment where the report contents are stored.
+      type: object
+    ValidationResults:
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationResult'
+      type: object
+    UserQueryResponse:
+      properties:
+        conversation_details:
+          description: Conversation details
+          $ref: '#/components/schemas/ConversationDetails'
+        suggested_prompts:
+          type: array
+          description: List of suggested prompt based on the query
+          items:
+            type: string
+      type: object
+    McpToolsResponse:
+      properties:
+        total_count:
+          type: integer
+          description: Total number of tools across all matching servers.
+        tools:
+          type: array
+          description: Flat list of MCP tools available for the given tenant and business agent.
+          items:
+            type: object
+      type: object
+    AgentFieldsBase:
+      properties:
+        sys_id:
+          type: string
+          description: Unique identifier for the document
+          x-cs-type: ObjectId
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the document was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the document was last updated
+      type: object
+    BaseForAgentResponse:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ResponseForAgentText
+        subtype_name: Text
+      - subtype_model: ResponseForAgentTable
+        subtype_name: Table
+      - subtype_model: ResponseForAgentLimitation
+        subtype_name: Limitation
+      - subtype_model: ResponseForAgentChart
+        subtype_name: Chart
+      - subtype_model: ResponseForAgentActionForm
+        subtype_name: ActionForm
+    ConversationFeedbackRequest:
+      properties:
+        rating:
+          type: integer
+          description: Rating of the query
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ChatMetadata:
+      properties:
+        last_state:
+          type: string
+          description: Last state ID
+          x-cs-type: ObjectId
+        framework_name:
+          type: string
+          description: Name of the framework
+      type: object
+    McpServerSetEnabledRequest:
+      required:
+      - is_enabled
+      properties:
+        is_enabled:
+          type: boolean
+          description: Set to true to enable the server, false to disable.
+      type: object
+    AgentListChatRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/AgentChatSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AgentChatFilter'
+      type: object
+    ChatConversationFilter:
+      required:
+      - chat_id
+      properties:
+        chat_id:
+          type: string
+          description: ID of the agent type
+          x-cs-type: ObjectId
+      type: object
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    AgentChatDeleteResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AgentChatDelete'
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    AgentActionConfirmRequest:
+      required:
+      - action_id
+      - chat_id
+      - status
+      properties:
+        action_id:
+          type: string
+          description: ID of the pending action
+        chat_id:
+          type: string
+          description: ID of the chat
+        status:
+          type: string
+          description: Confirm or deny the pending action
+          example: confirm
+          enum:
+          - confirm
+          - deny
+          x-cs-enum-type: AgentActionStatus
+        form_data:
+          type: object
+          description: User-submitted form data; required when status is 'confirm'
+      type: object
+    AgentChatUpdateRequest:
+      properties:
+        name:
+          type: string
+          description: Name of the chat
+      type: object
+    ValidationResult:
+      properties:
+        field:
+          type: string
+        reason:
+          type: string
+      type: object
+    McpServerListRequest:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+        is_enabled:
+          type: boolean
+          description: Filter by enabled/disabled status.
+      type: object
+    McpServerRequest:
+      required:
+      - business_agents
+      - name
+      - tenant_id
+      - transport
+      properties:
+        name:
+          type: string
+          description: Server name for MCP
+        display_name:
+          type: string
+          description: Human-readable display name for the MCP server.
+        description:
+          type: string
+          description: MCP Server description.
+        transport:
+          type: string
+          description: MCP transport type (stdio, streamable-http, or rss).
+          example: stdio
+          enum:
+          - stdio
+          - streamable-http
+          - rss
+          x-cs-enum-type: McpTransport
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+        command:
+          type: string
+          description: Command for stdio transport.
+        args:
+          type: array
+          description: Command arguments.
+          items:
+            type: string
+        env:
+          type: object
+          description: Environment variables (values are sensitive).
+          additionalProperties:
+            type: string
+            x-cs-type: SensitiveString
+        base_url:
+          type: string
+          description: Base URL for HTTP transport.
+        headers:
+          type: object
+          description: HTTP headers (values are sensitive).
+          additionalProperties:
+            type: string
+            x-cs-type: SensitiveString
+        is_enabled:
+          type: boolean
+          description: Whether the server is active.
+        business_agents:
+          type: array
+          description: Agents allowed to use this server.
+          items:
+            type: string
+            description: AI agents available in the system
+            example: Assessment Agent
+            enum:
+            - Assessment Agent
+            - Graphion Agent
+            - Rate Optimization Agent
+            x-cs-enum-type: Agents
+        timeout_ms:
+          type: integer
+          description: Timeout in milliseconds.
+        tools:
+          type: array
+          description: Tool definitions.
+          items:
+            type: object
+        freshness:
+          type: string
+          description: 'Data freshness hint used for tool selection: real_time | daily | weekly | static.'
+        priority:
+          type: integer
+          description: Tool selection priority — lower value means higher preference (e.g. 10 beats 100).
+      type: object
+    AgentType:
+      allOf:
+      - $ref: '#/components/schemas/AgentFieldsBase'
+      - properties:
+          name:
+            type: string
+            description: AI agents available in the system
+            example: Assessment Agent
+            enum:
+            - Assessment Agent
+            - Graphion Agent
+            - Rate Optimization Agent
+            x-cs-enum-type: Agents
+          is_enabled:
+            type: boolean
+            description: Is the agent type enabled
+        type: object
+    AgentListChatResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+            x-cs-type: ObjectId
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    ReportConfiguration:
+      required:
+      - __type
+      properties:
+        export_format:
+          type: string
+          description: Specifies the format of the file being exported.
+          default: PDF
+          example: PDF
+          enum:
+          - PDF
+          - CSV
+          x-cs-enum-type: ExportFormat
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ReportConfigurationForAiAgent
+        subtype_name: ReportConfigurationForAiAgent
+      - subtype_model: BaseReportConfigurationForAssessmentAgent
+        subtype_name: BaseReportConfigurationForAssessmentAgent
+      - subtype_model: ReportConfigurationForAssessment
+        subtype_name: ReportConfigurationForAssessment
+      - subtype_model: ReportConfigurationForWorkload
+        subtype_name: ReportConfigurationForWorkload
+      - subtype_model: ReportConfigurationForExecutiveDashboard
+        subtype_name: ReportConfigurationForExecutiveDashboard
+      - subtype_model: ConfigurationForNextGenReportBase
+        subtype_name: ConfigurationForNextGenReportBase
+      - subtype_model: ConfigurationForFinOpsConsolidatedReport
+        subtype_name: ConfigurationForFinOpsConsolidatedReport
+      - subtype_model: ConfigurationForAwsConsolidatedChargesReport
+        subtype_name: ConfigurationForAwsConsolidatedChargesReport
+      - subtype_model: ConfigurationForAzureConsolidatedChargesReport
+        subtype_name: ConfigurationForAzureConsolidatedChargesReport
+      - subtype_model: ConfigurationForGcpConsolidatedChargesReport
+        subtype_name: ConfigurationForGcpConsolidatedChargesReport
+      - subtype_model: ConfigurationForOciConsolidatedChargesReport
+        subtype_name: ConfigurationForOciConsolidatedChargesReport
+      - subtype_model: ConfigurationForDistributorConsolidatedReport
+        subtype_name: ConfigurationForDistributorConsolidatedReport
+      - subtype_model: ReportConfigurationForAssessmentRun
+        subtype_name: ReportConfigurationForAssessmentRun
+      - subtype_model: ReportConfigurationForAssessmentRunDetail
+        subtype_name: ReportConfigurationForAssessmentRunDetail
+      - subtype_model: ReportConfigurationForAssessmentRunSummary
+        subtype_name: ReportConfigurationForAssessmentRunSummary
+      - subtype_model: ReportConfigurationForAssessmentRunViolation
+        subtype_name: ReportConfigurationForAssessmentRunViolation
+    AgentChatDeleteRequest:
+      properties:
+        chat_ids:
+          type: array
+          description: List of chat IDs to be deleted
+          items:
+            type: string
+            x-cs-type: ObjectId
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+      type: object
+    BatchRequest:
+      properties:
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
+      type: object
+    AgentChat:
+      allOf:
+      - $ref: '#/components/schemas/AgentFieldsBase'
+      - properties:
+          name:
+            type: string
+            description: Name of the chat
+          created_by:
+            type: string
+            description: Name of the user who created the chat.
+          agent_id:
+            type: string
+            description: ID of the agent
+            x-cs-type: ObjectId
+          tenant_id:
+            type: string
+            description: ID of the tenant
+            x-cs-type: ObjectId
+          metadata:
+            description: Metadata for the chat
+            $ref: '#/components/schemas/ChatMetadata'
+        type: object
+    ReportConfigurationForAiAgent:
+      allOf:
+      - $ref: '#/components/schemas/ReportConfiguration'
+      - required:
+        - agent_id
+        properties:
+          agent_id:
+            type: string
+            description: Id of the Agent.
+            x-cs-type: ObjectId
+        type: object
+      x-cs-type-name: ReportConfigurationForAiAgent
+    ConversationDetails:
+      allOf:
+      - $ref: '#/components/schemas/AgentFieldsBase'
+      - properties:
+          chat_id:
+            type: string
+            description: ID of the chat
+            x-cs-type: ObjectId
+          user_query:
+            type: string
+            description: User query
+          agent_response:
+            description: Response from the agent
+            $ref: '#/components/schemas/AgentResponse'
+          rating:
+            type: integer
+            description: Rating of the query
+          is_interrupted:
+            type: boolean
+            description: Indicates if the conversation was interrupted
+            default: false
+          is_action_response:
+            type: boolean
+            description: Indicates if the conversation was actionable
+            default: false
+        type: object
+    ChatConversationListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+            x-cs-type: ObjectId
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    PromptBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/Prompt'
+      type: object
+    AiAgentReportCreateRequest:
+      properties:
+        configuration:
+          description: Report configuration to generate report
+          $ref: '#/components/schemas/ReportConfigurationForAiAgent'
+      type: object
+    AgentPromptSuggestionResponse:
+      properties:
+        suggested_prompts:
+          type: array
+          description: List of suggested prompts
+          items:
+            type: string
+      type: object
+    UserQueryRequest:
+      required:
+      - query
+      properties:
+        chat_id:
+          type: string
+          description: ID of the chat
+          x-cs-type: ObjectId
+        agent_id:
+          type: string
+          description: ID of the agent
+          x-cs-type: ObjectId
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+        query:
+          type: string
+          description: User query
+      type: object
+    Prompt:
+      allOf:
+      - $ref: '#/components/schemas/AgentFieldsBase'
+      - properties:
+          prompt:
+            type: string
+            description: Input given to the agent
+          tags:
+            type: array
+            description: List of tag key/value pairs
+            items:
+              $ref: '#/components/schemas/KeyValuePair'
+          agent_id:
+            type: string
+            description: ID of the agent
+            x-cs-type: ObjectId
+          created_by:
+            type: string
+            description: Name of the user who created the prompt.
+          prompt_type:
+            type: string
+            description: Type of the prompt
+            example: default
+            enum:
+            - default
+            - custom
+            x-cs-enum-type: AgentPromptTypes
+        type: object
+    ChatConversationSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          - UpdatedAt
+          x-cs-enum-type: ChatConversationSortColumn
+        ascending:
+          type: boolean
+      type: object
+    AgentChatFilter:
+      required:
+      - agent_id
+      - tenant_id
+      properties:
+        agent_id:
+          type: string
+          description: ID of the agent type
+          x-cs-type: ObjectId
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+        name:
+          type: string
+          description: Name of the chat
+      type: object
+    AgentTypeResponse:
+      properties:
+        agent_types:
+          type: array
+          description: List of agent types
+          items:
+            $ref: '#/components/schemas/AgentType'
+      type: object
+    McpServerItem:
+      allOf:
+      - $ref: '#/components/schemas/McpServerRequest'
+      - properties:
+          sys_id:
+            type: string
+            description: Unique server ID for MCP
+            x-cs-type: ObjectId
+          created_by:
+            type: string
+            description: Name of the user who registered the server.
+          created_at:
+            type: string
+            description: Timestamp when the server was registered
+          updated_by:
+            type: string
+            description: Name of the user who last updated the server.
+          updated_at:
+            type: string
+            description: Timestamp when the server was last updated
+        type: object
+    McpToolsRequest:
+      required:
+      - business_agent
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+        business_agent:
+          type: string
+          description: Business agent name used to scope the tool list.
+          example: Assessment Agent
+          enum:
+          - Assessment Agent
+          - Graphion Agent
+          - Rate Optimization Agent
+          x-cs-enum-type: Agents
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

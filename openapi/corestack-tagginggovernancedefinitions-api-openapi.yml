@@ -1,0 +1,828 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Tagging Governance Definitions API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage Tagging Governance
+servers:
+- url: /
+tags:
+- name: TaggingGovernanceDefinitions
+  description: Manage Tagging Governance
+paths:
+  /v1/tag_baseline/all:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecordIdentity'
+      summary: Get all Tag Baseline Definitions
+      description: Get a list of all Tag Baseline Definitions that are viewable to the user.
+      operationId: get-all@@@2
+      security:
+      - auth_token: []
+      tags:
+      - TaggingGovernanceDefinitions
+  /v1/tag_baseline/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TagBaselineDefinition'
+      summary: Get Baselines
+      description: Batch Tag Baseline definitions
+      operationId: batch@@@6
+      security:
+      - auth_token: []
+      tags:
+      - TaggingGovernanceDefinitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordIdentityBatchRequest'
+        required: true
+  /v1/tag_baseline/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagBaselineDefinition'
+      summary: Create new Tag Baseline
+      description: Create a new Tag Baseline Definition. The definition is used to manage a set of versions. This request takes no body
+      operationId: create@@@7
+      security:
+      - auth_token: []
+      tags:
+      - TaggingGovernanceDefinitions
+  /v1/tag_baseline/item/{baseline_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Tag Baseline Definition
+      description: Delete a Tag Baseline Definition and all associated versions. Returns 'true' if the operation was successful.
+      operationId: remove@@@4
+      parameters:
+      - description: ID of Tag Baseline Definition.
+        name: id
+        in: query
+        schema:
+          type: string
+      - name: baseline_id
+        in: path
+        required: true
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - TaggingGovernanceDefinitions
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagBaselineDefinition'
+      summary: Get Tag Baseline Definition
+      description: Get a Tag Baseline Definition by id.
+      operationId: get@@@6
+      parameters:
+      - name: baseline_id
+        in: path
+        required: true
+        description: ID of Tag Baseline Definition.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - TaggingGovernanceDefinitions
+  /v1/tag_baseline/item/{baseline_id}/history:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TagBaselineDefinitionVersion'
+      summary: Get the history of a Tag Baseline Definition
+      description: Get a list of all versions for a Tag Baseline Definition.
+      operationId: get-history@@@3
+      parameters:
+      - name: baseline_id
+        in: path
+        required: true
+        description: ID of Tag Baseline Definition.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - TaggingGovernanceDefinitions
+  /v1/tag_baseline/item/{baseline_id}/set-state:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagBaselineDefinition'
+      summary: Set state of Tag Baseline Definition
+      description: Set the Active state for a Tag Baseline Definition. When the state is true, the baseline will be used in posture generation.
+      operationId: set-state@@@2
+      parameters:
+      - name: baseline_id
+        in: path
+        required: true
+        description: ID of Tag Baseline Definition Version.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - TaggingGovernanceDefinitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagBaselineDefinition'
+        required: true
+  /v1/tag_baselines/available_tags/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagBaselineAvailableTagBatchResponse'
+      summary: Returns a batch of AvailableTag
+      description: Get all tag values for the tag keys passed in the request.
+      operationId: AvailableTagsBatch
+      security:
+      - auth_token: []
+      tags:
+      - TaggingGovernanceDefinitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagBaselineAvailableTagBatchRequest'
+        required: true
+  /v1/tag_baselines/available_tags/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+      summary: Returns a list of AvailableTags ids
+      description: Get a list of all available tag keys found on resources that the user can view.
+      operationId: AvailableTagsList
+      security:
+      - auth_token: []
+      tags:
+      - TaggingGovernanceDefinitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagBaselineAvailableTagListRequest'
+        required: true
+  /v1/tag_baselines/enhance_tags:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                type: array
+                description: AI Generated Tags response
+                items:
+                  $ref: '#/components/schemas/TagBaselineCustomTags'
+      summary: Get enhanced tags from the user's tags
+      description: Get enhanced tags from the user's tags.
+      operationId: EnhanceTags
+      security:
+      - auth_token: []
+      tags:
+      - TaggingGovernanceDefinitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagBaselineEnhanceRequest'
+        required: true
+  /v1/tag_baselines/generate_tags:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema:
+                type: array
+                description: AI Generated Tags response
+                items:
+                  $ref: '#/components/schemas/TagBaselineCustomTags'
+      summary: Returns Generated Tags
+      description: Get AI-recommended tags from the user's prompt.
+      operationId: GenerateAITags
+      security:
+      - auth_token: []
+      tags:
+      - TaggingGovernanceDefinitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagBaselineGenerateRequest'
+        required: true
+components:
+  schemas:
+    TagBaselineCustomTags:
+      allOf:
+      - $ref: '#/components/schemas/TagBaselineAvailableTag'
+      - properties:
+          regex_pattern:
+            type: string
+            description: Regular expression pattern to validate tag values, ensuring they follow a predefined format.
+        type: object
+    TagBaselineRule:
+      required:
+      - __type
+      properties:
+        category:
+          type: array
+          description: Categories for this tag
+          items:
+            type: string
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: TagBaselineRuleAllowedValues
+        subtype_name: TagBaselineRuleAllowedValues
+      - subtype_model: TagBaselineRuleRegex
+        subtype_name: TagBaselineRuleRegex
+      - subtype_model: TagBaselineRuleCondition
+        subtype_name: TagBaselineRuleCondition
+    TagBaselineAvailableTagBatchRequest:
+      allOf:
+      - $ref: '#/components/schemas/BatchRequest'
+      - properties:
+          filters:
+            description: Account filters for the tags
+            $ref: '#/components/schemas/AccountFilters'
+        type: object
+    AccountFilters:
+      properties:
+        tenants:
+          type: array
+          description: Tenants to include (all if missing)
+          items:
+            type: string
+        clouds:
+          type: array
+          description: Cloud Providers to include (all if missing)
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        cloud_accounts:
+          type: array
+          description: Cloud Accounts to include (all if missing)
+          items:
+            type: string
+        regions:
+          type: array
+          description: Regions to include (all if missing)
+          items:
+            type: string
+        resource_filter:
+          type: array
+          description: Resources filter to filter (all if missing)
+          items:
+            type: string
+        product_categories:
+          type: array
+          description: Product Categories to include (all if missing)
+          items:
+            type: string
+        category:
+          type: string
+          description: Inventory Category of the resources to filter (all if missing)
+        resource_type:
+          type: array
+          description: Type of Resources to include (all if missing)
+          items:
+            type: string
+      type: object
+    TagBaselineDefinition:
+      allOf:
+      - $ref: '#/components/schemas/BaseDefinition'
+      - required:
+        - account_id
+        - is_active
+        - scope
+        - title
+        properties:
+          account_id:
+            type: string
+            description: Account owning the tag baseline
+          title:
+            type: string
+            description: Name of the baseline
+          description:
+            type: string
+            description: Description of the baseline
+          scope:
+            description: At what scope level the baseline should work
+            $ref: '#/components/schemas/TagBaselineScope'
+          is_active:
+            type: boolean
+            description: States if the baseline definition is active or not
+        type: object
+    TagBaselineEnhanceRequest:
+      required:
+      - tags_to_enhance
+      properties:
+        tags_to_enhance:
+          type: array
+          description: Tags to be enhanced
+          items:
+            $ref: '#/components/schemas/TagBaselineCustomTags'
+      type: object
+    TagBaselineAvailableTagBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/TagBaselineAvailableTag'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    TagBaselineScope:
+      required:
+      - __type
+      properties:
+        inherit:
+          type: boolean
+          description: Allow inheriting rules from parent scope
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: TagBaselineScopeGlobal
+        subtype_name: TagBaselineScopeGlobal
+      - subtype_model: TagBaselineScopeTenant
+        subtype_name: TagBaselineScopeTenant
+      - subtype_model: TagBaselineScopeCloudAccount
+        subtype_name: TagBaselineScopeCloudAccount
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    TagBaselineAvailableTagSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: Key
+          enum:
+          - Key
+          x-cs-enum-type: TagBaselineAvailableTagSortColumn
+        ascending:
+          type: boolean
+      type: object
+    TagBaselineGenerateRequest:
+      required:
+      - user_prompt_text
+      properties:
+        user_prompt_text:
+          type: string
+          description: User prompt to generate tags
+        scope:
+          description: At what scope level the baseline should work
+          $ref: '#/components/schemas/TagBaselineScope'
+      type: object
+    BaseDefinitionVersion:
+      properties:
+        sysId:
+          type: string
+          description: Identifier of the version
+        createdOn:
+          type: string
+          format: date-time
+          description: Version created on
+        updatedOn:
+          type: string
+          format: date-time
+          description: Version  updated on
+        version:
+          type: integer
+          default: Sequence number of the version
+        definition:
+          description: Reference to the definition
+          $ref: '#/components/schemas/RecordIdentity'
+        predecessor:
+          description: Reference to the previous version
+          $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    BatchRequest:
+      properties:
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
+      type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    TagBaselineAvailableTag:
+      properties:
+        key:
+          type: string
+          description: Tag key
+        values:
+          type: array
+          description: Values for the tag key
+          items:
+            type: string
+      type: object
+    TagBaselineConfiguration:
+      required:
+      - tags
+      properties:
+        tags:
+          type: object
+          description: Tag rules in this baseline
+          additionalProperties:
+            $ref: '#/components/schemas/TagBaselineRule'
+      type: object
+    BaseDefinition:
+      properties:
+        sysId:
+          type: string
+          description: Identifier of the definition
+        createdOn:
+          type: string
+          format: date-time
+          description: Definition created on
+        updatedOn:
+          type: string
+          format: date-time
+          description: Definition updated on
+        headVersion:
+          description: Reference to the editable version of the definition
+          $ref: '#/components/schemas/RecordIdentity'
+        releaseVersion:
+          description: Reference to the release version of the definition
+          $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    TagBaselineDefinitionVersion:
+      allOf:
+      - $ref: '#/components/schemas/BaseDefinitionVersion'
+      - properties:
+          details:
+            description: Details of the version
+            $ref: '#/components/schemas/TagBaselineConfiguration'
+        type: object
+    TagBaselineAvailableTagListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/TagBaselineAvailableTagSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/TagBaselineAvailableTagFilters'
+      type: object
+    TagBaselineAvailableTagFilters:
+      properties:
+        tag_key_query:
+          type: string
+          description: Text filter the tag keys
+        filters:
+          description: Account filters for the tags
+          $ref: '#/components/schemas/AccountFilters'
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

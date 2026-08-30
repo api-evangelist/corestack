@@ -1,0 +1,2918 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Guardrails API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage Policy
+servers:
+- url: /
+tags:
+- name: Guardrails
+  description: Manage Policy
+paths:
+  /governance/guardrails/policies/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PolicyDescription'
+      summary: List of policy details fetched for given policy uris or policy ids
+      description: 'Fetch policy details for given policy uris or policy ids. Supports a maximum of 1000 results per request
+
+        Supports a maximum of 1000 results per request'
+      operationId: BatchPoliciesUsingIds
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyRequest'
+        required: true
+  /governance/guardrails/policies/{tenant_id}/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateScheduleResponse'
+      summary: Create Policy Schedules
+      description: create policy schedules
+      operationId: CreatePolicySchedules
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateScheduleRequest'
+        required: true
+  /governance/guardrails/policies/{tenant_id}/delete/{schedule_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Policy Schedules
+      description: Delete policy schedules
+      operationId: DeletePolicySchedules
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: schedule_id
+        in: path
+        required: true
+        description: Specify the schedule Id to fetch the schedule data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+  /governance/guardrails/policies/{tenant_id}/get/{schedule_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewScheduleResponse'
+      summary: View Policy Schedules
+      description: view policy schedules
+      operationId: ViewPolicySchedules
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: schedule_id
+        in: path
+        required: true
+        description: Specify the schedule Id to fetch the schedule data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+  /governance/guardrails/policies/{tenant_id}/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListScheduleResponse'
+      summary: List Policy Schedules
+      description: list policy schedules
+      operationId: ListPolicySchedules
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+  /governance/guardrails/policies/{tenant_id}/update/{schedule_id}:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateScheduleResponse'
+      summary: Update Policy Schedules
+      description: update policy schedules
+      operationId: UpdatePolicySchedules
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: schedule_id
+        in: path
+        required: true
+        description: Specify the schedule Id to fetch the schedule data
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateScheduleRequest'
+        required: true
+  /governance/guardrails/{tenant_id}/policies:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyData'
+      summary: Create Policy
+      description: Creates a new policy under the tenant which will generate a unique policy id in the response this is can be used to describe details about the policy, update policy, execute or delete policy. However the policy will be accessible based on its scope  Account scope - All users under that account will have access to describe and execute. Only Account admins can update/delete. Tenant - Users with access to the specific tenant will have access scripts to describe and execute. Tenant admins can update/delete. Private - User who created will only have access.
+      operationId: CreatePolicy
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePolicyRequest'
+        required: true
+  /governance/guardrails/{tenant_id}/policies/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PolicyDescription'
+      summary: List of policy details fetched for given policy uris
+      description: Fetch policy details for given policy uris
+      operationId: policies-batch
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyDescriptionRequest'
+        required: true
+  /governance/guardrails/{tenant_id}/policies/list:
+    parameters:
+    - name: tenant_id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyListResponse'
+      summary: List Policies
+      description: List all the policies. Global Policies Scope- All user will have access to Corestack Marketplace Policies these policies cannot be updated and deleted can be only describe and executed. Account Scope:- All users under that account will have access to view and execute Only Account admins can update/delete the policies.Tenant Scope - Users with access to the specific tenant will have access to policies who can describe or execute policies. Tenant admins can  only update/delete. Private Scope - User who created will only have access
+      operationId: ListPolicies
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyListRequest'
+        required: true
+  /governance/guardrails/{tenant_id}/policies/validate_parameters:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResults'
+      summary: Validate parameters for a given policy
+      description: Validate a set of parameters for a given policy
+      operationId: policies-validate-parameters
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyNamedParameterValidationRequest'
+        required: true
+  /governance/guardrails/{tenant_id}/policies/{policy_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Policy
+      description: Delete a policy which is no more required
+      operationId: DeletePolicy
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: policy_id
+        in: path
+        required: true
+        description: Specify the policy id to execute, policy id can be obtained from the list policy api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyViewResponse'
+      summary: Describe Policy
+      description: Describe the already created Polices
+      operationId: DescribePolicy
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: policy_id
+        in: path
+        required: true
+        description: Specify the policy id to execute, policy id can be obtained from the list policy api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Update Policy
+      description: Update Policy details if required after creation using the api, the update by a user depends on the scope of the policy created check create policy docs for more details on the scope
+      operationId: UpdatePolicy
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: policy_id
+        in: path
+        required: true
+        description: Specify the policy id to execute, policy id can be obtained from the list policy api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePolicyRequest'
+        required: true
+  /governance/guardrails/{tenant_id}/policies/{policy_id}/execute:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyExecuteResponse'
+      summary: Execute Policy
+      description: Execute policy will return a unique job id the status of the policy can be checked using the Job details api where you can pass the unique id generated to get the details or errors if any on execution
+      operationId: ExecutePolicy
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: policy_id
+        in: path
+        required: true
+        description: Specify the policy id to execute, policy id can be obtained from the list policy api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyExecuteRequest'
+        required: true
+  /governance/guardrails/{tenant_id}/policy_jobs/{job_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobExecutionDetailsResponse'
+      summary: Describe Policy Job Details
+      description: 'Retrieve policy job details using the unique job id, this can be used to check the status of the policy execution or any failure
+
+        :param tenant_id:
+
+        :param job_id:
+
+        :return:'
+      operationId: JobDetails
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: job_id
+        in: path
+        required: true
+        description: Specify the job id to retrieve details of policy execution, job id is unique can be obtained from the execute policy response
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+  /governance/guardrails/{tenant_id}/recommendations:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyRecommendationListResponse'
+      summary: List Policy Recommendations
+      description: Policy recommendations are the guide line to the users to solve a policy violation by executing the recommendations the this can be a instruction or a combination of multipleinstructions defined to solve a problem
+      operationId: PolicyRecommendations
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: Specify the policy id for the recommendations which is a unique id can be obtained from policy listing api
+        required: true
+        name: policy_id
+        in: query
+        schema:
+          type: string
+      - description: Specify the cloud account id  for the recommendation which is a unique id can be retrieved from the cloud listing api
+        name: cloud_account_id
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+  /governance/guardrails/{tenant_id}/recommendations/{recommendation_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyRecommendationViewResponse'
+      summary: Describe Policy Recommendations
+      description: This is the api to view the recommendation associated with the policy and the resources which will get effected on execution of the recommendations. We can also get a idea on the actions which can be performed
+      operationId: DescribePolicyRecommendations
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: recommendation_id
+        in: path
+        required: true
+        description: This is a unique identifier for recommendation, can be obtained from the PolicyRecommendations api response
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Execute Policy Recommendation
+      description: This is the api to execute recommendations for a policy violation, The recommended steps to resolve the violations can be executed with the help of data like action_name, resource_recommendation_id, will be available in Recommendation View API. The Recommendations can be executed with dynamic parameter which may or may not be passed in the input
+      operationId: ExecuteRecommendation
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: recommendation_id
+        in: path
+        required: true
+        description: This is a unique identifier for recommendation, can be obtained from the PolicyRecommendations api response
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteRecommendationRequest'
+        required: true
+  /v1/master_accounts/{master_account_id}/policy_configurations/{policy_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Policy parameter configuration Master Account
+      description: Delete Policy configuration parameters for a master account level
+      operationId: deleteMasterAccountPolicyConfiguration
+      parameters:
+      - name: master_account_id
+        in: path
+        required: true
+        description: Specify the master account id to delete the policy configuration.
+        schema:
+          type: string
+      - name: policy_id
+        in: path
+        required: true
+        description: Specify the policy id to delete configuration, policy id can be obtained from the list policy api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyParameterConfiguration'
+      summary: Get Policy parameter configuration Master Account
+      description: Fetch the Policy parameters configuration for a master account level
+      operationId: getMasterAccountPolicyConfiguration
+      parameters:
+      - name: master_account_id
+        in: path
+        required: true
+        description: Specify the master account id to fetch the configuration for master account.
+        schema:
+          type: string
+      - name: policy_id
+        in: path
+        required: true
+        description: Specify the policy id to configure, policy id can be obtained from the list policy api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyParameterConfiguration'
+      summary: Update Policy parameter configuration Master Account
+      description: Update Policy configuration parameters for a master account level
+      operationId: setMasterAccountPolicyConfiguration
+      parameters:
+      - name: master_account_id
+        in: path
+        required: true
+        description: Specify the master account id to configure the policy parameters.
+        schema:
+          type: string
+      - name: policy_id
+        in: path
+        required: true
+        description: Specify the policy id to configure, policy id can be obtained from the list policy api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyParameterConfiguration'
+        required: true
+  /v1/policies/policy_jobs/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JobExecutionDetailsResponse'
+      summary: List of policy job details
+      description: Returns a list of job execution details for given policy job ids
+      operationId: BatchPolicyJob
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyJobBatchRequest'
+        required: true
+  /v1/policy/configuration/policy/{policy_id}/tenant/{tenant_id}/service_account_list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyConfigurationAccountListRequest'
+      summary: List accounts for policy configuration
+      description: Get list of cloud accounts that are configured for policy.
+      operationId: listServiceAccountPolicyConfiguration
+      parameters:
+      - name: policy_id
+        in: path
+        required: true
+        description: Specify the policy_id to retrieve the configured service accounts. Policy id can be obtained from the list policy api
+        schema:
+          type: string
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+  /v1/policy/configuration/{policy_id}/service_account/{service_account_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Policy parameter configuration Account
+      description: Delete Policy configuration parameters for a cloud account level
+      operationId: deleteServiceAccountPolicyConfiguration
+      parameters:
+      - name: policy_id
+        in: path
+        required: true
+        description: Specify the policy id to delete configuration, policy id can be obtained from the list policy api
+        schema:
+          type: string
+      - name: service_account_id
+        in: path
+        required: true
+        description: Specify the service account id to delete the policy configuration.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyParameterConfiguration'
+      summary: Get Policy parameter configuration Account
+      description: Fetch the Policy parameters configuration for a cloud account level
+      operationId: getServiceAccountPolicyConfiguration
+      parameters:
+      - name: policy_id
+        in: path
+        required: true
+        description: Specify the policy id to configure, policy id can be obtained from the list policy api
+        schema:
+          type: string
+      - name: service_account_id
+        in: path
+        required: true
+        description: Specify the service account id to fetch the configuration for service account.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyParameterConfiguration'
+      summary: Update Policy parameter configuration Account
+      description: Update Policy configuration parameters for a cloud account level
+      operationId: setServiceAccountPolicyConfiguration
+      parameters:
+      - name: policy_id
+        in: path
+        required: true
+        description: Specify the policy id to configure, policy id can be obtained from the list policy api
+        schema:
+          type: string
+      - name: service_account_id
+        in: path
+        required: true
+        description: Specify the service account id to configure the policy parameters.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyParameterConfiguration'
+        required: true
+  /v1/policy/configuration/{policy_id}/service_account_batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountPolicyConfigurationBatchResponse'
+      summary: Get account policy configuration batch
+      description: Get policy configurations for cloud accounts batch.
+      operationId: BatchAccountPolicyConfiguration
+      parameters:
+      - name: policy_id
+        in: path
+        required: true
+        description: Specify the policy_id to retrieve the configured service accounts. Policy id can be obtained from the list policy api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyConfigurationAccountListRequest'
+        required: true
+  /v1/policy/configuration/{policy_id}/tenant/{tenant_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Policy parameter configuration Tenant
+      description: Delete the policy configuration parameters for a tenant level
+      operationId: deleteTenantPolicyConfiguration
+      parameters:
+      - name: policy_id
+        in: path
+        required: true
+        description: Specify the policy id to delete policy configuration for the tanant. Policy id can be obtained from the list policy api
+        schema:
+          type: string
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyParameterConfiguration'
+      summary: Get Policy parameter configuration tenant
+      description: Fetch the configured Policy parameters configuration for a tenant
+      operationId: getTenantPolicyConfiguration
+      parameters:
+      - name: policy_id
+        in: path
+        required: true
+        description: Specify the policy id to fetch the configuration for tenant. Policy id can be obtained from the list policy api
+        schema:
+          type: string
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyParameterConfiguration'
+      summary: Update Policy parameter configuration Tenant
+      description: Update Policy configuration parameters for a tenant
+      operationId: setTenantPolicyConfiguration
+      parameters:
+      - name: policy_id
+        in: path
+        required: true
+        description: Specify the policy id to configure for the tenant, policy id can be obtained from the list policy api
+        schema:
+          type: string
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Guardrails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyParameterConfiguration'
+        required: true
+components:
+  schemas:
+    PolicyRecommendationViewResponse:
+      required:
+      - actions
+      - classification
+      - cloud
+      - cloud_account_id
+      - created_at
+      - description
+      - impact
+      - policy_id
+      - recommendation_id
+      - recommendation_name
+      - resources
+      - status
+      - tenant_name
+      properties:
+        recommendation_id:
+          type: string
+          description: unique recommendation Id
+        recommendation_name:
+          type: string
+          description: recommendation name
+        policy_id:
+          type: array
+          description: list of policy ids for which the recommendation exists
+          items:
+            type: string
+        status:
+          type: string
+          description: resolution status of the recommendation the values will be open, resolved
+        impact:
+          type: string
+          description: impact of recommended changes
+        classification:
+          type: string
+          description: classified based on the kind of recommendation provided to the user can be cost, security etc
+        cloud_account_id:
+          type: string
+          description: cloud account id impacted by the recommendation
+        cloud:
+          type: string
+          description: cloud on which this account exits for which the recommendations exists
+        tenant_name:
+          type: string
+          description: 'tenant for which the recommendation exits '
+        created_at:
+          type: string
+          description: UTC time at which the recommendation was created
+        description:
+          type: string
+          description: Description about the recommendation in details
+        actions:
+          type: array
+          description: List of actions which can be performed to resolve the policy violations
+          items:
+            $ref: '#/components/schemas/RecommendationActionResponse'
+        resources:
+          type: array
+          description: List of resources on which the recommendations can be performed
+          items:
+            $ref: '#/components/schemas/ResourceRecommendationModel'
+      type: object
+    ResourceViewDetails:
+      required:
+      - resource_details
+      properties:
+        resource_details:
+          type: array
+          description: Template/Scripts/Policies Details that is scheduled to run
+          items:
+            $ref: '#/components/schemas/ResourceDetails'
+      type: object
+    ViewScheduleResponse:
+      required:
+      - args
+      - created_at
+      - created_by
+      - description
+      - execution_logs
+      - name
+      - next_run
+      - recurrence
+      - resource
+      - schedule
+      - type
+      - updated_at
+      - updated_by
+      properties:
+        name:
+          type: string
+          description: Schedule Name
+        type:
+          type: string
+          description: Schedule type
+          example: template
+          enum:
+          - template
+          - script
+          - policy
+          x-cs-enum-type: ScheduleType
+        description:
+          type: string
+          description: Description of the schedule
+        recurrence:
+          type: string
+          description: Re-occurence of the schedule
+        next_run:
+          type: string
+          description: When will the schedule run for the next time
+        schedule:
+          type: object
+          description: Schedule date and time details
+        args:
+          type: object
+          description: Input Parameters for that Template/Policy/Script that is scheduled
+        resource:
+          type: array
+          description: Template/Policy/Script Details that is scheduled
+          items:
+            $ref: '#/components/schemas/ResourceViewDetails'
+        execution_logs:
+          type: array
+          description: Execution Log Details
+          items:
+            $ref: '#/components/schemas/ExecutionLogDetails'
+        created_at:
+          type: string
+          description: When the schedule is created
+        created_by:
+          type: string
+          description: Who has created the schedule
+        updated_by:
+          type: string
+          description: Who has updated the schedule
+        updated_at:
+          type: string
+          description: When the schedule is updated
+      type: object
+    ResourceRecommendationModel:
+      required:
+      - resource_id
+      - resource_name
+      - resource_recommendation_id
+      - resource_type
+      - resourcegroup_location
+      - status
+      properties:
+        resource_recommendation_id:
+          type: string
+          description: unique identifier for resource recommendation
+        resource_id:
+          type: string
+          description: ' Resource identifier id of resource recommendation'
+        resource_name:
+          type: string
+          description: Resource identifier name of resource recommendation
+        resource_type:
+          type: string
+          description: Type of resource
+        resourcegroup_location:
+          type: string
+          description: resource group location
+        status:
+          type: string
+          description: Status of resource recommendation
+      type: object
+    UpdatePolicyRequest:
+      required:
+      - category
+      - classification
+      - content
+      - name
+      - scope
+      - severity
+      - sub_classification
+      properties:
+        name:
+          type: string
+          description: policy name which is unique and does not allow space or special character
+        display_name:
+          type: string
+          description: Display name of policy which allow space this is to mostly show on the ui
+        description:
+          type: string
+          description: A brief explanation of the policy.
+        type:
+          type: array
+          description: Indicates the type of policy
+          items:
+            type: string
+        category:
+          type: string
+          description: The category will be either service or resource
+        content:
+          type: string
+          description: The policy content
+        is_system_policy:
+          type: boolean
+          description: Flag to identify system policies
+        metadata:
+          description: Metadata about policy
+          $ref: '#/components/schemas/PolicyMetadata'
+        engine_type:
+          type: string
+          description: Engine type of the policy
+          example: corestack_policy
+          enum:
+          - corestack_policy
+          - aws_organization_policy
+          - azure_policy
+          - aws_config
+          - gcp_organization_policy
+          - gcp_policy
+          - kubernetes_policy
+          - oracle_cloud_guard
+          x-cs-enum-type: PolicyEngineType
+        cloud:
+          type: array
+          description: Displays the cloud associated with the policy
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        classification:
+          type: string
+          description: Policies are classified based on the basis of the activity they perform, for example provisioning, Account Management, Utilization, etc. This value is displayed in this field
+        sub_classification:
+          type: string
+          description: Sub classification for policy
+        scope:
+          type: string
+          description: 'The scope of the policy:
+
+            Account scope - All users under that account will have access to view and execute Only Account admins can update/delete the policies,
+
+            Tenant Scope - Users with access to the specific tenant will have access to policies who can describe or execute policies. Tenant admins can only update/delete.
+
+            Private Scope - User who created will only have access'
+          example: private
+          enum:
+          - private
+          - account
+          - tenant
+          x-cs-enum-type: AccountScope
+        content_type:
+          type: string
+          description: Policy content source
+          example: git
+          enum:
+          - git
+          - file
+          x-cs-enum-type: ContentType
+        content_password_or_key:
+          type: string
+          description: Password or private key to access of Git repo if repo is authenticated required if the content type is git
+        content_username:
+          type: string
+          description: Username of Git repo if repo is authenticated required if the content type is git
+        content_url:
+          type: string
+          description: Git project URL when the content type is git required if the content type is git
+        content_path:
+          type: string
+          description: Root path of the policy in git repo required if the content type is git
+        severity:
+          type: string
+          description: Severity of policy
+          example: high
+          enum:
+          - high
+          - low
+          - medium
+          x-cs-enum-type: PolicySeverity
+      type: object
+    NamedParameter:
+      required:
+      - is_required
+      - name
+      - schema
+      properties:
+        name:
+          type: string
+          description: Name of the parameter
+        display_name:
+          type: string
+          description: Display Name of the parameter
+        is_required:
+          type: boolean
+          description: Whether the parameter is required.
+        schema:
+          $ref: '#/components/schemas/ParameterBase'
+      type: object
+    PolicyServiceAccountDetails:
+      required:
+      - cloud_account_id
+      properties:
+        cloud:
+          type: string
+          description: 'The cloud name of the account for which the policywill be executed ex: AWS, Azure, GCP, OCI etc'
+        cloud_account_id:
+          type: string
+          description: Identifier of the cloud account on boarded in the on boarding section
+        region:
+          type: string
+          description: The region of the service account where it needs to be executed, if this is not provided the policy will execute for all the region
+        resourcegroup:
+          type: string
+          description: Resource group for which you need to execute the policy for, this is not a mandatory parameter to be passed
+      type: object
+    PolicyRecommendationListResponse:
+      required:
+      - recommendations
+      properties:
+        recommendations:
+          description: Policy recommendation Info list
+          $ref: '#/components/schemas/PolicyRecommendation'
+      type: object
+    JobExecutionOutputDetails:
+      properties:
+        resource_id:
+          type: string
+          description: Resource Id
+        resource_name:
+          type: string
+          description: Resource Name
+        category:
+          type: string
+          description: Resource Category
+        resource_type:
+          type: string
+          description: Resource Type
+        resource:
+          type: string
+          description: Resource
+        location:
+          type: string
+          description: Location
+        evidence:
+          type: string
+          description: Evidence
+      type: object
+    PolicyDescription:
+      properties:
+        uri:
+          type: string
+          description: Unique URI for policy
+        policy_id:
+          type: string
+          description: Policy Id is unique identifier of a policy
+        name:
+          type: string
+          description: Policy name is unique identifier of a policy
+        display_name:
+          type: string
+          description: Display name of the policy
+        description:
+          type: string
+          description: A brief explanation of the policy
+        parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/NamedParameter'
+        created_at:
+          type: string
+          format: date-time
+        services:
+          type: array
+          items:
+            type: string
+            description: Displays the service associated with the policy
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_EA
+            - Azure_MCA
+            - GCP
+            - OCI
+            - Openstack
+            - OpenstackPublic
+            x-cs-enum-type: PolicyServiceName
+        engine_type:
+          type: string
+          description: Engine type of the policy
+          example: corestack_policy
+          enum:
+          - corestack_policy
+          - aws_organization_policy
+          - azure_policy
+          - aws_config
+          - gcp_organization_policy
+          - gcp_policy
+          - kubernetes_policy
+          - oracle_cloud_guard
+          x-cs-enum-type: PolicyEngineType
+        scope:
+          type: string
+          description: Scope of the policy
+          example: global
+          enum:
+          - global
+          - account
+          - tenant
+          - user_private
+          x-cs-enum-type: PolicyScope
+        tenant_id:
+          type: string
+          description: ID of the tenant within the CoreStack account
+        account_id:
+          type: string
+          description: Id of the CoreStack account under which this tenant resides.
+        classification:
+          type: string
+          description: 'Policies are classified based on the basis of the activity they perform. For example: Provisioning, Account Management, Utilization, etc.'
+        sub_classification:
+          type: string
+          description: Sub classification for policy
+        resource_category:
+          type: string
+          description: Category of resource
+        resource_type:
+          type: string
+          description: Type of resource
+        service_resources:
+          type: array
+          description: Service resources of policy
+          items:
+            type: string
+        severity:
+          type: string
+          description: Severity of policy
+          example: critical
+          enum:
+          - critical
+          - high
+          - info
+          - low
+          - medium
+          - none
+          - unknown
+          x-cs-enum-type: PolicySeverityRisk
+        recommendation_description:
+          type: string
+          description: Recommendation description of the policy
+        recommendation_actions:
+          type: array
+          description: Recommendation actions of the policy
+          items:
+            $ref: '#/components/schemas/PolicyRecommendationActions'
+        equivalent_policies:
+          type: array
+          description: Equivalent policy names
+          items:
+            type: string
+      type: object
+    UpdateScheduleRequest:
+      required:
+      - attributes
+      - name
+      - recurrence
+      - resource
+      - schedule
+      properties:
+        name:
+          type: string
+          description: Schedule Name to be create
+        description:
+          type: string
+          description: Description of the schedule
+        recurrence:
+          type: string
+          description: Recurrence of the schedule
+          example: Once
+          enum:
+          - Once
+          - Minutes
+          - Hours
+          - Daily
+          - Weekly
+          - Monthly
+          - Annually
+          x-cs-enum-type: ScheduleRecurrence
+        schedule:
+          description: Schedule date and time details
+          $ref: '#/components/schemas/DateAndTimeDetails'
+        resource:
+          type: array
+          description: Template/Script/Policy Id.can be retrieved using the List Policy Schedules
+          items:
+            type: string
+        attributes:
+          description: Attribute Details
+          $ref: '#/components/schemas/AttributeDetails'
+        args:
+          type: object
+          description: Input Parameters for the Template/Script/Policy
+      type: object
+    PolicyData:
+      required:
+      - policy_id
+      properties:
+        policy_id:
+          type: string
+          description: unique policy Id returned
+      type: object
+    PolicyListRequest:
+      properties:
+        name:
+          type: string
+          description: Name of the policy
+        display_name:
+          type: string
+          description: Display name of the policy
+        scope:
+          type: string
+          description: Scope of the policy.
+        policy_uris:
+          type: array
+          items:
+            type: string
+            description: Policy uri.
+        services:
+          type: array
+          items:
+            type: string
+            description: Displays the service associated with the policy
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_EA
+            - Azure_MCA
+            - GCP
+            - OCI
+            - Openstack
+            - OpenstackPublic
+            x-cs-enum-type: PolicyServiceName
+        category:
+          type: string
+          description: Category of the policy.
+        status:
+          type: string
+          description: Status of the policy.
+        policy_type:
+          type: string
+          description: Type of the policy.
+        engine_type:
+          type: string
+          description: Engine type of the policy.
+        classification:
+          type: string
+          description: Classification of the policy.
+          example: Access
+          enum:
+          - Access
+          - Cost
+          - Data
+          - Network
+          - Operation
+          - Performance
+          - Resource
+          - Security
+          x-cs-enum-type: PolicyClassification
+        sub_classification:
+          type: string
+          description: Sub-classification of the policy.
+        resource_type:
+          type: string
+          description: Resource type of the policy.
+        service_resource:
+          type: string
+          description: Service resource of the policy.
+        remediation_supported:
+          type: boolean
+          description: When true, returns only policies that support remediation(s).
+      type: object
+    UpdateScheduleResponse:
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: Schedule ID
+      type: object
+    RecommendationActionResponse:
+      required:
+      - action_resource_name
+      - action_type
+      - description
+      - name
+      - resource_level
+      - terms_and_conditions
+      properties:
+        name:
+          type: string
+          description: recommendation action name
+        terms_and_conditions:
+          type: string
+          description: Terms and conditions for performing the recommended action
+        resource_level:
+          type: string
+          description: if the action will be performed at the resource level
+        action_type:
+          type: string
+          description: Type of action will be always template
+        action_resource_name:
+          type: string
+          description: Name of template
+        description:
+          type: string
+          description: Description about the action in details
+      type: object
+    ValidationResults:
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationResult'
+      type: object
+    ExecutionLogDetails:
+      required:
+      - name
+      - run_time
+      - status
+      properties:
+        status:
+          type: string
+          description: Status of the Execution Log
+        run_time:
+          type: string
+          description: Run Time Execution of the schedule
+        name:
+          type: string
+          description: Job Name of the schedule execution log
+      type: object
+    TimeDetails:
+      required:
+      - hour
+      - minute
+      - seconds
+      properties:
+        seconds:
+          type: string
+          description: 'The Template/Script/Policy is scheduled at which second. Allowed values: 00-60'
+        minute:
+          type: string
+          description: 'The Template/Script/Policy is scheduled at which minute. Allowed values: 00-60'
+        hour:
+          type: string
+          description: 'The Template/Script/Policy is scheduled at which hour. Allowed values: 01-23'
+      type: object
+    PolicyDataList:
+      required:
+      - content_type
+      - description
+      - display_name
+      - engine_type
+      - name
+      - policy_id
+      - scope
+      - services
+      - status
+      - uri
+      properties:
+        policy_id:
+          type: string
+          description: Policy Id is unique identifier of a policy
+        name:
+          type: string
+          description: Policy Name is unique can allow only
+        display_name:
+          type: string
+          description: Display name of policy
+        uri:
+          type: string
+          description: Unique URI for policy
+        description:
+          type: string
+          description: A brief explanation of the policy.
+        status:
+          type: string
+          description: Indicates whether the policy is active or inactive.
+        services:
+          type: array
+          description: Displays the service associated with the policy, for example, AWS, AzureRM, Openstack., etc
+          items:
+            type: string
+        engine_type:
+          type: string
+          description: Engine type of policy where it will execute
+        policy_type:
+          type: string
+          description: Type of the policy.
+        content_type:
+          type: string
+          description: Content type of policy (Git or File)
+        classification:
+          type: string
+          description: Classification of policy
+          example: Access
+          enum:
+          - Access
+          - Cost
+          - Data
+          - Network
+          - Operation
+          - Performance
+          - Resource
+          - Security
+          x-cs-enum-type: PolicyClassification
+        sub_classification:
+          type: string
+          description: Sub classification of policy
+        category:
+          type: string
+          description: Category of policy
+        resource_type:
+          type: string
+          description: Resource type of policy
+        service_resources:
+          type: array
+          items:
+            type: string
+            description: Service resource of policy
+        scope:
+          type: string
+          description: 'The scope of the policy. Account scope: All users under that account will have access to view and execute. Only Account admins can update or delete the policies. Tenant scope: Users with access to the specific tenant will have access to policies and can describe or execute policies. Tenant admins can only update or delete. Private scope: Only the user who created the policy will have access.'
+        severity:
+          type: string
+          description: Severity of policy
+          example: critical
+          enum:
+          - critical
+          - high
+          - info
+          - low
+          - medium
+          - none
+          - unknown
+          x-cs-enum-type: PolicySeverityRisk
+        parameters:
+          type: string
+          description: Parameters associated with the policy as JSON string.
+      type: object
+    ScheduleData:
+      required:
+      - args
+      - created_at
+      - created_by
+      - description
+      - id
+      - name
+      - next_run
+      - recurrence
+      - resource_details
+      - schedule
+      - type
+      properties:
+        id:
+          type: string
+          description: Schedule ID
+        name:
+          type: string
+          description: Schedule Name
+        type:
+          type: string
+          description: Schedule type
+          example: template
+          enum:
+          - template
+          - script
+          - policy
+          x-cs-enum-type: ScheduleType
+        description:
+          type: string
+          description: Description of the schedule
+        recurrence:
+          type: string
+          description: Re-occurrence of the schedule
+        next_run:
+          type: string
+          description: When will the schedule run for the next time
+        schedule:
+          type: object
+          description: Schedule date and time details
+        args:
+          type: object
+          description: Input Parameters for that Template/Script/Policy that is scheduled
+        resource_details:
+          type: array
+          description: Template/Script/Policy Details that is scheduled
+          items:
+            $ref: '#/components/schemas/ResourceDetails'
+        created_at:
+          type: string
+          description: When the schedule is created
+        created_by:
+          type: string
+          description: Who has created the schedule
+      type: object
+    ResourceDetails:
+      required:
+      - id
+      - name
+      properties:
+        id:
+          type: string
+          description: ID of that Template/Script/Policy that is scheduled to run
+        name:
+          type: string
+          description: Name of the Template/Script/Policy that is scheduled to run
+      type: object
+    PolicyNamedParameterValidationRequest:
+      required:
+      - params
+      - policy_uri
+      properties:
+        policy_uri:
+          type: string
+          description: Unique URI for policy
+        params:
+          type: string
+          description: Policy execution parameters, encoded as a JSON string
+      type: object
+    AttributeDetails:
+      required:
+      - service_accounts
+      properties:
+        service_accounts:
+          type: array
+          description: Service account id is unique can be obtained from the list cloud
+          items:
+            $ref: '#/components/schemas/CloudAccountDetails'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    PolicyConfigurationAccountListRequest:
+      properties:
+        service_account_ids:
+          type: array
+          description: List of service account ids for which policies are configured.
+          items:
+            type: string
+      type: object
+    PolicyViewResponse:
+      required:
+      - category
+      - classification
+      - content
+      - content_type
+      - description
+      - engine_type
+      - git_content_path
+      - git_content_url
+      - git_content_username
+      - is_system_policy
+      - policy_id
+      - policy_name
+      - scope
+      - services
+      - status
+      - sub_classification
+      - uri
+      properties:
+        policy_id:
+          type: string
+          description: The unique identifier created for each policy.
+        policy_name:
+          type: string
+          description: 'The name of the policy without space or special character '
+        description:
+          type: string
+          description: A brief explanation of the policy.
+        status:
+          type: string
+          description: Indicates whether the policy is active or inactive.
+        category:
+          type: string
+          description: The category will be either service or resource.
+        engine_type:
+          type: string
+          description: Engine type of policy
+        services:
+          type: array
+          description: Displays the service associated with the policy for example, AWS, AzureRM, Openstack., etc
+          items:
+            type: string
+        scope:
+          type: string
+          description: 'The scope of the policy:
+
+            Account scope - All users under that account will have access to view and execute Only Account admins can update/delete the policies,
+
+            Tenant Scope - Users with access to the specific tenant will have access to policies who can describe or execute policies. Tenant admins can only update/delete.
+
+            Private Scope - User who created will only have access'
+          example: private
+          enum:
+          - private
+          - account
+          - tenant
+          x-cs-enum-type: AccountScope
+        content_type:
+          type: string
+          description: Content type of policy (Git or File)
+        content:
+          type: string
+          description: The policy content.
+        git_content_url:
+          type: string
+          description: Git project URL when the content type is git.
+        git_content_username:
+          type: string
+          description: Username of Git repo if repo is authenticated
+        git_content_path:
+          type: string
+          description: Root path of the policy in git repo.
+        classification:
+          type: string
+          description: Policies are classified based on the basis of the activity they perform, for example provisioning, Account Management, Utilization, etc. This value is displayed in this field.
+        sub_classification:
+          type: string
+          description: Sub classification of policy
+        severity:
+          type: string
+          description: Severity of policy
+          example: critical
+          enum:
+          - critical
+          - high
+          - info
+          - low
+          - medium
+          - none
+          - unknown
+          x-cs-enum-type: PolicySeverityRisk
+        is_system_policy:
+          type: string
+          description: Flag to identify system policy
+        uri:
+          type: string
+          description: Unique URI for policy
+      type: object
+    ValidationResult:
+      properties:
+        field:
+          type: string
+        reason:
+          type: string
+      type: object
+    JobExecutionDetailsResponse:
+      required:
+      - arguments
+      - cloud_accounts
+      - created_at
+      - created_by
+      - engine
+      - execution_type
+      - job_id
+      - name
+      - policy_id
+      - policy_name
+      - status_reason
+      - tenant_name
+      - updated_at
+      - updated_by
+      properties:
+        job_id:
+          type: string
+          description: Job Id
+        name:
+          type: string
+          description: Name of the Job
+        status:
+          type: string
+          description: Status of policy job execution
+          example: COMPLETED
+          enum:
+          - COMPLETED
+          - FAILED
+          - IN_PROGRESS
+          x-cs-enum-type: PolicyJobStatus
+        status_reason:
+          type: string
+          description: Reason for the job status
+        engine:
+          type: string
+          description: Policy engine used for job execution
+        arguments:
+          type: string
+          description: arguments provided for job execution
+        cloud_accounts:
+          type: string
+          description: Cloud account used for job execution
+        execution_type:
+          type: string
+          description: Policy execution type can be on demand or scheduled
+        created_by:
+          type: string
+          description: Policy Job created by
+        created_at:
+          type: string
+          description: Policy Job create time in UTC
+        updated_by:
+          type: string
+          description: Policy Job updated by
+        updated_at:
+          type: string
+          description: Policy Job update time in UTC
+        tenant_name:
+          type: string
+          description: tenant name where job was created
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        policy_id:
+          type: string
+          description: Policy id of the Policy executed
+        policy_name:
+          type: string
+          description: Policy id of the Policy executed
+        output:
+          type: array
+          description: Job output details
+          items:
+            $ref: '#/components/schemas/JobExecutionOutputDetails'
+      type: object
+    ExecuteRecommendationRequest:
+      required:
+      - action_name
+      - resources
+      properties:
+        action_name:
+          type: string
+          description: 'action to perform to resolve violations, the name can be obtained from the view recommendation api.  Example: action_name : skip or unskip'
+        resources:
+          type: array
+          description: resource resource_recommendation_id list for which the recommendation will be executed, this value can be obtained from the view recommendation api
+          items:
+            type: string
+        args:
+          type: object
+          description: arguments to execute recommendation if any. The values are dynamic in nature can change from recommendation to recommendation
+      type: object
+    DateAndTimeDetails:
+      required:
+      - dayofmonth
+      - month
+      - time
+      - weekday
+      - year
+      properties:
+        month:
+          type: string
+          description: 'Month when the Template/Script/Policy is scheduled to run. Allowed values: 01-12'
+        time:
+          description: Time when the Template/Script/Policy is scheduled to run.
+          $ref: '#/components/schemas/TimeDetails'
+        dayofmonth:
+          description: 'At which day of that month the Template/Script/Policy is scheduled to run.Note - weekday and dayofmonth are alternate.Allowed values: 01-31'
+          $ref: '#/components/schemas/DayDetails'
+        weekday:
+          description: 'At which day of that week the Template/Script/Policy is scheduled to run.Note - weekday and dayofmonth are alternate.Allowed values: 01-07'
+          $ref: '#/components/schemas/DayDetails'
+        year:
+          type: string
+          description: Year when the Template/Script/Policy is scheduled to run. Example:'year':'2022'
+      type: object
+    ParameterBase:
+      required:
+      - __type
+      properties:
+        description:
+          type: string
+          description: A brief explanation of the policy parameter
+        default_value:
+          type: string
+          description: Default value of the parameter, encoded as a JSON string
+        hide_parameter:
+          type: boolean
+          description: Hide/Show a parameter for visibility as part of deployment
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ParameterStringType
+        subtype_name: ParameterStringType
+      - subtype_model: ParameterNumberType
+        subtype_name: ParameterNumberType
+      - subtype_model: ParameterBooleanType
+        subtype_name: ParameterBooleanType
+      - subtype_model: ParameterBaseWithSchema
+        subtype_name: ParameterBaseWithSchema
+      - subtype_model: ParameterArray
+        subtype_name: ParameterArray
+      - subtype_model: ParameterMap
+        subtype_name: ParameterMap
+      - subtype_model: ParameterObject
+        subtype_name: ParameterObject
+      - subtype_model: ParameterJsonBlob
+        subtype_name: ParameterJsonBlob
+    AccountPolicyConfigurationBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/PolicyParameterConfiguration'
+      type: object
+    PolicyMetadata:
+      properties:
+        file:
+          type: string
+          description: Metadata about policy
+      type: object
+    CreatePolicyRequest:
+      required:
+      - category
+      - classification
+      - content
+      - content_type
+      - description
+      - engine_type
+      - name
+      - scope
+      - severity
+      - sub_classification
+      properties:
+        name:
+          type: string
+          description: policy name which is unique and does not allow special character or space
+        display_name:
+          type: string
+          description: Display name of policy which allow space this is to mostly show on the ui
+        description:
+          type: string
+          description: A brief explanation of the policy.
+        type:
+          type: array
+          description: Indicates the type of policy
+          items:
+            type: string
+        category:
+          type: string
+          description: The category will be either service or resource
+        content:
+          type: string
+          description: The policy content
+        is_system_policy:
+          type: boolean
+          description: Flag to identify system policies
+        engine_type:
+          type: string
+          description: Engine type of the policy
+          example: corestack_policy
+          enum:
+          - corestack_policy
+          - aws_organization_policy
+          - azure_policy
+          - aws_config
+          - gcp_organization_policy
+          - gcp_policy
+          - kubernetes_policy
+          - oracle_cloud_guard
+          x-cs-enum-type: PolicyEngineType
+        cloud:
+          type: array
+          description: Displays the cloud associated with the policy
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        classification:
+          type: string
+          description: Policies are classified based on the basis of the activity they perform, for example provisioning, Account Management, Utilization, etc. This value is displayed in this field
+        sub_classification:
+          type: string
+          description: Sub classification for policy
+        scope:
+          type: string
+          description: 'The scope of the policy:
+
+            Account scope - All users under that account will have access to view and execute Only Account admins can update/delete the policies,
+
+            Tenant Scope - Users with access to the specific tenant will have access to policies who can describe or execute policies. Tenant admins can only update/delete.
+
+            Private Scope - User who created will only have access'
+          example: private
+          enum:
+          - private
+          - account
+          - tenant
+          x-cs-enum-type: AccountScope
+        content_type:
+          type: string
+          description: Policy content source
+          example: git
+          enum:
+          - git
+          - file
+          x-cs-enum-type: ContentType
+        content_password_or_key:
+          type: string
+          description: Password or private key to access of Git repo if repo is authenticated required only in case of content type git
+        content_username:
+          type: string
+          description: Username of Git repo if repo is authenticated required only in case of content type git
+        content_url:
+          type: string
+          description: Git project URL when the content type is git required only in case of content type git
+        content_path:
+          type: string
+          description: Root path of the policy in git repo required only in case of content type git
+        severity:
+          type: string
+          description: Severity of policy.
+          example: high
+          enum:
+          - high
+          - low
+          - medium
+          x-cs-enum-type: PolicySeverity
+      type: object
+    PolicyJobBatchRequest:
+      required:
+      - policy_job_ids
+      properties:
+        policy_job_ids:
+          type: array
+          description: Unique IDs of Policy Jobs
+          items:
+            type: string
+      type: object
+    PolicyRequest:
+      allOf:
+      - $ref: '#/components/schemas/PolicyDescriptionRequest'
+      - properties:
+          policy_ids:
+            type: array
+            description: List of policy IDs to fetch policy details
+            items:
+              type: string
+              x-cs-type: ObjectId
+        type: object
+    PolicyExecuteResponse:
+      required:
+      - job_id
+      properties:
+        job_id:
+          type: string
+          description: Job identifier of the executed policy
+      type: object
+    PolicyExecuteRequest:
+      required:
+      - args
+      - cloud_accounts
+      properties:
+        args:
+          type: object
+          description: arguments to execute policy for example values can be in the below format {'listOfAllowedSKUs':['Basic_A0']} or {'requiredRetentionDays':'365','effect':'AuditIfNotExists'} etc.The values are dynamic in nature can change from policy to policy.The arguments required can be changed in the policy content in the view policy api
+        cloud_accounts:
+          type: array
+          description: cloud account details to execute the policy
+          items:
+            $ref: '#/components/schemas/PolicyServiceAccountDetails'
+      type: object
+    ListScheduleResponse:
+      required:
+      - page_count
+      - schedules
+      - total_count
+      properties:
+        page_count:
+          type: integer
+          description: Page count
+        total_count:
+          type: integer
+          description: Total count
+        schedules:
+          type: array
+          description: Schedule Details
+          items:
+            $ref: '#/components/schemas/ScheduleData'
+      type: object
+    PolicyListResponse:
+      required:
+      - policies
+      properties:
+        policies:
+          type: array
+          description: Policy Metadata Info.
+          items:
+            $ref: '#/components/schemas/PolicyDataList'
+      type: object
+    PolicyDescriptionRequest:
+      properties:
+        policy_uris:
+          type: array
+          description: Unique URI for policy
+          items:
+            type: string
+      type: object
+    PolicyParameterConfiguration:
+      properties:
+        parameters_configuration:
+          type: array
+          items:
+            $ref: '#/components/schemas/NamedParameter'
+      type: object
+    PolicyRecommendationActions:
+      properties:
+        name:
+          type: string
+          description: Name of the recommendation action
+        description:
+          type: string
+          description: Description of the recommendation action
+        terms_and_conditions:
+          type: string
+          description: T&C of the recommendation action
+        preexecute_required:
+          type: boolean
+          description: Flag to check if pre-execute is required or not
+      type: object
+    CreateScheduleResponse:
+      properties:
+        schedule_id:
+          type: string
+          description: Schedule ID
+      type: object
+    PolicyRecommendation:
+      required:
+      - classification
+      - cloud
+      - cloud_account_id
+      - created_at
+      - impact
+      - policy_id
+      - recommendation_id
+      - recommendation_name
+      - status
+      - tenant_name
+      properties:
+        recommendation_id:
+          type: string
+          description: unique recommendation Id
+        recommendation_name:
+          type: string
+          description: recommendation name
+        policy_id:
+          type: array
+          description: list of policy ids for which the recommendation exists
+          items:
+            type: string
+        status:
+          type: string
+          description: resolution status of the recommendation the values will be open, resolved
+        impact:
+          type: string
+          description: impact of recommended changes
+        classification:
+          type: string
+          description: classified based on the kind of recommendation provided to the user can be cost, security etc
+        cloud_account_id:
+          type: string
+          description: cloud account id impacted by the recommendation
+        cloud:
+          type: string
+          description: cloud on which this account exits for which the recommendations exists
+        tenant_name:
+          type: string
+          description: 'tenant for which the recommendation exits '
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        created_at:
+          type: string
+          description: UTC time at which the recommendation was created
+      type: object
+    CloudAccountDetails:
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: Cloud account id is unique can be obtained from the list cloud
+      type: object
+    DayDetails:
+      required:
+      - day
+      properties:
+        day:
+          type: string
+          description: 'At which day of that month the Template/Script/Policy is scheduled to run.Allowed values: 01-31'
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

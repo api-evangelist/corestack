@@ -1,0 +1,3887 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Identity API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: User, Tenants & Roles Management
+servers:
+- url: /
+tags:
+- name: Identity
+  description: User, Tenants & Roles Management
+paths:
+  /tenants:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTenantResponse'
+      summary: List Tenant
+      description: There can be multiple tenants within a CoreStack account. List all tenants the user is mapped under a CoreStack account. If there are 3 tenants and user performing this operation has access to only 2 tenants then only those 2 tenants will be returned.
+      operationId: listTenant
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantCreateResponse'
+      summary: Create Tenant
+      description: Creates a new tenant under a CoreStack account. There can be multiple tenants within a CoreStack account.
+      operationId: createTenant
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTenantRequest'
+        required: true
+  /tenants/{tenant_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Tenant
+      description: Delete a tenant by its Id. Cannot undo this action, so be cautious when performing this operation. Use updateTenant to make the tenant as suspended if required.
+      operationId: deleteTenant
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Id of the tenant to be deleted.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTenantResponse'
+      summary: Get Tenant
+      description: Retrieve a tenant by its Id.  If you're unsure of the tenant_id, use listTenant operation to list all tenants under a CoreStack account and fetch the needed tenant_id.
+      operationId: getTenant
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantUpdateResponse'
+      summary: Update Tenant
+      description: Update a tenant's status, description & metadata using its id. No operation can be performed when a tenant is made suspended.
+      operationId: updateTenant
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Id of the CoreStack account under which the tenant to be updated.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantRequest'
+        required: true
+  /tenants/{tenant_id}/name_change_history:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Name change history retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NameChangeHistoryResponse'
+      summary: Get Tenant Name Change History
+      description: Retrieve the name change history for a tenant.
+      operationId: getTenantNameChangeHistory
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Id of the tenant to retrieve name change history for.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /tenants/{tenant_id}/roles:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleListResponse'
+      summary: List Roles by Tenant
+      description: This GET method is used to retrieve the list of Roles available within a specific tenant.
+      operationId: ListRoles
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /tenants/{tenant_id}/users:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserTenantResponseList'
+      summary: List Users by Tenant
+      description: List all users within a tenant.
+      operationId: ListTenantUser
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /users/change_password/{user_id}:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangePasswordResponse'
+      summary: Change Password
+      description: Update the password of the user. This password will be used for login to portal and it will not affect the Access Key / Secret Key associated with the user. Cannot update password of another user within the same CoreStack account. Can be updated for the user associated with Access Key / Secret Key
+      operationId: ChangePassword
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+        required: true
+  /users/change_time_zone/{user_id}:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangeTimezoneResponse'
+      summary: Change Timezone
+      description: Update the timezone settings of the user. In CoreStack portal, wherever the datatime is shown it is converted to the timezone set to the user. Cannot update timezone of another user within the same CoreStack account. Can be updated for the user associated with Access Key / Secret Key
+      operationId: ChangeTimezone
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeTimezoneRequest'
+        required: true
+  /users/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateResponse'
+      summary: Create User
+      description: Creates an user within a CoreStack account and assign different roles for different tenants. There can be multiple tenants within a CoreStack account. User will be created at the account level and mapped to multiple tenants as needed.
+      operationId: CreateUser
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateRequest'
+        required: true
+  /users/delete/{user_id}:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete User
+      description: Deletes the User from CoreStack system. This operation cannot be undone.
+      operationId: DeleteUser
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /users/filter-options:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilterOptions'
+      summary: List Users
+      description: List all tenants, cloud providers and cloud accounts available within a CoreStack account.
+      operationId: ListUserFilterOptions
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /users/filter-options-light:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilterOptionsLight'
+      summary: List Users
+      description: List all tenants with limited details within a CoreStack account.
+      operationId: ListUserFilterOptionsLight
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /users/forget_password/{user_id}:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Forgotten
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Forget Password
+      description: Forget the password of the user. This password will be used for login to portal and it will not affect the Access Key / Secret Key associated with the user
+      operationId: ForgetPassword
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: User Id fetched from List User API
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgetPasswordRequest'
+        required: true
+  /users/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseList'
+      summary: List Users
+      description: List all users within a CoreStack account.
+      operationId: ListUser
+      parameters:
+      - description: Specify the master account id
+        name: master_account_id
+        in: query
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /users/notification/report:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationReportResponse'
+      summary: Send notification report email
+      description: Send a notification email for a shared report
+      operationId: NotificationReport
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationReportRequest'
+        required: true
+  /users/notifications/{user_id}/{tenant_id}:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountUserNotificationsResponse'
+      summary: Check notification status
+      description: Check Notification status for user
+      operationId: CountUserNotifications
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: Id of user
+        schema:
+          type: string
+      - name: tenant_id
+        in: path
+        required: true
+        description: Id of active tenant
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /users/profile/active-tenant:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileActiveTenantResponse'
+      summary: Update active tenant for a user
+      description: Sets the active tenant for the user
+      operationId: UserProfileActiveTenant
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfileActiveTenantRequest'
+        required: true
+  /users/profile/{user_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+      summary: View User Profile
+      description: Describes an User by ID. This provides detailed information about a user profile
+      operationId: UserProfile
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: User Id fetched from List User API
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /users/resend_token/{user_id}:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResendTokenResponse'
+      summary: Resend User Token for Activation
+      description: Resend User Activation Link
+      operationId: ResendTokenUser
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: Id of user
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /users/reset_password:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResetPasswordResponse'
+      summary: Reset Password
+      description: Reset the password of the user.This password will be used for login to portal and it will not affect the Access Key / Secret Key associated with the user
+      operationId: UsersResetPassword
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+        required: true
+  /users/summary/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSummaryBatchResponse'
+      summary: User Batch
+      description: User Summary Batch
+      operationId: UserSummaryBatch
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+        required: true
+  /users/update/{user_id}:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdateResponse'
+      summary: Update User
+      description: Updates a user and their role assignment in multiple tenants.
+      operationId: UpdateUser
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+        required: true
+  /users/view/{user_id}:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDescribeResponse'
+      summary: Describe User
+      description: Describes an User by ID. This provides detailed information about a user
+      operationId: DescribeUser
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /users/{tenant_id}/notification_message:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationMessageResponse'
+      summary: List notification message
+      description: This GET method is used to retrieve the Notification, Message a specific tenant.
+      operationId: NotificationMessageResource
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: 'Specify the action name. Allowed values: view_notifications, if require to fetch data with filter wise use view_notifications'
+        name: action
+        in: query
+        schema:
+          type: string
+          enum:
+          - view_notifications
+      - description: Specify value for display, if require to fetch data for filter wise use read, unread,all
+        name: display
+        in: query
+        schema:
+          type: string
+          enum:
+          - read
+          - unread
+          - all
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /users/{user_id}/activate_user/{auth_token}:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivateUserResponse'
+      summary: Activate User
+      description: Activate user using auth token
+      operationId: AuthActivateUser
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: Id of user
+        schema:
+          type: string
+      - name: auth_token
+        in: path
+        required: true
+        description: auth_token to activate created user.Can be fetched from the activation email sent
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivateRequest'
+        required: true
+  /users/{user_id}/verify_user/{auth_token}:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyUserResponse'
+      summary: Verify User
+      description: Verify user using auth token
+      operationId: AuthVerifyUser
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: Id of user
+        schema:
+          type: string
+      - name: auth_token
+        in: path
+        required: true
+        description: auth_token to verify created user.Can be fetched from the activation email sent
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /v1/master_accounts/{master_account_id}/roles:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleListResponse'
+      summary: List Roles by Master Account
+      description: Role List By Master Account
+      operationId: RoleListByMasterAccount
+      parameters:
+      - name: master_account_id
+        in: path
+        required: true
+        description: Specify the master account ID
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /v1/master_accounts/{master_account_id}/tenants:
+    parameters:
+    - name: master_account_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MasterAccountTenantSummary'
+      summary: Tenant List by Master Account
+      description: Tenant List by Master Account
+      operationId: TenantListByMasterAccount
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /v1/roles/summary/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleSummaryBatchResponse'
+      summary: Role Batch
+      description: Role Batch
+      operationId: RoleBatch
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+        required: true
+  /v1/user/verify/{access_key}:
+    parameters:
+    - name: access_key
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserVerificationResponse'
+      summary: Auth0 User Verification
+      description: User Verify
+      operationId: UserVerify
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserVerificationRequest'
+        required: true
+  /v1/user/{user_id}/password_reset:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdateResponse'
+      summary: Reset Password for Auth0 User
+      description: Reset Password for the Auth0 User
+      operationId: ResetPassword
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+        required: true
+  /v1/user_delegation/master_accounts/{master_account_id}/rules:
+    parameters:
+    - name: master_account_id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDelegationResponse'
+      summary: Create User Delegation
+      description: Creates a new user delegation
+      operationId: CreateUserDelegation
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDelegationRequest'
+        required: true
+  /v1/user_delegation/master_accounts/{master_account_id}/rules/batch:
+    parameters:
+    - name: master_account_id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDelegationBatchResponse'
+      summary: Batch User Delegation
+      description: Batch User Delegation
+      operationId: BatchUserDelegation
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+        required: true
+  /v1/user_delegation/master_accounts/{master_account_id}/rules/item/{rule_id}:
+    parameters:
+    - name: master_account_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: rule_id
+      in: path
+      required: true
+      schema:
+        type: string
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete User Delegation
+      description: Delete user delegation
+      operationId: DeleteUserDelegation
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDelegationResponse'
+      summary: Update User Delegation
+      description: Update user delegation
+      operationId: UpdateUserDelegation
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDelegationRequest'
+        required: true
+  /v1/user_delegation/master_accounts/{master_account_id}/rules/list:
+    parameters:
+    - name: master_account_id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+      summary: List User Delegation
+      description: List user delegation
+      operationId: ListUserDelegation
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDelegationListRequest'
+        required: true
+  /v1/user_delegation/master_accounts/{master_account_id}/rules/refresh:
+    parameters:
+    - name: master_account_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Refreshed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Refresh User Delegation
+      description: Refresh User Delegation
+      operationId: RefreshUserDelegation
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /v1/user_delegation/report/{user_id}:
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDelegationSummary'
+      summary: Get User Delegation Report
+      description: Get user delegation report
+      operationId: GetUserDelegationReport
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+  /v1/users/invite:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInviteResponse'
+      summary: Invite User
+      description: Invite user
+      operationId: InviteUser
+      security:
+      - auth_token: []
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInviteRequest'
+        required: true
+components:
+  schemas:
+    FilterOptionsCloudProvider:
+      allOf:
+      - $ref: '#/components/schemas/FilterOptionsCloudProviderLight'
+      - properties:
+          cloud_accounts:
+            type: array
+            description: List of accounts for this Cloud Provider
+            items:
+              $ref: '#/components/schemas/FilterOptionsCloudAccount'
+        type: object
+    ChangeTimezoneRequest:
+      required:
+      - new_timezone_id
+      properties:
+        new_timezone_id:
+          type: string
+          description: New timezone id to be set for the user. For a valid list of timezone values to use, please refer https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+      type: object
+    NotificationMessageResponse:
+      required:
+      - data
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: Status of the notification & message api
+        message:
+          type: string
+          description: Message of the notification & message api
+        data:
+          type: object
+          description: data for the notification & message api
+      type: object
+    ChangeTimezoneData:
+      required:
+      - id
+      - raw_offset
+      properties:
+        raw_offset:
+          type: string
+          description: Raw offset of the timezone. It means the amount of time in milliseconds to add to UTC to get standard time in the required time zone
+        id:
+          type: string
+          description: ID of the Timezone such as Asia/Kolkata, Asia/Dubai and so on
+      type: object
+    ResetPasswordRequest:
+      required:
+      - email_id
+      - url
+      properties:
+        email_id:
+          type: string
+          description: User email id.
+        url:
+          type: string
+          description: Please Provide the URl
+      type: object
+    FiscalYearConfiguration:
+      properties:
+        start:
+          type: string
+          description: Start Date for Financial Year in DD-MMM format
+        end:
+          type: string
+          description: End Date for Financial Year in DD-MMM format
+      type: object
+    UpdateRoleAssignment:
+      properties:
+        tenant_id:
+          type: string
+          description: ID of the tenant within the CoreStack account
+        role_names:
+          type: array
+          description: Name of the Roles to be assigned to the user under a tenant
+          items:
+            type: string
+      type: object
+    UserDelegationRequest:
+      properties:
+        source_user_groups:
+          type: array
+          items:
+            type: string
+            description: User delegation source user groups
+        source_roles:
+          type: array
+          items:
+            type: string
+            description: User delegation source roles
+        source_users:
+          type: array
+          items:
+            type: string
+            description: User delegation source users
+        target_master_account_id:
+          type: string
+          description: User delegation target account master id
+        target_roles:
+          type: array
+          items:
+            type: string
+            description: User delegation target roles
+        target_user_groups:
+          type: array
+          items:
+            type: string
+            description: User delegation target user groups
+      type: object
+    NotificationReportResponse:
+      required:
+      - message
+      properties:
+        status:
+          type: string
+          description: Result status
+        message:
+          type: string
+          description: Result message
+      type: object
+    ConfigurationForNotifications:
+      properties:
+        enabled:
+          type: boolean
+          description: Whether Notifications Are Enabled
+        emails:
+          type: array
+          description: Emails
+          items:
+            type: string
+        webhooks:
+          type: array
+          description: Webhooks
+          items:
+            type: string
+        microsoft_teams_webhooks:
+          type: array
+          description: Microsoft Teams Webhooks
+          items:
+            type: string
+      type: object
+    UserProfileActiveTenantResponse:
+      properties:
+        id:
+          type: string
+          description: ID for user that was updated
+        tenant_id:
+          type: string
+          description: ID for the new active tenant
+      type: object
+    TenantDetails:
+      required:
+      - account_id
+      - created_at
+      - description
+      - is_default
+      - name
+      - status
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Id of the tenant. This will be used for performing tenant level operations such as createPolicy, createScript, onboardCloudAccount and so on.
+        name:
+          type: string
+          description: Unique name of the tenant provided as input while creating.
+        description:
+          type: string
+          description: Description of the tenant.
+        account_id:
+          type: string
+          description: Id of the CoreStack account under which this tenant resides.
+        is_default:
+          type: boolean
+          description: Is the master tenant
+        fiscal_year_configuration:
+          description: Fiscal Year settings
+          $ref: '#/components/schemas/FiscalYearConfiguration'
+        cost_anomaly_settings:
+          $ref: '#/components/schemas/CostAnomalyConfiguration'
+        cost_processing_settings:
+          $ref: '#/components/schemas/CostProcessingSettings'
+        azure_hybrid_benefits_enabled:
+          type: boolean
+          description: azure hybrid benefits enabled under finOps
+        disk_utilization_settings:
+          description: enables disk utilization configuration for specified service accounts
+          $ref: '#/components/schemas/DiskUtilizationSetting'
+        dimension_settings:
+          type: array
+          items:
+            $ref: '#/components/schemas/DimensionTenantSettings'
+        status:
+          type: string
+          description: Indicates the status of the Tenant
+          example: active
+          enum:
+          - active
+          - suspended
+          x-cs-enum-type: TenantStatus
+        created_at:
+          type: string
+          description: Created DateTime in UTC of the tenant.
+        activity_queue_notifications:
+          $ref: '#/components/schemas/ActivityQueueNotificationDetails'
+      type: object
+    NameChangeHistoryEntry:
+      required:
+      - new_name
+      - previous_name
+      - updated_at
+      - updated_by
+      properties:
+        previous_name:
+          type: string
+          description: Previous tenant name before the rename.
+        new_name:
+          type: string
+          description: New tenant name after the rename.
+        updated_by:
+          type: string
+          description: User who performed the rename.
+        updated_at:
+          type: string
+          format: date-time
+          description: DateTime in UTC when the rename was performed.
+      type: object
+    RoleDetails:
+      required:
+      - access
+      - category
+      - created_at
+      - description
+      - id
+      - name
+      - status
+      - users
+      properties:
+        id:
+          type: string
+          description: ID of the Role. This is an auto generated and unique in the CoreStack system
+        tenant_id:
+          type: string
+          description: Tenant Id for the Role
+        name:
+          type: string
+          description: Name of the role. This is unique in the CoreStack system for a specific tenant
+        status:
+          type: string
+          description: Status of the Role
+        access:
+          type: array
+          description: List of access the role can perform in the tenant
+          items:
+            type: string
+        users:
+          type: integer
+          description: Count of users having the role attached under a tenant
+        description:
+          type: string
+          description: Description of the role
+        created_at:
+          type: string
+          description: Date and time of role creation
+        category:
+          type: string
+          description: Category of the specific role. Either default or custom
+        policies:
+          type: object
+          description: List of policy available for a role
+      type: object
+    CostProcessingSettings:
+      properties:
+        max_tag_value_count:
+          type: integer
+          description: Maximum number of unique values per tag to process for cost allocation tags
+        number_of_months_to_backfill:
+          type: integer
+          description: Back filling value for cost processing (in months)
+      type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    FilterOptionsForSaasAiServices:
+      allOf:
+      - $ref: '#/components/schemas/FilterOptionsForSaasBase'
+      - properties:
+          saas:
+            type: string
+            description: List of SaaS services supported for the role template
+            example: Anthropic
+            enum:
+            - Anthropic
+            - OpenAI
+            x-cs-enum-type: SaasAiServiceName
+        type: object
+    UserDelegationSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          x-cs-enum-type: UserDelegationSortColumn
+        ascending:
+          type: boolean
+      type: object
+    ActivateUserResponse:
+      required:
+      - user_id
+      properties:
+        user_id:
+          type: string
+          description: User ID
+      type: object
+    FilterOptionsForSaasOtherServices:
+      allOf:
+      - $ref: '#/components/schemas/FilterOptionsForSaasBase'
+      - properties:
+          saas:
+            type: string
+            description: List of SaaS services supported for the role template
+            example: CircleCI
+            enum:
+            - CircleCI
+            - Datadog
+            - Dropbox
+            - Dynatrace
+            - Elastic
+            - Grafana
+            - IBM_Tencent
+            - Microsoft_Teams
+            - New_Relic
+            - Okta
+            - SaasCustomTool
+            - Salesforce_Sales_Cloud
+            - Splunk
+            x-cs-enum-type: SaasOtherServiceName
+        type: object
+    UserTenantResponseList:
+      required:
+      - total_count
+      - users
+      properties:
+        total_count:
+          type: integer
+          description: Number of users in CoreStack account.
+        users:
+          type: array
+          description: List all users within a CoreStack account.
+          items:
+            $ref: '#/components/schemas/UserTenantDetails'
+      type: object
+    ActivityQueueNotifications:
+      properties:
+        enabled:
+          type: boolean
+          description: Activity Queue Notifications enabled
+        integrated_tool_account:
+          $ref: '#/components/schemas/IntegratedToolAccount'
+      type: object
+    ForgetPasswordRequest:
+      required:
+      - email_id
+      properties:
+        email_id:
+          type: string
+          description: User email id.
+      type: object
+    CostAnomalyConfiguration:
+      properties:
+        threshold_configuration:
+          description: threshold configuration.
+          $ref: '#/components/schemas/CostAnomalySetting'
+        notifications:
+          type: array
+          description: Notification configuration.
+          items:
+            $ref: '#/components/schemas/ConfigurationForCostAnomalyNotification'
+        billing_source:
+          type: string
+          description: Base billing metric where the aggregation query will be executed.
+          default: raw_cost
+          example: raw_cost
+          enum:
+          - raw_cost
+          - raw_effective_cost
+          - customer_true_cost
+          x-cs-enum-type: CostAnomalyBillingMetrics
+      type: object
+    UserSummary:
+      properties:
+        name:
+          type: string
+          description: Name of the User
+        email:
+          type: string
+          description: User email
+        status:
+          type: string
+          description: Status of the user
+          example: active
+          enum:
+          - active
+          - suspended
+          - deleted
+          - pending_activation
+          - verified
+          - rejected
+          x-cs-enum-type: UserStatus
+      type: object
+    UserInviteTenantRoles:
+      required:
+      - role_ids
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: ID of the tenant within the CoreStack account
+        role_ids:
+          type: array
+          description: Ids of the Roles to be assigned to the user under a tenant
+          items:
+            type: string
+      type: object
+    ChangePasswordRequest:
+      required:
+      - current_password
+      - new_password
+      properties:
+        current_password:
+          type: string
+          description: Current password of the user being used. If you are unaware of the current password, use forgot password option in the CoreStack portal.
+        new_password:
+          type: string
+          description: New Password to be set for the user. Password length must be of 8-15 characters with atleast one special character(_$^@*!#&.), one number and starting character must be an alphabet.
+      type: object
+    UserDelegationResponse:
+      properties:
+        id:
+          type: string
+          description: User delegation id
+      type: object
+    ActivateRequest:
+      required:
+      - password
+      properties:
+        password:
+          type: string
+          description: user password
+      type: object
+    NotificationReportRequest:
+      required:
+      - email_details
+      properties:
+        smtp_default:
+          type: boolean
+          description: Use default SMTP config when true
+        master_account_id:
+          type: string
+          description: Master Account ID for org-level SMTP/template override
+        report_name:
+          type: string
+          description: Name of the report being shared (used in audit log)
+        email_details:
+          description: Email addressing and content
+          $ref: '#/components/schemas/NotificationReportEmailDetails'
+      type: object
+    UpdateTenantRequest:
+      properties:
+        name:
+          type: string
+          description: 'New name for the tenant. Tenant Name must be unique within the account. Must be 3-100 characters. Special characters '' " # ? / \ are not allowed.'
+        description:
+          type: string
+          description: Description of the the tenant.
+        metadata:
+          type: object
+          description: metadata is freeform JSON. It allows to store custom keys and values. It will be useful for storing information about an external applications that will refer to CoreStack tenant.
+        account_id:
+          type: string
+          description: Id of the CoreStack account under which the tenant to be updated.
+        fiscal_year_configuration:
+          description: Fiscal Year settings
+          $ref: '#/components/schemas/FiscalYearConfiguration'
+        cost_anomaly_settings:
+          $ref: '#/components/schemas/CostAnomalyConfiguration'
+        cost_processing_settings:
+          $ref: '#/components/schemas/CostProcessingSettings'
+        azure_hybrid_benefits_enabled:
+          type: boolean
+          description: azure hybrid benefits enabled under finOps
+        disk_utilization_settings:
+          description: enables disk utilization configuration for specified service accounts
+          $ref: '#/components/schemas/DiskUtilizationSetting'
+        dimension_settings:
+          type: array
+          description: Dimension Settings for this Tenant
+          items:
+            $ref: '#/components/schemas/DimensionTenantSettings'
+        status:
+          type: string
+          description: Indicates the status of the Tenant
+          example: active
+          enum:
+          - active
+          - suspended
+          x-cs-enum-type: TenantStatus
+      type: object
+    UserDelegationListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/UserDelegationSortCriteria'
+      type: object
+    FilterOptionsTenantLight:
+      allOf:
+      - $ref: '#/components/schemas/FilterOptionsBase'
+      - properties:
+          cloud_providers:
+            type: array
+            items:
+              $ref: '#/components/schemas/FilterOptionsCloudProviderLight'
+          ai_providers:
+            type: array
+            items:
+              $ref: '#/components/schemas/FilterOptionsForSaasAiServices'
+          data_service_providers:
+            type: array
+            items:
+              $ref: '#/components/schemas/FilterOptionsForSaasDataServices'
+          other_service_providers:
+            type: array
+            items:
+              $ref: '#/components/schemas/FilterOptionsForSaasOtherServices'
+          dimension_currencies:
+            type: array
+            description: Currencies
+            items:
+              type: string
+              description: currency of the cost. Example 'currency':'USD'
+              example: AED
+              enum:
+              - AED
+              - ALL
+              - ARS
+              - AUD
+              - BAM
+              - BDT
+              - BGN
+              - BHD
+              - BRL
+              - CAD
+              - CHF
+              - CLP
+              - CNY
+              - COP
+              - CRC
+              - CZK
+              - DKK
+              - EGP
+              - EUR
+              - GBP
+              - HKD
+              - HRK
+              - HUF
+              - IDR
+              - ILS
+              - INR
+              - ISK
+              - JPY
+              - KES
+              - KRW
+              - KWD
+              - KZT
+              - MOP
+              - MVR
+              - MXN
+              - MYR
+              - NOK
+              - NZD
+              - OMR
+              - PEN
+              - PHP
+              - PKR
+              - PLN
+              - QAR
+              - RON
+              - RSD
+              - RUB
+              - SAR
+              - SEK
+              - SGD
+              - THB
+              - TRY
+              - TWD
+              - USD
+              - VND
+              - ZAR
+              x-cs-enum-type: Currency
+          container_providers:
+            type: array
+            items:
+              $ref: '#/components/schemas/FilterOptionsCloudProviderLight'
+        type: object
+    ChangeTimezoneResponse:
+      required:
+      - timezone
+      - user_id
+      properties:
+        timezone:
+          description: Contains information about the timezone set for the user. Raw offset of the timezone. It means the amount of time in milliseconds to add to UTC to get standard time in the required time zone. Id of the Timezone such as Asia/Kolkata, Asia/Dubai and so on
+          $ref: '#/components/schemas/ChangeTimezoneData'
+        user_id:
+          type: string
+          description: ID of the user to whom the timezone is changed
+      type: object
+    ActivityQueueNotificationDetails:
+      properties:
+        activity:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+        alerts:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+        policies:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+        scripts:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+        templates:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+        security_alerts:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+        inventory_update:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+        automation_failure:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+        budget_alerts:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+      type: object
+    UserDelegationUserGroup:
+      properties:
+        id:
+          type: string
+          description: User group id
+        name:
+          type: string
+          description: User group name
+      type: object
+    UserDelegationRole:
+      properties:
+        id:
+          type: string
+          description: Role id
+        name:
+          type: string
+          description: Role name
+      type: object
+    FilterOptionsTenant:
+      allOf:
+      - $ref: '#/components/schemas/FilterOptionsBase'
+      - properties:
+          cloud_providers:
+            type: array
+            items:
+              $ref: '#/components/schemas/FilterOptionsCloudProvider'
+          integrated_tool_providers:
+            type: array
+            items:
+              $ref: '#/components/schemas/FilterOptionsIntegratedToolProvider'
+          ai_providers:
+            type: array
+            items:
+              $ref: '#/components/schemas/FilterOptionsForSaasAiServices'
+          data_service_providers:
+            type: array
+            items:
+              $ref: '#/components/schemas/FilterOptionsForSaasDataServices'
+          other_service_providers:
+            type: array
+            items:
+              $ref: '#/components/schemas/FilterOptionsForSaasOtherServices'
+          dimension_cost_centers:
+            type: array
+            items:
+              $ref: '#/components/schemas/FilterOptionsDimensionCostCenterAccount'
+          container_providers:
+            type: array
+            items:
+              $ref: '#/components/schemas/FilterOptionsContainerProviders'
+        type: object
+    DimensionTenantSettings:
+      required:
+      - product
+      properties:
+        product:
+          type: string
+          description: Name of the product
+          example: AppSecOps
+          enum:
+          - AppSecOps
+          - Assessments
+          - CloudOps
+          - FinOps
+          - Product_Admin
+          - SecOps
+          - Self Service
+          - StackOps
+          x-cs-enum-type: ProductEnum
+        mandate_dimension_selection:
+          type: boolean
+          description: Mandate Dimension Selection
+      type: object
+    BatchRequest:
+      properties:
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
+      type: object
+    FilterOptions:
+      properties:
+        tenants:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterOptionsTenant'
+      type: object
+    ConfigurationForCostAnomalyNotification:
+      allOf:
+      - $ref: '#/components/schemas/ConfigurationForNotifications'
+      - properties:
+          enable_realtime_notification:
+            type: boolean
+            description: Specifies whether realtime notification enabled or not.
+          enable_daily_summary_notification:
+            type: boolean
+            description: Specifies whether daily summary notification enabled or not.
+        type: object
+    ChangePasswordResponse:
+      required:
+      - user_id
+      properties:
+        user_id:
+          type: string
+          description: ID of the User to whom the password is changed
+      type: object
+    CreateTenantRequest:
+      required:
+      - account_id
+      - name
+      properties:
+        name:
+          type: string
+          description: 'Name of the new tenant to be created. Tenant Name must be globally unique within CoreStack. If the same tenant name is used in another account, creation wil fail. Tenant Name must start with alphabet and can contain 2-50 characters. Special characters '' " # ? / \ are not allowed.'
+        description:
+          type: string
+          description: Description of the new tenant to be created.
+        metadata:
+          type: object
+          description: metadata is a freeform JSON. It allows to store custom keys and values. It will be useful for storing information about an external applications that will refer to CoreStack tenant.
+        account_id:
+          type: string
+          description: Id of the CoreStack account under which the new tenant to be created.
+      type: object
+    GetTenantResponse:
+      allOf:
+      - $ref: '#/components/schemas/TenantDetails'
+      - required:
+        - account_name
+        - created_by
+        - metadata
+        - updated_at
+        - updated_by
+        properties:
+          metadata:
+            type: object
+            description: metadata is a freeform JSON. It allows to store custom keys and values. It will be useful for storing information about an external applications that will refer to CoreStack tenant
+          created_by:
+            type: string
+            description: Name of the user created this tenant.
+          updated_by:
+            type: string
+            description: Name of the user last updated this tenant.
+          updated_at:
+            type: string
+            description: DateTime in UTC when the tenant was last updated.
+          account_name:
+            type: string
+            description: Name of the CoreStack account under which this tenant resides.
+        type: object
+    FilterOptionsCloudAccount:
+      properties:
+        status:
+          type: string
+          description: Indicates the status of the cloud account in corestack
+          example: not_validated
+          enum:
+          - not_validated
+          - validated
+          - not_onboarded
+          - not_onboarded_validated
+          - active
+          - inactive
+          - retired
+          - deleting
+          x-cs-enum-type: ServiceAccountStatus
+        cloud_account_id:
+          type: string
+          description: ID of the account
+        cloud_account_name:
+          type: string
+          description: Name of the account
+        currency:
+          type: string
+          description: Currency for the account
+          example: AED
+          enum:
+          - AED
+          - ALL
+          - ARS
+          - AUD
+          - BAM
+          - BDT
+          - BGN
+          - BHD
+          - BRL
+          - CAD
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CZK
+          - DKK
+          - EGP
+          - EUR
+          - GBP
+          - HKD
+          - HRK
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - ISK
+          - JPY
+          - KES
+          - KRW
+          - KWD
+          - KZT
+          - MOP
+          - MVR
+          - MXN
+          - MYR
+          - NOK
+          - NZD
+          - OMR
+          - PEN
+          - PHP
+          - PKR
+          - PLN
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - SAR
+          - SEK
+          - SGD
+          - THB
+          - TRY
+          - TWD
+          - USD
+          - VND
+          - ZAR
+          x-cs-enum-type: Currency
+        scope:
+          type: string
+          description: Scope of the Cloud account
+          example: global
+          enum:
+          - global
+          - account
+          - tenant
+          x-cs-enum-type: ServiceAccountScope
+        tags:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+      type: object
+    UserDelegation:
+      allOf:
+      - $ref: '#/components/schemas/UserDelegationRequest'
+      - properties:
+          source_master_account_id:
+            type: string
+            description: User delegation source account master id
+          created_at:
+            type: string
+            format: date-time
+            description: Date and Time of Creation
+          created_by:
+            type: string
+            description: User that created delegation
+          updated_at:
+            type: string
+            format: date-time
+            description: Date and Time of Last Update
+          updated_by:
+            type: string
+            description: User that last updated delegation
+        type: object
+    FilterOptionsForSaasBase:
+      properties:
+        saas_accounts:
+          type: array
+          description: List of accounts for this SaaS Provider
+          items:
+            $ref: '#/components/schemas/FilterOptionsSaasAccount'
+        currencies:
+          type: array
+          description: Currencies
+          items:
+            type: string
+            description: currency of the cost. Example 'currency':'USD'
+            example: AED
+            enum:
+            - AED
+            - ALL
+            - ARS
+            - AUD
+            - BAM
+            - BDT
+            - BGN
+            - BHD
+            - BRL
+            - CAD
+            - CHF
+            - CLP
+            - CNY
+            - COP
+            - CRC
+            - CZK
+            - DKK
+            - EGP
+            - EUR
+            - GBP
+            - HKD
+            - HRK
+            - HUF
+            - IDR
+            - ILS
+            - INR
+            - ISK
+            - JPY
+            - KES
+            - KRW
+            - KWD
+            - KZT
+            - MOP
+            - MVR
+            - MXN
+            - MYR
+            - NOK
+            - NZD
+            - OMR
+            - PEN
+            - PHP
+            - PKR
+            - PLN
+            - QAR
+            - RON
+            - RSD
+            - RUB
+            - SAR
+            - SEK
+            - SGD
+            - THB
+            - TRY
+            - TWD
+            - USD
+            - VND
+            - ZAR
+            x-cs-enum-type: Currency
+      type: object
+    DiskUtilizationSetting:
+      properties:
+        settings:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiskUtilizationWorkspaceConfiguration'
+      type: object
+    NotificationReportEmailDetails:
+      required:
+      - message
+      - to
+      properties:
+        to:
+          type: array
+          description: List of recipient email addresses
+          items:
+            type: string
+        message:
+          type: string
+          description: Email body content
+        subject:
+          type: string
+          description: Email subject line
+      type: object
+    TenantCreateResponse:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Id of the newly created tenant. This will be used for performing tenant level operations such as createPolicy, createScript, onboardCloudAccount and so on.
+      type: object
+    RoleListResponse:
+      required:
+      - roles
+      - total_count
+      properties:
+        total_count:
+          type: integer
+          description: Total number of roles available in the specific tenant
+        roles:
+          type: array
+          description: List of roles available in specific tenant
+          items:
+            $ref: '#/components/schemas/RoleDetails'
+      type: object
+    UserVerificationRequest:
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          description: User email
+      type: object
+    MasterAccountTenantSummary:
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: Tenant id
+        name:
+          type: string
+          description: Name of Tenant
+        status:
+          type: string
+          description: Indicates the status of the Tenant
+          example: active
+          enum:
+          - active
+          - suspended
+          x-cs-enum-type: TenantStatus
+        is_default:
+          type: boolean
+          description: Is this a default tenant
+      type: object
+    UserDelegationSummary:
+      properties:
+        master_account_id:
+          type: string
+          description: User delegation master account id
+        master_account_name:
+          type: string
+          description: User delegation master account name
+        hierarchy_level:
+          type: string
+          description: User delegation hierarchy level
+        tenants:
+          type: array
+          description: Tenants in the delegation
+          items:
+            $ref: '#/components/schemas/UserDelegationTenant'
+        user_groups:
+          type: array
+          description: UserGroups in the delegation
+          items:
+            $ref: '#/components/schemas/UserDelegationUserGroup'
+      type: object
+    FilterOptionsBase:
+      properties:
+        tenant_id:
+          type: string
+        has_active_accounts:
+          type: boolean
+          description: Has active accounts
+          default: false
+        tenant_name:
+          type: string
+        tags:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+      type: object
+    DiskUtilizationWorkspaceConfiguration:
+      properties:
+        workspace_ids:
+          type: array
+          description: Log Analytics Workspace Ids
+          items:
+            type: string
+        service_account_id:
+          type: string
+          description: Service Account Id
+          x-cs-type: ObjectId
+      type: object
+    UserCreateRequest:
+      required:
+      - account_id
+      - email
+      - role_assignment
+      - timezone_id
+      - username
+      properties:
+        username:
+          type: string
+          description: The unique username for the user to be created. This value is expected to be unique across all accounts. Hence it is recommended that you use the email address as the value here. Validations:- Min length - 5, Alphanumeric
+        email:
+          type: string
+          description: Email ID of the user. This wil be unique across all the CoreStack accounts
+        timezone_id:
+          type: string
+          description: ID of the timezone to be set for th user. For a valid list of timezone values to use, please refer https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+        account_id:
+          type: string
+          description: ID of the Account in CoreStack. It will be available in the authToken API response
+        first_name:
+          type: string
+          description: First Name of the user. It can be only alphanumeric
+        last_name:
+          type: string
+          description: Last Name of the user. It can be only alphanumeric
+        role_assignment:
+          type: array
+          description: List of roles assignments for the user. The same user can be assigned different roles in different tenants
+          items:
+            $ref: '#/components/schemas/AddRoleAssignment'
+        is_accesskey_required:
+          type: boolean
+          description: Is Access Key to be generated for this user
+          default: false
+      type: object
+    UserCreateResponse:
+      required:
+      - user_id
+      properties:
+        user_id:
+          type: string
+          description: ID of the newly created User
+      type: object
+    ResendTokenResponse:
+      required:
+      - user_id
+      properties:
+        user_id:
+          type: string
+          description: user id
+      type: object
+    UserDetails:
+      required:
+      - email
+      - role_assignment
+      - status
+      - timezone_id
+      - user_id
+      - username
+      properties:
+        user_id:
+          type: string
+          description: ID of the User. This is an auto generated and unique in the CoreStack system
+        username:
+          type: string
+          description: Username is unique in the CoreStack system. User can use this to login to CoreStack portal in addition to email
+        status:
+          type: string
+          description: Current Status of the user - active or inactive. Inactive user cannot login or use AccessKeys
+        email:
+          type: string
+          description: Email of the User. This is unique in the CoreStack system
+        role_assignment:
+          type: array
+          description: List of roles assignments or the user. The same user can be assigned different roles in different tenants
+          items:
+            $ref: '#/components/schemas/RoleAssignment'
+        timezone_id:
+          type: string
+          description: Id of the Timezone such as Asia/Kolkata, Asia/Dubai and so on
+        source_user_id:
+          type: string
+          description: source user id
+      type: object
+    RoleSummaryBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/RoleSummary'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    IntegratedToolAccount:
+      properties:
+        id:
+          type: string
+          description: Tool Account ID
+          x-cs-type: ObjectId
+      type: object
+    UserDelegationTenant:
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant id
+        tenant_name:
+          type: string
+          description: Tenant name
+        roles:
+          type: array
+          description: Delegation roles
+          items:
+            $ref: '#/components/schemas/UserDelegationRole'
+      type: object
+    TenantUpdateResponse:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Id of the updated tenant. This Id will be used for performing tenant level operations such as createPolicy, createScript, onboardCloudAccount and so on.
+      type: object
+    UserVerificationResponse:
+      properties:
+        user_id:
+          type: string
+          description: User id
+        token:
+          type: string
+        reset_key:
+          type: string
+        status:
+          type: string
+      type: object
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
+      type: object
+    RoleAssignment:
+      required:
+      - roles
+      - tenant_id
+      - tenant_name
+      properties:
+        tenant_name:
+          type: string
+          description: Name of the tenant within the CoreStack account
+        tenant_id:
+          type: string
+          description: ID of the tenant within the CoreStack account
+        roles:
+          type: array
+          description: List of roles for this tenant. User can have multiple roles within a tenant
+          items:
+            $ref: '#/components/schemas/RoleAssignmentRole'
+      type: object
+    UserInviteRequest:
+      required:
+      - email
+      - master_account_id
+      - tenants
+      properties:
+        email:
+          type: string
+          description: Email ID of the user. This wil be unique across all the CoreStack accounts
+        tenants:
+          type: array
+          description: List of roles assignments for the user. The same user can be assigned different roles in different tenants
+          items:
+            $ref: '#/components/schemas/UserInviteTenantRoles'
+        master_account_id:
+          type: string
+          description: ID of the Account Master in CoreStack
+        user_groups:
+          type: array
+          items:
+            type: string
+            description: Ids of the Usergroups
+      type: object
+    UserUpdateRequest:
+      required:
+      - email
+      - timezone_id
+      properties:
+        email:
+          type: string
+          description: Email ID of the user. This wil be unique across all the CoreStack accounts
+        first_name:
+          type: string
+          description: First Name of the user. It can be only alphanumeric
+        last_name:
+          type: string
+          description: Last Name of the user. It can be only alphanumeric
+        timezone_id:
+          type: string
+          description: ID of the timezone to be set for th user. For a valid list of timezone values to use, please refer https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+        role_assignment:
+          type: array
+          description: List of roles assignments for the user. The same user can be assigned different roles in different tenants
+          items:
+            $ref: '#/components/schemas/UpdateRoleAssignment'
+        mobile:
+          type: string
+          description: Mobile number of the user.
+        preferred_language:
+          type: string
+          description: Preferred language of the user.
+          example: en
+          enum:
+          - en
+          - ja
+          x-cs-enum-type: PreferredLanguage
+      type: object
+    UserResponseList:
+      required:
+      - total_count
+      - users
+      properties:
+        total_count:
+          type: integer
+          description: Number of users in CoreStack account.
+        users:
+          type: array
+          description: List all users within a CoreStack account.
+          items:
+            $ref: '#/components/schemas/UserDetails'
+      type: object
+    RoleSummary:
+      properties:
+        name:
+          type: string
+          description: Name of the User
+        role_type:
+          type: string
+          description: User role type
+        category:
+          type: string
+          description: User category
+        tenant_name:
+          type: string
+          description: Tenant name
+      type: object
+    RoleAssignmentRole:
+      required:
+      - id
+      - name
+      properties:
+        name:
+          type: string
+          description: Name of the Role assigned to the user under a tenant
+        id:
+          type: string
+          description: ID of the Role assigned to the user under a tenant
+      type: object
+    FilterOptionsLight:
+      properties:
+        tenants:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterOptionsTenantLight'
+      type: object
+    CostAnomalySetting:
+      properties:
+        category:
+          type: string
+          description: Cost anomaly settings category.
+          example: all
+          enum:
+          - all
+          - product_category
+          - resource_category
+          x-cs-enum-type: CostAnomalySettingCategory
+        category_values:
+          type: array
+          description: List of categories.
+          items:
+            type: string
+        minimum_cost_spend:
+          type: integer
+          description: Minimum Cost Spend
+          default: 0
+        minimum_cost_impact:
+          type: integer
+          description: Minimum Cost Impact
+          default: 0
+        minimum_cost_impact_percentage:
+          type: integer
+          description: Minimum Cost Anomaly Impact Percentage
+          default: 0
+        cost_impact_spend_operator:
+          type: string
+          description: Cost Impact and Spend condition
+          default: and
+          example: and
+          enum:
+          - and
+          - or
+          x-cs-enum-type: CostImpactSpendOperator
+      type: object
+    FilterOptionsIntegratedToolAccount:
+      properties:
+        status:
+          type: string
+          description: Indicates the status of the cloud account in corestack
+          example: not_validated
+          enum:
+          - not_validated
+          - validated
+          - not_onboarded
+          - not_onboarded_validated
+          - active
+          - inactive
+          - retired
+          - deleting
+          x-cs-enum-type: ServiceAccountStatus
+        tool_type:
+          type: string
+          description: Type of the integrated tool
+        tool_account_id:
+          type: string
+          description: ID of the account
+        tool_account_name:
+          type: string
+          description: Name of the account
+        scope:
+          type: string
+          description: Scope of the Integrated Tool account
+          example: global
+          enum:
+          - global
+          - account
+          - tenant
+          x-cs-enum-type: ServiceAccountScope
+      type: object
+    ResetPasswordResponse:
+      properties:
+        status:
+          type: string
+          description: Status of Reset Password API call.
+        message:
+          type: string
+          description: Message of reset Password API call.
+        data:
+          type: string
+          description: Link for Reset Password
+      type: object
+    FilterOptionsContainerProviders:
+      allOf:
+      - $ref: '#/components/schemas/FilterOptionsCloudProvider'
+      - properties: {}
+        type: object
+    CountUserNotificationsResponse:
+      required:
+      - messages
+      - notifications
+      properties:
+        notifications:
+          type: integer
+          description: Number of notifications
+        messages:
+          type: integer
+          description: Number of messages
+      type: object
+    ListTenantResponse:
+      required:
+      - tenants
+      properties:
+        tenants:
+          type: array
+          description: Tenants List.
+          items:
+            $ref: '#/components/schemas/TenantDetails'
+      type: object
+    FilterOptionsDimensionCostCenterAccount:
+      properties:
+        status:
+          type: string
+          description: Indicates the status of the cloud account in corestack
+          example: not_validated
+          enum:
+          - not_validated
+          - validated
+          - not_onboarded
+          - not_onboarded_validated
+          - active
+          - inactive
+          - retired
+          - deleting
+          x-cs-enum-type: ServiceAccountStatus
+        service_account_id:
+          type: string
+          description: ID of the account
+        service_account_name:
+          type: string
+          description: Name of the account
+        currency:
+          type: string
+          description: Currency for the account
+          example: AED
+          enum:
+          - AED
+          - ALL
+          - ARS
+          - AUD
+          - BAM
+          - BDT
+          - BGN
+          - BHD
+          - BRL
+          - CAD
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CZK
+          - DKK
+          - EGP
+          - EUR
+          - GBP
+          - HKD
+          - HRK
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - ISK
+          - JPY
+          - KES
+          - KRW
+          - KWD
+          - KZT
+          - MOP
+          - MVR
+          - MXN
+          - MYR
+          - NOK
+          - NZD
+          - OMR
+          - PEN
+          - PHP
+          - PKR
+          - PLN
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - SAR
+          - SEK
+          - SGD
+          - THB
+          - TRY
+          - TWD
+          - USD
+          - VND
+          - ZAR
+          x-cs-enum-type: Currency
+        scope:
+          type: string
+          description: Scope of the account
+          example: global
+          enum:
+          - global
+          - account
+          - tenant
+          x-cs-enum-type: ServiceAccountScope
+      type: object
+    FilterOptionsCloudProviderLight:
+      properties:
+        cloud:
+          type: string
+          description: Cloud Provider for the accounts
+          example: AWS
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          x-cs-enum-type: CloudServiceName
+        currencies:
+          type: array
+          description: Currencies
+          items:
+            type: string
+            description: currency of the cost. Example 'currency':'USD'
+            example: AED
+            enum:
+            - AED
+            - ALL
+            - ARS
+            - AUD
+            - BAM
+            - BDT
+            - BGN
+            - BHD
+            - BRL
+            - CAD
+            - CHF
+            - CLP
+            - CNY
+            - COP
+            - CRC
+            - CZK
+            - DKK
+            - EGP
+            - EUR
+            - GBP
+            - HKD
+            - HRK
+            - HUF
+            - IDR
+            - ILS
+            - INR
+            - ISK
+            - JPY
+            - KES
+            - KRW
+            - KWD
+            - KZT
+            - MOP
+            - MVR
+            - MXN
+            - MYR
+            - NOK
+            - NZD
+            - OMR
+            - PEN
+            - PHP
+            - PKR
+            - PLN
+            - QAR
+            - RON
+            - RSD
+            - RUB
+            - SAR
+            - SEK
+            - SGD
+            - THB
+            - TRY
+            - TWD
+            - USD
+            - VND
+            - ZAR
+            x-cs-enum-type: Currency
+      type: object
+    UserTenantDetails:
+      required:
+      - email
+      - roles
+      - status
+      - user_id
+      - username
+      properties:
+        user_id:
+          type: string
+          description: ID of the User. This is an auto generated and unique in the CoreStack system
+        username:
+          type: string
+          description: Username is unique in the CoreStack system. User can use this to login to CoreStack portal in addition to email
+        status:
+          type: string
+          description: Current Status of the user - active or inactive. Inactive user cannot login or use AccessKeys
+        email:
+          type: string
+          description: Email of the User. This is unique in the CoreStack system
+        roles:
+          type: array
+          description: List of role assignments for the user. The same user can be assigned with different roles in a tenant
+          items:
+            type: string
+      type: object
+    ProfileResponse:
+      properties:
+        user_id:
+          type: string
+          description: user id
+        source_user_id:
+          type: string
+          description: source user id
+        username:
+          type: string
+          description: username
+        status:
+          type: string
+          description: status
+        email:
+          type: string
+          description: email
+        first_name:
+          type: string
+          description: first name
+        last_name:
+          type: string
+          description: last name
+        timezone:
+          type: string
+          description: timezone
+        mobile:
+          type: string
+          description: mobile number
+        sso_userid:
+          type: string
+          description: sso user id
+        access_key:
+          type: string
+          description: access_key
+        valid_till:
+          type: string
+          description: valid date
+        last_login_time:
+          type: string
+          description: last login time
+        preferred_language:
+          type: string
+          description: Preferred language of the user.
+          example: en
+          enum:
+          - en
+          - ja
+          x-cs-enum-type: PreferredLanguage
+      type: object
+    NameChangeHistoryResponse:
+      required:
+      - name_change_history
+      properties:
+        name_change_history:
+          type: array
+          description: List of tenant name changes in reverse chronological order.
+          items:
+            $ref: '#/components/schemas/NameChangeHistoryEntry'
+      type: object
+    FilterOptionsIntegratedToolProvider:
+      properties:
+        tool:
+          type: string
+          description: Integrated Tool for the account
+          example: Anomaly_Detector
+          enum:
+          - Anomaly_Detector
+          - AppDynamics
+          - App_Insights
+          - ArrowSphere
+          - Azure_Devops
+          - Azure_Security_Graph
+          - Azure_Sentinel
+          - Corestack
+          - DockerHub
+          - ElasticSearch
+          - Freshservice
+          - GitHub
+          - JIRA_DataCenter
+          - JIRA_ServiceDesk
+          - JIRA_ServiceManagement
+          - Jenkins
+          - Logstash
+          - Microsoft_Teams
+          - Nagios
+          - Newrelic
+          - Prometheus
+          - Qualys
+          - RedHat_Satellite
+          - ServiceNow
+          - TCL_ITSM
+          - Tenable_Nessus
+          - ZOHO_ServiceDesk
+          - Zabbix
+          x-cs-enum-type: IntegratedToolName
+        tool_accounts:
+          type: array
+          description: List of accounts for this Integrated Tool Provider
+          items:
+            $ref: '#/components/schemas/FilterOptionsIntegratedToolAccount'
+      type: object
+    FilterOptionsSaasAccount:
+      properties:
+        status:
+          type: string
+          description: Indicates the status of the cloud account in corestack
+          example: not_validated
+          enum:
+          - not_validated
+          - validated
+          - not_onboarded
+          - not_onboarded_validated
+          - active
+          - inactive
+          - retired
+          - deleting
+          x-cs-enum-type: ServiceAccountStatus
+        saas_account_id:
+          type: string
+          description: ID of the Saas account
+        saas_account_name:
+          type: string
+          description: Name of the Saas account
+        scope:
+          type: string
+          description: Scope of the Saas account
+          example: global
+          enum:
+          - global
+          - account
+          - tenant
+          x-cs-enum-type: ServiceAccountScope
+        currency:
+          type: string
+          description: Currency for the SaaS account
+          example: AED
+          enum:
+          - AED
+          - ALL
+          - ARS
+          - AUD
+          - BAM
+          - BDT
+          - BGN
+          - BHD
+          - BRL
+          - CAD
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CZK
+          - DKK
+          - EGP
+          - EUR
+          - GBP
+          - HKD
+          - HRK
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - ISK
+          - JPY
+          - KES
+          - KRW
+          - KWD
+          - KZT
+          - MOP
+          - MVR
+          - MXN
+          - MYR
+          - NOK
+          - NZD
+          - OMR
+          - PEN
+          - PHP
+          - PKR
+          - PLN
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - SAR
+          - SEK
+          - SGD
+          - THB
+          - TRY
+          - TWD
+          - USD
+          - VND
+          - ZAR
+          x-cs-enum-type: Currency
+      type: object
+    AddRoleAssignment:
+      required:
+      - role_names
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: ID of the tenant within the CoreStack account
+        role_names:
+          type: array
+          description: Name of the Roles to be assigned to the user under a tenant
+          items:
+            type: string
+      type: object
+    FilterOptionsForSaasDataServices:
+      allOf:
+      - $ref: '#/components/schemas/FilterOptionsForSaasBase'
+      - properties:
+          saas:
+            type: string
+            description: List of SaaS services supported for the role template
+            example: Databricks
+            enum:
+            - Databricks
+            - Snowflake
+            x-cs-enum-type: SaasDataServiceName
+        type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    UserProfileActiveTenantRequest:
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID to set as active
+      type: object
+    VerifyUserResponse:
+      required:
+      - account_master_name
+      - tenant_names
+      - timezone
+      - user_email
+      - user_id
+      - user_name
+      properties:
+        user_id:
+          type: string
+          description: user id
+        user_name:
+          type: string
+          description: user name
+        user_email:
+          type: string
+          description: user email
+        tenant_names:
+          type: array
+          description: user tenant names
+          items:
+            type: string
+        account_master_name:
+          type: string
+          description: user name
+        timezone:
+          type: string
+          description: Contains information about the timezone set for the user.
+      type: object
+    UserUpdateResponse:
+      required:
+      - user_id
+      properties:
+        user_id:
+          type: string
+          description: ID of the updated User
+      type: object
+    UserInviteResponse:
+      properties:
+        user_id:
+          type: string
+          description: ID of the newly invited User
+      type: object
+    UserSummaryBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/UserSummary'
+      type: object
+    UserDescribeResponse:
+      required:
+      - email
+      - first_name
+      - last_name
+      - role_assignment
+      - status
+      - timezone_id
+      - user_id
+      - username
+      properties:
+        user_id:
+          type: string
+          description: ID of the User. This is an auto generated and unique in the CoreStack system
+        username:
+          type: string
+          description: Username is unique in the CoreStack system. User can use this to login to CoreStack portal in addition to email
+        status:
+          type: string
+          description: Current Status of the user - active or inactive. Inactive user cannot login or use AccessKeys.
+        email:
+          type: string
+          description: Email of the User. This is unique in the CoreStack system.
+        first_name:
+          type: string
+          description: First Name of the user. It can be only alphanumeric.
+        last_name:
+          type: string
+          description: Last Name of the user. It can be only alphanumeric.
+        role_assignment:
+          type: array
+          description: List of roles assignments for the user. The same user can be assigned different roles in different tenants
+          items:
+            $ref: '#/components/schemas/RoleAssignment'
+        timezone_id:
+          type: string
+          description: ID of the Timezone such as Asia/Kolkata, Asia/Dubai and so on
+        created_by:
+          type: string
+          description: Name of the user/admin who created this user
+        created_at:
+          type: string
+          description: DateTime when the user was created
+        updated_by:
+          type: string
+          description: Name of the user/admin last updated this user
+        updated_at:
+          type: string
+          description: DateTime when the user was last updated
+        sso_userid:
+          type: string
+          description: User's Single Sign-on Id, if CoreStack is deployed using SingleSignOn (SSO) model
+        account_id:
+          type: string
+          description: ID of the Account in CoreStack. It will be available in the authToken API response
+        is_accesskey_available:
+          type: boolean
+          description: Is Access Key available for this user.
+        source_user_id:
+          type: string
+          description: source user id
+      type: object
+    PasswordResetRequest:
+      properties:
+        password:
+          type: string
+          description: Set new password
+        reset_key:
+          type: string
+      type: object
+    UserDelegationBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/UserDelegation'
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

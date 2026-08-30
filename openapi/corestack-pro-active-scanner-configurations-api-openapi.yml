@@ -1,0 +1,126 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Pro Active Scanner Configurations API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Pro Active Scanner Configurations
+servers:
+- url: /
+tags:
+- name: Pro Active Scanner Configurations
+  description: Pro Active Scanner Configurations
+paths:
+  /v2/{service_account_id}/scanner_configuration/list_master_rules:
+    parameters:
+    - name: service_account_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScannerRuleList'
+      summary: List the governance scanner rules for a GitHub account
+      description: List the master rules for a scanner configuration
+      operationId: ListGovernanceScannerMasterRules
+      security:
+      - auth_token: []
+      tags:
+      - Pro Active Scanner Configurations
+components:
+  schemas:
+    ScannerRuleList:
+      properties:
+        rules:
+          type: array
+          description: The list of scanner rules.
+          items:
+            $ref: '#/components/schemas/ScannerListResponseDetails'
+      type: object
+    ScannerRuleBase:
+      properties:
+        name:
+          type: string
+          description: name of the rule which are scanned against the resource configurations.
+        description:
+          type: string
+          description: description of the rule which are scanned against the resource configurations.
+        applicable_resource:
+          type: string
+          description: resource type which are scanned against the resource configurations.
+        input_details:
+          type: array
+          description: The input with which the rules are getting scanned.
+          items:
+            type: string
+        sys_id:
+          type: string
+          description: Identity of the rule which are scanned against the resource configurations.
+        attribute_name:
+          type: string
+          description: attribute name for which the values are going to be stored.
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ScannerListResponseDetails:
+      allOf:
+      - $ref: '#/components/schemas/ScannerRuleBase'
+      - properties:
+          is_rule_override:
+            type: boolean
+            description: Boolean to check whether the input has been override in this github account.
+          is_rule_available:
+            type: boolean
+            description: Boolean to check whether the rule is available in this github account.
+          values:
+            type: array
+            description: inputs with which the rules are getting scanned.
+            items:
+              type: string
+          applicable_service:
+            type: string
+            description: resource types which are scanned against the resource configurations.
+        type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

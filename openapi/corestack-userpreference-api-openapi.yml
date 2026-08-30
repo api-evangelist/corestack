@@ -1,0 +1,385 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External User Preference API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Corestack UserPreferences Rest API
+servers:
+- url: /
+tags:
+- name: UserPreference
+  description: Corestack UserPreferences Rest API
+paths:
+  /v1/user_preferences/{user_id}/subkey/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      summary: List all subkeys of user preferences
+      description: Get a list of all the subkeys for user preferences that are viewable to the user under the certain path.
+      operationId: listSubKeys
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: Specify the user ID. This is a unique ID and can be retrieved using the List Users API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - UserPreference
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPreferenceListRequest'
+        required: true
+  /v1/user_preferences/{user_id}/value/delete:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: User Preference Delete
+      description: Delete a user preference
+      operationId: delete
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: Specify the user ID. This is a unique ID and can be retrieved using the List Users API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - UserPreference
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPreferenceDeleteRequest'
+        required: true
+  /v1/user_preferences/{user_id}/value/get:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreference'
+      summary: Get details of the user preference
+      description: Get user preference by id.
+      operationId: get@@@8
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: Specify the user ID. This is a unique ID and can be retrieved using the List Users API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - UserPreference
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPreferenceGetRequest'
+        required: true
+  /v1/user_preferences/{user_id}/value/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferenceListResponse'
+      summary: List all user preferences
+      description: Get a list of all the user preferences that are viewable to the user under the certain path.
+      operationId: listValues
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: Specify the user ID. This is a unique ID and can be retrieved using the List Users API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - UserPreference
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPreferenceListRequest'
+        required: true
+  /v1/user_preferences/{user_id}/value/set:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Created/Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreference'
+      summary: Create a new user preference
+      description: Create/Update a user preference
+      operationId: set
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: Specify the user ID. This is a unique ID and can be retrieved using the List Users API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - UserPreference
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPreference'
+        required: true
+  /v1/user_preferences/{user_id}/value/used:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreference'
+      summary: Update updated_at time for user preference
+      description: Update user preference updated_at time
+      operationId: markAsUsed
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: Specify the user ID. This is a unique ID and can be retrieved using the List Users API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - UserPreference
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPreference'
+        required: true
+components:
+  schemas:
+    UserPreference:
+      properties:
+        path:
+          type: string
+          description: Path is combination of id/key/value of user preference
+        name:
+          type: string
+          description: Name of the user preference
+        value:
+          type: string
+          description: Value of the user preference which is a JSON string
+        created_at:
+          type: string
+          format: date-time
+          description: When the user preference was created
+        updated_at:
+          type: string
+          format: date-time
+          description: When the user preference was updated
+      type: object
+    UserPreferenceGetRequest:
+      properties:
+        path:
+          type: string
+          description: Path of the user preference
+        name:
+          type: string
+          description: Name of the user preference
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    UserPreferenceDeleteRequest:
+      properties:
+        path:
+          type: string
+          description: Path of the user preference
+        name:
+          type: string
+          description: Name of the user preference
+      type: object
+    UserPreferenceListResponse:
+      properties:
+        names:
+          type: object
+          description: Map from name to last update timestamp
+          additionalProperties:
+            type: string
+            format: date-time
+      type: object
+    UserPreferenceListRequest:
+      properties:
+        path:
+          type: string
+          description: Path of the user preference
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

@@ -1,0 +1,1171 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Stacks Marketplace Stack Definition Version API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage Stacks Marketplace Stack Definition Versions
+servers:
+- url: /
+tags:
+- name: StacksMarketplaceStackDefinitionVersion
+  description: Manage Stacks Marketplace Stack Definition Versions
+paths:
+  /v1/stacks-marketplace/stack-definition-versions/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StacksMarketplaceStackDefinitionVersionBatchResponse'
+      summary: Batch Stacks Marketplace Stack Definition Versions
+      description: Batch Stacks Marketplace Stack Definition Versions.
+      operationId: BatchStackDefinitionVersion
+      security:
+      - auth_token: []
+      tags:
+      - StacksMarketplaceStackDefinitionVersion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordIdentityBatchRequest'
+        required: true
+  /v1/stacks-marketplace/stack-definition-versions/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StacksMarketplaceStackDefinitionVersion'
+      summary: Create Stacks Marketplace Stack Definition Version
+      description: Create a new Stacks Marketplace Stack Definition Version.
+      operationId: CreateStackDefinitionVersion
+      security:
+      - auth_token: []
+      tags:
+      - StacksMarketplaceStackDefinitionVersion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StacksMarketplaceStackDefinitionVersion'
+        required: true
+  /v1/stacks-marketplace/stack-definition-versions/item/{stack_definition_version_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StacksMarketplaceStackDefinitionVersion'
+      summary: Get Stacks Marketplace Stack Definition Version
+      description: Get Stacks Marketplace Stack Definition Version.
+      operationId: GetStackDefinitionVersion
+      parameters:
+      - name: stack_definition_version_id
+        in: path
+        required: true
+        description: ID of Stack Definition Version.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - StacksMarketplaceStackDefinitionVersion
+  /v1/stacks-marketplace/stack-definition-versions/item/{stack_definition_version_id}/cost-estimate:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Cost estimation initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StacksMarketplaceEstimateCostResponse'
+      summary: Initiates the cost estimation of a deployment run that could happen on a service account
+      description: Initiate cost estimation of a deployment run that could happen on a service account
+      operationId: InitiateStackVersionDeploymentCostEstimation
+      parameters:
+      - name: stack_definition_version_id
+        in: path
+        required: true
+        description: ID of Stack Definition Version.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - StacksMarketplaceStackDefinitionVersion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StacksMarketplaceEstimateCostRequest'
+        required: true
+  ? /v1/stacks-marketplace/stack-definition-versions/item/{stack_definition_version_id}/cost-estimate/{background_job_id}/status
+  : get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Cost estimation status fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StacksMarketplaceCostEstimation'
+      summary: Gets the cost estimation of a deployment run that could happen on a service account
+      description: Gets Estimated cost of a deployment run that could happen on a service account
+      operationId: GetStackVersionDeploymentCostEstimation
+      parameters:
+      - name: stack_definition_version_id
+        in: path
+        required: true
+        description: ID of Stack Definition Version.
+        schema:
+          type: string
+      - name: background_job_id
+        in: path
+        required: true
+        description: ID of background job which performs the cost estimation of the given Stack Definition Version.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - StacksMarketplaceStackDefinitionVersion
+  /v1/stacks-marketplace/stack-definition-versions/item/{stack_definition_version_id}/make-head:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StacksMarketplaceStackDefinitionVersion'
+      summary: Make Stacks Marketplace Stack Definition Version Head
+      description: Make Stacks Marketplace Stack Definition Version Head.
+      operationId: MakeStackDefinitionVersionHead
+      parameters:
+      - name: stack_definition_version_id
+        in: path
+        required: true
+        description: ID of Stack Definition Version.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - StacksMarketplaceStackDefinitionVersion
+  /v1/stacks-marketplace/stack-definition-versions/item/{stack_definition_version_id}/make-release:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StacksMarketplaceStackDefinitionVersion'
+      summary: Make Stacks Marketplace Stack Definition Version Release
+      description: Make Stacks Marketplace Stack Definition Version Release.
+      operationId: MakeStackDefinitionVersionRelease
+      parameters:
+      - name: stack_definition_version_id
+        in: path
+        required: true
+        description: ID of Stack Definition Version.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - StacksMarketplaceStackDefinitionVersion
+  /v1/stacks-marketplace/stack-definition-versions/item/{stack_definition_version_id}/publishing/{master_account_id}/history:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StacksMarketplaceStackPublishingState'
+      summary: Get Stacks Marketplace Stack Definitions Version Publishing History
+      description: Get Stacks Marketplace Stack Definitions Version publishing log for a Master Account.
+      operationId: GetStackPublishingHistory
+      parameters:
+      - name: stack_definition_version_id
+        in: path
+        required: true
+        description: ID of Stack Definition Version.
+        schema:
+          type: string
+      - name: master_account_id
+        in: path
+        required: true
+        description: ID of the Source Master Account.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - StacksMarketplaceStackDefinitionVersion
+  /v1/stacks-marketplace/stack-definition-versions/item/{stack_definition_version_id}/publishing/{master_account_id}/state:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StacksMarketplaceStackPublishingState'
+      summary: Get State for Stacks Marketplace Stack Definition Version Publishing
+      description: GetState for the stack definition version publishing state.
+      operationId: GetStackPublishingState
+      parameters:
+      - name: stack_definition_version_id
+        in: path
+        required: true
+        description: ID of Stack Definition Version.
+        schema:
+          type: string
+      - name: master_account_id
+        in: path
+        required: true
+        description: ID of the Source Master Account.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - StacksMarketplaceStackDefinitionVersion
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StacksMarketplaceStackPublishingState'
+      summary: Set State for Stacks Marketplace Stack Definition Version Publishing
+      description: SetState for the stack definition version publishing state.
+      operationId: SetStackPublishingState
+      parameters:
+      - name: stack_definition_version_id
+        in: path
+        required: true
+        description: ID of Stack Definition Version.
+        schema:
+          type: string
+      - name: master_account_id
+        in: path
+        required: true
+        description: ID of the Source Master Account.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - StacksMarketplaceStackDefinitionVersion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StacksMarketplaceStackPublishingState'
+        required: true
+  /v1/stacks-marketplace/stack-definition-versions/item/{stack_definition_version_id}/set-state:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StacksMarketplaceStackDefinitionVersion'
+      summary: Set Stacks Marketplace Stack Definition Version State
+      description: Set Stacks Marketplace Stack Definition Version State.
+      operationId: SetStackDefinitionVersionState
+      parameters:
+      - name: stack_definition_version_id
+        in: path
+        required: true
+        description: ID of Stack Definition Version.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - StacksMarketplaceStackDefinitionVersion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StacksMarketplaceStackDefinitionVersionSetStateRequest'
+        required: true
+components:
+  schemas:
+    StacksMarketplaceAdditionalCostComponent:
+      properties:
+        component_type:
+          type: string
+          description: Custom cost component.
+        cost:
+          description: Cost of the additional cost component
+          $ref: '#/components/schemas/CostWithCurrency'
+      type: object
+    StacksMarketplaceEstimateCostRequest:
+      allOf:
+      - $ref: '#/components/schemas/StackMarketPlaceAccountDetailsForStackDeployment'
+      - properties:
+          input_parameters:
+            type: string
+            description: JSON string of input parameters
+          currency:
+            type: string
+            description: currency of the cost. Example 'currency':'USD'
+            example: AED
+            enum:
+            - AED
+            - ALL
+            - ARS
+            - AUD
+            - BAM
+            - BDT
+            - BGN
+            - BHD
+            - BRL
+            - CAD
+            - CHF
+            - CLP
+            - CNY
+            - COP
+            - CRC
+            - CZK
+            - DKK
+            - EGP
+            - EUR
+            - GBP
+            - HKD
+            - HRK
+            - HUF
+            - IDR
+            - ILS
+            - INR
+            - ISK
+            - JPY
+            - KES
+            - KRW
+            - KWD
+            - KZT
+            - MOP
+            - MVR
+            - MXN
+            - MYR
+            - NOK
+            - NZD
+            - OMR
+            - PEN
+            - PHP
+            - PKR
+            - PLN
+            - QAR
+            - RON
+            - RSD
+            - RUB
+            - SAR
+            - SEK
+            - SGD
+            - THB
+            - TRY
+            - TWD
+            - USD
+            - VND
+            - ZAR
+            x-cs-enum-type: Currency
+        type: object
+    StacksMarketplaceStackConfiguration:
+      properties:
+        product_id:
+          type: string
+          description: Product ID
+        plan_skus:
+          type: array
+          description: Plan SKUs
+          items:
+            type: string
+        deployment_details:
+          description: Deployment details
+          $ref: '#/components/schemas/StacksMarketplaceStackDeploymentConfiguration'
+        input_parameters:
+          type: array
+          description: Input parameters
+          items:
+            $ref: '#/components/schemas/StacksMarketplaceStackInputParameter'
+        output_parameters:
+          type: array
+          description: Output parameters
+          items:
+            $ref: '#/components/schemas/StacksMarketplaceStackParameter'
+        notification_templates_success:
+          description: Notification message
+          $ref: '#/components/schemas/StacksMarketplaceStackNotificationTemplate'
+        notification_templates_failure:
+          description: Notification message
+          $ref: '#/components/schemas/StacksMarketplaceStackNotificationTemplate'
+        guess_for_cost_range:
+          description: Customer guessed cost range value of the stack
+          $ref: '#/components/schemas/CustomerGuessForCostRange'
+      type: object
+    StacksMarketplaceBase:
+      properties:
+        sysId:
+          type: string
+          description: ID of the Stack Marketplace component
+        createdOn:
+          type: string
+          format: date-time
+          description: Created datetime for the component
+        updatedOn:
+          type: string
+          format: date-time
+          description: Updated datetime for the component
+        created_by:
+          type: string
+          description: Created by user ID
+        updated_by:
+          type: string
+          description: Updated by user ID
+      type: object
+    StacksMarketplaceStackDefinitionVersionBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/StacksMarketplaceStackDefinitionVersion'
+      type: object
+    CostWithCurrency:
+      properties:
+        cost:
+          type: number
+          description: cost value
+        currency:
+          type: string
+          description: currency of the cost. Example 'currency':'USD'
+          example: AED
+          enum:
+          - AED
+          - ALL
+          - ARS
+          - AUD
+          - BAM
+          - BDT
+          - BGN
+          - BHD
+          - BRL
+          - CAD
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CZK
+          - DKK
+          - EGP
+          - EUR
+          - GBP
+          - HKD
+          - HRK
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - ISK
+          - JPY
+          - KES
+          - KRW
+          - KWD
+          - KZT
+          - MOP
+          - MVR
+          - MXN
+          - MYR
+          - NOK
+          - NZD
+          - OMR
+          - PEN
+          - PHP
+          - PKR
+          - PLN
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - SAR
+          - SEK
+          - SGD
+          - THB
+          - TRY
+          - TWD
+          - USD
+          - VND
+          - ZAR
+          x-cs-enum-type: Currency
+      type: object
+    StacksMarketplaceResourceCostBase:
+      properties:
+        cost:
+          description: Cost of the stack version resource component.
+          $ref: '#/components/schemas/CostWithCurrency'
+      type: object
+    StacksMarketplaceStackInputParameter:
+      allOf:
+      - $ref: '#/components/schemas/StacksMarketplaceStackParameter'
+      - properties:
+          default_value:
+            type: string
+            description: Default value for the parameter, encoded as a JSON string
+        type: object
+    StacksMarketplaceStackPublishingState:
+      properties:
+        updated_on:
+          type: string
+          format: date-time
+          description: Updated datetime for publishing change
+        updated_by:
+          type: string
+          description: Updated by user ID
+        note:
+          type: string
+          description: Note for the publishing status change
+        tenant_ids:
+          type: array
+          description: Target Tenant IDs
+          items:
+            type: string
+            x-cs-type: ObjectId
+        vendor_name:
+          type: string
+          description: Name of the vendor
+        description:
+          type: string
+          description: Description of the vendor
+        status:
+          type: string
+          description: Status of the stack version
+          example: InReview
+          enum:
+          - InReview
+          - Approved
+          - Rejected
+          - Revoked
+          x-cs-enum-type: StacksMarketplaceStackPublishingStatus
+        auto_publish_settings:
+          type: string
+          description: Auto-Publish settings
+          example: NoAutoPublish
+          enum:
+          - NoAutoPublish
+          - AutoPublishToDirectChildren
+          - AutoPublishToAll
+          x-cs-enum-type: StackMarketplaceAutoPublishSettings
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    StacksMarketplaceEstimateCostResponse:
+      properties:
+        background_job_id:
+          type: string
+          description: ID of the background job which performs cost estimation of resource
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    StackMarketPlaceAccountDetailsForStackDeployment:
+      properties:
+        service_account_id:
+          type: string
+          description: Service account ID
+          x-cs-type: ObjectId
+        location:
+          description: Optional location context for the stack deployment
+          $ref: '#/components/schemas/LocationDetailsBase'
+        resource_group:
+          description: Optional resource group context for the stack deployment
+          $ref: '#/components/schemas/ResourceGroupDetailsBase'
+        compartment:
+          description: Optional compartment context for the stack deployment
+          $ref: '#/components/schemas/CompartmentDetailsBase'
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    StacksMarketplaceStackDeploymentConfiguration:
+      properties:
+        deployment_type:
+          type: string
+          description: Deployment type of the resource
+          example: Template
+          enum:
+          - Template
+          - Blueprint
+          x-cs-enum-type: StacksMarketplaceStackDeploymentType
+        deployment_model_id:
+          type: string
+          description: Deployment model ID
+      type: object
+    ResourceGroupDetailsBase:
+      required:
+      - type
+      properties:
+        resource_group_id:
+          type: string
+          description: Unique Id
+        name:
+          type: string
+          description: Display Name
+        description:
+          type: string
+          description: Description
+      discriminator:
+        propertyName: type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ResourceGroupDetailsForAws
+        subtype_name: ResourceGroupDetailsForAws
+      - subtype_model: ResourceGroupDetailsForAzure
+        subtype_name: ResourceGroupDetailsForAzure
+    StacksMarketplaceResourceComponentCost:
+      allOf:
+      - $ref: '#/components/schemas/StacksMarketplaceResourceCostBase'
+      - properties:
+          name:
+            type: string
+            description: Name of the cost components
+          unit:
+            type: string
+            description: Units used for calculation of cost
+          quantity:
+            type: integer
+            description: Quantity of the resource component
+          usage_based:
+            type: boolean
+            description: Whether the component is usage based or not.
+          price_not_found:
+            type: boolean
+            description: Whether the component price is not found or not.
+        type: object
+    StacksMarketplaceStackParameter:
+      properties:
+        template_parameter:
+          type: string
+          description: Template parameter name
+        display_name:
+          type: string
+          description: Stack parameter display name
+        description:
+          type: string
+          description: Stack parameter description
+        hide_parameter:
+          type: boolean
+          description: Whether to hide parameter from deployment UI
+      type: object
+    StacksMarketplaceCostEstimation:
+      properties:
+        job_status:
+          type: string
+          description: Status of Background Job
+          example: Ready
+          enum:
+          - Ready
+          - Pending
+          - Waiting
+          - Failed
+          - Completed
+          - Cancelled
+          x-cs-enum-type: BackgroundJobStatus
+        breakdown:
+          type: array
+          description: Cost breakdown of all resources to be provisioned by the template.
+          items:
+            $ref: '#/components/schemas/StacksMarketplaceResourceCost'
+      type: object
+    StacksMarketplaceResourceCost:
+      allOf:
+      - $ref: '#/components/schemas/StacksMarketplaceResourceCostBase'
+      - properties:
+          name:
+            type: string
+            description: Name of the resource
+          resource_type:
+            type: string
+            description: Resource type used by the template engine
+          count:
+            type: integer
+            description: Number of resources which are having similar specification
+          components:
+            type: array
+            description: Costs of the components that make up the resource.
+            items:
+              $ref: '#/components/schemas/StacksMarketplaceResourceComponentCost'
+          is_billable:
+            type: boolean
+            description: Whether the resource is billable or not.
+          is_cost_estimation_supported:
+            type: boolean
+            description: Whether the resource is supported for cost estimation or not.
+          is_supported_cloud_resource:
+            type: boolean
+            description: Whether the resource is part of Corestack supported Hyperscaler or not.
+        type: object
+    CustomerGuessForCostRange:
+      properties:
+        maximum:
+          description: Maximum cost of the stack version
+          $ref: '#/components/schemas/CostWithCurrency'
+        minimum:
+          description: Minimum cost of the stack version
+          $ref: '#/components/schemas/CostWithCurrency'
+        extra_costs:
+          type: array
+          description: Additional costs of a stack version
+          items:
+            $ref: '#/components/schemas/StacksMarketplaceAdditionalCostComponent'
+      type: object
+    StacksMarketplaceStackDefinitionVersion:
+      allOf:
+      - $ref: '#/components/schemas/StacksMarketplaceBase'
+      - properties:
+          version:
+            type: integer
+            description: Version number
+          definition:
+            $ref: '#/components/schemas/RecordIdentity'
+          details:
+            $ref: '#/components/schemas/StacksMarketplaceStackConfiguration'
+          predecessor:
+            $ref: '#/components/schemas/RecordIdentity'
+          list_version:
+            type: string
+            description: List version
+          change_summary:
+            type: string
+            description: Change summary
+        type: object
+    CompartmentDetailsBase:
+      required:
+      - type
+      properties:
+        compartment_id:
+          type: string
+          description: Unique Id
+        name:
+          type: string
+          description: Display Name
+        description:
+          type: string
+          description: Description
+        parent_id:
+          type: string
+          description: Parent Compartment Id
+      discriminator:
+        propertyName: type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: CompartmentDetailsForOCI
+        subtype_name: CompartmentDetailsForOCI
+    StacksMarketplaceStackNotificationTemplate:
+      properties:
+        message:
+          type: string
+          description: Notification message
+        email_ids:
+          type: array
+          description: Email IDs
+          items:
+            type: string
+      type: object
+    LocationDetailsBase:
+      required:
+      - type
+      properties:
+        location_id:
+          type: string
+          description: Unique Id
+        name:
+          type: string
+          description: Display Name
+        description:
+          type: string
+          description: Description
+      discriminator:
+        propertyName: type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: LocationDetailsForAws
+        subtype_name: LocationDetailsForAws
+      - subtype_model: LocationDetailsForAzure
+        subtype_name: LocationDetailsForAzure
+      - subtype_model: LocationDetailsForGcp
+        subtype_name: LocationDetailsForGcp
+      - subtype_model: LocationDetailsForOci
+        subtype_name: LocationDetailsForOci
+      - subtype_model: LocationDetailsForOpenstack
+        subtype_name: LocationDetailsForOpenstack
+    StacksMarketplaceStackDefinitionVersionSetStateRequest:
+      properties:
+        list_version:
+          type: string
+          description: List version
+        change_summary:
+          type: string
+          description: Change summary
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

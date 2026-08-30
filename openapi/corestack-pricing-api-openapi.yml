@@ -1,0 +1,180 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Pricing API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Cloud SKU Pricing API
+servers:
+- url: /
+tags:
+- name: Pricing
+  description: Cloud SKU Pricing API
+paths:
+  /v2/sku_unit_price:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingResponse'
+      summary: Get cloud SKU unit pricing from MongoDB
+      description: 'Retrieve cloud SKU unit pricing from MongoDB. Provide service, sku_name, and region to look up pricing. Use attributes for service-specific filters: os (EC2), db_engine / deployment (RDS), cache_engine (ElastiCache). EC2 match_confidence is "approximate" — OS is matched but AMI-level variants are not disambiguated. For RESERVED pricing, omit payment_option to return all three upfront variants (NO/PARTIAL/ALL_UPFRONT) in the rates array.'
+      operationId: PostSkuUnitPrice
+      security:
+      - auth_token: []
+      tags:
+      - Pricing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkuUnitPriceRequest'
+        required: true
+components:
+  schemas:
+    PricingRateItem:
+      properties:
+        pricing_type:
+          type: string
+          description: ON_DEMAND | RESERVED | SAVINGS_PLAN | SPOT
+        payment_option:
+          type: string
+          description: NO_UPFRONT | PARTIAL_UPFRONT | ALL_UPFRONT — RESERVED only
+        commitment_term:
+          type: string
+          description: 1yr | 3yr — RESERVED only
+        price:
+          type: string
+          description: Hourly rate as a string Decimal (e.g. "0.1920000000")
+        upfront_cost:
+          type: string
+          description: One-time upfront fee for RESERVED pricing
+        on_demand_rate:
+          type: string
+          description: On-demand baseline rate — populated on RESERVED docs after backfill
+        effective_date:
+          type: string
+          description: ISO 8601 date the rate became effective
+        description:
+          type: string
+          description: Human-readable rate description from AWS
+      type: object
+    PricingResponse:
+      properties:
+        sku_id:
+          type: string
+          description: Canonical SKU identifier e.g. AWS#EC2#us-east-1#m5.xlarge
+        provider:
+          type: string
+          description: aws | azure
+        servicecode:
+          type: string
+          description: AWS service code e.g. AmazonEC2, AmazonRDS
+        sku_name:
+          type: string
+          description: Instance / node type e.g. m5.xlarge
+        region:
+          type: string
+          description: Region code e.g. us-east-1
+        location:
+          type: string
+          description: Human-readable location e.g. US East (N. Virginia)
+        currency:
+          type: string
+          description: Always USD
+        unit:
+          type: string
+          description: hours | gb-mo | requests
+        data_source:
+          type: string
+          description: mongodb
+        as_of:
+          type: string
+          description: ISO 8601 timestamp of the cached record
+        match_confidence:
+          type: string
+          description: '"approximate" for EC2, "exact" for all other services'
+        rates:
+          type: array
+          description: One entry per pricing dimension
+          items:
+            $ref: '#/components/schemas/PricingRateItem'
+        attributes:
+          type: object
+          description: 'Service-specific attributes: vcpu, memory_gib, database_engine, etc.'
+      type: object
+    SkuUnitPriceRequest:
+      required:
+      - service
+      - sku_name
+      properties:
+        cloud_provider:
+          type: string
+          description: Cloud provider. aws | azure
+          default: aws
+        service:
+          type: string
+          description: Service name. ec2 | rds | eks | elasticache | redshift
+        sku_name:
+          type: string
+          description: Instance or node type e.g. m5.xlarge, db.m6i.32xlarge
+        region:
+          type: string
+          description: AWS region code e.g. us-east-1
+          default: us-east-1
+        pricing_type:
+          type: string
+          description: ON_DEMAND | RESERVED
+          default: ON_DEMAND
+        commitment_term:
+          type: string
+          description: 1yr | 3yr — RESERVED only
+        payment_option:
+          type: string
+          description: NO_UPFRONT | PARTIAL_UPFRONT | ALL_UPFRONT — RESERVED only
+        attributes:
+          type: object
+          description: 'Service-specific filter fields: os, db_engine, deployment, cache_engine'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

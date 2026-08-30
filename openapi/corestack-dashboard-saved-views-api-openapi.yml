@@ -1,0 +1,374 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Dashboard Saved Views API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage saved views for executive dashboards (deep-linkable)
+servers:
+- url: /
+tags:
+- name: Dashboard Saved Views
+  description: Manage saved views for executive dashboards (deep-linkable)
+paths:
+  /v1/executive_dashboard/saved_views:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedViewDetail'
+      summary: Create a saved view
+      description: Create a saved view (dashboard_id is optional and goes in the body)
+      operationId: create-saved-view
+      security:
+      - auth_token: []
+      tags:
+      - Dashboard Saved Views
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SavedViewCreateRequest'
+        required: true
+  /v1/executive_dashboard/saved_views/item/{view_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete a saved view
+      description: Soft-delete a saved view
+      operationId: delete-saved-view
+      parameters:
+      - name: view_id
+        in: path
+        required: true
+        description: Unique identifier of the saved view.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Dashboard Saved Views
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedViewDetail'
+      summary: Get a saved view by identifier
+      description: Resolve a saved view by its identifier
+      operationId: get-saved-view
+      parameters:
+      - name: view_id
+        in: path
+        required: true
+        description: Unique identifier of the saved view.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Dashboard Saved Views
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedViewDetail'
+      summary: Update a saved view
+      description: Update an existing saved view
+      operationId: update-saved-view
+      parameters:
+      - name: view_id
+        in: path
+        required: true
+        description: Unique identifier of the saved view.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Dashboard Saved Views
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SavedViewUpdateRequest'
+        required: true
+  /v1/executive_dashboard/saved_views/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedViewListResponse'
+      summary: List saved views
+      description: List saved views with optional filters (POST with body so dashboard_id is optional)
+      operationId: list-saved-views
+      security:
+      - auth_token: []
+      tags:
+      - Dashboard Saved Views
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SavedViewListRequest'
+        required: true
+components:
+  schemas:
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    SavedViewCreateRequest:
+      allOf:
+      - $ref: '#/components/schemas/SavedViewBase'
+      - properties: {}
+        type: object
+    SavedViewListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            $ref: '#/components/schemas/SavedViewDetail'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    SavedViewUpdateRequest:
+      allOf:
+      - $ref: '#/components/schemas/SavedViewBase'
+      - properties: {}
+        type: object
+    SavedViewListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/SavedViewFilter'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ViewState:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: DashboardViewState
+        subtype_name: DashboardViewState
+    SavedViewBase:
+      required:
+      - module
+      - name
+      - view
+      properties:
+        name:
+          type: string
+          description: View label
+        module:
+          type: string
+          example: finops_dashboard
+          enum:
+          - finops_dashboard
+          - billing_inventory
+          - next_gen_reports
+          - cost_anomaly
+          x-cs-enum-type: SavedViewModule
+        dashboard_id:
+          type: string
+          description: Dashboard this view belongs to
+        visibility:
+          type: string
+          example: shared
+          enum:
+          - shared
+          - private
+          x-cs-enum-type: SavedViewVisibility
+        roles:
+          type: array
+          description: Role-based access metadata, e.g. ['admin', 'finops_viewer']
+          items:
+            type: string
+        view:
+          description: Polymorphic view payload (DashboardViewState)
+          $ref: '#/components/schemas/ViewState'
+      type: object
+    SavedViewDetail:
+      allOf:
+      - $ref: '#/components/schemas/SavedViewBase'
+      - properties:
+          id:
+            type: string
+            description: Unique identifier of the saved view
+        type: object
+    SavedViewFilter:
+      properties:
+        dashboard_id:
+          type: string
+          description: Optional dashboard filter
+        module:
+          type: string
+          example: finops_dashboard
+          enum:
+          - finops_dashboard
+          - billing_inventory
+          - next_gen_reports
+          - cost_anomaly
+          x-cs-enum-type: SavedViewModule
+        visibility:
+          type: string
+          example: shared
+          enum:
+          - shared
+          - private
+          x-cs-enum-type: SavedViewVisibility
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

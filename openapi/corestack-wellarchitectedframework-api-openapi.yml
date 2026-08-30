@@ -1,0 +1,1104 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Well Architected Framework API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Corestack Well Architecture Framework Rest API
+servers:
+- url: /
+tags:
+- name: WellArchitectedFramework
+  description: Corestack Well Architecture Framework Rest API
+paths:
+  /v1/waf-frameworks/{tenant_id}/best_practice/delete:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Framework Best Practice Delete
+      description: Delete a Well-Architected Framework Best practice
+      operationId: best-practice-delete
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WellArchitectedFrameworkBestPractice'
+        required: true
+  /v1/waf-frameworks/{tenant_id}/framework/{framework_id}/sync:
+    parameters:
+    - name: framework_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WellArchitectedFramework'
+      summary: Sync Framework from AWS or To AWS
+      description: Sync Well-Architected Framework from CS or from AWS
+      operationId: framework-sync
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+  /v1/waf-frameworks/{tenant_id}/pillar/delete:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Framework Pillar Delete
+      description: Delete a Well-Architected Framework Pillar
+      operationId: pillar-delete
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WellArchitectedFrameworkPillarRequest'
+        required: true
+  /v1/waf-frameworks/{tenant_id}/question/delete:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Framework Question Delete
+      description: Delete a Well-Architected Framework Question
+      operationId: question-delete
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WellArchitectedFrameworkQuestion'
+        required: true
+  /v1/well-architected-framework/{tenant_id}/best-practice/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WellArchitectedFrameworkBestPractice'
+      summary: Batch Best Practices
+      description: Get a batch of best practices for tenant specified
+      operationId: best-practice-batch
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordIdentityBatchRequest'
+        required: true
+  /v1/well-architected-framework/{tenant_id}/best-practice/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecordIdentity'
+      summary: Best practices Create
+      description: Add Best Practices to a Well-Architected Framework Question
+      operationId: best-practice-create
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WellArchitectedFrameworkBestPracticeRequest'
+        required: true
+  /v1/well-architected-framework/{tenant_id}/best-practice/update:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WellArchitectedFrameworkBestPractice'
+      summary: Best practice Update
+      description: Update Best Practice for a Well-Architected Framework Question
+      operationId: best-practice-update
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WellArchitectedFrameworkBestPractice'
+        required: true
+  /v1/well-architected-framework/{tenant_id}/framework/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WellArchitectedFramework'
+      summary: Batch Frameworks
+      description: Get a batch of Frameworks
+      operationId: framework-batch
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordIdentityBatchRequest'
+        required: true
+  /v1/well-architected-framework/{tenant_id}/framework/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WellArchitectedFramework'
+      summary: Framework Create
+      description: Create a Well-Architected Framework
+      operationId: framework-create
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WellArchitectedFramework'
+        required: true
+  /v1/well-architected-framework/{tenant_id}/framework/list:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecordIdentity'
+      summary: List Frameworks
+      description: List all Frameworks for the specified tenant
+      operationId: framework-list
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+  /v1/well-architected-framework/{tenant_id}/framework/update:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WellArchitectedFramework'
+      summary: Framework Update
+      description: Update a Well-Architected Framework
+      operationId: framework-update
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WellArchitectedFramework'
+        required: true
+  /v1/well-architected-framework/{tenant_id}/framework/{framework_id}/delete:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Framework Delete
+      description: Delete a Well-Architected Framework
+      operationId: framework-delete
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: framework_id
+        in: path
+        required: true
+        description: ID of Custom Framework. This can be retrieved using the List Frameworks API
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+  /v1/well-architected-framework/{tenant_id}/pillar/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecordIdentity'
+      summary: Add pillars to a framework
+      description: Add pillars to a Well-Architected Framework
+      operationId: pillars-create
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WellArchitectedFrameworkPillarRequest'
+        required: true
+  /v1/well-architected-framework/{tenant_id}/pillar/update:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WellArchitectedFrameworkPillar'
+      summary: Pillar update
+      description: Update a pillar of a Well-Architected Framework
+      operationId: pillar-update
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WellArchitectedFrameworkPillar'
+        required: true
+  /v1/well-architected-framework/{tenant_id}/question/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WellArchitectedFrameworkQuestion'
+      summary: Batch Questions
+      description: Get a batch of questions for tenant specified
+      operationId: question-batch@@@2
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordIdentityBatchRequest'
+        required: true
+  /v1/well-architected-framework/{tenant_id}/question/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecordIdentity'
+      summary: Create Questions for a pillar of a framework
+      description: Add Questions to a Well-Architected Framework
+      operationId: question-create
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WellArchitectedFrameworkQuestionRequest'
+        required: true
+  /v1/well-architected-framework/{tenant_id}/question/update:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WellArchitectedFrameworkQuestion'
+      summary: Question Update
+      description: Update a Question in a  Well-Architected Framework
+      operationId: questions-update
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - WellArchitectedFramework
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WellArchitectedFrameworkQuestion'
+        required: true
+components:
+  schemas:
+    WellArchitectedFrameworkCustomLens:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: WellArchitectedFrameworkCustomLensForAws
+        subtype_name: WellArchitectedFrameworkCustomLensForAws
+    WellArchitectedFramework:
+      properties:
+        created_on:
+          type: string
+          format: date-time
+          description: Framework created on
+        created_by:
+          type: string
+          description: Username who created the framework. null for Marketplace frameworks.
+        updated_on:
+          type: string
+          format: date-time
+          description: Framework updated on
+        updated_by:
+          type: string
+          description: Username who updated the framework. null for Marketplace frameworks.
+        framework_id:
+          type: string
+          description: ID of Framework
+        hyperscaler_framework_id:
+          type: string
+          description: ID of framework
+        framework_type:
+          type: string
+          description: Type of the Framework
+          example: Custom
+          enum:
+          - Custom
+          - Marketplace
+          x-cs-enum-type: WellArchitectedFrameworkType
+        account_id:
+          type: string
+          description: Master account id associated with the framework. null for Marketplace frameworks
+        tenant_id:
+          type: string
+          description: Tenant associated with the framework. null for Marketplace frameworks
+        name:
+          type: string
+          description: Name of the Framework
+        description:
+          type: string
+          description: Description for Framework
+        version:
+          type: string
+          description: Version of the Framework
+        valid_service_types:
+          type: array
+          description: Valid Service Types
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        logo:
+          type: string
+          description: Logo of Framework
+        status:
+          type: string
+          description: Framework status
+          example: Draft
+          enum:
+          - Draft
+          - Active
+          - Inactive
+          x-cs-enum-type: WellArchitectedFrameworkStatus
+        pillars:
+          type: array
+          description: The Pillars in the Framework
+          items:
+            $ref: '#/components/schemas/WellArchitectedFrameworkPillar'
+        sync_with_hyperscaler:
+          $ref: '#/components/schemas/WellArchitectedFrameworkCustomLens'
+        handle_none_of_the_above:
+          type: string
+          description: 'Defines the framework''s handling of the None of the above option, with permissible values: No or SeparateBP'
+          example: 'No'
+          enum:
+          - 'No'
+          - SeparateBP
+          x-cs-enum-type: WellArchitectedFrameworkHandleNoneOfTheAbove
+      type: object
+    WellArchitectedFrameworkPillar:
+      properties:
+        framework_id:
+          type: string
+          description: Framework id for the Pillar
+        pillar_id:
+          type: string
+          description: Unique Id of the Pillar
+        hyperscaler_pillar_id:
+          type: string
+          description: Unique Id of pillar
+        pillar:
+          type: string
+          description: Name of Pillar for the Framework
+        description:
+          type: string
+          description: Description of the Pillar
+        icon:
+          type: string
+          description: Icon for the pillar
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    WellArchitectedFrameworkQuestionRequest:
+      properties:
+        questions:
+          type: array
+          description: Questions to process
+          items:
+            $ref: '#/components/schemas/WellArchitectedFrameworkQuestion'
+      type: object
+    WellArchitectedFrameworkBestPracticeRequest:
+      properties:
+        best_practices:
+          type: array
+          description: Best Practices to process
+          items:
+            $ref: '#/components/schemas/WellArchitectedFrameworkBestPractice'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    WellArchitectedFrameworkQuestion:
+      properties:
+        created_on:
+          type: string
+          format: date-time
+          description: Well Architected Question created on
+        updated_on:
+          type: string
+          format: date-time
+          description: Well Architected Question updated on
+        framework_id:
+          type: string
+          description: ID of the framework associated with the question
+        pillar_id:
+          type: string
+          description: ID of the pillar associated with the question
+        question_id:
+          type: string
+          description: ID for the particular question
+        hyperscaler_question_id:
+          type: string
+          description: Id of question
+        question:
+          type: string
+          description: Question
+        description:
+          type: string
+          description: Description for the question
+        best_practices:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    WellArchitectedFrameworkPillarRequest:
+      properties:
+        pillars:
+          type: array
+          description: Pillars to process
+          items:
+            $ref: '#/components/schemas/WellArchitectedFrameworkPillar'
+      type: object
+    WellArchitectedFrameworkBestPractice:
+      properties:
+        framework_id:
+          type: string
+          description: ID of the framework associated with the best practice
+        pillar_id:
+          type: string
+          description: ID of the pillar associated with the best practice
+        question_id:
+          type: string
+          description: ID for the question associated with the best practice
+        best_practice_id:
+          type: string
+          description: ID for the best practice
+        hyperscaler_best_practice_id:
+          type: string
+          description: ID of best practice
+        best_practice:
+          type: string
+          description: Best practice at question level
+        description:
+          type: string
+          description: Statement of the best practice
+        recommendation:
+          type: string
+          description: Statement of the best practice
+        nature:
+          type: string
+          description: Nature of the best practice
+          example: Automated
+          enum:
+          - Automated
+          - Manual
+          x-cs-enum-type: WellArchitectedFrameworkBestPracticeNature
+        risk:
+          type: string
+          description: Risk of the best practice
+          example: Low
+          enum:
+          - Low
+          - Medium
+          - High
+          - None
+          x-cs-enum-type: WellArchitectedFrameworkRisk
+        policy_uris:
+          type: array
+          description: URIs of the Policies associated with this best practice
+          items:
+            type: string
+        is_automatable:
+          type: boolean
+          description: Flag to indicate whether the best practice is automatable
+        is_none_of_the_above:
+          type: boolean
+          description: Flag to indicate whether the best practice is None of the above
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

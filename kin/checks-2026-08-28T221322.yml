@@ -2,25 +2,40 @@
 kin_checks:
   slug: corestack
   schema_version: 0.15.1
-  scored_at: '2026-08-27'
-  run_ts: 2026-08-27T140727
+  scored_at: '2026-08-28'
+  run_ts: 2026-08-28T221322
   note: Actionable checks only (missed + partial). earned/na are every other check
     in rubric/scoring-0.15.1.yml; counts below let you verify that.
   counts:
     total: 130
-    earned: 39
-    partial: 13
-    missed: 39
-    na: 39
+    earned: 49
+    partial: 16
+    missed: 44
+    na: 21
   checks:
-  - id: multiple_apis
+  - id: maintainer_present
     status: missed
   - id: apis_json_self_hosted
     status: missed
+  - id: openapi_3_2
+    status: missed
+    detail: 0 of 84 openapi documents pass
+  - id: openapi_3_1
+    status: missed
+    detail: 0 of 84 openapi documents pass
+  - id: openapi_3_0
+    status: missed
+    detail: 0 of 84 openapi documents pass
+  - id: info_complete
+    status: missed
+    detail: 0 of 84 openapi documents pass
   - id: servers_resolvable
     status: missed
   - id: examples_present
     status: missed
+  - id: webhooks_or_callbacks
+    status: missed
+    detail: 0 of 84 openapi documents pass
   - id: json_schema_present
     status: missed
   - id: json_schema_per_resource
@@ -91,6 +106,22 @@ kin_checks:
     status: missed
   - id: agentic_commerce
     status: missed
+  - id: operations_summary_coverage
+    status: partial
+    earned: 5.79
+    detail: 81 of 84 openapi documents pass
+  - id: operations_description_coverage
+    status: partial
+    earned: 5.86
+    detail: 82 of 84 openapi documents pass
+  - id: response_coverage
+    status: partial
+    earned: 4.94
+    detail: 83 of 84 openapi documents pass
+  - id: components_reuse
+    status: partial
+    earned: 2.79
+    detail: 78 of 84 openapi documents pass
   - id: lifecycle_documented
     status: partial
     earned: 0.04
@@ -128,10 +159,6 @@ kin_checks:
     status: partial
     earned: 9.0
     detail: 'grade: served'
-  - id: error_semantics
-    status: partial
-    earned: 4.0
-    detail: 'grade: documented'
   - id: rate_limit_signal
     status: partial
     earned: 3.5

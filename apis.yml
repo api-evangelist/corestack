@@ -34,18 +34,18 @@ specificationVersion: '0.23'
 created: '2026-08-11'
 modified: '2026-08-11'
 tags:
-- cloud-governance
-- finops
-- cloud-cost-management
-- cloud-security-posture-management
+- Cloud Governance
+- FinOps
+- Cloud Cost Management
+- Cloud Security Posture Management
 - Compliance
-- multi-cloud
-- cnapp
-- policy-as-code
+- Multi-Cloud
+- CNAPP
+- Policy as Code
 - cloudops
 - MCP
 - agent-native
-- kubernetes
+- Kubernetes
 tags_raw:
 - cloud-governance
 - finops
@@ -73,9 +73,9 @@ apis:
   tags:
   - MCP
   - agent-native
-  - finops
-  - cnapp
-  - cloud-governance
+  - FinOps
+  - CNAPP
+  - Cloud Governance
   tags_raw:
   - mcp
   - agent-native
@@ -765,7 +765,7 @@ apis:
   humanURL: https://docs.corestack.io/reference
   baseURL: https://api.corestack.io/
   tags:
-  - CUSTOM_TAGS
+  - Custom Tags
   tags_raw:
   - Custom Tags
   properties:

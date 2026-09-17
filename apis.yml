@@ -175,30 +175,6 @@ apis:
     url: errors/corestack-problem-types.yml
   - type: DataModel
     url: data-model/corestack-data-model.yml
-- aid: corestack:corestack-aigovernance-api
-  name: CoreStack AI Governance API
-  description: Manage AI Governance Metrics
-  humanURL: https://docs.corestack.io/reference
-  baseURL: https://api.corestack.io/
-  tags:
-  - AI Governance
-  tags_raw:
-  - AIGovernance
-  properties:
-  - type: OpenAPI
-    url: openapi/corestack-aigovernance-api-openapi.yml
-  - type: Documentation
-    url: https://docs.corestack.io/docs/corestack-api-modules
-  - type: APIReference
-    url: https://docs.corestack.io/reference
-  - type: Authentication
-    url: authentication/corestack-authentication.yml
-  - type: Conventions
-    url: conventions/corestack-conventions.yml
-  - type: ErrorCatalog
-    url: errors/corestack-problem-types.yml
-  - type: DataModel
-    url: data-model/corestack-data-model.yml
 - aid: corestack:corestack-application-health-api
   name: CoreStack Application Health API
   description: Application Health
@@ -275,30 +251,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/corestack-attachments-api-openapi.yml
-  - type: Documentation
-    url: https://docs.corestack.io/docs/corestack-api-modules
-  - type: APIReference
-    url: https://docs.corestack.io/reference
-  - type: Authentication
-    url: authentication/corestack-authentication.yml
-  - type: Conventions
-    url: conventions/corestack-conventions.yml
-  - type: ErrorCatalog
-    url: errors/corestack-problem-types.yml
-  - type: DataModel
-    url: data-model/corestack-data-model.yml
-- aid: corestack:corestack-auditlog-api
-  name: CoreStack Audit Log API
-  description: Manage Audit Log
-  humanURL: https://docs.corestack.io/reference
-  baseURL: https://api.corestack.io/
-  tags:
-  - Audit Log
-  tags_raw:
-  - AuditLog
-  properties:
-  - type: OpenAPI
-    url: openapi/corestack-auditlog-api-openapi.yml
   - type: Documentation
     url: https://docs.corestack.io/docs/corestack-api-modules
   - type: APIReference
@@ -1041,28 +993,6 @@ apis:
     url: errors/corestack-problem-types.yml
   - type: DataModel
     url: data-model/corestack-data-model.yml
-- aid: corestack:corestack-masteraccount-api
-  name: CoreStack Master Account API
-  description: Manage Master Account
-  humanURL: https://docs.corestack.io/reference
-  baseURL: https://api.corestack.io/
-  tags:
-  - MasterAccount
-  properties:
-  - type: OpenAPI
-    url: openapi/corestack-masteraccount-api-openapi.yml
-  - type: Documentation
-    url: https://docs.corestack.io/docs/corestack-api-modules
-  - type: APIReference
-    url: https://docs.corestack.io/reference
-  - type: Authentication
-    url: authentication/corestack-authentication.yml
-  - type: Conventions
-    url: conventions/corestack-conventions.yml
-  - type: ErrorCatalog
-    url: errors/corestack-problem-types.yml
-  - type: DataModel
-    url: data-model/corestack-data-model.yml
 - aid: corestack:corestack-masteraccount-billing-api
   name: CoreStack MasterAccount Billing API
   description: Manage Master Account Billing
@@ -1750,30 +1680,6 @@ apis:
     url: errors/corestack-problem-types.yml
   - type: DataModel
     url: data-model/corestack-data-model.yml
-- aid: corestack:corestack-usergroups-api
-  name: CoreStack User Groups API
-  description: User Group Management
-  humanURL: https://docs.corestack.io/reference
-  baseURL: https://api.corestack.io/
-  tags:
-  - User Groups
-  tags_raw:
-  - UserGroups
-  properties:
-  - type: OpenAPI
-    url: openapi/corestack-usergroups-api-openapi.yml
-  - type: Documentation
-    url: https://docs.corestack.io/docs/corestack-api-modules
-  - type: APIReference
-    url: https://docs.corestack.io/reference
-  - type: Authentication
-    url: authentication/corestack-authentication.yml
-  - type: Conventions
-    url: conventions/corestack-conventions.yml
-  - type: ErrorCatalog
-    url: errors/corestack-problem-types.yml
-  - type: DataModel
-    url: data-model/corestack-data-model.yml
 - aid: corestack:corestack-userpreference-api
   name: CoreStack User Preference API
   description: Corestack UserPreferences Rest API
@@ -1960,6 +1866,94 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/corestack-zoho-incident-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-ai-governance-api
+  name: CoreStack AI Governance API
+  description: Manage AI Governance Metrics
+  humanURL: https://docs.corestack.io/docs/mcp-tool-guide
+  baseURL: https://cloud.corestack.io/mcp
+  tags:
+  - AI Governance
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-ai-governance-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-audit-log-api
+  name: CoreStack Audit Log API
+  description: Manage Audit Log
+  humanURL: https://docs.corestack.io/docs/mcp-tool-guide
+  baseURL: https://cloud.corestack.io/mcp
+  tags:
+  - Audit Log
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-audit-log-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-master-account-api
+  name: CoreStack Master Account API
+  description: Manage Master Account
+  humanURL: https://docs.corestack.io/docs/mcp-tool-guide
+  baseURL: https://cloud.corestack.io/mcp
+  tags:
+  - Master Account
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-master-account-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-user-groups-api
+  name: CoreStack User Groups API
+  description: User Group Management
+  humanURL: https://docs.corestack.io/docs/mcp-tool-guide
+  baseURL: https://cloud.corestack.io/mcp
+  tags:
+  - User Groups
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-user-groups-api-openapi.yml
   - type: Documentation
     url: https://docs.corestack.io/docs/corestack-api-modules
   - type: APIReference

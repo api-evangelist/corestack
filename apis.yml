@@ -159,6 +159,8 @@ apis:
   humanURL: https://docs.corestack.io/reference
   baseURL: https://api.corestack.io/
   tags:
+  - AI Agents
+  tags_raw:
   - AI Agent
   properties:
   - type: OpenAPI
@@ -1222,6 +1224,8 @@ apis:
   humanURL: https://docs.corestack.io/reference
   baseURL: https://api.corestack.io/
   tags:
+  - Recommendations
+  tags_raw:
   - Recommendation
   properties:
   - type: OpenAPI
@@ -1376,6 +1380,8 @@ apis:
   humanURL: https://docs.corestack.io/reference
   baseURL: https://api.corestack.io/
   tags:
+  - Schedule
+  tags_raw:
   - Schedules
   properties:
   - type: OpenAPI
@@ -1906,6 +1912,8 @@ apis:
   humanURL: https://docs.corestack.io/docs/mcp-tool-guide
   baseURL: https://cloud.corestack.io/mcp
   tags:
+  - Audit Logs
+  tags_raw:
   - Audit Log
   properties:
   - type: OpenAPI

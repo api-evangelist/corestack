@@ -106,7 +106,8 @@ edges:
     within ITSM tooling. Integration plumbing element noted, but the CMDB/CI-class semantics are squarely
     ITSM.
 - tag: UserGroups
-  spec_file: corestack-usergroups-api-openapi.yml
+  spec_file: corestack-user-groups-api-openapi.yml
+  reanchored_from: corestack-usergroups-api-openapi.yml
   capability_id: BC-620.20
   capability_id_l1: BC-620
   capability_name: Identity & Access Management

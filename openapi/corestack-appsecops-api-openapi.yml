@@ -93,7 +93,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppSecopsApplicationResponse'
       summary: Creates an application
-      description: Creates an application
       operationId: CreateApplication
       security:
       - auth_token: []
@@ -284,7 +283,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppSecopsBCSQuestionsAnswers'
       summary: Create a new BCS answer version
-      description: Create a new BCS answer version
       operationId: BCSAnswerVersionCreate
       security:
       - auth_token: []
@@ -330,7 +328,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppSecopsBCSQuestionsAnswersHistoryResponse'
       summary: Paginated history of BCS answer versions
-      description: Paginated history of BCS answer versions
       operationId: BCSAnswerVersionHistory
       security:
       - auth_token: []
@@ -378,7 +375,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/AppSecopsBCSQuestion'
       summary: List of BCS questions
-      description: List of BCS questions
       operationId: ListBCSQuestions
       security:
       - auth_token: []
@@ -514,7 +510,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListResponse'
       summary: List of container security findings with filtering and pagination support
-      description: List of container security findings with filtering and pagination support
       operationId: ListContainerFindings
       security:
       - auth_token: []
@@ -701,7 +696,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AppSecopsSbomBuildDifferenceResponse'
-      summary: Summary of differences in vulnerability and component counts compared to the previous SBOM build
+      summary: Summary of differences in vulnerability and component counts compared to the…
       description: Retrieve the difference in vulnerability and component counts compared to the previous SBOM build.
       operationId: SbomBuildDifferenceTrend
       security:
@@ -747,7 +742,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppSecopsTopActionableIssuesResponse'
-      summary: List top (x) actionable issues including vulnerabilities, threats and config violations
+      summary: List top (x) actionable issues including vulnerabilities, threats and config…
       description: List Top actionable issues including vulnerabilities, threats and config violations
       operationId: TopActionableIssues
       security:
@@ -844,7 +839,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/AppSecopsVulnerabilityTrendBySeverity'
       summary: List of vulnerabilities count by severity
-      description: List of vulnerabilities count by severity
       operationId: VulnerabilityTrendBySeverity
       security:
       - auth_token: []
@@ -936,7 +930,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppSecopsPortfolioResponse'
       summary: Creates a portfolio
-      description: Creates a portfolio
       operationId: CreatePortfolio
       security:
       - auth_token: []
@@ -1081,7 +1074,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListResponse'
       summary: List of portfolios
-      description: List of portfolios
       operationId: ListPortfolio
       security:
       - auth_token: []
@@ -1173,7 +1165,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppSecopsProjectResponse'
       summary: Creates a project
-      description: Creates a project
       operationId: CreateProject
       security:
       - auth_token: []
@@ -1318,7 +1309,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListResponse'
       summary: List of projects
-      description: List of projects
       operationId: ListProject
       security:
       - auth_token: []
@@ -1654,7 +1644,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppSecopsSbomDefinitionsListResponse'
       summary: List of SBOM definitions
-      description: List of SBOM definitions
       operationId: ListSbomDefinitions
       security:
       - auth_token: []
@@ -1801,7 +1790,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AppSecopsSbomVersionDifference'
-      summary: List of SBOM version difference details between the given SBOM version IDs and its corresponding predecessor version IDs
+      summary: List of SBOM version difference details between the given SBOM version IDs and…
       description: List of SBOM version difference details for the given SBOM version IDs and predecessor version ID. Supports a maximum of 1000 IDs per request.
       operationId: BatchSbomVersionDifference
       security:
@@ -2237,7 +2226,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppSecopsApplicationV2'
       summary: Create an application with BCS scoring
-      description: Create an application with BCS scoring
       operationId: CreateBCSApplicationV2
       security:
       - auth_token: []
@@ -2289,7 +2277,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppSecopsApplicationV2'
       summary: Get application details with BCS scoring
-      description: Get application details with BCS scoring
       operationId: GetBCSApplicationV2
       security:
       - auth_token: []
@@ -2328,7 +2315,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppSecopsApplicationV2'
       summary: Update application with BCS scoring
-      description: Update application with BCS scoring
       operationId: UpdateBCSApplicationV2
       security:
       - auth_token: []
@@ -2342,196 +2328,19 @@ paths:
         required: true
 components:
   schemas:
-    AppSecopsSbomVulnerabilityResponse:
+    AppSecopsComponentReference:
       properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            $ref: '#/components/schemas/AppSecopsSbomVulnerability'
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    AppSecopsBCSQuestionsAnswers:
-      properties:
-        tenant_id:
+        sbom_version_id:
           type: string
-          description: Tenant ID
+          description: SBOM reference
           x-cs-type: ObjectId
-        version:
-          type: integer
-          description: Version number
-        answers:
+        component_ids:
           type: array
-          description: Slim weight entries [{id, weight}]
-          items:
-            $ref: '#/components/schemas/AppSecopsBCSQuestionsAnswerItem'
-        created_at:
-          type: string
-          format: date-time
-          description: When this version was created
-        created_by:
-          type: string
-          description: Who created this version
-      type: object
-    AppSecopsSbomComponentDetails:
-      properties:
-        name:
-          type: string
-          description: Name of the component
-        component_id:
-          type: string
-          description: Unique identifier for the component
-          x-cs-type: ObjectId
-        dependent_component_ids:
-          type: array
-          description: List of BOM references that this component depends on
+          description: List of IDs used to refer to the component elsewhere in the BOM.
           items:
             type: string
             x-cs-type: ObjectId
       type: object
-    AppSecopsTimeRangeFilter:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsFilter'
-      - required:
-        - end_date
-        - start_date
-        properties:
-          start_date:
-            type: string
-            format: date-time
-            description: Start date of the time period
-          end_date:
-            type: string
-            format: date-time
-            description: End date of the time period
-        type: object
-    AppSecopsPortfolioSortCriteria:
-      required:
-      - column
-      properties:
-        column:
-          type: string
-          example: name
-          enum:
-          - name
-          - created_at
-          - updated_at
-          x-cs-enum-type: AppSecopsPortfolioSortColumn
-        ascending:
-          type: boolean
-      type: object
-    AppSecopsProject:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsProjectBase'
-      - properties:
-          project_id:
-            type: string
-            description: Unique ID of the project
-            x-cs-type: ObjectId
-          created_at:
-            type: string
-            format: date-time
-            description: Project created time
-          created_by:
-            type: string
-            description: Name of the user who created a project
-          updated_at:
-            type: string
-            format: date-time
-            description: Project updated time
-          updated_by:
-            type: string
-            description: Name of the user who recently updated
-        type: object
-    AppSecopsVulnerabilityCvssMetric:
-      properties:
-        version:
-          type: string
-          description: CVSS version used for scoring (e.g., 3.1)
-        vector_string:
-          type: string
-          description: Encoded CVSS vector string representing all metric values
-        access_complexity:
-          type: string
-          description: Level of complexity required for an attacker to exploit the vulnerability
-        access_vector:
-          type: string
-          description: Encoded access vector string representing all metric values
-        attack_vector:
-          type: string
-          description: Context required to exploit the vulnerability (e.g., network, local)
-        attack_requirements:
-          type: string
-          description: Specific conditions or requirements needed for a successful attack (e.g., configuration, user privileges)
-        authentication:
-          type: string
-          description: Authentication type (e.g., Basic authentication)
-        attack_complexity:
-          type: string
-          description: Level of difficulty to exploit the vulnerability
-        exploit_maturity:
-          type: string
-          description: Indicates a vulnerability is to be exploited based on exploit availability and threat intelligence.
-        privileges_required:
-          type: string
-          description: Level of privileges an attacker needs to exploit the vulnerability
-        user_interaction:
-          type: string
-          description: Indicates if user interaction is required for exploitation
-        scope:
-          type: string
-          description: Whether exploitation affects resources beyond the vulnerable component
-        confidentiality_impact:
-          type: string
-          description: Impact on confidentiality if the vulnerability is exploited
-        integrity_impact:
-          type: string
-          description: Impact on data integrity if the vulnerability is exploited
-        availability_impact:
-          type: string
-          description: Impact on system availability if the vulnerability is exploited
-        base_score:
-          type: number
-          description: CVSS base score (0–10) indicating overall severity
-        severity:
-          type: string
-          description: Severity level of the vulnerability
-          example: Critical
-          enum:
-          - Critical
-          - High
-          - Info
-          - Low
-          - Medium
-          - None
-          - Unknown
-          x-cs-enum-type: Severity
-        subsequent_availability:
-          type: string
-          description: Availability impact on dependent or downstream systems after the vulnerability is exploited
-        subsequent_confidentiality:
-          type: string
-          description: Impact on confidentiality of the system after the vulnerability is exploited
-        subsequent_integrity:
-          type: string
-          description: Integrity impact on systems that depend on or are affected by the vulnerable system.
-        vulnerable_availability:
-          type: string
-          description: Availability impact on the directly affected system after the vulnerability is exploited.
-        vulnerable_confidentiality:
-          type: string
-          description: Confidentiality impact on the directly affected system after the vulnerability is exploited.
-        vulnerable_integrity:
-          type: string
-          description: Integrity impact on the system where the vulnerability exists
-      type: object
-    AppSecopsApplicationRequest:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsApplicationBase'
-      - properties: {}
-        type: object
     AppSecopsSbomComponentRequest:
       properties:
         list_context:
@@ -2541,17 +2350,214 @@ components:
           description: Filters for the request
           $ref: '#/components/schemas/AppSecopsSbomComponentFilter'
       type: object
-    AppSecopsSbomDefinitionsListResponse:
+    ListContext:
       properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    AppSecopsVulnerabilityOrganizationPrevalence:
+      properties:
+        vulnerability_id:
+          type: string
+          description: Unique ID of the vulnerability
+          x-cs-type: ObjectId
+        application_id:
+          type: string
+          description: Application ID
+          x-cs-type: ObjectId
+        appsecops_project_id:
+          type: string
+          description: Appsecops project ID
+          x-cs-type: ObjectId
+        portfolio_id:
+          type: string
+          description: Portfolio ID
+          x-cs-type: ObjectId
+      type: object
+    AppSecopsVulnerabilityEpssScore:
+      properties:
+        score:
+          type: number
+          description: EPSS score indicating the likelihood of exploitation (0 to 1)
+        percentile:
+          type: number
+          description: EPSS percentile ranking among all scored vulnerabilities
+        calculated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the EPSS score was generated
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the score was recently updated
+      type: object
+    AppSecopsSbomVulnerabilityDetailsByTenant:
+      properties:
+        cvss_metrics:
+          description: CVSS metrics associated with the vulnerability captured from different source.
+          $ref: '#/components/schemas/AppSecopsVulnerabilityCvssMetric'
+        sbom_source_details:
+          description: SBOM vulnerability source details specific to the tenant
+          $ref: '#/components/schemas/AppSecopsVulnerabilitySourceDetails'
+        updated_at:
+          type: string
+          format: date-time
+          description: Datetime when the vulnerability details were last updated for the tenant
+      type: object
+    AppSecopsSbomVersion:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsSbomVersionBase'
+      - properties:
+          sbom_version_id:
             type: string
+            description: Unique ID of the SBOM version
             x-cs-type: ObjectId
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
+          predecessor_version_id:
+            type: string
+            description: Unique ID of the previous SBOM version from which this version is created
+            x-cs-type: ObjectId
+          version_number:
+            type: integer
+            description: Sequence number of the SBOM version
+          created_at:
+            type: string
+            format: date-time
+            description: SBOM version created date
+          created_by:
+            type: string
+            description: Name of the user who created the SBOM version
+          updated_at:
+            type: string
+            format: date-time
+            description: SBOM version updated date
+          updated_by:
+            type: string
+            description: Name of the user who updated the SBOM version
+          metadata:
+            $ref: '#/components/schemas/AppSecopsSbomVersionMetadata'
+          parser_status:
+            $ref: '#/components/schemas/AppSecopsSbomVersionParserStatus'
+          component_ids:
+            type: array
+            description: List of IDs used to refer the components under the SBOM version
+            items:
+              type: string
+              x-cs-type: ObjectId
+        type: object
+    AppSecopsBCSQuestionsAnswerItem:
+      required:
+      - question_id
+      - weight
+      properties:
+        question_id:
+          type: string
+          description: Question ID
+        weight:
+          type: integer
+          description: Question weight (0-100)
+      type: object
+    AppSecopsPortfolio:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsPortfolioBase'
+      - properties:
+          created_at:
+            type: string
+            format: date-time
+            description: Portfolio created time
+          created_by:
+            type: string
+            description: Name of the user who created the portfolio
+          portfolio_id:
+            type: string
+            description: Portfolio ID
+            x-cs-type: ObjectId
+          updated_by:
+            type: string
+            description: Name of the user who recently updated the portfolio
+          updated_at:
+            type: string
+            format: date-time
+            description: Portfolio updated time
+        type: object
+    AppSecopsLicenseDetails:
+      properties:
+        name:
+          type: string
+          description: Unique identifier for the license
+        terms:
+          type: string
+          description: Terms of the license
+      type: object
+    AppSecopsBCSQuestionOption:
+      properties:
+        id:
+          type: string
+          description: Option ID
+        label:
+          type: string
+          description: Option label
+        value:
+          type: integer
+          description: Answer value for scoring
+        is_none:
+          type: boolean
+          description: Mutually exclusive None option (Q6)
+        high_tier:
+          type: boolean
+          description: High-tier regulatory framework flag (Q6)
+        prefill_q5a:
+          type: boolean
+          description: Whether selecting this option pre-fills Q5a to High (Q11)
+      type: object
+    AppSecopsVulnerabilityTrendBySeverityRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsTimeRangeFilter'
+      - required:
+        - granularity
+        properties:
+          granularity:
+            type: string
+            description: Granularity for aggregating vulnerability trend data
+            example: day
+            enum:
+            - day
+            - week
+            - month
+            - quarter
+            - year
+            x-cs-enum-type: TrendGranularity
+        type: object
+    AppSecopsApplicationSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: name
+          enum:
+          - name
+          - business_criticality
+          - dev_tool
+          - service_name
+          - updated_at
+          x-cs-enum-type: AppSecopsApplicationSortColumn
+        ascending:
+          type: boolean
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
       type: object
     ContainerFindingsRequest:
       properties:
@@ -2567,18 +2573,175 @@ components:
           description: Filters for the request
           $ref: '#/components/schemas/ContainerFindingsBaseFilters'
       type: object
-    AppSecopsVulnerabilityWithComponentDetails:
+    AppSecopsSbomVersionRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsSbomVersionBase'
+      - properties:
+          force:
+            type: boolean
+            description: If set true, allows version creation even if duplicate exists under tenant, false prevents duplicate creation
+        type: object
+    AppSecopsVulnerabilityByComponent:
       properties:
-        vulnerability_id:
+        days_range:
           type: string
-          description: The Unique ID of the vulnerability
-          x-cs-type: ObjectId
-        affected_components:
+          description: Time range bucket for grouping vulnerabilities based on NVD published date or SBOM created date
+          example: 0-30 days
+          enum:
+          - 0-30 days
+          - 31-60 days
+          - 61-90 days
+          - 91-365 days
+          - '> 365 days'
+          - Unknown
+          x-cs-enum-type: DaysRange
+        product:
+          type: string
+          description: SBOM component Product name
+        vendor:
+          type: string
+          description: SBOM component Vendor name
+        package_type:
+          type: string
+          description: SBOM component package type
+        severity:
+          type: string
+          description: Severity of the vulnerability
+          example: Critical
+          enum:
+          - Critical
+          - High
+          - Info
+          - Low
+          - Medium
+          - None
+          - Unknown
+          x-cs-enum-type: Severity
+        is_kev:
+          type: boolean
+          description: Indicates whether the vulnerability is a Known Exploited Vulnerability (KEV)
+        count:
+          type: integer
+          description: Total count of vulnerabilities associated with the category
+        vulnerability_ids:
           type: array
-          description: List of component IDs which has vulnerability
+          description: List of vulnerability IDs associated with the component
           items:
             type: string
             x-cs-type: ObjectId
+      type: object
+    AppSecopsSbomDefinitionBase:
+      required:
+      - name
+      - tenant_id
+      properties:
+        name:
+          type: string
+          description: Name of the SBOM
+        description:
+          type: string
+          description: SBOM description
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        tags:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+      type: object
+    AppSecopsBCSQuestionsAnswersHistoryResponse:
+      properties:
+        items:
+          type: array
+          description: List of resources matching the trend criteria.
+          items:
+            $ref: '#/components/schemas/AppSecopsBCSQuestionsAnswers'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    AppSecopsPortfolioResponse:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsPortfolio'
+      - properties: {}
+        type: object
+    AppSecopsPortfolioFilter:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsFilterBase'
+      - properties:
+          owner:
+            type: array
+            description: Owner of the Portfolio
+            items:
+              type: string
+          search:
+            type: string
+            description: Search based on name, description, owner
+        type: object
+    AppSecopsDashboardInsights:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: AppSecopsInsightsTopActionableVulnerability
+        subtype_name: AppSecopsInsightsTopActionableVulnerability
+    AppSecopsSbomVersionMetadata:
+      properties:
+        component_type:
+          type: string
+          description: Sbom component type
+          example: application
+          enum:
+          - application
+          - container
+          - cryptographic-asset
+          - data
+          - device
+          - device-driver
+          - file
+          - firmware
+          - framework
+          - library
+          - machine-learning-model
+          - operating-system
+          - platform
+          x-cs-enum-type: AppSecopsSbomComponentType
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsSbomVersionMetadataTool'
+        bom_created_at:
+          type: string
+          format: date-time
+          description: SBOM build created datetime
+      type: object
+    AppSecopsTopActionableIssuesRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AppSecopsTopActionableIssuesFilter'
+      type: object
+    AppSecopsPortfolioListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/AppSecopsPortfolioSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AppSecopsPortfolioFilter'
       type: object
     AppSecopsApplicationListRequest:
       properties:
@@ -2594,22 +2757,186 @@ components:
           description: Filters for the request
           $ref: '#/components/schemas/AppSecopsApplicationFilterBase'
       type: object
-    AppSecopsProjectResponse:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsProject'
-      - properties: {}
-        type: object
-    AppSecopsOsvVulnerabilityAffectedPackageDetails:
+    AppSecopsSbomVersionVulnerability:
       properties:
+        sbom_version_vulnerability_id:
+          type: string
+          description: Unique ID of the vulnerabilities associated to the SBOM version.
+          x-cs-type: ObjectId
+        sbom_version_id:
+          type: string
+          description: Unique ID of the SBOM version
+          x-cs-type: ObjectId
+        vulnerability_id:
+          type: string
+          description: Unique ID for the global vulnerability reference.
+          x-cs-type: ObjectId
+        components:
+          type: array
+          description: List of affected SBOM components.
+          items:
+            $ref: '#/components/schemas/AppSecopsSbomVulnerabilityComponentDetail'
+        risk_score_by_application:
+          type: array
+          description: Risk score of the vulnerability by application.
+          items:
+            $ref: '#/components/schemas/AppSecopsSbomVersionRiskScore'
+        tenant_id:
+          type: string
+          description: Tenant ID associated with the vulnerability
+          x-cs-type: ObjectId
+        sbom_vulnerability_details_by_tenant:
+          description: Tenant ID to which the SBOM belongs to.
+          $ref: '#/components/schemas/AppSecopsSbomVulnerabilityDetailsByTenant'
+      type: object
+    AppSecopsVulnerabilityFixAvailableDetails:
+      properties:
+        source:
+          type: string
+          description: Source of vulnerability
+          example: NVD
+          enum:
+          - NVD
+          - SBOM
+          - KEV
+          - OSV
+          x-cs-enum-type: VulnerabilitySource
+        affected_component_ids:
+          type: array
+          description: List of component IDs that are affected by this vulnerability and for which a fix is available
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    AppSecopsOsvVulnerabilityAffectedDetails:
+      properties:
+        package:
+          $ref: '#/components/schemas/AppSecopsOsvVulnerabilityAffectedPackageDetails'
+        ranges:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsOsvVulnerabilityVersionDetail'
+      type: object
+    AppSecopsVulnerabilityByComponentRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsFilter'
+      - properties:
+          category:
+            type: array
+            description: Component property category
+            items:
+              type: string
+              description: Grouping Category
+              example: product
+              enum:
+              - product
+              - vendor
+              - package_type
+              - by_nvd_published_date
+              - by_sbom_created_date
+              x-cs-enum-type: AppSecopsComponentGroupingCategory
+        type: object
+    AppSecopsSbomVersionDifferenceRequest:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        compare_version_id:
+          type: string
+          description: ID of the SBOM version against which component and vulnerability difference is fetched
+          x-cs-type: ObjectId
+      type: object
+    AppSecopsProjectBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AppSecopsProject'
+      type: object
+    ContainerFindingsResponse:
+      allOf:
+      - $ref: '#/components/schemas/SecurityFinding'
+      - properties:
+          sbom_version_id:
+            type: string
+            description: SBOM version ID to which the findings are associated
+          code:
+            type: string
+            description: Unique code identifying the specific finding
+          target:
+            type: string
+            description: Identifies the subject of the scan, can be either Image or Dockerfile
+          tenant_id:
+            type: string
+            description: Tenant ID to which the findings are associated
+            x-cs-type: ObjectId
+        type: object
+    AppSecopsSbomComponent:
+      properties:
+        author:
+          type: string
+          description: Author of the component
+        component_id:
+          type: string
+          description: Unique identifier for the component
+          x-cs-type: ObjectId
+        cpe:
+          type: string
+          description: Common Platform Enumeration (CPE) identifier for the component
+        dependent_component_ids:
+          type: array
+          description: List of dependent component references
+          items:
+            type: string
+            x-cs-type: ObjectId
+        description:
+          type: string
+          description: Description of the component
+        external_references:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsExternalReferenceDetail'
+        licenses:
+          type: array
+          description: License for the component
+          items:
+            $ref: '#/components/schemas/AppSecopsLicenseDetails'
         name:
           type: string
-          description: Name of the package
-        ecosystem:
-          type: string
-          description: Ecosystem of the package
+          description: Name of the component
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsSbomComponentProperty'
         purl:
           type: string
-          description: Package URL
+          description: Package URL (PURL) that uniquely identifies the component across ecosystems
+        version:
+          type: string
+          description: Version of the component
+        component_type:
+          type: string
+          description: Sbom component type
+          example: application
+          enum:
+          - application
+          - container
+          - cryptographic-asset
+          - data
+          - device
+          - device-driver
+          - file
+          - firmware
+          - framework
+          - library
+          - machine-learning-model
+          - operating-system
+          - platform
+          x-cs-enum-type: AppSecopsSbomComponentType
       type: object
     QueryOperator:
       required:
@@ -3071,165 +3398,255 @@ components:
         subtype_name: WorkloadQueryWorkloadType
       - subtype_model: WorkloadQueryWorkloadId
         subtype_name: WorkloadQueryWorkloadId
-    AppSecopsVulnerabilityOrganizationPrevalence:
-      properties:
-        vulnerability_id:
-          type: string
-          description: Unique ID of the vulnerability
-          x-cs-type: ObjectId
-        application_id:
-          type: string
-          description: Application ID
-          x-cs-type: ObjectId
-        appsecops_project_id:
-          type: string
-          description: Appsecops project ID
-          x-cs-type: ObjectId
-        portfolio_id:
-          type: string
-          description: Portfolio ID
-          x-cs-type: ObjectId
-      type: object
-    AppSecopsApplication:
+    AppSecopsPortfolioHierarchyRequest:
       allOf:
-      - $ref: '#/components/schemas/AppSecopsApplicationBase'
-      - properties:
-          application_id:
-            type: string
-            description: Application ID
-            x-cs-type: ObjectId
-          created_at:
-            type: string
-            format: date-time
-            description: Application created time
-          created_by:
-            type: string
-            description: Name of the user who created the application
-          updated_by:
-            type: string
-            description: Name of the user who recently updated the application
-          updated_at:
-            type: string
-            format: date-time
-            description: Application recently updated time
+      - $ref: '#/components/schemas/AppSecopsDashboardRequestBase'
+      - properties: {}
         type: object
-    ListResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    AppSecopsPortfolioHierarchyResponse:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsPortfolio'
-      - properties:
-          applications:
-            type: array
-            description: The application details associated with the portfolio
-            items:
-              $ref: '#/components/schemas/AppSecopsDashboardApplicationDetails'
-        type: object
-    AppSecopsSbomDefinitionsListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/AppSecopsSbomDefinitionsSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/AppSecopsSbomDefinitionsFilter'
-      type: object
-    AppSecopsSbomResourceMappingDetails:
-      properties:
-        mapped_resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/AppSecopsMappedResource'
-        status:
-          type: string
-          description: Status of Resource Mapping
-          example: success
-          enum:
-          - success
-          - error
-          x-cs-enum-type: AppSecopsSbomResourceMappingStatus
-        message:
-          type: string
-          description: Message of Resource Mapping
-        last_mapped_at:
-          type: string
-          format: date-time
-          description: The most recent date and time of automated resource mapping to the SBOM.
-        background_job_id:
-          description: Id of background job which performs the mapping of resources to SBOM.
-          $ref: '#/components/schemas/RecordIdentity'
-      type: object
-    AppSecopsLicenseDetails:
-      properties:
-        name:
-          type: string
-          description: Unique identifier for the license
-        terms:
-          type: string
-          description: Terms of the license
-      type: object
-    VulnerabilityNvdDescription:
-      properties:
-        lang:
-          type: string
-          description: Language of the description
-        value:
-          type: string
-          description: Value of the description
-      type: object
-    AppSecopsBCSQuestionsAnswersVersionRequest:
+    AppSecopsSbomVersionUpdateRequest:
       required:
-      - answers
+      - build_id
       - tenant_id
       properties:
         tenant_id:
           type: string
           description: Tenant ID
           x-cs-type: ObjectId
-        answers:
-          type: array
-          description: All question weights; must sum to 100
-          items:
-            $ref: '#/components/schemas/AppSecopsBCSQuestionsAnswerItem'
+        build_id:
+          type: string
+          description: Unique ID of the build associated with the SBOM version
       type: object
-    AppSecopsApplicationV2Request:
+    AppSecopsVulnerabilityCveDetail:
+      properties:
+        id:
+          type: string
+          description: ID of the vulnerability.
+        type:
+          type: string
+          description: Type of the vulnerability.
+      type: object
+    AppSecopsExternalReferenceDetail:
+      properties:
+        url:
+          type: string
+          description: External reference URL
+        name:
+          type: string
+          description: Name of the external reference
+        type:
+          type: string
+          description: Type of reference (e.g., advisory, report, fix)
+        source:
+          type: string
+          description: Source of the external reference
+      type: object
+    AppSecopsSbomVersionResponse:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsSbomVersion'
+      - properties:
+          vulnerability_ids:
+            type: array
+            description: List of vulnerability IDs detected in the components of this SBOM version
+            items:
+              type: string
+              x-cs-type: ObjectId
+          sbom_version_vulnerability_ids:
+            type: array
+            description: List of IDs that associate each vulnerability with this SBOM version, including version-specific details
+            items:
+              type: string
+              x-cs-type: ObjectId
+        type: object
+    AppSecopsProjectSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: name
+          enum:
+          - name
+          - updated_at
+          x-cs-enum-type: AppSecopsProjectSortColumn
+        ascending:
+          type: boolean
+      type: object
+    AppSecopsPortfolioSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: name
+          enum:
+          - name
+          - created_at
+          - updated_at
+          x-cs-enum-type: AppSecopsPortfolioSortColumn
+        ascending:
+          type: boolean
+      type: object
+    AppSecopsProjectRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsProjectBase'
+      - properties: {}
+        type: object
+    BatchRequest:
+      properties:
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
+      type: object
+    AppSecopsTopActionableIssuesResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            $ref: '#/components/schemas/AppSecopsDashboardInsights'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    AppSecopsApplicationResponse:
       allOf:
       - $ref: '#/components/schemas/AppSecopsApplication'
-      - required:
-        - selected
-        properties:
-          selected:
-            type: array
-            description: BCS questionnaire answers
-            items:
-              $ref: '#/components/schemas/AppSecopsApplicationV2BCSSelectedItem'
+      - properties: {}
         type: object
-    AppSecopsComponentReference:
+    AppSecopsSbomVulnerabilityResponse:
       properties:
-        sbom_version_id:
-          type: string
-          description: SBOM reference
-          x-cs-type: ObjectId
-        component_ids:
+        results:
           type: array
-          description: List of IDs used to refer to the component elsewhere in the BOM.
+          description: List of result identifiers
+          items:
+            $ref: '#/components/schemas/AppSecopsSbomVulnerability'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    AppSecopsSbomBuildDifferenceTrendRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsTimeRangeFilter'
+      - properties: {}
+        type: object
+    AppSecopsSbomDefinitionRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsSbomDefinitionBase'
+      - required:
+        - appsecops_project_id
+        properties:
+          appsecops_project_id:
+            type: string
+            description: SBOM related project ID
+            x-cs-type: ObjectId
+        type: object
+    AppSecopsProjectFilterBase:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsFilterBase'
+      - properties:
+          sbom_names:
+            type: array
+            description: Name of SBOMs linked to a project.
+            items:
+              type: string
+          application_ids:
+            type: array
+            description: ID of applications to which the project belongs
+            items:
+              type: string
+              x-cs-type: ObjectId
+          application_names:
+            type: array
+            description: Name of applications to which the project belongs
+            items:
+              type: string
+          sbom_filter:
+            type: string
+            description: Filter projects based on SBOM association status
+            example: with_sbom
+            enum:
+            - with_sbom
+            - without_sbom
+            x-cs-enum-type: AppSecopsProjectSbomFilter
+          search:
+            type: string
+            description: Search based on name, description and SBOM name
+        type: object
+    ContainerFindingsBaseFilters:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID to which the findings are associated
+        filters:
+          description: Query based on SBOM version ID, Category, Execution Phase, Severity and Status
+          $ref: '#/components/schemas/QueryOperator'
+      type: object
+    AppSecopsApplicationBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AppSecopsApplication'
+      type: object
+    AppSecopsApplicationRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsApplicationBase'
+      - properties: {}
+        type: object
+    AppSecopsDashboardRequestBase:
+      required:
+      - tenant_ids
+      properties:
+        tenant_ids:
+          type: array
+          description: List of tenant IDs
           items:
             type: string
             x-cs-type: ObjectId
+      type: object
+    AppSecopsVulnerabilityPrevalenceRequest:
+      required:
+      - tenant_ids
+      - vulnerability_ids
+      properties:
+        tenant_ids:
+          type: array
+          description: List of tenant IDs
+          items:
+            type: string
+            x-cs-type: ObjectId
+        vulnerability_ids:
+          type: array
+          description: List of vulnerability IDs to fetch organization-wide prevalence data
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    AppSecopsSbomVulnerabilityRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AppSecopsFilter'
+      type: object
+    AppSecopsSbomDefinitionsListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+            x-cs-type: ObjectId
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
       type: object
     AppSecopsSbomVersionBase:
       required:
@@ -3256,6 +3673,585 @@ components:
         sbom_file_format:
           description: File format of the SBOM version
           $ref: '#/components/schemas/AppSecopsSbomVersionFileFormat'
+      type: object
+    VulnerabilityNvdDescription:
+      properties:
+        lang:
+          type: string
+          description: Language of the description
+        value:
+          type: string
+          description: Value of the description
+      type: object
+    AppSecopsApplicationV2Request:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsApplication'
+      - required:
+        - selected
+        properties:
+          selected:
+            type: array
+            description: BCS questionnaire answers
+            items:
+              $ref: '#/components/schemas/AppSecopsApplicationV2BCSSelectedItem'
+        type: object
+    AppSecopsSbomVersionDifference:
+      properties:
+        base_version_id:
+          type: string
+          description: ID of the SBOM version to compare against
+          x-cs-type: ObjectId
+        compare_version_id:
+          type: string
+          description: ID of the SBOM version to compare with
+          x-cs-type: ObjectId
+        new_component_ids:
+          type: array
+          description: List of new component IDs created in the SBOM version
+          items:
+            type: string
+            x-cs-type: ObjectId
+        upgraded_component_ids:
+          type: array
+          description: List of upgraded component IDs created in the SBOM version
+          items:
+            type: string
+            x-cs-type: ObjectId
+        deleted_component_ids:
+          type: array
+          description: List of deleted component IDs in the SBOM version
+          items:
+            type: string
+            x-cs-type: ObjectId
+        new_vulnerability_ids:
+          type: array
+          description: List of new vulnerability IDs created in the SBOM version
+          items:
+            type: string
+            x-cs-type: ObjectId
+        resolved_vulnerability_ids:
+          type: array
+          description: List of resolved vulnerability IDs in the SBOM version
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    AppSecopsPortfolioRequest:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsPortfolioBase'
+      - properties: {}
+        type: object
+    AppSecopsSbomVersionParserStatus:
+      properties:
+        status:
+          type: string
+          description: Parsing status of SBOM
+          example: error
+          enum:
+          - error
+          - in_progress
+          - success
+          x-cs-enum-type: SbomParsingStatus
+        message:
+          type: string
+          description: Parsing message of SBOM
+        time_taken:
+          type: number
+          description: Time taken for parsing in seconds
+      type: object
+    AppSecopsProjectBase:
+      required:
+      - application_ids
+      - name
+      - tenant_id
+      properties:
+        name:
+          type: string
+          description: Name of the application
+        description:
+          type: string
+          description: Project description
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        application_ids:
+          type: array
+          description: Project related application IDs
+          items:
+            type: string
+            x-cs-type: ObjectId
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+      type: object
+    AppSecopsVulnerability:
+      properties:
+        id:
+          type: string
+          description: Unique ID of the vulnerability
+          x-cs-type: ObjectId
+        vulnerability_id:
+          $ref: '#/components/schemas/AppSecopsVulnerabilityCveDetail'
+        is_kev:
+          type: boolean
+          description: Indicates whether the vulnerability is a Known Exploited Vulnerability
+        epss_metric:
+          description: EPSS metrics associated with the vulnerability
+          $ref: '#/components/schemas/AppSecopsVulnerabilityEpssScore'
+        cvss_metrics:
+          type: array
+          description: CVSS metrics associated with the vulnerability captured from different source.
+          items:
+            $ref: '#/components/schemas/AppSecopsVulnerabilityCvssMetric'
+        fix_available:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsVulnerabilityFixAvailableDetails'
+        aliases:
+          type: array
+          items:
+            type: string
+            description: List of alternative identifiers for the vulnerability
+        details_from_source:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsVulnerabilitySourceDetails'
+      type: object
+    AppSecopsSbomVulnerability:
+      properties:
+        sbom_version_vulnerability_ids:
+          type: array
+          description: List of sbom version vulnerability ID(s)
+          items:
+            type: string
+            x-cs-type: ObjectId
+        vulnerability_id:
+          type: string
+          description: The Unique ID of the vulnerability
+        top_cvss_metric:
+          description: Top CVSS metric of a vulnerability
+          $ref: '#/components/schemas/AppSecopsVulnerabilityCvssMetric'
+        is_kev:
+          type: boolean
+          description: Indicates whether the vulnerability is a Known Exploited Vulnerability (KEV)
+        overall_risk_score:
+          type: number
+          description: Aggregated risk score representing the overall impact of the vulnerability, considering multiple risk factors.
+        bom_references:
+          type: array
+          description: List of Bom references
+          items:
+            $ref: '#/components/schemas/AppSecopsComponentReference'
+        description_from_sbom:
+          type: string
+          description: Description of the vulnerability from the SBOM
+        references_from_sbom:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsExternalReferenceDetail'
+      type: object
+    AppSecopsSbomVersionFileFormat:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-type-name: AppSecopsSbomVersionFileFormat
+      x-cs-subtypes:
+      - subtype_model: AppSecopsSbomVersionFileFormatForCycloneDX
+        subtype_name: AppSecopsSbomVersionFileFormatForCycloneDX
+    AppSecopsSbomComponentsResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            $ref: '#/components/schemas/AppSecopsSbomComponentDetails'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    AppSecopsSbomBuildDifferenceResponse:
+      properties:
+        build_id:
+          type: string
+          description: Unique ID of the build
+        version_id:
+          type: string
+          description: Unique ID of the latest SBOM build version
+          x-cs-type: ObjectId
+        compared_version_id:
+          type: string
+          description: Unique ID of the previous SBOM build version
+          x-cs-type: ObjectId
+        sbom_generated_date:
+          type: string
+          format: date-time
+          description: SBOM file generated datetime
+        new_components:
+          type: array
+          description: List of new component IDs created in the build
+          items:
+            type: string
+            x-cs-type: ObjectId
+        upgraded_components:
+          type: array
+          description: List of upgraded component IDs in the build
+          items:
+            type: string
+            x-cs-type: ObjectId
+        deleted_components:
+          type: array
+          description: List of deleted component IDs in the build
+          items:
+            type: string
+            x-cs-type: ObjectId
+        new_vulnerabilities:
+          type: array
+          description: List of new vulnerability and component details
+          items:
+            $ref: '#/components/schemas/AppSecopsVulnerabilityWithComponentDetails'
+        resolved_vulnerabilities:
+          type: array
+          description: List of resolved vulnerability unique IDs in the build
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    AppSecopsIngestContainerFindingsRequest:
+      required:
+      - container_findings
+      - sbom_version_id
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Unique identifier of the tenant submitting the container security findings
+          x-cs-type: ObjectId
+        sbom_version_id:
+          type: string
+          description: Unique identifier of the SBOM version to associate the container security findings with
+          x-cs-type: ObjectId
+        container_findings:
+          type: array
+          description: List of container security findings to be ingested, each containing tool information and attachment reference
+          items:
+            $ref: '#/components/schemas/ContainerFindings'
+      type: object
+    AppSecopsBCSQuestionsAnswersVersionRequest:
+      required:
+      - answers
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        answers:
+          type: array
+          description: All question weights; must sum to 100
+          items:
+            $ref: '#/components/schemas/AppSecopsBCSQuestionsAnswerItem'
+      type: object
+    AppSecopsApplicationV2BCSSelectedItem:
+      required:
+      - question_id
+      properties:
+        question_id:
+          type: string
+          description: Question ID
+        options:
+          type: array
+          description: Selected option IDs
+          items:
+            type: string
+      type: object
+    AppSecopsDashboardApplicationDetails:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsApplication'
+      - properties:
+          projects:
+            type: array
+            description: Project details associated with the application
+            items:
+              $ref: '#/components/schemas/AppSecopsProject'
+        type: object
+    AppSecopsFilter:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsDashboardRequestBase'
+      - properties:
+          filters:
+            description: Query based on Tenant ID, Application ID, Portfolio ID, Project ID and SBOM references
+            $ref: '#/components/schemas/QueryOperator'
+        type: object
+    AppSecopsApplication:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsApplicationBase'
+      - properties:
+          application_id:
+            type: string
+            description: Application ID
+            x-cs-type: ObjectId
+          created_at:
+            type: string
+            format: date-time
+            description: Application created time
+          created_by:
+            type: string
+            description: Name of the user who created the application
+          updated_by:
+            type: string
+            description: Name of the user who recently updated the application
+          updated_at:
+            type: string
+            format: date-time
+            description: Application recently updated time
+        type: object
+    AppSecopsBCSQuestion:
+      properties:
+        id:
+          type: string
+          description: Question ID
+        order:
+          type: integer
+          description: Display order
+        title:
+          type: string
+          description: Short title
+        question:
+          type: string
+          description: Full question text
+        description:
+          type: string
+          description: Additional info
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsBCSQuestionOption'
+        default_weight:
+          type: integer
+          description: Default weight
+        weight:
+          type: integer
+          description: Effective weight (tenant override of default_weight)
+        multi_select:
+          type: boolean
+          description: Whether this question allows multiple option selections (Q6)
+        inverted:
+          type: boolean
+          description: Whether lower answer value means higher criticality (Q9, Q10)
+      type: object
+    ObjectIdBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    AppSecopsSbomComponentFilter:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsFilter'
+      - properties:
+          vulnerable_components_only:
+            type: boolean
+            description: If set true, fetch only components associated with vulnerabilities
+        type: object
+    AppSecopsMappedResource:
+      required:
+      - inventory_id
+      - mapping_type
+      - resource
+      - resource_category
+      - resource_id
+      - resource_type
+      - service_account_id
+      properties:
+        mapping_type:
+          type: string
+          description: Type of Resource Mapping
+          example: automatic
+          enum:
+          - automatic
+          - manual
+          x-cs-enum-type: AppSecopsSbomResourceMappingType
+        service_account_id:
+          type: string
+          description: ID of service account
+          x-cs-type: ObjectId
+        resource_category:
+          type: string
+          description: Category of the mapped resource
+        resource_type:
+          type: string
+          description: Type of the mapped resource
+        resource:
+          type: string
+          description: Mapped resource
+        inventory_id:
+          type: string
+          description: Service Resource Inventory ID
+          x-cs-type: ObjectId
+        resource_id:
+          type: string
+          description: ID of the mapped resource
+        resource_name:
+          type: string
+          description: Name of the mapped resource
+      type: object
+    AppSecopsSbomComponentProperty:
+      properties:
+        name:
+          type: string
+          description: Name of the SBOM component property
+        value:
+          type: string
+          description: value of the SBOM component
+      type: object
+    AppSecopsSbomDefinitionsFilter:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        search:
+          type: string
+          description: Search based on name
+        filters:
+          description: Filter based on portfolio_id, application_id, appsecops_project_id
+          $ref: '#/components/schemas/QueryOperator'
+        tags:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+      type: object
+    AppSecopsSbomDefinitionsSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: name
+          enum:
+          - name
+          - updated_at
+          x-cs-enum-type: AppSecopsSbomDefinitionsSortColumn
+        ascending:
+          type: boolean
+      type: object
+    AppSecopsSbomVersionMetadataTool:
+      properties:
+        name:
+          type: string
+          description: Name of the SBOM tool
+        version:
+          type: string
+          description: Version of the SBOM tool
+        tool_type:
+          type: string
+          description: Sbom component type
+          example: application
+          enum:
+          - application
+          - container
+          - cryptographic-asset
+          - data
+          - device
+          - device-driver
+          - file
+          - firmware
+          - framework
+          - library
+          - machine-learning-model
+          - operating-system
+          - platform
+          x-cs-enum-type: AppSecopsSbomComponentType
+        author:
+          type: string
+          description: The person or organization that authored the component tool
+      type: object
+    AppSecopsPortfolioHierarchyResponse:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsPortfolio'
+      - properties:
+          applications:
+            type: array
+            description: The application details associated with the portfolio
+            items:
+              $ref: '#/components/schemas/AppSecopsDashboardApplicationDetails'
+        type: object
+    ContainerFindings:
+      required:
+      - __type
+      - attachment_id
+      - file_format
+      properties:
+        file_format:
+          type: string
+          description: Format of the container security findings file (JSON or plain text)
+          example: json
+          enum:
+          - json
+          - txt
+          x-cs-enum-type: ContainerFindingsFileFormat
+        attachment_id:
+          type: string
+          description: Unique identifier of the attachment containing the container security findings data
+          x-cs-type: ObjectId
+        parser_status:
+          description: Current parsing status for this specific container security tool
+          $ref: '#/components/schemas/AppSecopsSbomVersionParserStatus'
+        created_by:
+          type: string
+          description: Name of the user who recently created the container findings
+        updated_by:
+          type: string
+          description: Name of the user who recently updated the container findings
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ContainerFindingsForDockle
+        subtype_name: ContainerFindingsForDockle
+      - subtype_model: ContainerFindingsForHadolint
+        subtype_name: ContainerFindingsForHadolint
+    AppSecopsFilterBase:
+      required:
+      - tenant_id
+      properties:
+        name:
+          type: array
+          description: Name of the portfolio/application/project
+          items:
+            type: string
+        tags:
+          type: array
+          description: Tags for Portfolio/Application/project
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+      type: object
+    AppSecopsVulnerabilityWithComponentDetails:
+      properties:
+        vulnerability_id:
+          type: string
+          description: The Unique ID of the vulnerability
+          x-cs-type: ObjectId
+        affected_components:
+          type: array
+          description: List of component IDs which has vulnerability
+          items:
+            type: string
+            x-cs-type: ObjectId
       type: object
     AppSecopsApplicationBase:
       required:
@@ -3319,173 +4315,325 @@ components:
           items:
             type: string
       type: object
-    AppSecopsBCSQuestion:
+    AppSecopsSbomDefinitionsListRequest:
       properties:
-        id:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/AppSecopsSbomDefinitionsSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AppSecopsSbomDefinitionsFilter'
+      type: object
+    KnownExploitedVulnerability:
+      properties:
+        cve_id:
           type: string
-          description: Question ID
-        order:
-          type: integer
-          description: Display order
-        title:
+          description: The CVE ID of the vulnerability in the format CVE-YYYY-NNNN, note that the number portion can have more than 4 digits
+        vendor_project:
           type: string
-          description: Short title
-        question:
+          description: The vendor or project name for the vulnerability
+        product:
           type: string
-          description: Full question text
-        description:
+          description: The product name for the vulnerability
+        vulnerability_name:
           type: string
-          description: Additional info
-        options:
+          description: The name of the vulnerability
+        vulnerability_added_date:
+          type: string
+          format: date
+          description: The date the vulnerability was added to the catalog
+        short_description:
+          type: string
+          description: A short description of the vulnerability
+        required_action:
+          type: string
+          description: The required action to address the vulnerability
+        vulnerability_due_date:
+          type: string
+          format: date
+          description: The date the required action is due
+        is_known_ransomware_campaign:
+          type: boolean
+          description: '''True'' if this vulnerability is known to have been leveraged as part of a ransomware campaign; ''False'' if CISA lacks confirmation that the vulnerability has been utilized for ransomware'
+        notes:
+          type: string
+          description: Any additional notes about the vulnerability
+        cwe_codes:
           type: array
           items:
-            $ref: '#/components/schemas/AppSecopsBCSQuestionOption'
-        default_weight:
-          type: integer
-          description: Default weight
-        weight:
-          type: integer
-          description: Effective weight (tenant override of default_weight)
-        multi_select:
-          type: boolean
-          description: Whether this question allows multiple option selections (Q6)
-        inverted:
-          type: boolean
-          description: Whether lower answer value means higher criticality (Q9, Q10)
+            type: string
+            description: Common Weakness Enumeration (CWE) codes associated with this vulnerability. CWEs are in the format CWE-NNNN; note that the number portion can have any number of digits
+        created_at:
+          type: string
+          format: date-time
+          description: Vulnerability created time
+        updated_at:
+          type: string
+          format: date-time
+          description: Vulnerability updated time
       type: object
-    AppSecopsProjectBase:
+    ContainerFindingsFiltersSortCriteria:
       required:
-      - application_ids
-      - name
+      - column
+      properties:
+        column:
+          type: string
+          example: sbom_version_ids
+          enum:
+          - sbom_version_ids
+          - category
+          - severity
+          - status
+          x-cs-enum-type: ContainerFindingsFiltersSortColumn
+        ascending:
+          type: boolean
+      type: object
+    AppSecopsApplicationFilterBase:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsFilterBase'
+      - properties:
+          owner:
+            type: array
+            description: Owner of the Portfolio
+            items:
+              type: string
+          portfolio_ids:
+            type: array
+            description: ID of the portfolios to which the application belongs.
+            items:
+              type: string
+              x-cs-type: ObjectId
+          portfolio_names:
+            type: array
+            description: Name of the portfolios to which the application belongs.
+            items:
+              type: string
+          appsecops_project_ids:
+            type: array
+            description: ID of the appsecops project to which the application belongs.
+            items:
+              type: string
+              x-cs-type: ObjectId
+          appsecops_project_names:
+            type: array
+            description: Name of the appsecops project to which the application belongs.
+            items:
+              type: string
+          search:
+            type: string
+            description: Search based on name, description and owner
+        type: object
+    AppSecopsProject:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsProjectBase'
+      - properties:
+          project_id:
+            type: string
+            description: Unique ID of the project
+            x-cs-type: ObjectId
+          created_at:
+            type: string
+            format: date-time
+            description: Project created time
+          created_by:
+            type: string
+            description: Name of the user who created a project
+          updated_at:
+            type: string
+            format: date-time
+            description: Project updated time
+          updated_by:
+            type: string
+            description: Name of the user who recently updated
+        type: object
+    AppSecopsProjectListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/AppSecopsProjectSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AppSecopsProjectFilterBase'
+      type: object
+    AppSecopsProjectResponse:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsProject'
+      - properties: {}
+        type: object
+    AppSecopsSbomDefinition:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsSbomDefinitionBase'
+      - properties:
+          sbom_definition_id:
+            type: string
+            description: Unique ID of the Sbom
+            x-cs-type: ObjectId
+          release_version_id:
+            type: string
+            description: Release version ID of SBOM
+            x-cs-type: ObjectId
+          appsecops_project_id:
+            type: string
+            description: SBOM related project ID
+            x-cs-type: ObjectId
+          created_at:
+            type: string
+            format: date-time
+            description: SBOM definition created date
+          created_by:
+            type: string
+            description: Name of the user who created the SBOM definition
+          updated_by:
+            type: string
+            description: Name of the user who recently updated the SBOM definition
+          updated_at:
+            type: string
+            format: date-time
+            description: SBOM definition updated date
+          resource_mapping_details:
+            description: Details of resources mapped to SBOM.
+            $ref: '#/components/schemas/AppSecopsSbomResourceMappingDetails'
+        type: object
+    AppSecopsOsvVulnerabilityVersionDetail:
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppSecopsOsvVulnerabilityFixDetails'
+        type:
+          type: string
+      type: object
+    AppSecopsOsvVulnerabilityFixDetails:
+      properties:
+        fixed:
+          type: string
+          description: Version that fixed the vulnerability
+        introduced:
+          type: string
+          description: Version that introduced the vulnerability
+        last_affected:
+          type: string
+          description: Version that last affected the vulnerability
+        limit:
+          type: string
+          description: Limit the vulnerability
+      type: object
+    AppSecopsBCSQuestionsAnswersHistoryRequest:
+      required:
       - tenant_id
       properties:
-        name:
-          type: string
-          description: Name of the application
-        description:
-          type: string
-          description: Project description
         tenant_id:
           type: string
           description: Tenant ID
           x-cs-type: ObjectId
-        application_ids:
+        list_context:
+          description: Pagination context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    ListResponse:
+      properties:
+        results:
           type: array
-          description: Project related application IDs
+          description: List of result identifiers
           items:
             type: string
-            x-cs-type: ObjectId
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    AppSecopsApplicationV2:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsApplication'
+      - properties:
+          bcs_details:
+            $ref: '#/components/schemas/AppSecopsApplicationV2BCSDetail'
+          bcs_history:
+            type: array
+            description: Prior BCS submissions
+            items:
+              $ref: '#/components/schemas/AppSecopsApplicationV2BCSDetail'
+        type: object
+    AppSecopsPortfolioBase:
+      required:
+      - name
+      - owner
+      - tenant_id
+      properties:
+        name:
+          type: string
+          description: Name of the portfolio
+        description:
+          type: string
+          description: Portfolio description
+        owner:
+          type: array
+          description: Owners of portfolio
+          items:
+            type: string
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
         tags:
           type: array
           items:
             $ref: '#/components/schemas/KeyValuePair'
       type: object
-    ContainerFindingsBaseFilters:
-      required:
-      - tenant_id
-      properties:
-        tenant_id:
-          type: string
-          description: Tenant ID to which the findings are associated
-        filters:
-          description: Query based on SBOM version ID, Category, Execution Phase, Severity and Status
-          $ref: '#/components/schemas/QueryOperator'
-      type: object
-    AppSecopsTopActionableIssuesRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/AppSecopsTopActionableIssuesFilter'
-      type: object
-    AppSecopsVulnerabilityCveDetail:
-      properties:
-        id:
-          type: string
-          description: ID of the vulnerability.
-        type:
-          type: string
-          description: Type of the vulnerability.
-      type: object
-    AppSecopsSbomVersionVulnerability:
-      properties:
-        sbom_version_vulnerability_id:
-          type: string
-          description: Unique ID of the vulnerabilities associated to the SBOM version.
-          x-cs-type: ObjectId
-        sbom_version_id:
-          type: string
-          description: Unique ID of the SBOM version
-          x-cs-type: ObjectId
-        vulnerability_id:
-          type: string
-          description: Unique ID for the global vulnerability reference.
-          x-cs-type: ObjectId
-        components:
-          type: array
-          description: List of affected SBOM components.
-          items:
-            $ref: '#/components/schemas/AppSecopsSbomVulnerabilityComponentDetail'
-        risk_score_by_application:
-          type: array
-          description: Risk score of the vulnerability by application.
-          items:
-            $ref: '#/components/schemas/AppSecopsSbomVersionRiskScore'
-        tenant_id:
-          type: string
-          description: Tenant ID associated with the vulnerability
-          x-cs-type: ObjectId
-        sbom_vulnerability_details_by_tenant:
-          description: Tenant ID to which the SBOM belongs to.
-          $ref: '#/components/schemas/AppSecopsSbomVulnerabilityDetailsByTenant'
-      type: object
-    AppSecopsSbomVersionParserStatus:
-      properties:
-        status:
-          type: string
-          description: Parsing status of SBOM
-          example: error
-          enum:
-          - error
-          - in_progress
-          - success
-          x-cs-enum-type: SbomParsingStatus
-        message:
-          type: string
-          description: Parsing message of SBOM
-        time_taken:
-          type: number
-          description: Time taken for parsing in seconds
-      type: object
-    AppSecopsProjectRequest:
+    AppSecopsTopActionableIssuesFilter:
       allOf:
-      - $ref: '#/components/schemas/AppSecopsProjectBase'
-      - properties: {}
-        type: object
-    AppSecopsPortfolio:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsPortfolioBase'
-      - properties:
-          created_at:
+      - $ref: '#/components/schemas/AppSecopsDashboardRequestBase'
+      - required:
+        - categories
+        properties:
+          categories:
+            type: array
+            description: Security category
+            items:
+              type: string
+              description: Security Category to select
+              example: vulnerability
+              enum:
+              - vulnerability
+              x-cs-enum-type: SecurityCategory
+          filters:
+            description: Query based on Tenant ID, Application ID, Portfolio ID, Project ID and SBOM references
+            $ref: '#/components/schemas/QueryOperator'
+          view_by:
             type: string
-            format: date-time
-            description: Portfolio created time
-          created_by:
+            description: If not set, grouping is defaulted to Project. This can either be set to application or unique vulnerability.
+            example: application
+            enum:
+            - application
+            - unique_vulnerability
+            x-cs-enum-type: AppInsightsViewBy
+          search:
             type: string
-            description: Name of the user who created the portfolio
-          portfolio_id:
+            description: Search text to filter the actionable issues based on CVE ID
+          days_range:
             type: string
-            description: Portfolio ID
-            x-cs-type: ObjectId
-          updated_by:
-            type: string
-            description: Name of the user who recently updated the portfolio
-          updated_at:
-            type: string
-            format: date-time
-            description: Portfolio updated time
+            description: Time range bucket for grouping vulnerabilities based on NVD published date or SBOM created date
+            example: 0-30 days
+            enum:
+            - 0-30 days
+            - 31-60 days
+            - 61-90 days
+            - 91-365 days
+            - '> 365 days'
+            - Unknown
+            x-cs-enum-type: DaysRange
+          all_version:
+            type: boolean
+            description: True if all versions are required to be considered; false considers only the latest version of SBOMs
         type: object
     SecurityFinding:
       required:
@@ -3585,59 +4733,166 @@ components:
           format: date-time
           description: Timestamp of the most recent modification or status change to this security finding record
       type: object
-    AppSecopsBCSQuestionOption:
+    AppSecopsSbomComponentDetails:
       properties:
-        id:
+        name:
           type: string
-          description: Option ID
-        label:
+          description: Name of the component
+        component_id:
           type: string
-          description: Option label
-        value:
-          type: integer
-          description: Answer value for scoring
-        is_none:
-          type: boolean
-          description: Mutually exclusive None option (Q6)
-        high_tier:
-          type: boolean
-          description: High-tier regulatory framework flag (Q6)
-        prefill_q5a:
-          type: boolean
-          description: Whether selecting this option pre-fills Q5a to High (Q11)
-      type: object
-    AppSecopsSbomVulnerability:
-      properties:
-        sbom_version_vulnerability_ids:
+          description: Unique identifier for the component
+          x-cs-type: ObjectId
+        dependent_component_ids:
           type: array
-          description: List of sbom version vulnerability ID(s)
+          description: List of BOM references that this component depends on
           items:
             type: string
             x-cs-type: ObjectId
-        vulnerability_id:
+      type: object
+    AppSecopsBCSQuestionsAnswers:
+      properties:
+        tenant_id:
           type: string
-          description: The Unique ID of the vulnerability
-        top_cvss_metric:
-          description: Top CVSS metric of a vulnerability
-          $ref: '#/components/schemas/AppSecopsVulnerabilityCvssMetric'
-        is_kev:
-          type: boolean
-          description: Indicates whether the vulnerability is a Known Exploited Vulnerability (KEV)
-        overall_risk_score:
+          description: Tenant ID
+          x-cs-type: ObjectId
+        version:
+          type: integer
+          description: Version number
+        answers:
+          type: array
+          description: Slim weight entries [{id, weight}]
+          items:
+            $ref: '#/components/schemas/AppSecopsBCSQuestionsAnswerItem'
+        created_at:
+          type: string
+          format: date-time
+          description: When this version was created
+        created_by:
+          type: string
+          description: Who created this version
+      type: object
+    AppSecopsVulnerabilityCvssMetric:
+      properties:
+        version:
+          type: string
+          description: CVSS version used for scoring (e.g., 3.1)
+        vector_string:
+          type: string
+          description: Encoded CVSS vector string representing all metric values
+        access_complexity:
+          type: string
+          description: Level of complexity required for an attacker to exploit the vulnerability
+        access_vector:
+          type: string
+          description: Encoded access vector string representing all metric values
+        attack_vector:
+          type: string
+          description: Context required to exploit the vulnerability (e.g., network, local)
+        attack_requirements:
+          type: string
+          description: Specific conditions or requirements needed for a successful attack (e.g., configuration, user privileges)
+        authentication:
+          type: string
+          description: Authentication type (e.g., Basic authentication)
+        attack_complexity:
+          type: string
+          description: Level of difficulty to exploit the vulnerability
+        exploit_maturity:
+          type: string
+          description: Indicates a vulnerability is to be exploited based on exploit availability and threat intelligence.
+        privileges_required:
+          type: string
+          description: Level of privileges an attacker needs to exploit the vulnerability
+        user_interaction:
+          type: string
+          description: Indicates if user interaction is required for exploitation
+        scope:
+          type: string
+          description: Whether exploitation affects resources beyond the vulnerable component
+        confidentiality_impact:
+          type: string
+          description: Impact on confidentiality if the vulnerability is exploited
+        integrity_impact:
+          type: string
+          description: Impact on data integrity if the vulnerability is exploited
+        availability_impact:
+          type: string
+          description: Impact on system availability if the vulnerability is exploited
+        base_score:
           type: number
-          description: Aggregated risk score representing the overall impact of the vulnerability, considering multiple risk factors.
-        bom_references:
-          type: array
-          description: List of Bom references
-          items:
-            $ref: '#/components/schemas/AppSecopsComponentReference'
-        description_from_sbom:
+          description: CVSS base score (0–10) indicating overall severity
+        severity:
           type: string
-          description: Description of the vulnerability from the SBOM
-        references_from_sbom:
+          description: Severity level of the vulnerability
+          example: Critical
+          enum:
+          - Critical
+          - High
+          - Info
+          - Low
+          - Medium
+          - None
+          - Unknown
+          x-cs-enum-type: Severity
+        subsequent_availability:
+          type: string
+          description: Availability impact on dependent or downstream systems after the vulnerability is exploited
+        subsequent_confidentiality:
+          type: string
+          description: Impact on confidentiality of the system after the vulnerability is exploited
+        subsequent_integrity:
+          type: string
+          description: Integrity impact on systems that depend on or are affected by the vulnerable system.
+        vulnerable_availability:
+          type: string
+          description: Availability impact on the directly affected system after the vulnerability is exploited.
+        vulnerable_confidentiality:
+          type: string
+          description: Confidentiality impact on the directly affected system after the vulnerability is exploited.
+        vulnerable_integrity:
+          type: string
+          description: Integrity impact on the system where the vulnerability exists
+      type: object
+    AppSecopsTimeRangeFilter:
+      allOf:
+      - $ref: '#/components/schemas/AppSecopsFilter'
+      - required:
+        - end_date
+        - start_date
+        properties:
+          start_date:
+            type: string
+            format: date-time
+            description: Start date of the time period
+          end_date:
+            type: string
+            format: date-time
+            description: End date of the time period
+        type: object
+    AppSecopsSbomResourceMappingDetails:
+      properties:
+        mapped_resources:
           type: array
           items:
-            $ref: '#/components/schemas/AppSecopsExternalReferenceDetail'
+            $ref: '#/components/schemas/AppSecopsMappedResource'
+        status:
+          type: string
+          description: Status of Resource Mapping
+          example: success
+          enum:
+          - success
+          - error
+          x-cs-enum-type: AppSecopsSbomResourceMappingStatus
+        message:
+          type: string
+          description: Message of Resource Mapping
+        last_mapped_at:
+          type: string
+          format: date-time
+          description: The most recent date and time of automated resource mapping to the SBOM.
+        background_job_id:
+          description: Id of background job which performs the mapping of resources to SBOM.
+          $ref: '#/components/schemas/RecordIdentity'
       type: object
     AppSecopsSbomDefinitionUpdateRequest:
       allOf:
@@ -3647,31 +4902,14 @@ components:
             description: Details of resources mapped to SBOM.
             $ref: '#/components/schemas/AppSecopsSbomResourceMappingDetails'
         type: object
-    AppSecopsSbomVulnerabilityRequest:
+    KeyValuePair:
       properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/AppSecopsFilter'
-      type: object
-    AppSecopsVulnerabilityEpssScore:
-      properties:
-        score:
-          type: number
-          description: EPSS score indicating the likelihood of exploitation (0 to 1)
-        percentile:
-          type: number
-          description: EPSS percentile ranking among all scored vulnerabilities
-        calculated_at:
+        key:
           type: string
-          format: date-time
-          description: Timestamp when the EPSS score was generated
-        updated_at:
+          description: Key of the pair
+        value:
           type: string
-          format: date-time
-          description: Timestamp when the score was recently updated
+          description: Value of the pair
       type: object
     RecordIdentity:
       properties:
@@ -3686,605 +4924,18 @@ components:
           type: string
           description: Context of the tracked item
       type: object
-    AppSecopsPortfolioBase:
-      required:
-      - name
-      - owner
-      - tenant_id
+    AppSecopsVulnerabilityVendorComment:
       properties:
-        name:
+        organization:
           type: string
-          description: Name of the portfolio
-        description:
+          description: Name of the vendor or organization providing the comment
+        comment:
           type: string
-          description: Portfolio description
-        owner:
-          type: array
-          description: Owners of portfolio
-          items:
-            type: string
-        tenant_id:
-          type: string
-          description: Tenant ID
-          x-cs-type: ObjectId
-        tags:
-          type: array
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-      type: object
-    AppSecopsProjectListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/AppSecopsProjectSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/AppSecopsProjectFilterBase'
-      type: object
-    AppSecopsSbomDefinitionsFilter:
-      required:
-      - tenant_id
-      properties:
-        tenant_id:
-          type: string
-          description: Tenant ID
-          x-cs-type: ObjectId
-        search:
-          type: string
-          description: Search based on name
-        filters:
-          description: Filter based on portfolio_id, application_id, appsecops_project_id
-          $ref: '#/components/schemas/QueryOperator'
-        tags:
-          type: array
-          description: List of tag key/value pairs
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-      type: object
-    ContainerFindingsFiltersSortCriteria:
-      required:
-      - column
-      properties:
-        column:
-          type: string
-          example: sbom_version_ids
-          enum:
-          - sbom_version_ids
-          - category
-          - severity
-          - status
-          x-cs-enum-type: ContainerFindingsFiltersSortColumn
-        ascending:
-          type: boolean
-      type: object
-    AppSecopsSbomDefinitionRequest:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsSbomDefinitionBase'
-      - required:
-        - appsecops_project_id
-        properties:
-          appsecops_project_id:
-            type: string
-            description: SBOM related project ID
-            x-cs-type: ObjectId
-        type: object
-    AppSecopsSbomVersionFileFormat:
-      required:
-      - __type
-      properties: {}
-      discriminator:
-        propertyName: __type
-      type: object
-      x-cs-type-name: AppSecopsSbomVersionFileFormat
-      x-cs-subtypes:
-      - subtype_model: AppSecopsSbomVersionFileFormatForCycloneDX
-        subtype_name: AppSecopsSbomVersionFileFormatForCycloneDX
-    AppSecopsSbomComponentsResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            $ref: '#/components/schemas/AppSecopsSbomComponentDetails'
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    BatchRequest:
-      properties:
-        ids:
-          type: array
-          description: Identifiers to fetch
-          items:
-            type: string
-      type: object
-    AppSecopsPortfolioRequest:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsPortfolioBase'
-      - properties: {}
-        type: object
-    AppSecopsSbomVersionResponse:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsSbomVersion'
-      - properties:
-          vulnerability_ids:
-            type: array
-            description: List of vulnerability IDs detected in the components of this SBOM version
-            items:
-              type: string
-              x-cs-type: ObjectId
-          sbom_version_vulnerability_ids:
-            type: array
-            description: List of IDs that associate each vulnerability with this SBOM version, including version-specific details
-            items:
-              type: string
-              x-cs-type: ObjectId
-        type: object
-    AppSecopsVulnerabilityFixAvailableDetails:
-      properties:
-        source:
-          type: string
-          description: Source of vulnerability
-          example: NVD
-          enum:
-          - NVD
-          - SBOM
-          - KEV
-          - OSV
-          x-cs-enum-type: VulnerabilitySource
-        affected_component_ids:
-          type: array
-          description: List of component IDs that are affected by this vulnerability and for which a fix is available
-          items:
-            type: string
-            x-cs-type: ObjectId
-      type: object
-    AppSecopsSbomVulnerabilityComponentDetail:
-      properties:
-        id:
-          type: string
-          description: Unique ID for the component
-          x-cs-type: ObjectId
-        fix_available:
-          type: boolean
-          description: Indicates if a fix is available for the component in the vulnerability
-      type: object
-    AppSecopsSbomBuildDifferenceResponse:
-      properties:
-        build_id:
-          type: string
-          description: Unique ID of the build
-        version_id:
-          type: string
-          description: Unique ID of the latest SBOM build version
-          x-cs-type: ObjectId
-        compared_version_id:
-          type: string
-          description: Unique ID of the previous SBOM build version
-          x-cs-type: ObjectId
-        sbom_generated_date:
+          description: Vendor’s statement or advisory regarding the vulnerability
+        lastModified:
           type: string
           format: date-time
-          description: SBOM file generated datetime
-        new_components:
-          type: array
-          description: List of new component IDs created in the build
-          items:
-            type: string
-            x-cs-type: ObjectId
-        upgraded_components:
-          type: array
-          description: List of upgraded component IDs in the build
-          items:
-            type: string
-            x-cs-type: ObjectId
-        deleted_components:
-          type: array
-          description: List of deleted component IDs in the build
-          items:
-            type: string
-            x-cs-type: ObjectId
-        new_vulnerabilities:
-          type: array
-          description: List of new vulnerability and component details
-          items:
-            $ref: '#/components/schemas/AppSecopsVulnerabilityWithComponentDetails'
-        resolved_vulnerabilities:
-          type: array
-          description: List of resolved vulnerability unique IDs in the build
-          items:
-            type: string
-            x-cs-type: ObjectId
-      type: object
-    AppSecopsApplicationV2BCSDetail:
-      properties:
-        score:
-          type: number
-          description: BCS score (20-100)
-        bcs_question_version:
-          type: integer
-          description: BCS questions config version
-        version:
-          type: integer
-          description: Submission version
-        selected:
-          type: array
-          description: Submitted answers
-          items:
-            $ref: '#/components/schemas/AppSecopsApplicationV2BCSSelectedItem'
-        created_at:
-          type: string
-          format: date-time
-          description: When this submission was created
-        created_by:
-          type: string
-          description: Name of the user who created the submission
-      type: object
-    AppSecopsSbomDefinition:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsSbomDefinitionBase'
-      - properties:
-          sbom_definition_id:
-            type: string
-            description: Unique ID of the Sbom
-            x-cs-type: ObjectId
-          release_version_id:
-            type: string
-            description: Release version ID of SBOM
-            x-cs-type: ObjectId
-          appsecops_project_id:
-            type: string
-            description: SBOM related project ID
-            x-cs-type: ObjectId
-          created_at:
-            type: string
-            format: date-time
-            description: SBOM definition created date
-          created_by:
-            type: string
-            description: Name of the user who created the SBOM definition
-          updated_by:
-            type: string
-            description: Name of the user who recently updated the SBOM definition
-          updated_at:
-            type: string
-            format: date-time
-            description: SBOM definition updated date
-          resource_mapping_details:
-            description: Details of resources mapped to SBOM.
-            $ref: '#/components/schemas/AppSecopsSbomResourceMappingDetails'
-        type: object
-    AppSecopsPortfolioBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/AppSecopsPortfolio'
-      type: object
-    AppSecopsSbomVersion:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsSbomVersionBase'
-      - properties:
-          sbom_version_id:
-            type: string
-            description: Unique ID of the SBOM version
-            x-cs-type: ObjectId
-          predecessor_version_id:
-            type: string
-            description: Unique ID of the previous SBOM version from which this version is created
-            x-cs-type: ObjectId
-          version_number:
-            type: integer
-            description: Sequence number of the SBOM version
-          created_at:
-            type: string
-            format: date-time
-            description: SBOM version created date
-          created_by:
-            type: string
-            description: Name of the user who created the SBOM version
-          updated_at:
-            type: string
-            format: date-time
-            description: SBOM version updated date
-          updated_by:
-            type: string
-            description: Name of the user who updated the SBOM version
-          metadata:
-            $ref: '#/components/schemas/AppSecopsSbomVersionMetadata'
-          parser_status:
-            $ref: '#/components/schemas/AppSecopsSbomVersionParserStatus'
-          component_ids:
-            type: array
-            description: List of IDs used to refer the components under the SBOM version
-            items:
-              type: string
-              x-cs-type: ObjectId
-        type: object
-    AppSecopsSbomVersionRiskScore:
-      properties:
-        application_id:
-          type: string
-          description: The unique ID of the application that the SBOM project is linked to.
-          x-cs-type: ObjectId
-        overall_risk_score:
-          type: number
-          description: Aggregated risk score representing the overall impact of the vulnerability, considering multiple risk factors.
-      type: object
-    AppSecopsSbomBuildDifferenceTrendRequest:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsTimeRangeFilter'
-      - properties: {}
-        type: object
-    AppSecopsSbomVersionRequest:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsSbomVersionBase'
-      - properties:
-          force:
-            type: boolean
-            description: If set true, allows version creation even if duplicate exists under tenant, false prevents duplicate creation
-        type: object
-    AppSecopsFilterBase:
-      required:
-      - tenant_id
-      properties:
-        name:
-          type: array
-          description: Name of the portfolio/application/project
-          items:
-            type: string
-        tags:
-          type: array
-          description: Tags for Portfolio/Application/project
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-        tenant_id:
-          type: string
-          description: Tenant ID
-          x-cs-type: ObjectId
-      type: object
-    AppSecopsApplicationBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/AppSecopsApplication'
-      type: object
-    AppSecopsBCSQuestionsAnswersHistoryResponse:
-      properties:
-        items:
-          type: array
-          description: List of resources matching the trend criteria.
-          items:
-            $ref: '#/components/schemas/AppSecopsBCSQuestionsAnswers'
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    AppSecopsIngestContainerFindingsRequest:
-      required:
-      - container_findings
-      - sbom_version_id
-      - tenant_id
-      properties:
-        tenant_id:
-          type: string
-          description: Unique identifier of the tenant submitting the container security findings
-          x-cs-type: ObjectId
-        sbom_version_id:
-          type: string
-          description: Unique identifier of the SBOM version to associate the container security findings with
-          x-cs-type: ObjectId
-        container_findings:
-          type: array
-          description: List of container security findings to be ingested, each containing tool information and attachment reference
-          items:
-            $ref: '#/components/schemas/ContainerFindings'
-      type: object
-    AppSecopsProjectSortCriteria:
-      required:
-      - column
-      properties:
-        column:
-          type: string
-          example: name
-          enum:
-          - name
-          - updated_at
-          x-cs-enum-type: AppSecopsProjectSortColumn
-        ascending:
-          type: boolean
-      type: object
-    AppSecopsSbomVersionDifferenceRequest:
-      required:
-      - tenant_id
-      properties:
-        tenant_id:
-          type: string
-          description: Tenant ID
-          x-cs-type: ObjectId
-        compare_version_id:
-          type: string
-          description: ID of the SBOM version against which component and vulnerability difference is fetched
-          x-cs-type: ObjectId
-      type: object
-    AppSecopsDashboardInsights:
-      required:
-      - __type
-      properties: {}
-      discriminator:
-        propertyName: __type
-      type: object
-      x-cs-subtypes:
-      - subtype_model: AppSecopsInsightsTopActionableVulnerability
-        subtype_name: AppSecopsInsightsTopActionableVulnerability
-    ContainerFindings:
-      required:
-      - __type
-      - attachment_id
-      - file_format
-      properties:
-        file_format:
-          type: string
-          description: Format of the container security findings file (JSON or plain text)
-          example: json
-          enum:
-          - json
-          - txt
-          x-cs-enum-type: ContainerFindingsFileFormat
-        attachment_id:
-          type: string
-          description: Unique identifier of the attachment containing the container security findings data
-          x-cs-type: ObjectId
-        parser_status:
-          description: Current parsing status for this specific container security tool
-          $ref: '#/components/schemas/AppSecopsSbomVersionParserStatus'
-        created_by:
-          type: string
-          description: Name of the user who recently created the container findings
-        updated_by:
-          type: string
-          description: Name of the user who recently updated the container findings
-      discriminator:
-        propertyName: __type
-      type: object
-      x-cs-subtypes:
-      - subtype_model: ContainerFindingsForDockle
-        subtype_name: ContainerFindingsForDockle
-      - subtype_model: ContainerFindingsForHadolint
-        subtype_name: ContainerFindingsForHadolint
-    AppSecopsApplicationFilterBase:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsFilterBase'
-      - properties:
-          owner:
-            type: array
-            description: Owner of the Portfolio
-            items:
-              type: string
-          portfolio_ids:
-            type: array
-            description: ID of the portfolios to which the application belongs.
-            items:
-              type: string
-              x-cs-type: ObjectId
-          portfolio_names:
-            type: array
-            description: Name of the portfolios to which the application belongs.
-            items:
-              type: string
-          appsecops_project_ids:
-            type: array
-            description: ID of the appsecops project to which the application belongs.
-            items:
-              type: string
-              x-cs-type: ObjectId
-          appsecops_project_names:
-            type: array
-            description: Name of the appsecops project to which the application belongs.
-            items:
-              type: string
-          search:
-            type: string
-            description: Search based on name, description and owner
-        type: object
-    AppSecopsPortfolioResponse:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsPortfolio'
-      - properties: {}
-        type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    AppSecopsOsvVulnerabilityVersionDetail:
-      properties:
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/AppSecopsOsvVulnerabilityFixDetails'
-        type:
-          type: string
-      type: object
-    AppSecopsSbomDefinitionsSortCriteria:
-      required:
-      - column
-      properties:
-        column:
-          type: string
-          example: name
-          enum:
-          - name
-          - updated_at
-          x-cs-enum-type: AppSecopsSbomDefinitionsSortColumn
-        ascending:
-          type: boolean
-      type: object
-    KeyValuePair:
-      properties:
-        key:
-          type: string
-          description: Key of the pair
-        value:
-          type: string
-          description: Value of the pair
-      type: object
-    AppSecopsExternalReferenceDetail:
-      properties:
-        url:
-          type: string
-          description: External reference URL
-        name:
-          type: string
-          description: Name of the external reference
-        type:
-          type: string
-          description: Type of reference (e.g., advisory, report, fix)
-        source:
-          type: string
-          description: Source of the external reference
-      type: object
-    AppSecopsSbomVersionMetadataTool:
-      properties:
-        name:
-          type: string
-          description: Name of the SBOM tool
-        version:
-          type: string
-          description: Version of the SBOM tool
-        tool_type:
-          type: string
-          description: Sbom component type
-          example: application
-          enum:
-          - application
-          - container
-          - cryptographic-asset
-          - data
-          - device
-          - device-driver
-          - file
-          - firmware
-          - framework
-          - library
-          - machine-learning-model
-          - operating-system
-          - platform
-          x-cs-enum-type: AppSecopsSbomComponentType
-        author:
-          type: string
-          description: The person or organization that authored the component tool
+          description: Date and time when the comment was last updated
       type: object
     AppSecopsVulnerabilitySourceDetails:
       allOf:
@@ -4383,418 +5034,69 @@ components:
             format: date-time
             description: Date when the vulnerability was last updated
         type: object
-    AppSecopsFilter:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsDashboardRequestBase'
-      - properties:
-          filters:
-            description: Query based on Tenant ID, Application ID, Portfolio ID, Project ID and SBOM references
-            $ref: '#/components/schemas/QueryOperator'
-        type: object
-    AppSecopsVulnerabilityVendorComment:
+    AppSecopsApplicationV2BCSDetail:
       properties:
-        organization:
-          type: string
-          description: Name of the vendor or organization providing the comment
-        comment:
-          type: string
-          description: Vendor’s statement or advisory regarding the vulnerability
-        lastModified:
-          type: string
-          format: date-time
-          description: Date and time when the comment was last updated
-      type: object
-    AppSecopsSbomComponent:
-      properties:
-        author:
-          type: string
-          description: Author of the component
-        component_id:
-          type: string
-          description: Unique identifier for the component
-          x-cs-type: ObjectId
-        cpe:
-          type: string
-          description: Common Platform Enumeration (CPE) identifier for the component
-        dependent_component_ids:
-          type: array
-          description: List of dependent component references
-          items:
-            type: string
-            x-cs-type: ObjectId
-        description:
-          type: string
-          description: Description of the component
-        external_references:
-          type: array
-          items:
-            $ref: '#/components/schemas/AppSecopsExternalReferenceDetail'
-        licenses:
-          type: array
-          description: License for the component
-          items:
-            $ref: '#/components/schemas/AppSecopsLicenseDetails'
-        name:
-          type: string
-          description: Name of the component
-        properties:
-          type: array
-          items:
-            $ref: '#/components/schemas/AppSecopsSbomComponentProperty'
-        purl:
-          type: string
-          description: Package URL (PURL) that uniquely identifies the component across ecosystems
-        version:
-          type: string
-          description: Version of the component
-        component_type:
-          type: string
-          description: Sbom component type
-          example: application
-          enum:
-          - application
-          - container
-          - cryptographic-asset
-          - data
-          - device
-          - device-driver
-          - file
-          - firmware
-          - framework
-          - library
-          - machine-learning-model
-          - operating-system
-          - platform
-          x-cs-enum-type: AppSecopsSbomComponentType
-      type: object
-    AppSecopsSbomComponentFilter:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsFilter'
-      - properties:
-          vulnerable_components_only:
-            type: boolean
-            description: If set true, fetch only components associated with vulnerabilities
-        type: object
-    AppSecopsProjectFilterBase:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsFilterBase'
-      - properties:
-          sbom_names:
-            type: array
-            description: Name of SBOMs linked to a project.
-            items:
-              type: string
-          application_ids:
-            type: array
-            description: ID of applications to which the project belongs
-            items:
-              type: string
-              x-cs-type: ObjectId
-          application_names:
-            type: array
-            description: Name of applications to which the project belongs
-            items:
-              type: string
-          sbom_filter:
-            type: string
-            description: Filter projects based on SBOM association status
-            example: with_sbom
-            enum:
-            - with_sbom
-            - without_sbom
-            x-cs-enum-type: AppSecopsProjectSbomFilter
-          search:
-            type: string
-            description: Search based on name, description and SBOM name
-        type: object
-    AppSecopsMappedResource:
-      required:
-      - inventory_id
-      - mapping_type
-      - resource
-      - resource_category
-      - resource_id
-      - resource_type
-      - service_account_id
-      properties:
-        mapping_type:
-          type: string
-          description: Type of Resource Mapping
-          example: automatic
-          enum:
-          - automatic
-          - manual
-          x-cs-enum-type: AppSecopsSbomResourceMappingType
-        service_account_id:
-          type: string
-          description: ID of service account
-          x-cs-type: ObjectId
-        resource_category:
-          type: string
-          description: Category of the mapped resource
-        resource_type:
-          type: string
-          description: Type of the mapped resource
-        resource:
-          type: string
-          description: Mapped resource
-        inventory_id:
-          type: string
-          description: Service Resource Inventory ID
-          x-cs-type: ObjectId
-        resource_id:
-          type: string
-          description: ID of the mapped resource
-        resource_name:
-          type: string
-          description: Name of the mapped resource
-      type: object
-    AppSecopsOsvVulnerabilityAffectedDetails:
-      properties:
-        package:
-          $ref: '#/components/schemas/AppSecopsOsvVulnerabilityAffectedPackageDetails'
-        ranges:
-          type: array
-          items:
-            $ref: '#/components/schemas/AppSecopsOsvVulnerabilityVersionDetail'
-      type: object
-    AppSecopsVulnerabilityByComponent:
-      properties:
-        days_range:
-          type: string
-          description: Time range bucket for grouping vulnerabilities based on NVD published date or SBOM created date
-          example: 0-30 days
-          enum:
-          - 0-30 days
-          - 31-60 days
-          - 61-90 days
-          - 91-365 days
-          - '> 365 days'
-          - Unknown
-          x-cs-enum-type: DaysRange
-        product:
-          type: string
-          description: SBOM component Product name
-        vendor:
-          type: string
-          description: SBOM component Vendor name
-        package_type:
-          type: string
-          description: SBOM component package type
-        severity:
-          type: string
-          description: Severity of the vulnerability
-          example: Critical
-          enum:
-          - Critical
-          - High
-          - Info
-          - Low
-          - Medium
-          - None
-          - Unknown
-          x-cs-enum-type: Severity
-        is_kev:
-          type: boolean
-          description: Indicates whether the vulnerability is a Known Exploited Vulnerability (KEV)
-        count:
+        score:
+          type: number
+          description: BCS score (20-100)
+        bcs_question_version:
           type: integer
-          description: Total count of vulnerabilities associated with the category
-        vulnerability_ids:
+          description: BCS questions config version
+        version:
+          type: integer
+          description: Submission version
+        selected:
           type: array
-          description: List of vulnerability IDs associated with the component
+          description: Submitted answers
           items:
-            type: string
-            x-cs-type: ObjectId
-      type: object
-    AppSecopsPortfolioListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/AppSecopsPortfolioSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/AppSecopsPortfolioFilter'
-      type: object
-    AppSecopsVulnerabilityTrendBySeverityRequest:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsTimeRangeFilter'
-      - required:
-        - granularity
-        properties:
-          granularity:
-            type: string
-            description: Granularity for aggregating vulnerability trend data
-            example: day
-            enum:
-            - day
-            - week
-            - month
-            - quarter
-            - year
-            x-cs-enum-type: TrendGranularity
-        type: object
-    KnownExploitedVulnerability:
-      properties:
-        cve_id:
-          type: string
-          description: The CVE ID of the vulnerability in the format CVE-YYYY-NNNN, note that the number portion can have more than 4 digits
-        vendor_project:
-          type: string
-          description: The vendor or project name for the vulnerability
-        product:
-          type: string
-          description: The product name for the vulnerability
-        vulnerability_name:
-          type: string
-          description: The name of the vulnerability
-        vulnerability_added_date:
-          type: string
-          format: date
-          description: The date the vulnerability was added to the catalog
-        short_description:
-          type: string
-          description: A short description of the vulnerability
-        required_action:
-          type: string
-          description: The required action to address the vulnerability
-        vulnerability_due_date:
-          type: string
-          format: date
-          description: The date the required action is due
-        is_known_ransomware_campaign:
-          type: boolean
-          description: '''True'' if this vulnerability is known to have been leveraged as part of a ransomware campaign; ''False'' if CISA lacks confirmation that the vulnerability has been utilized for ransomware'
-        notes:
-          type: string
-          description: Any additional notes about the vulnerability
-        cwe_codes:
-          type: array
-          items:
-            type: string
-            description: Common Weakness Enumeration (CWE) codes associated with this vulnerability. CWEs are in the format CWE-NNNN; note that the number portion can have any number of digits
+            $ref: '#/components/schemas/AppSecopsApplicationV2BCSSelectedItem'
         created_at:
           type: string
           format: date-time
-          description: Vulnerability created time
-        updated_at:
+          description: When this submission was created
+        created_by:
           type: string
-          format: date-time
-          description: Vulnerability updated time
+          description: Name of the user who created the submission
       type: object
-    AppSecopsApplicationV2:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsApplication'
-      - properties:
-          bcs_details:
-            $ref: '#/components/schemas/AppSecopsApplicationV2BCSDetail'
-          bcs_history:
-            type: array
-            description: Prior BCS submissions
-            items:
-              $ref: '#/components/schemas/AppSecopsApplicationV2BCSDetail'
-        type: object
-    ObjectIdBatchRequest:
+    AppSecopsPortfolioBatchResponse:
       properties:
-        ids:
-          type: array
-          items:
-            type: string
-            x-cs-type: ObjectId
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AppSecopsPortfolio'
       type: object
-    AppSecopsDashboardApplicationDetails:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsApplication'
-      - properties:
-          projects:
-            type: array
-            description: Project details associated with the application
-            items:
-              $ref: '#/components/schemas/AppSecopsProject'
-        type: object
-    AppSecopsSbomVersionDifference:
+    AppSecopsSbomVulnerabilityComponentDetail:
       properties:
-        base_version_id:
+        id:
           type: string
-          description: ID of the SBOM version to compare against
+          description: Unique ID for the component
           x-cs-type: ObjectId
-        compare_version_id:
-          type: string
-          description: ID of the SBOM version to compare with
-          x-cs-type: ObjectId
-        new_component_ids:
-          type: array
-          description: List of new component IDs created in the SBOM version
-          items:
-            type: string
-            x-cs-type: ObjectId
-        upgraded_component_ids:
-          type: array
-          description: List of upgraded component IDs created in the SBOM version
-          items:
-            type: string
-            x-cs-type: ObjectId
-        deleted_component_ids:
-          type: array
-          description: List of deleted component IDs in the SBOM version
-          items:
-            type: string
-            x-cs-type: ObjectId
-        new_vulnerability_ids:
-          type: array
-          description: List of new vulnerability IDs created in the SBOM version
-          items:
-            type: string
-            x-cs-type: ObjectId
-        resolved_vulnerability_ids:
-          type: array
-          description: List of resolved vulnerability IDs in the SBOM version
-          items:
-            type: string
-            x-cs-type: ObjectId
+        fix_available:
+          type: boolean
+          description: Indicates if a fix is available for the component in the vulnerability
       type: object
-    AppSecopsApplicationV2BCSSelectedItem:
-      required:
-      - question_id
+    AppSecopsSbomVersionRiskScore:
       properties:
-        question_id:
+        application_id:
           type: string
-          description: Question ID
-        options:
-          type: array
-          description: Selected option IDs
-          items:
-            type: string
-      type: object
-    AppSecopsSbomVersionUpdateRequest:
-      required:
-      - build_id
-      - tenant_id
-      properties:
-        tenant_id:
-          type: string
-          description: Tenant ID
+          description: The unique ID of the application that the SBOM project is linked to.
           x-cs-type: ObjectId
-        build_id:
-          type: string
-          description: Unique ID of the build associated with the SBOM version
+        overall_risk_score:
+          type: number
+          description: Aggregated risk score representing the overall impact of the vulnerability, considering multiple risk factors.
       type: object
-    AppSecopsBCSQuestionsAnswersHistoryRequest:
-      required:
-      - tenant_id
+    AppSecopsOsvVulnerabilityAffectedPackageDetails:
       properties:
-        tenant_id:
+        name:
           type: string
-          description: Tenant ID
-          x-cs-type: ObjectId
-        list_context:
-          description: Pagination context
-          $ref: '#/components/schemas/ListContext'
+          description: Name of the package
+        ecosystem:
+          type: string
+          description: Ecosystem of the package
+        purl:
+          type: string
+          description: Package URL
       type: object
     AppSecopsVulnerabilityTrendBySeverity:
       properties:
@@ -4829,322 +5131,6 @@ components:
         info_count:
           type: integer
           description: Total count of vulnerabilities with info severity.
-      type: object
-    AppSecopsOsvVulnerabilityFixDetails:
-      properties:
-        fixed:
-          type: string
-          description: Version that fixed the vulnerability
-        introduced:
-          type: string
-          description: Version that introduced the vulnerability
-        last_affected:
-          type: string
-          description: Version that last affected the vulnerability
-        limit:
-          type: string
-          description: Limit the vulnerability
-      type: object
-    AppSecopsTopActionableIssuesResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            $ref: '#/components/schemas/AppSecopsDashboardInsights'
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    AppSecopsTopActionableIssuesFilter:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsDashboardRequestBase'
-      - required:
-        - categories
-        properties:
-          categories:
-            type: array
-            description: Security category
-            items:
-              type: string
-              description: Security Category to select
-              example: vulnerability
-              enum:
-              - vulnerability
-              x-cs-enum-type: SecurityCategory
-          filters:
-            description: Query based on Tenant ID, Application ID, Portfolio ID, Project ID and SBOM references
-            $ref: '#/components/schemas/QueryOperator'
-          view_by:
-            type: string
-            description: If not set, grouping is defaulted to Project. This can either be set to application or unique vulnerability.
-            example: application
-            enum:
-            - application
-            - unique_vulnerability
-            x-cs-enum-type: AppInsightsViewBy
-          search:
-            type: string
-            description: Search text to filter the actionable issues based on CVE ID
-          days_range:
-            type: string
-            description: Time range bucket for grouping vulnerabilities based on NVD published date or SBOM created date
-            example: 0-30 days
-            enum:
-            - 0-30 days
-            - 31-60 days
-            - 61-90 days
-            - 91-365 days
-            - '> 365 days'
-            - Unknown
-            x-cs-enum-type: DaysRange
-          all_version:
-            type: boolean
-            description: True if all versions are required to be considered; false considers only the latest version of SBOMs
-        type: object
-    ListContext:
-      properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
-      type: object
-    AppSecopsPortfolioFilter:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsFilterBase'
-      - properties:
-          owner:
-            type: array
-            description: Owner of the Portfolio
-            items:
-              type: string
-          search:
-            type: string
-            description: Search based on name, description, owner
-        type: object
-    AppSecopsVulnerabilityByComponentRequest:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsFilter'
-      - properties:
-          category:
-            type: array
-            description: Component property category
-            items:
-              type: string
-              description: Grouping Category
-              example: product
-              enum:
-              - product
-              - vendor
-              - package_type
-              - by_nvd_published_date
-              - by_sbom_created_date
-              x-cs-enum-type: AppSecopsComponentGroupingCategory
-        type: object
-    AppSecopsDashboardRequestBase:
-      required:
-      - tenant_ids
-      properties:
-        tenant_ids:
-          type: array
-          description: List of tenant IDs
-          items:
-            type: string
-            x-cs-type: ObjectId
-      type: object
-    AppSecopsSbomDefinitionBase:
-      required:
-      - name
-      - tenant_id
-      properties:
-        name:
-          type: string
-          description: Name of the SBOM
-        description:
-          type: string
-          description: SBOM description
-        tenant_id:
-          type: string
-          description: Tenant ID
-          x-cs-type: ObjectId
-        tags:
-          type: array
-          description: List of tag key/value pairs
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-      type: object
-    AppSecopsApplicationResponse:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsApplication'
-      - properties: {}
-        type: object
-    AppSecopsSbomVulnerabilityDetailsByTenant:
-      properties:
-        cvss_metrics:
-          description: CVSS metrics associated with the vulnerability captured from different source.
-          $ref: '#/components/schemas/AppSecopsVulnerabilityCvssMetric'
-        sbom_source_details:
-          description: SBOM vulnerability source details specific to the tenant
-          $ref: '#/components/schemas/AppSecopsVulnerabilitySourceDetails'
-        updated_at:
-          type: string
-          format: date-time
-          description: Datetime when the vulnerability details were last updated for the tenant
-      type: object
-    AppSecopsVulnerability:
-      properties:
-        id:
-          type: string
-          description: Unique ID of the vulnerability
-          x-cs-type: ObjectId
-        vulnerability_id:
-          $ref: '#/components/schemas/AppSecopsVulnerabilityCveDetail'
-        is_kev:
-          type: boolean
-          description: Indicates whether the vulnerability is a Known Exploited Vulnerability
-        epss_metric:
-          description: EPSS metrics associated with the vulnerability
-          $ref: '#/components/schemas/AppSecopsVulnerabilityEpssScore'
-        cvss_metrics:
-          type: array
-          description: CVSS metrics associated with the vulnerability captured from different source.
-          items:
-            $ref: '#/components/schemas/AppSecopsVulnerabilityCvssMetric'
-        fix_available:
-          type: array
-          items:
-            $ref: '#/components/schemas/AppSecopsVulnerabilityFixAvailableDetails'
-        aliases:
-          type: array
-          items:
-            type: string
-            description: List of alternative identifiers for the vulnerability
-        details_from_source:
-          type: array
-          items:
-            $ref: '#/components/schemas/AppSecopsVulnerabilitySourceDetails'
-      type: object
-    AppSecopsPortfolioHierarchyRequest:
-      allOf:
-      - $ref: '#/components/schemas/AppSecopsDashboardRequestBase'
-      - properties: {}
-        type: object
-    AppSecopsSbomComponentProperty:
-      properties:
-        name:
-          type: string
-          description: Name of the SBOM component property
-        value:
-          type: string
-          description: value of the SBOM component
-      type: object
-    AppSecopsVulnerabilityPrevalenceRequest:
-      required:
-      - tenant_ids
-      - vulnerability_ids
-      properties:
-        tenant_ids:
-          type: array
-          description: List of tenant IDs
-          items:
-            type: string
-            x-cs-type: ObjectId
-        vulnerability_ids:
-          type: array
-          description: List of vulnerability IDs to fetch organization-wide prevalence data
-          items:
-            type: string
-            x-cs-type: ObjectId
-      type: object
-    ContainerFindingsResponse:
-      allOf:
-      - $ref: '#/components/schemas/SecurityFinding'
-      - properties:
-          sbom_version_id:
-            type: string
-            description: SBOM version ID to which the findings are associated
-          code:
-            type: string
-            description: Unique code identifying the specific finding
-          target:
-            type: string
-            description: Identifies the subject of the scan, can be either Image or Dockerfile
-          tenant_id:
-            type: string
-            description: Tenant ID to which the findings are associated
-            x-cs-type: ObjectId
-        type: object
-    AppSecopsApplicationSortCriteria:
-      required:
-      - column
-      properties:
-        column:
-          type: string
-          example: name
-          enum:
-          - name
-          - business_criticality
-          - dev_tool
-          - service_name
-          - updated_at
-          x-cs-enum-type: AppSecopsApplicationSortColumn
-        ascending:
-          type: boolean
-      type: object
-    AppSecopsBCSQuestionsAnswerItem:
-      required:
-      - question_id
-      - weight
-      properties:
-        question_id:
-          type: string
-          description: Question ID
-        weight:
-          type: integer
-          description: Question weight (0-100)
-      type: object
-    AppSecopsProjectBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/AppSecopsProject'
-      type: object
-    AppSecopsSbomVersionMetadata:
-      properties:
-        component_type:
-          type: string
-          description: Sbom component type
-          example: application
-          enum:
-          - application
-          - container
-          - cryptographic-asset
-          - data
-          - device
-          - device-driver
-          - file
-          - firmware
-          - framework
-          - library
-          - machine-learning-model
-          - operating-system
-          - platform
-          x-cs-enum-type: AppSecopsSbomComponentType
-        tools:
-          type: array
-          items:
-            $ref: '#/components/schemas/AppSecopsSbomVersionMetadataTool'
-        bom_created_at:
-          type: string
-          format: date-time
-          description: SBOM build created datetime
       type: object
   securitySchemes:
     auth_token:

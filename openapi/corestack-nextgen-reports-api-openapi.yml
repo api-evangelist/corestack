@@ -126,58 +126,28 @@ paths:
         required: true
 components:
   schemas:
-    AttachmentStorageBase:
-      required:
-      - __type
+    RecordIdentity:
       properties:
-        file_name:
+        sysId:
           type: string
-          description: Original file name
-        size:
-          type: integer
-          description: Size of file in bytes
-        created_at:
+          description: Unique Identifier of the tracked item
+        lastUpdate:
           type: string
           format: date-time
-          description: Date and Time of the attachment creation
-        expires_at:
+          description: Last update of the tracked item
+        table:
           type: string
-          format: date-time
-          description: Date and Time when the attachment expires. If not set, the attachment does not expire.
-      discriminator:
-        propertyName: __type
+          description: Context of the tracked item
       type: object
-      x-cs-subtypes:
-      - subtype_model: AttachmentStorageCorestack
-        subtype_name: AttachmentStorageCorestack
-      - subtype_model: AttachmentStorageAzureBlob
-        subtype_name: AttachmentStorageAzureBlob
-    NextGenReportResponse:
-      properties:
-        sys_id:
-          type: string
-          description: Unique ID for the report.
-          x-cs-type: ObjectId
-        background_job_id:
-          type: string
-          description: ID of the background job responsible for generating the report.
-        attachments:
-          type: array
-          description: List of attachment storage types. Can be CoreStack Attachment or Azure Blob Storage.
-          items:
-            $ref: '#/components/schemas/AttachmentStorageBase'
-        status:
-          type: string
-          description: Status of the report
-          example: Unknown
-          enum:
-          - Unknown
-          - Queued
-          - Processing
-          - Success
-          - Failure
-          x-cs-enum-type: ReportStatus
-      type: object
+    ConfigurationForNextGenReportBase:
+      allOf:
+      - $ref: '#/components/schemas/ReportConfiguration'
+      - properties:
+          limit:
+            type: integer
+            description: If set, limits the results to given number.
+        type: object
+      x-cs-type-name: ConfigurationForNextGenReportBase
     ReportConfiguration:
       required:
       - __type
@@ -241,34 +211,64 @@ components:
           type: string
           description: Error response message.
       type: object
-    ConfigurationForNextGenReportBase:
-      allOf:
-      - $ref: '#/components/schemas/ReportConfiguration'
-      - properties:
-          limit:
-            type: integer
-            description: If set, limits the results to given number.
-        type: object
-      x-cs-type-name: ConfigurationForNextGenReportBase
+    NextGenReportResponse:
+      properties:
+        sys_id:
+          type: string
+          description: Unique ID for the report.
+          x-cs-type: ObjectId
+        background_job_id:
+          type: string
+          description: ID of the background job responsible for generating the report.
+        attachments:
+          type: array
+          description: List of attachment storage types. Can be CoreStack Attachment or Azure Blob Storage.
+          items:
+            $ref: '#/components/schemas/AttachmentStorageBase'
+        status:
+          type: string
+          description: Status of the report
+          example: Unknown
+          enum:
+          - Unknown
+          - Queued
+          - Processing
+          - Success
+          - Failure
+          x-cs-enum-type: ReportStatus
+      type: object
+    AttachmentStorageBase:
+      required:
+      - __type
+      properties:
+        file_name:
+          type: string
+          description: Original file name
+        size:
+          type: integer
+          description: Size of file in bytes
+        created_at:
+          type: string
+          format: date-time
+          description: Date and Time of the attachment creation
+        expires_at:
+          type: string
+          format: date-time
+          description: Date and Time when the attachment expires. If not set, the attachment does not expire.
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: AttachmentStorageCorestack
+        subtype_name: AttachmentStorageCorestack
+      - subtype_model: AttachmentStorageAzureBlob
+        subtype_name: AttachmentStorageAzureBlob
     NextGenReportGetRequest:
       properties:
         refresh_download_link:
           type: boolean
           description: If true, generates a new download link for the report if the existing link has expired.
           default: false
-      type: object
-    RecordIdentity:
-      properties:
-        sysId:
-          type: string
-          description: Unique Identifier of the tracked item
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Last update of the tracked item
-        table:
-          type: string
-          description: Context of the tracked item
       type: object
   securitySchemes:
     auth_token:

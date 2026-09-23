@@ -304,7 +304,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PolicyJobExecutionStatusResponse'
       summary: List compliance control mapping, get_assessment_job_details
-      description: objective is to return Policy Job execution status  for given, the tenant,assessment job number, policy id as input
+      description: objective is to return Policy Job execution status for given, the tenant,assessment job number, policy id as input
       operationId: PolicyJobExecutionStatus
       parameters:
       - name: tenant_id
@@ -398,7 +398,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ComplianceControlResponse'
       summary: Compliance On Demand Control_execute
-      description: Compliance On Demand Control_execute
       operationId: ComplianceOnDemandControl
       parameters:
       - name: tenant_id
@@ -445,7 +444,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ComplianceStandardResponse'
       summary: Compliance On Demand Standard_execute
-      description: Compliance On Demand Standard_execute
       operationId: ComplianceOnDemandStandard
       parameters:
       - name: tenant_id
@@ -1348,45 +1346,52 @@ paths:
       - Compliance
 components:
   schemas:
-    ReferenceResponse:
-      required:
-      - Abstracted Control URI
-      - Control Baseline
-      - Control Family
-      - Control Name
-      - Control Statement
-      - Services
+    CompliancePolicyDataCleanUpRequest:
       properties:
-        Control Baseline:
-          description: Control Baseline
-          $ref: '#/components/schemas/ReferenceModelList'
-        Control Family:
-          description: Control Family
-          $ref: '#/components/schemas/ReferenceModelList'
-        Control Statement:
-          description: Control Statement
-          $ref: '#/components/schemas/ReferenceModelList'
-        Control Name:
-          description: Control Name
-          $ref: '#/components/schemas/ReferenceModelList'
-        Abstracted Control URI:
-          description: Abstracted Control URI
-          $ref: '#/components/schemas/ReferenceModelList'
-        Services:
-          description: Services
-          $ref: '#/components/schemas/ReferenceModelList'
+        policy_uris:
+          type: array
+          description: Compliance Policy uris
+          items:
+            type: string
       type: object
-    SecurityDashboardCompliance:
+    SecurityDashboardAccountFilters:
       properties:
-        cloud_account_id:
-          type: string
-          description: Cloud Account Id
-        high:
-          $ref: '#/components/schemas/SecurityDashboardComplianceSeverity'
-        medium:
-          $ref: '#/components/schemas/SecurityDashboardComplianceSeverity'
-        low:
-          $ref: '#/components/schemas/SecurityDashboardComplianceSeverity'
+        tenants:
+          type: array
+          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+          items:
+            type: string
+        clouds:
+          type: array
+          description: Define the Cloud Providers to include.
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        cloud_accounts:
+          type: array
+          description: Specify the Cloud Account IDs.
+          items:
+            type: string
       type: object
     ComplianceFilterByPolicyResponse:
       required:
@@ -1420,180 +1425,149 @@ components:
           items:
             type: object
       type: object
-    ComplianceAssessmentHistorySummary:
-      required:
-      - assessment_job_status
-      - categorized_count
-      - policy_success_percentage
-      - status
-      - total_count
+    ComplianceDetailsForPoliciesRequest:
       properties:
-        status:
-          type: string
-          description: Status response of api hit to fetch the summary of compliance assessment.
-        assessment_job_status:
-          type: string
-          description: Status of the assessment job number given as input params.
-        total_count:
-          type: integer
-          description: Totally number of policies in assessment.
-        policy_success_percentage:
-          type: number
-          description: Percentage of policies in success status by total policies in assessment.
-        categorized_count:
-          description: Number of policies status wise detail.
-          $ref: '#/components/schemas/PolicyCounts'
-      type: object
-    CompliancePolicyDataCleanUpRequest:
-      properties:
-        policy_uris:
+        tenant_id:
           type: array
-          description: Compliance Policy uris
+          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API
+          items:
+            type: string
+        services:
+          type: array
+          description: Allowed services
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        cloud_accounts:
+          type: array
+          description: ID of the cloud account. This can be fetched from list cloud accounts API
           items:
             type: string
       type: object
-    ControlsListMappingResponse:
+    ReferenceResponse:
       required:
-      - Control_records
-      - Total_count
+      - Abstracted Control URI
+      - Control Baseline
+      - Control Family
+      - Control Name
+      - Control Statement
+      - Services
       properties:
-        Total_count:
+        Control Baseline:
+          description: Control Baseline
+          $ref: '#/components/schemas/ReferenceModelList'
+        Control Family:
+          description: Control Family
+          $ref: '#/components/schemas/ReferenceModelList'
+        Control Statement:
+          description: Control Statement
+          $ref: '#/components/schemas/ReferenceModelList'
+        Control Name:
+          description: Control Name
+          $ref: '#/components/schemas/ReferenceModelList'
+        Abstracted Control URI:
+          description: Abstracted Control URI
+          $ref: '#/components/schemas/ReferenceModelList'
+        Services:
+          description: Services
+          $ref: '#/components/schemas/ReferenceModelList'
+      type: object
+    ControlsListData:
+      required:
+      - Audit_status
+      - Compliance_control_uri
+      - Compliance_uri
+      - Control_action_attributes
+      - Control_attributes
+      - Count_of_status
+      - Id
+      - Policy_mappings
+      properties:
+        Control_action_attributes:
+          type: object
+          description: attributes of controls which dictate actions specific to corestack
+        Count_of_status:
           type: integer
-          description: Number of controls in the standard
-        Control_records:
-          description: list of application details.
-          $ref: '#/components/schemas/ControlMappingsListData'
-      type: object
-    SecurityDashboardComplianceControlHealthTrend:
-      properties:
-        month:
+          description: the count of assessed service accounts for the control
+        Compliance_control_uri:
           type: string
-          format: date
-          description: Control Health Month
-        measured_risk:
+          description: the unique identifier of the control in the tenant
+        Control_attributes:
+          type: object
+          description: attributes associated with the controls unique to the standard
+        Policy_mappings:
+          type: integer
+          description: count of policies mapped to the control
+        Compliance_uri:
           type: string
-          description: Compliance Measured Risk Levels
-          example: High
-          enum:
-          - High
-          - Medium
-          - Low
-          - Not_Assessed
-          x-cs-enum-type: ComplianceMeasuredRisk
+          description: the compliance standard associated with the control
+        Audit_status:
+          type: string
+          description: current audit status of the control
+        Id:
+          type: object
+          description: unique DB id of the control
       type: object
-    ReferenceModelList:
+    ComplianceDetailsForPoliciesResponse:
       required:
-      - visible
-      properties:
-        visible:
-          type: boolean
-          description: Visible
-      type: object
-    ComplianceMappingResponse:
-      required:
-      - data
-      - message
+      - definition_id
+      - impact
       - page_count
-      - status
+      - policy_name
+      - resolution_status
+      - resource_counts
+      - skip_allowed
       - total_count
       properties:
-        status:
+        skip_allowed:
           type: string
-          description: success
-        message:
+          description: Skip allowed true/false
+        resolution_status:
           type: string
-          description: compliance control mappings list
+          description: resolution_status
         total_count:
           type: string
-          description: Total count
+          description: total_count
         page_count:
           type: string
-          description: page count
-        data:
-          type: object
-          description: compliance control mappings list.
-      type: object
-    CompliancePostureVisibilityResponse:
-      required:
-      - data
-      - message
-      - status
-      properties:
-        status:
-          type: string
-          description: success
-        message:
-          type: string
-          description: Compliance Standard Visibility For Cloud Account
-        data:
-          type: object
-          description: data for compliance posture visibility
-      type: object
-    ComplianceStandardsResponse:
-      required:
-      - data
-      - message
-      - status
-      properties:
-        status:
-          type: string
-          description: Response status for compliance standards
-        message:
-          type: string
-          description: Response message for compliance standards
-        data:
+          description: page_count
+        actions:
           type: array
-          description: Compliance Standards data list
+          description: actions
           items:
-            $ref: '#/components/schemas/ComplianceStandards'
-      type: object
-    PolicyJobExecutionStatusRequest:
-      required:
-      - assessment_job_number
-      - policy_id
-      properties:
-        assessment_job_number:
+            type: object
+        policy_name:
           type: string
-          description: Specify the assessment_job_number.This can be fetched from List Compliance Control Assessment History API.
-        policy_id:
+          description: policy_name
+        resource_counts:
           type: string
-          description: Specify the policy ID. This can be fetched from List compliance control mapping, get_on_audit_entries API.
-      type: object
-    SecurityDashboardComplianceStatus:
-      properties:
-        compliance_name:
+          description: resource_counts
+        impact:
           type: string
-          description: Name of Compliance
-        cloud_accounts_status:
-          type: array
-          description: Security Dashboard Compliance
-          items:
-            $ref: '#/components/schemas/SecurityDashboardCompliance'
-      type: object
-    ControlsListResponse:
-      required:
-      - Control_records
-      - Total_count
-      properties:
-        Total_count:
-          type: integer
-          description: Number of controls in the standard
-        Control_records:
-          description: list of application details.
-          $ref: '#/components/schemas/ControlsListData'
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
+          description: impact
+        definition_id:
           type: string
-          description: Error response message.
-      type: object
-    SecurityDashboardRequest:
-      properties:
-        filter:
-          $ref: '#/components/schemas/SecurityDashboardAccountFilters'
+          description: definition_id
       type: object
     ComplianceSummaryByPoliciesRequest:
       required:
@@ -1655,6 +1629,549 @@ components:
           description: resource types to filter policies
           items:
             type: string
+      type: object
+    ComplianceControlResponse:
+      required:
+      - assessment_jobs_by_account
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: success
+        message:
+          type: string
+          description: compliance control execute triggered
+        assessment_jobs_by_account:
+          type: object
+          description: execute data.
+      type: object
+    ReferenceModelList:
+      required:
+      - visible
+      properties:
+        visible:
+          type: boolean
+          description: Visible
+      type: object
+    ComplianceFilterResponse:
+      required:
+      - tenants
+      properties:
+        tenants:
+          description: Tenants data for compliance posture filters
+          $ref: '#/components/schemas/ComplianceStandard'
+      type: object
+    SecurityDashboardCompliance:
+      properties:
+        cloud_account_id:
+          type: string
+          description: Cloud Account Id
+        high:
+          $ref: '#/components/schemas/SecurityDashboardComplianceSeverity'
+        medium:
+          $ref: '#/components/schemas/SecurityDashboardComplianceSeverity'
+        low:
+          $ref: '#/components/schemas/SecurityDashboardComplianceSeverity'
+      type: object
+    PolicyCounts:
+      properties:
+        violations:
+          type: string
+          description: Number of policies which are in violation status.
+        success:
+          type: string
+          description: Number of policies which are in success status.
+        error:
+          type: string
+          description: Number of policies which are in error status.
+        in_progress:
+          type: string
+          description: Number of policies which are in in_progress status.
+        none:
+          type: string
+          description: Number of policies which are not having any status or in none status
+      type: object
+    ControlMappingsListData:
+      required:
+      - Compliance_control_uri
+      - Compliance_uri
+      - Control_action_attributes
+      - Control_attributes
+      - Control_family
+      - Control_name
+      - Id
+      - Policy_mappings
+      - Severity
+      properties:
+        Control_action_attributes:
+          type: object
+          description: attributes of controls which dictate actions specific to corestack
+        Control_family:
+          type: string
+          description: security risk family that control belongs to
+        Compliance_control_uri:
+          type: string
+          description: the unique identifier of the control in the tenant
+        Control_attributes:
+          type: object
+          description: attributes associated with the controls unique to the standard
+        Severity:
+          type: string
+          description: severity of control data
+        Policy_mappings:
+          type: object
+          description: attributes of controls which dictate actions specific to corestack
+        Compliance_uri:
+          type: string
+          description: the compliance standard associated with the control
+        Control_name:
+          type: string
+          description: name of the control
+        Id:
+          type: object
+          description: unique DB id of the control
+      type: object
+    SecurityDashboardComplianceControlHealthTrend:
+      properties:
+        month:
+          type: string
+          format: date
+          description: Control Health Month
+        measured_risk:
+          type: string
+          description: Compliance Measured Risk Levels
+          example: High
+          enum:
+          - High
+          - Medium
+          - Low
+          - Not_Assessed
+          x-cs-enum-type: ComplianceMeasuredRisk
+      type: object
+    SecurityDashboardRequest:
+      properties:
+        filter:
+          $ref: '#/components/schemas/SecurityDashboardAccountFilters'
+      type: object
+    PolicyJobExecutionStatusRequest:
+      required:
+      - assessment_job_number
+      - policy_id
+      properties:
+        assessment_job_number:
+          type: string
+          description: Specify the assessment_job_number.This can be fetched from List Compliance Control Assessment History API.
+        policy_id:
+          type: string
+          description: Specify the policy ID. This can be fetched from List compliance control mapping, get_on_audit_entries API.
+      type: object
+    PolicyJobExecutionStatusResponse:
+      properties:
+        total_count:
+          type: string
+        page_count:
+          type: string
+          description: page count
+        failures:
+          type: array
+          description: Reason for policy failure
+          items:
+            $ref: '#/components/schemas/PolicyFailureData'
+      type: object
+    ComplianceVisibilityTrendResponse:
+      required:
+      - data
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: success
+        message:
+          type: string
+          description: Compliance Standard Trend
+        data:
+          type: object
+          description: data for compliance visibility trend
+      type: object
+    ComplianceStandard:
+      required:
+      - cloud_accounts
+      - id
+      - name
+      - services
+      properties:
+        services:
+          type: object
+          description: Return all of the Services given the tenant as input
+        cloud_accounts:
+          type: object
+          description: Return all of the Cloud accounts given the tenant as input
+        id:
+          type: string
+          description: ID for tenant
+        name:
+          type: string
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ComplianceSummaryByPoliciesResponse:
+      required:
+      - page_count
+      - policies
+      - total_count
+      properties:
+        total_count:
+          type: string
+          description: total_count
+        page_count:
+          type: string
+          description: page_count
+        policies:
+          type: object
+          description: policies
+      type: object
+    ComplianceSummaryRequest:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: array
+          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API
+          items:
+            type: string
+        services:
+          type: array
+          description: Allowed services
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        cloud_accounts:
+          type: array
+          description: ID of the cloud account. This can be fetched from list cloud accounts API
+          items:
+            type: string
+        compliance_uri:
+          type: array
+          description: uri of compliance standard This can be fetched from the compliance standards list API call
+          items:
+            type: string
+      type: object
+    CompliancePolicyDataCleanUpResponse:
+      properties:
+        policy_uris:
+          type: array
+          description: Compliance Policy uris
+          items:
+            type: string
+      type: object
+    ComplianceVisibilityResponse:
+      required:
+      - data
+      - status
+      properties:
+        status:
+          type: string
+          description: success
+        data:
+          type: object
+          description: list of visibility summary.
+      type: object
+    ComplianceSummary:
+      required:
+      - page
+      - page_count
+      - records
+      - total_count
+      properties:
+        total_count:
+          type: string
+        page_count:
+          type: string
+          description: page count
+        page:
+          type: string
+          description: page
+        records:
+          type: object
+          description: records
+      type: object
+    CompliancePostureVisibilityResponse:
+      required:
+      - data
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: success
+        message:
+          type: string
+          description: Compliance Standard Visibility For Cloud Account
+        data:
+          type: object
+          description: data for compliance posture visibility
+      type: object
+    PolicyFailureData:
+      required:
+      - assessment_by
+      - policy_execution_status
+      - policy_job_id
+      - policy_name
+      - region
+      - resource_group
+      - status_reason
+      properties:
+        policy_name:
+          type: string
+          description: policy job name
+        policy_job_id:
+          type: string
+          description: policy job id
+        policy_execution_status:
+          type: string
+          description: policy execution status
+        status_reason:
+          type: string
+          description: status reason
+        assessment_by:
+          type: string
+          description: assessment by
+        region:
+          type: string
+          description: region
+        resource_group:
+          type: string
+          description: resource group
+      type: object
+    AssessmentPostureSummaryResponse:
+      required:
+      - data
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: success
+        message:
+          type: string
+          description: compliance governance summary listed successfully
+        data:
+          type: object
+          description: list of assessment posture summary enteries.
+      type: object
+    AssessmentHistory:
+      properties:
+        compliance_uri:
+          type: string
+          description: URI of compliance standard
+        assessment_job_number:
+          type: string
+          description: Unique Assessment job number of assessment triggered
+        tenant_id:
+          type: string
+          description: Id of tenant
+        created_at:
+          type: string
+          format: date-time
+          description: When was the assessment trigger created
+        created_by:
+          type: string
+          description: Name of the user who triggered assessment
+        updated_at:
+          type: string
+          format: date-time
+          description: When was the assessment trigger updated
+        updated_by:
+          type: string
+          description: Name of the user who triggered assessment
+        service_account_id:
+          type: string
+          description: Id of service account
+          x-cs-type: ObjectId
+        assessment_status:
+          type: string
+          description: Status of assessment trigger
+          example: COMPLETED
+          enum:
+          - COMPLETED
+          - FAILED
+          - IN_PROGRESS
+          - PENDING
+          x-cs-enum-type: AssessmentStatus
+        all_trails_processed:
+          type: boolean
+          description: Whether all audit trails processed
+        assessment_type:
+          type: string
+          description: Type of assessment
+          example: standard
+          enum:
+          - standard
+          - control
+          x-cs-enum-type: AssessmentType
+        execution_type:
+          type: string
+          description: Type of execution.
+          example: on_demand
+          enum:
+          - on_demand
+          - scheduled
+          x-cs-enum-type: AssessmentExecutionType
+        assessment_summary:
+          description: Summary of Assessment
+          $ref: '#/components/schemas/AssessmentSummaryData'
+        is_archive:
+          type: boolean
+          description: Archive status
+        compliance_name:
+          type: string
+          description: Name of compliance standard
+        service_account_name:
+          type: string
+          description: Name of Service account
+      type: object
+    ComplianceStandardRequest:
+      required:
+      - cloud_accounts
+      - compliance_uri
+      properties:
+        cloud_accounts:
+          type: array
+          description: ID of the cloud account. The ID is unique, it can be obtained from the list cloud account api.
+          items:
+            type: string
+        compliance_uri:
+          type: string
+          description: uri of compliance standard This can be fetched from the compliance standards list API call.
+      type: object
+    AssessmentSummaryData:
+      properties:
+        violations:
+          type: integer
+          description: Number of controls violated
+        failures:
+          type: integer
+          description: Number of controls that failed
+        completed:
+          type: integer
+          description: Number of controls that executed successfully
+        in_progress:
+          type: integer
+          description: Number of controls currently in progress
+      type: object
+    ComplianceMappingResponse:
+      required:
+      - data
+      - message
+      - page_count
+      - status
+      - total_count
+      properties:
+        status:
+          type: string
+          description: success
+        message:
+          type: string
+          description: compliance control mappings list
+        total_count:
+          type: string
+          description: Total count
+        page_count:
+          type: string
+          description: page count
+        data:
+          type: object
+          description: compliance control mappings list.
+      type: object
+    ControlsListMappingResponse:
+      required:
+      - Control_records
+      - Total_count
+      properties:
+        Total_count:
+          type: integer
+          description: Number of controls in the standard
+        Control_records:
+          description: list of application details.
+          $ref: '#/components/schemas/ControlMappingsListData'
+      type: object
+    ComplianceControlRequest:
+      required:
+      - cloud_accounts
+      - compliance_control_uri
+      properties:
+        cloud_accounts:
+          type: array
+          description: ID of the cloud account. The ID is unique, it can be obtained from the list cloud account api.
+          items:
+            type: string
+        compliance_control_uri:
+          type: string
+          description: URI of compliance_control. This can be fetched from controls mapped under standards.
+      type: object
+    ComplianceAssessmentHistorySummary:
+      required:
+      - assessment_job_status
+      - categorized_count
+      - policy_success_percentage
+      - status
+      - total_count
+      properties:
+        status:
+          type: string
+          description: Status response of api hit to fetch the summary of compliance assessment.
+        assessment_job_status:
+          type: string
+          description: Status of the assessment job number given as input params.
+        total_count:
+          type: integer
+          description: Totally number of policies in assessment.
+        policy_success_percentage:
+          type: number
+          description: Percentage of policies in success status by total policies in assessment.
+        categorized_count:
+          description: Number of policies status wise detail.
+          $ref: '#/components/schemas/PolicyCounts'
+      type: object
+    ControlsListResponse:
+      required:
+      - Control_records
+      - Total_count
+      properties:
+        Total_count:
+          type: integer
+          description: Number of controls in the standard
+        Control_records:
+          description: list of application details.
+          $ref: '#/components/schemas/ControlsListData'
       type: object
     ComplianceStandards:
       required:
@@ -1728,451 +2245,6 @@ components:
           type: string
           description: Logo of standard
       type: object
-    SecurityDashboardComplianceSeverity:
-      properties:
-        total:
-          type: integer
-          description: Total Severity Count
-        violations:
-          type: integer
-          description: Total Violations Count
-      type: object
-    PolicyCounts:
-      properties:
-        violations:
-          type: string
-          description: Number of policies which are in violation status.
-        success:
-          type: string
-          description: Number of policies which are in success status.
-        error:
-          type: string
-          description: Number of policies which are in error status.
-        in_progress:
-          type: string
-          description: Number of policies which are in in_progress status.
-        none:
-          type: string
-          description: Number of policies which are not having any status or in none status
-      type: object
-    ComplianceStandardRequest:
-      required:
-      - cloud_accounts
-      - compliance_uri
-      properties:
-        cloud_accounts:
-          type: array
-          description: ID of the cloud account. The ID is unique, it can be obtained from the list cloud account api.
-          items:
-            type: string
-        compliance_uri:
-          type: string
-          description: uri of compliance standard This can be fetched from the compliance standards list API call.
-      type: object
-    AssessmentPostureSummaryResponse:
-      required:
-      - data
-      - message
-      - status
-      properties:
-        status:
-          type: string
-          description: success
-        message:
-          type: string
-          description: compliance governance summary listed successfully
-        data:
-          type: object
-          description: list of assessment posture summary enteries.
-      type: object
-    ComplianceFilterPolicyResponse:
-      required:
-      - data
-      - message
-      - status
-      properties:
-        status:
-          type: string
-          description: success
-        message:
-          type: string
-          description: Compliance Posture Policies list
-        data:
-          type: object
-          description: data for Compliance Posture Policies list
-      type: object
-    AssessmentHistory:
-      properties:
-        compliance_uri:
-          type: string
-          description: URI of compliance standard
-        assessment_job_number:
-          type: string
-          description: Unique Assessment job number of assessment triggered
-        tenant_id:
-          type: string
-          description: Id of tenant
-        created_at:
-          type: string
-          format: date-time
-          description: When was the assessment trigger created
-        created_by:
-          type: string
-          description: Name of the user who triggered assessment
-        updated_at:
-          type: string
-          format: date-time
-          description: When was the assessment trigger updated
-        updated_by:
-          type: string
-          description: Name of the user who triggered assessment
-        service_account_id:
-          type: string
-          description: Id of service account
-          x-cs-type: ObjectId
-        assessment_status:
-          type: string
-          description: Status of assessment trigger
-          example: COMPLETED
-          enum:
-          - COMPLETED
-          - FAILED
-          - IN_PROGRESS
-          - PENDING
-          x-cs-enum-type: AssessmentStatus
-        all_trails_processed:
-          type: boolean
-          description: Whether all audit trails processed
-        assessment_type:
-          type: string
-          description: Type of assessment
-          example: standard
-          enum:
-          - standard
-          - control
-          x-cs-enum-type: AssessmentType
-        execution_type:
-          type: string
-          description: Type of execution.
-          example: on_demand
-          enum:
-          - on_demand
-          - scheduled
-          x-cs-enum-type: AssessmentExecutionType
-        assessment_summary:
-          description: Summary of Assessment
-          $ref: '#/components/schemas/AssessmentSummaryData'
-        is_archive:
-          type: boolean
-          description: Archive status
-        compliance_name:
-          type: string
-          description: Name of compliance standard
-        service_account_name:
-          type: string
-          description: Name of Service account
-      type: object
-    ComplianceStandard:
-      required:
-      - cloud_accounts
-      - id
-      - name
-      - services
-      properties:
-        services:
-          type: object
-          description: Return all of the Services given the tenant as input
-        cloud_accounts:
-          type: object
-          description: Return all of the Cloud accounts given the tenant as input
-        id:
-          type: string
-          description: ID for tenant
-        name:
-          type: string
-      type: object
-    ComplianceDetailsForPoliciesResponse:
-      required:
-      - definition_id
-      - impact
-      - page_count
-      - policy_name
-      - resolution_status
-      - resource_counts
-      - skip_allowed
-      - total_count
-      properties:
-        skip_allowed:
-          type: string
-          description: Skip allowed true/false
-        resolution_status:
-          type: string
-          description: resolution_status
-        total_count:
-          type: string
-          description: total_count
-        page_count:
-          type: string
-          description: page_count
-        actions:
-          type: array
-          description: actions
-          items:
-            type: object
-        policy_name:
-          type: string
-          description: policy_name
-        resource_counts:
-          type: string
-          description: resource_counts
-        impact:
-          type: string
-          description: impact
-        definition_id:
-          type: string
-          description: definition_id
-      type: object
-    ComplianceSummary:
-      required:
-      - page
-      - page_count
-      - records
-      - total_count
-      properties:
-        total_count:
-          type: string
-        page_count:
-          type: string
-          description: page count
-        page:
-          type: string
-          description: page
-        records:
-          type: object
-          description: records
-      type: object
-    SecurityDashboardComplianceControlHealth:
-      properties:
-        control_family:
-          type: string
-          description: Name of Compliance Control Family
-        trend:
-          type: array
-          items:
-            $ref: '#/components/schemas/SecurityDashboardComplianceControlHealthTrend'
-      type: object
-    ControlMappingsListData:
-      required:
-      - Compliance_control_uri
-      - Compliance_uri
-      - Control_action_attributes
-      - Control_attributes
-      - Control_family
-      - Control_name
-      - Id
-      - Policy_mappings
-      - Severity
-      properties:
-        Control_action_attributes:
-          type: object
-          description: attributes of controls which dictate actions specific to corestack
-        Control_family:
-          type: string
-          description: security risk family that control belongs to
-        Compliance_control_uri:
-          type: string
-          description: the unique identifier of the control in the tenant
-        Control_attributes:
-          type: object
-          description: attributes associated with the controls unique to the standard
-        Severity:
-          type: string
-          description: severity of control data
-        Policy_mappings:
-          type: object
-          description: attributes of controls which dictate actions specific to corestack
-        Compliance_uri:
-          type: string
-          description: the compliance standard associated with the control
-        Control_name:
-          type: string
-          description: name of the control
-        Id:
-          type: object
-          description: unique DB id of the control
-      type: object
-    ControlsListData:
-      required:
-      - Audit_status
-      - Compliance_control_uri
-      - Compliance_uri
-      - Control_action_attributes
-      - Control_attributes
-      - Count_of_status
-      - Id
-      - Policy_mappings
-      properties:
-        Control_action_attributes:
-          type: object
-          description: attributes of controls which dictate actions specific to corestack
-        Count_of_status:
-          type: integer
-          description: the count of assessed service accounts for the control
-        Compliance_control_uri:
-          type: string
-          description: the unique identifier of the control in the tenant
-        Control_attributes:
-          type: object
-          description: attributes associated with the controls unique to the standard
-        Policy_mappings:
-          type: integer
-          description: count of policies mapped to the control
-        Compliance_uri:
-          type: string
-          description: the compliance standard associated with the control
-        Audit_status:
-          type: string
-          description: current audit status of the control
-        Id:
-          type: object
-          description: unique DB id of the control
-      type: object
-    ComplianceFilterResponse:
-      required:
-      - tenants
-      properties:
-        tenants:
-          description: Tenants data for compliance posture filters
-          $ref: '#/components/schemas/ComplianceStandard'
-      type: object
-    SecurityDashboardAccountFilters:
-      properties:
-        tenants:
-          type: array
-          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
-          items:
-            type: string
-        clouds:
-          type: array
-          description: Define the Cloud Providers to include.
-          items:
-            type: string
-            description: Cloud Provider to select
-            example: AWS
-            enum:
-            - AWS
-            - Azure
-            - AzureStack
-            - Azure_CSP
-            - Azure_CSP-Direct
-            - Azure_EA
-            - Azure_MCA
-            - Cloudstack
-            - GCP
-            - MS_VMM
-            - OCI
-            - Openstack
-            - PrivateCloud
-            - Rackspace
-            - VMware
-            - VMware_VCD
-            - vCenter
-            x-cs-enum-type: CloudServiceName
-        cloud_accounts:
-          type: array
-          description: Specify the Cloud Account IDs.
-          items:
-            type: string
-      type: object
-    ComplianceVisibilityTrendResponse:
-      required:
-      - data
-      - message
-      - status
-      properties:
-        status:
-          type: string
-          description: success
-        message:
-          type: string
-          description: Compliance Standard Trend
-        data:
-          type: object
-          description: data for compliance visibility trend
-      type: object
-    PolicyFailureData:
-      required:
-      - assessment_by
-      - policy_execution_status
-      - policy_job_id
-      - policy_name
-      - region
-      - resource_group
-      - status_reason
-      properties:
-        policy_name:
-          type: string
-          description: policy job name
-        policy_job_id:
-          type: string
-          description: policy job id
-        policy_execution_status:
-          type: string
-          description: policy execution status
-        status_reason:
-          type: string
-          description: status reason
-        assessment_by:
-          type: string
-          description: assessment by
-        region:
-          type: string
-          description: region
-        resource_group:
-          type: string
-          description: resource group
-      type: object
-    AssessmentSummaryData:
-      properties:
-        violations:
-          type: integer
-          description: Number of controls violated
-        failures:
-          type: integer
-          description: Number of controls that failed
-        completed:
-          type: integer
-          description: Number of controls that executed successfully
-        in_progress:
-          type: integer
-          description: Number of controls currently in progress
-      type: object
-    AssessmentHistoryResponse:
-      properties:
-        total_count:
-          type: integer
-          description: Number of controls in the standard
-        page_count:
-          type: integer
-          description: Page number
-        assessment_history:
-          type: array
-          description: list of assessment history entries.
-          items:
-            $ref: '#/components/schemas/AssessmentHistory'
-      type: object
-    ComplianceVisibilityResponse:
-      required:
-      - data
-      - status
-      properties:
-        status:
-          type: string
-          description: success
-        data:
-          type: object
-          description: list of visibility summary.
-      type: object
     ComplianceControlMappingResponse:
       required:
       - data
@@ -2189,106 +2261,38 @@ components:
           type: object
           description: data for compliance control mappings list
       type: object
-    ComplianceSummaryByPoliciesResponse:
-      required:
-      - page_count
-      - policies
-      - total_count
+    AssessmentHistoryResponse:
       properties:
         total_count:
-          type: string
-          description: total_count
+          type: integer
+          description: Number of controls in the standard
         page_count:
+          type: integer
+          description: Page number
+        assessment_history:
+          type: array
+          description: list of assessment history entries.
+          items:
+            $ref: '#/components/schemas/AssessmentHistory'
+      type: object
+    SecurityDashboardComplianceControlHealth:
+      properties:
+        control_family:
           type: string
-          description: page_count
-        policies:
-          type: object
-          description: policies
+          description: Name of Compliance Control Family
+        trend:
+          type: array
+          items:
+            $ref: '#/components/schemas/SecurityDashboardComplianceControlHealthTrend'
       type: object
-    ComplianceSummaryRequest:
-      required:
-      - tenant_id
+    SecurityDashboardComplianceSeverity:
       properties:
-        tenant_id:
-          type: array
-          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API
-          items:
-            type: string
-        services:
-          type: array
-          description: Allowed services
-          items:
-            type: string
-            description: Cloud Provider to select
-            example: AWS
-            enum:
-            - AWS
-            - Azure
-            - AzureStack
-            - Azure_CSP
-            - Azure_CSP-Direct
-            - Azure_EA
-            - Azure_MCA
-            - Cloudstack
-            - GCP
-            - MS_VMM
-            - OCI
-            - Openstack
-            - PrivateCloud
-            - Rackspace
-            - VMware
-            - VMware_VCD
-            - vCenter
-            x-cs-enum-type: CloudServiceName
-        cloud_accounts:
-          type: array
-          description: ID of the cloud account. This can be fetched from list cloud accounts API
-          items:
-            type: string
-        compliance_uri:
-          type: array
-          description: uri of compliance standard This can be fetched from the compliance standards list API call
-          items:
-            type: string
-      type: object
-    ComplianceDetailsForPoliciesRequest:
-      properties:
-        tenant_id:
-          type: array
-          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API
-          items:
-            type: string
-        services:
-          type: array
-          description: Allowed services
-          items:
-            type: string
-            description: Cloud Provider to select
-            example: AWS
-            enum:
-            - AWS
-            - Azure
-            - AzureStack
-            - Azure_CSP
-            - Azure_CSP-Direct
-            - Azure_EA
-            - Azure_MCA
-            - Cloudstack
-            - GCP
-            - MS_VMM
-            - OCI
-            - Openstack
-            - PrivateCloud
-            - Rackspace
-            - VMware
-            - VMware_VCD
-            - vCenter
-            x-cs-enum-type: CloudServiceName
-        cloud_accounts:
-          type: array
-          description: ID of the cloud account. This can be fetched from list cloud accounts API
-          items:
-            type: string
+        total:
+          type: integer
+          description: Total Severity Count
+        violations:
+          type: integer
+          description: Total Violations Count
       type: object
     ComplianceStandardResponse:
       required:
@@ -2306,35 +2310,23 @@ components:
           type: object
           description: execute data.
       type: object
-    ComplianceControlRequest:
+    ComplianceStandardsResponse:
       required:
-      - cloud_accounts
-      - compliance_control_uri
-      properties:
-        cloud_accounts:
-          type: array
-          description: ID of the cloud account. The ID is unique, it can be obtained from the list cloud account api.
-          items:
-            type: string
-        compliance_control_uri:
-          type: string
-          description: URI of compliance_control. This can be fetched from controls mapped under standards.
-      type: object
-    ComplianceControlResponse:
-      required:
-      - assessment_jobs_by_account
+      - data
       - message
       - status
       properties:
         status:
           type: string
-          description: success
+          description: Response status for compliance standards
         message:
           type: string
-          description: compliance control execute triggered
-        assessment_jobs_by_account:
-          type: object
-          description: execute data.
+          description: Response message for compliance standards
+        data:
+          type: array
+          description: Compliance Standards data list
+          items:
+            $ref: '#/components/schemas/ComplianceStandards'
       type: object
     ComplianceFilterRequest:
       required:
@@ -2346,26 +2338,32 @@ components:
           items:
             type: string
       type: object
-    CompliancePolicyDataCleanUpResponse:
+    ComplianceFilterPolicyResponse:
+      required:
+      - data
+      - message
+      - status
       properties:
-        policy_uris:
-          type: array
-          description: Compliance Policy uris
-          items:
-            type: string
+        status:
+          type: string
+          description: success
+        message:
+          type: string
+          description: Compliance Posture Policies list
+        data:
+          type: object
+          description: data for Compliance Posture Policies list
       type: object
-    PolicyJobExecutionStatusResponse:
+    SecurityDashboardComplianceStatus:
       properties:
-        total_count:
+        compliance_name:
           type: string
-        page_count:
-          type: string
-          description: page count
-        failures:
+          description: Name of Compliance
+        cloud_accounts_status:
           type: array
-          description: Reason for policy failure
+          description: Security Dashboard Compliance
           items:
-            $ref: '#/components/schemas/PolicyFailureData'
+            $ref: '#/components/schemas/SecurityDashboardCompliance'
       type: object
   securitySchemes:
     auth_token:

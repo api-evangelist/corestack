@@ -301,38 +301,61 @@ paths:
         required: true
 components:
   schemas:
-    StacksMarketplaceProductDefinition:
-      allOf:
-      - $ref: '#/components/schemas/StacksMarketplaceComponentBase'
-      - properties:
-          product:
-            description: Product definition
-            $ref: '#/components/schemas/StacksMarketplaceProductComponent'
-          plans:
-            type: array
-            description: Product plans
-            items:
-              $ref: '#/components/schemas/StacksMarketplacePlanComponent'
-          is_marketplace:
-            type: boolean
-            description: Whether the Product is Marketplace or Standalone
-        type: object
-    StacksMarketplacePlanComponent:
-      allOf:
-      - $ref: '#/components/schemas/StacksMarketplaceComponentDefinition'
-      - properties: {}
-        type: object
-    ListContext:
+    StacksMarketplaceBase:
       properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
+        sysId:
+          type: string
+          description: ID of the Stack Marketplace component
+        createdOn:
+          type: string
+          format: date-time
+          description: Created datetime for the component
+        updatedOn:
+          type: string
+          format: date-time
+          description: Updated datetime for the component
+        created_by:
+          type: string
+          description: Created by user ID
+        updated_by:
+          type: string
+          description: Updated by user ID
+      type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    StacksMarketplaceComponentDefinition:
+      properties:
+        sku:
+          type: string
+          description: External SKU for the component
+        name:
+          type: string
+          description: Component name
+        description:
+          type: string
+          description: Component description
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
       type: object
     StacksMarketplaceProductListSortCriteria:
       required:
@@ -350,27 +373,6 @@ components:
         ascending:
           type: boolean
       type: object
-    StacksMarketplaceComponentBase:
-      allOf:
-      - $ref: '#/components/schemas/StacksMarketplaceBase'
-      - properties:
-          tenant_id:
-            type: string
-            description: Tenant ID
-            x-cs-type: ObjectId
-        type: object
-    StacksMarketplaceComponentDefinition:
-      properties:
-        sku:
-          type: string
-          description: External SKU for the component
-        name:
-          type: string
-          description: Component name
-        description:
-          type: string
-          description: Component description
-      type: object
     StacksMarketplaceProductListRequest:
       properties:
         list_context:
@@ -384,6 +386,71 @@ components:
         filters:
           description: Filters for the request
           $ref: '#/components/schemas/StacksMarketplaceProductFilter'
+      type: object
+    StacksMarketplaceProductDefinition:
+      allOf:
+      - $ref: '#/components/schemas/StacksMarketplaceComponentBase'
+      - properties:
+          product:
+            description: Product definition
+            $ref: '#/components/schemas/StacksMarketplaceProductComponent'
+          plans:
+            type: array
+            description: Product plans
+            items:
+              $ref: '#/components/schemas/StacksMarketplacePlanComponent'
+          is_marketplace:
+            type: boolean
+            description: Whether the Product is Marketplace or Standalone
+        type: object
+    StacksMarketplaceComponentBase:
+      allOf:
+      - $ref: '#/components/schemas/StacksMarketplaceBase'
+      - properties:
+          tenant_id:
+            type: string
+            description: Tenant ID
+            x-cs-type: ObjectId
+        type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    StacksMarketplacePlanComponent:
+      allOf:
+      - $ref: '#/components/schemas/StacksMarketplaceComponentDefinition'
+      - properties: {}
+        type: object
+    StacksMarketplaceProductDefinitionBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/StacksMarketplaceProductDefinition'
       type: object
     QueryOperator:
       required:
@@ -845,50 +912,6 @@ components:
         subtype_name: WorkloadQueryWorkloadType
       - subtype_model: WorkloadQueryWorkloadId
         subtype_name: WorkloadQueryWorkloadId
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    StacksMarketplaceBase:
-      properties:
-        sysId:
-          type: string
-          description: ID of the Stack Marketplace component
-        createdOn:
-          type: string
-          format: date-time
-          description: Created datetime for the component
-        updatedOn:
-          type: string
-          format: date-time
-          description: Updated datetime for the component
-        created_by:
-          type: string
-          description: Created by user ID
-        updated_by:
-          type: string
-          description: Updated by user ID
-      type: object
-    ListResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    StacksMarketplaceProductComponent:
-      allOf:
-      - $ref: '#/components/schemas/StacksMarketplaceComponentDefinition'
-      - properties: {}
-        type: object
     StacksMarketplaceProductFilter:
       properties:
         tenant_id:
@@ -902,34 +925,11 @@ components:
           description: Query operator
           $ref: '#/components/schemas/QueryOperator'
       type: object
-    StacksMarketplaceProductDefinitionBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/StacksMarketplaceProductDefinition'
-      type: object
-    RecordIdentityBatchRequest:
-      properties:
-        ids:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
-      type: object
-    RecordIdentity:
-      properties:
-        sysId:
-          type: string
-          description: Unique Identifier of the tracked item
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Last update of the tracked item
-        table:
-          type: string
-          description: Context of the tracked item
-      type: object
+    StacksMarketplaceProductComponent:
+      allOf:
+      - $ref: '#/components/schemas/StacksMarketplaceComponentDefinition'
+      - properties: {}
+        type: object
   securitySchemes:
     auth_token:
       type: apiKey

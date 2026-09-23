@@ -490,7 +490,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/SelfServiceCatalogHierarchyComponent'
       summary: View Self Service Catalog Hierarchy
-      description: View Self Service Catalog Hierarchy
       operationId: ViewSelfServiceCatalogHierarchy
       security:
       - auth_token: []
@@ -562,7 +561,6 @@ paths:
                 items:
                   type: string
       summary: View Self Service Request Action Attributes
-      description: View Self Service Request Action Attributes
       operationId: viewSelfServiceRequestActionAttributes
       parameters:
       - name: action
@@ -583,36 +581,25 @@ paths:
       - Self Service
 components:
   schemas:
-    SelfServiceCatalogHierarchyComponent:
-      properties:
-        level1:
-          type: string
-          description: Catalog Classification First Level
-        level2:
-          type: string
-          description: Catalog Classification Second Level
-        level3:
-          type: string
-          description: Catalog Classification Third Level
-        classification_name:
-          type: string
-          description: Catalog Classification Name
-      type: object
-    ServiceCatalogGetDataModel:
-      required:
-      - data
-      properties:
-        data:
-          type: string
-          description: catalog type
-      type: object
-    CustomerDashboardReportModel:
+    ResourceCatalogGetDataModel:
       required:
       - data
       properties:
         data:
           type: object
-          description: catalog type
+          description: Resource Data
+      type: object
+    ResourceCatalogCreateDataModel:
+      required:
+      - data
+      - message
+      properties:
+        message:
+          type: string
+          description: Resource created
+        data:
+          type: string
+          description: Catalog Id
       type: object
     ResourceCatalogCostDataModel:
       required:
@@ -621,14 +608,6 @@ components:
         value:
           type: integer
           description: Cloud account resource cost. for example, 0.1, 10, etc
-      type: object
-    OrderHistoryReportModel:
-      required:
-      - data
-      properties:
-        data:
-          type: string
-          description: Order details
       type: object
     ResourceCatalogServiceLevelDataModel:
       required:
@@ -671,14 +650,6 @@ components:
           description: tenants information.
           $ref: '#/components/schemas/ResourceCatalogTenantDataModel'
       type: object
-    ResourceCatalogGetDataModel:
-      required:
-      - data
-      properties:
-        data:
-          type: object
-          description: Resource Data
-      type: object
     ModelError:
       required:
       - message
@@ -687,34 +658,21 @@ components:
           type: string
           description: Error response message.
       type: object
-    ResourceCatalogTenantDataModel:
-      properties:
-        location:
-          type: string
-          description: Location.for example, /subscriptions/subscription_id->'eg:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'/location/location->'eg:northeurope
-        resourcegroup:
-          type: string
-          description: Resource group. for example, /subscriptions/subscription_id->'eg:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'/resourceGroups/rg_name->'eg:default_rg
-      type: object
-    ResourceCatalogCreateDataModel:
-      required:
-      - data
-      - message
-      properties:
-        message:
-          type: string
-          description: Resource created
-        data:
-          type: string
-          description: Catalog Id
-      type: object
-    WorkSpaceReportModel:
+    CustomerDashboardReportModel:
       required:
       - data
       properties:
         data:
           type: object
-          description: Returned Workspace
+          description: catalog type
+      type: object
+    OrderHistoryReportModel:
+      required:
+      - data
+      properties:
+        data:
+          type: string
+          description: Order details
       type: object
     ResourceCatalogAttributeDataModel:
       required:
@@ -761,6 +719,46 @@ components:
         resource_id:
           type: string
           description: Specify the resource_id, This can be retrieved using the List Resource Catalog API
+      type: object
+    ResourceCatalogTenantDataModel:
+      properties:
+        location:
+          type: string
+          description: Location.for example, /subscriptions/subscription_id->'eg:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'/location/location->'eg:northeurope
+        resourcegroup:
+          type: string
+          description: Resource group. for example, /subscriptions/subscription_id->'eg:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'/resourceGroups/rg_name->'eg:default_rg
+      type: object
+    WorkSpaceReportModel:
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          description: Returned Workspace
+      type: object
+    ServiceCatalogGetDataModel:
+      required:
+      - data
+      properties:
+        data:
+          type: string
+          description: catalog type
+      type: object
+    SelfServiceCatalogHierarchyComponent:
+      properties:
+        level1:
+          type: string
+          description: Catalog Classification First Level
+        level2:
+          type: string
+          description: Catalog Classification Second Level
+        level3:
+          type: string
+          description: Catalog Classification Third Level
+        classification_name:
+          type: string
+          description: Catalog Classification Name
       type: object
   securitySchemes:
     auth_token:

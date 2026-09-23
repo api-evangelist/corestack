@@ -219,57 +219,6 @@ paths:
       - Account Governance
 components:
   schemas:
-    AssessmentValidationRequestDataModel:
-      required:
-      - category
-      - validation_type
-      properties:
-        validation_type:
-          type: string
-          description: Type of validation for the cloud account. If post_onboarding is selected, then the category can only be cost/access/resource/operations/security. Post Onboarding applies for Governance Configuration
-          example: assessment
-          enum:
-          - assessment
-          - post_onboarding
-          x-cs-enum-type: ValidationType
-        category:
-          type: string
-          description: Category of assessment validation for the cloud account
-          example: operations
-          enum:
-          - operations
-          - security
-          - access
-          - cost
-          - resource
-          - compliance
-          x-cs-enum-type: AssessmentCategory
-      type: object
-    ConfigValidationSummary:
-      properties:
-        region:
-          type: string
-          description: Region
-        recorder_status:
-          type: string
-          description: Recorder status
-          example: running
-          enum:
-          - running
-          - not_running
-          - error
-          x-cs-enum-type: ConfigValidationRecorderStatus
-        role_name:
-          type: string
-          description: Role name
-        availability_status:
-          type: string
-          description: Availability status
-          example: success
-          enum:
-          - success
-          x-cs-enum-type: ConfigValidationAvailabilityStatus
-      type: object
     AssessmentResultResponseDataModel:
       required:
       - grade
@@ -297,6 +246,57 @@ components:
         history:
           type: object
           description: History of the assessment for the cloud account on OSCAR
+      type: object
+    ConfigValidationSummary:
+      properties:
+        region:
+          type: string
+          description: Region
+        recorder_status:
+          type: string
+          description: Recorder status
+          example: running
+          enum:
+          - running
+          - not_running
+          - error
+          x-cs-enum-type: ConfigValidationRecorderStatus
+        role_name:
+          type: string
+          description: Role name
+        availability_status:
+          type: string
+          description: Availability status
+          example: success
+          enum:
+          - success
+          x-cs-enum-type: ConfigValidationAvailabilityStatus
+      type: object
+    AssessmentValidationRequestDataModel:
+      required:
+      - category
+      - validation_type
+      properties:
+        validation_type:
+          type: string
+          description: Type of validation for the cloud account. If post_onboarding is selected, then the category can only be cost/access/resource/operations/security. Post Onboarding applies for Governance Configuration
+          example: assessment
+          enum:
+          - assessment
+          - post_onboarding
+          x-cs-enum-type: ValidationType
+        category:
+          type: string
+          description: Category of assessment validation for the cloud account
+          example: operations
+          enum:
+          - operations
+          - security
+          - access
+          - cost
+          - resource
+          - compliance
+          x-cs-enum-type: AssessmentCategory
       type: object
     ModelError:
       required:

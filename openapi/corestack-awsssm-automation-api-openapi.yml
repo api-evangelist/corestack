@@ -202,56 +202,6 @@ paths:
       - AwsSsm Automation
 components:
   schemas:
-    ListContext:
-      properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
-      type: object
-    AwsSsmCommandDocumentTarget:
-      properties:
-        key:
-          type: string
-          description: 'Supported keys: InstanceIds/tag/resource-groups'
-        values:
-          type: array
-          description: 'Supported values: <instance-id-1>,<instance-id-2>/<my-tag-value-1>,<my-tag-value-2>/<resource-type-1>,<resource-type-2>'
-          items:
-            type: string
-      type: object
-    AwsSsmExecutionStepBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/AwsSsmStepExecution'
-      type: object
-    AwsSsmCommandDocumentAlarm:
-      properties:
-        name:
-          type: string
-          description: The name of CloudWatch alarm.
-      type: object
-    AwsSsmStepFailureDetail:
-      properties:
-        stage:
-          type: string
-          description: Stage of the execution when the failure occurred
-        type:
-          type: string
-          description: type of the failure
-        details:
-          type: object
-          additionalProperties:
-            type: string
-      type: object
     AwsSsmBaseExecuteDocumentRequest:
       required:
       - cloud_account_id
@@ -302,11 +252,14 @@ components:
           type: string
           description: Service Now tracking id
       type: object
-    AwsSsmExecuteDocumentResponse:
+    KeyValuePair:
       properties:
-        execution_id:
+        key:
           type: string
-          description: Automation Execution Id
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
       type: object
     AwsSsmDocumentAlarmConfiguration:
       properties:
@@ -318,6 +271,110 @@ components:
           description: List of Alarms.
           items:
             $ref: '#/components/schemas/AwsSsmCommandDocumentAlarm'
+      type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    AwsSsmExecuteAutomationDocumentRequest:
+      allOf:
+      - $ref: '#/components/schemas/AwsSsmBaseExecuteDocumentRequest'
+      - properties:
+          client_token:
+            type: string
+            description: Client auth token.
+          mode:
+            type: string
+            description: Execution mode of the document.
+          target_parameter_name:
+            type: string
+            description: The name of the parameter used as the target resource for the rate-controlled execution.
+          targets:
+            type: array
+            description: An array of search criteria that targets managed nodes using a Key,Value combination.
+            items:
+              $ref: '#/components/schemas/AwsSsmCommandDocumentTarget'
+          target_maps:
+            type: object
+            description: A key-value mapping of document parameters to target resources.
+            additionalProperties:
+              type: array
+              items:
+                type: string
+          target_locations:
+            type: array
+            description: A location is a combination of AWS Regions and/or AWS accounts.
+            items:
+              $ref: '#/components/schemas/AwsSsmExecuteAutomationTargetLocation'
+          tags:
+            type: array
+            description: List of tag key/value pairs
+            items:
+              $ref: '#/components/schemas/KeyValuePair'
+        type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    AwsSsmCommandDocumentTarget:
+      properties:
+        key:
+          type: string
+          description: 'Supported keys: InstanceIds/tag/resource-groups'
+        values:
+          type: array
+          description: 'Supported values: <instance-id-1>,<instance-id-2>/<my-tag-value-1>,<my-tag-value-2>/<resource-type-1>,<resource-type-2>'
+          items:
+            type: string
+      type: object
+    AwsSsmCommandDocumentAlarm:
+      properties:
+        name:
+          type: string
+          description: The name of CloudWatch alarm.
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
       type: object
     AwsSsmExecuteAutomationTargetLocation:
       properties:
@@ -344,24 +401,11 @@ components:
           type: string
           description: The maximum number of errors allowed before the system stops queueing additional Automation executions for the currently running Automation.
       type: object
-    ModelError:
-      required:
-      - message
+    AwsSsmExecuteDocumentResponse:
       properties:
-        message:
+        execution_id:
           type: string
-          description: Error response message.
-      type: object
-    ListResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
+          description: Automation Execution Id
       type: object
     AwsSsmStepExecution:
       properties:
@@ -442,70 +486,26 @@ components:
           description: Information about the Automation failure
           $ref: '#/components/schemas/AwsSsmStepFailureDetail'
       type: object
-    AwsSsmExecuteAutomationDocumentRequest:
-      allOf:
-      - $ref: '#/components/schemas/AwsSsmBaseExecuteDocumentRequest'
-      - properties:
-          client_token:
-            type: string
-            description: Client auth token.
-          mode:
-            type: string
-            description: Execution mode of the document.
-          target_parameter_name:
-            type: string
-            description: The name of the parameter used as the target resource for the rate-controlled execution.
-          targets:
-            type: array
-            description: An array of search criteria that targets managed nodes using a Key,Value combination.
-            items:
-              $ref: '#/components/schemas/AwsSsmCommandDocumentTarget'
-          target_maps:
-            type: object
-            description: A key-value mapping of document parameters to target resources.
-            additionalProperties:
-              type: array
-              items:
-                type: string
-          target_locations:
-            type: array
-            description: A location is a combination of AWS Regions and/or AWS accounts.
-            items:
-              $ref: '#/components/schemas/AwsSsmExecuteAutomationTargetLocation'
-          tags:
-            type: array
-            description: List of tag key/value pairs
-            items:
-              $ref: '#/components/schemas/KeyValuePair'
-        type: object
-    RecordIdentityBatchRequest:
+    AwsSsmExecutionStepBatchResponse:
       properties:
-        ids:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AwsSsmStepExecution'
       type: object
-    KeyValuePair:
+    AwsSsmStepFailureDetail:
       properties:
-        key:
+        stage:
           type: string
-          description: Key of the pair
-        value:
+          description: Stage of the execution when the failure occurred
+        type:
           type: string
-          description: Value of the pair
-      type: object
-    RecordIdentity:
-      properties:
-        sysId:
-          type: string
-          description: Unique Identifier of the tracked item
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Last update of the tracked item
-        table:
-          type: string
-          description: Context of the tracked item
+          description: type of the failure
+        details:
+          type: object
+          additionalProperties:
+            type: string
       type: object
   securitySchemes:
     auth_token:

@@ -377,27 +377,51 @@ paths:
       - Access
 components:
   schemas:
-    VisibilityFilterResponse:
+    ViolationCategoryModel:
       required:
-      - cloud_accounts
-      - guardrails
-      - tenants
+      - standards
+      - utilization
       properties:
-        cloud_accounts:
+        utilization:
+          description: Contains the category and the number of violations under Utilization
+          $ref: '#/components/schemas/SummaryModel'
+        standards:
+          description: Contains the category and the number of violations under Standards
+          $ref: '#/components/schemas/SummaryModel'
+      type: object
+    ViewViolationResponse:
+      required:
+      - details
+      - page_count
+      - total_count
+      properties:
+        total_count:
+          type: integer
+          description: Total violations count
+        page_count:
+          type: string
+          description: Count of number of pages
+        details:
           type: array
-          description: Service accounts to filter violations based on service accounts
+          description: Details of violation
           items:
-            $ref: '#/components/schemas/ServiceAccountsModel'
-        guardrails:
-          type: array
-          description: Guardrail to filter violations based on guardrail
-          items:
-            $ref: '#/components/schemas/GuardrailModel'
-        tenants:
-          type: array
-          description: Tenants to filter violations based on tenant
-          items:
-            $ref: '#/components/schemas/ProjectsModel'
+            $ref: '#/components/schemas/ViewViolationModel'
+      type: object
+    ServiceAccountsModel:
+      required:
+      - cloud_account_id
+      - cloud_account_name
+      - tenant_id
+      properties:
+        cloud_account_id:
+          type: string
+          description: ID of the cloud account
+        tenant_id:
+          type: string
+          description: ID of the tenant
+        cloud_account_name:
+          type: string
+          description: Name of the cloud account
       type: object
     ModelError:
       required:
@@ -422,52 +446,6 @@ components:
         label:
           type: string
           description: Label of the guardrail
-      type: object
-    SummaryModel:
-      required:
-      - category
-      - count
-      properties:
-        count:
-          type: string
-          description: Violations count for each violation category, i.e. Utilization/Standards
-        category:
-          type: string
-          description: Category of violations i.e Utilization/Standards
-      type: object
-    SummaryCountResponse:
-      required:
-      - violations
-      properties:
-        violations:
-          description: Contains the summary of violations shared under Utilization/Standards for AWS/Azure
-          $ref: '#/components/schemas/ViolationCategoryModel'
-      type: object
-    DetailsRequest:
-      required:
-      - all_tenants
-      properties:
-        tenant_id:
-          type: string
-          description: 'ID of the tenant to filter the violation detail.
-
-            Please get tenant_id from cloud_accounts of AccessVisibilityFilters in Access Visibility Dashboard'
-        cloud_account_id:
-          type: string
-          description: 'ID of the cloud account to filter the violation detail.
-
-            Please get cloud_account_id from cloud_accounts of AccessVisibilityFilters in Access Visibility Dashboard'
-        all_tenants:
-          type: string
-          description: To get violations from all the tenants, please give Yes. If selected No, then it is mandatory to provide tenant_id and cloud_account_id
-          example: 'Yes'
-          enum:
-          - 'Yes'
-          - 'No'
-          x-cs-enum-type: YesNo
-        search:
-          type: string
-          description: Search by account_name wise
       type: object
     ViewViolationModel:
       required:
@@ -509,63 +487,77 @@ components:
           type: string
           description: Severity of the violation
       type: object
-    ViewViolationResponse:
+    VisibilityFilterResponse:
       required:
-      - details
-      - page_count
-      - total_count
+      - cloud_accounts
+      - guardrails
+      - tenants
       properties:
-        total_count:
-          type: integer
-          description: Total violations count
-        page_count:
-          type: string
-          description: Count of number of pages
-        details:
+        cloud_accounts:
           type: array
-          description: Details of violation
+          description: Service accounts to filter violations based on service accounts
           items:
-            $ref: '#/components/schemas/ViewViolationModel'
+            $ref: '#/components/schemas/ServiceAccountsModel'
+        guardrails:
+          type: array
+          description: Guardrail to filter violations based on guardrail
+          items:
+            $ref: '#/components/schemas/GuardrailModel'
+        tenants:
+          type: array
+          description: Tenants to filter violations based on tenant
+          items:
+            $ref: '#/components/schemas/ProjectsModel'
       type: object
-    ServiceAccountsModel:
+    DetailsRequest:
       required:
-      - cloud_account_id
-      - cloud_account_name
-      - tenant_id
+      - all_tenants
       properties:
+        tenant_id:
+          type: string
+          description: 'ID of the tenant to filter the violation detail.
+
+            Please get tenant_id from cloud_accounts of AccessVisibilityFilters in Access Visibility Dashboard'
         cloud_account_id:
           type: string
-          description: ID of the cloud account
-        tenant_id:
+          description: 'ID of the cloud account to filter the violation detail.
+
+            Please get cloud_account_id from cloud_accounts of AccessVisibilityFilters in Access Visibility Dashboard'
+        all_tenants:
           type: string
-          description: ID of the tenant
-        cloud_account_name:
+          description: To get violations from all the tenants, please give Yes. If selected No, then it is mandatory to provide tenant_id and cloud_account_id
+          example: 'Yes'
+          enum:
+          - 'Yes'
+          - 'No'
+          x-cs-enum-type: YesNo
+        search:
           type: string
-          description: Name of the cloud account
+          description: Search by account_name wise
       type: object
-    ProjectsModel:
+    AccessSummaryDashboard:
       required:
-      - tenant_id
-      - tenant_name
+      - service_name
+      - violation
       properties:
-        tenant_name:
+        service_name:
           type: string
-          description: Name of the tenant
-        tenant_id:
-          type: string
-          description: ID of the tenant
+          description: Name of the Service
+        violation:
+          type: object
+          description: Contains the summary of violations
       type: object
-    ViolationCategoryModel:
+    SummaryModel:
       required:
-      - standards
-      - utilization
+      - category
+      - count
       properties:
-        utilization:
-          description: Contains the category and the number of violations under Utilization
-          $ref: '#/components/schemas/SummaryModel'
-        standards:
-          description: Contains the category and the number of violations under Standards
-          $ref: '#/components/schemas/SummaryModel'
+        count:
+          type: string
+          description: Violations count for each violation category, i.e. Utilization/Standards
+        category:
+          type: string
+          description: Category of violations i.e Utilization/Standards
       type: object
     DetailsResponse:
       required:
@@ -585,17 +577,25 @@ components:
           items:
             type: object
       type: object
-    AccessSummaryDashboard:
+    ProjectsModel:
       required:
-      - service_name
-      - violation
+      - tenant_id
+      - tenant_name
       properties:
-        service_name:
+        tenant_name:
           type: string
-          description: Name of the Service
-        violation:
-          type: object
-          description: Contains the summary of violations
+          description: Name of the tenant
+        tenant_id:
+          type: string
+          description: ID of the tenant
+      type: object
+    SummaryCountResponse:
+      required:
+      - violations
+      properties:
+        violations:
+          description: Contains the summary of violations shared under Utilization/Standards for AWS/Azure
+          $ref: '#/components/schemas/ViolationCategoryModel'
       type: object
   securitySchemes:
     auth_token:

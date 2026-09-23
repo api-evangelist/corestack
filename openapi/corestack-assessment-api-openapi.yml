@@ -109,24 +109,13 @@ paths:
       - Assessment
 components:
   schemas:
-    AssessmentValidationResponseList:
+    ModelError:
       required:
-      - assessment_validation_list
+      - message
       properties:
-        assessment_validation_list:
-          type: array
-          description: Assessment Validation data
-          items:
-            $ref: '#/components/schemas/AssessmentValidationResponse'
-      type: object
-    AssessmentComplianceResponse:
-      properties:
-        configuration_status:
+        message:
           type: string
-          description: Configuration Status
-        summary:
-          type: object
-          description: Summary of validation result
+          description: Error response message.
       type: object
     AssessmentValidationRequest:
       required:
@@ -153,13 +142,24 @@ components:
           type: string
           description: Type of Validation
       type: object
-    ModelError:
-      required:
-      - message
+    AssessmentComplianceResponse:
       properties:
-        message:
+        configuration_status:
           type: string
-          description: Error response message.
+          description: Configuration Status
+        summary:
+          type: object
+          description: Summary of validation result
+      type: object
+    AssessmentValidationResponseList:
+      required:
+      - assessment_validation_list
+      properties:
+        assessment_validation_list:
+          type: array
+          description: Assessment Validation data
+          items:
+            $ref: '#/components/schemas/AssessmentValidationResponse'
       type: object
     AssessmentValidationResponse:
       required:

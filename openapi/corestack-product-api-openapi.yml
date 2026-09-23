@@ -394,6 +394,115 @@ components:
           - vulnerability_analytics
           x-cs-enum-type: ActionEnum
       type: object
+    ProductDetails:
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Name of the product
+          example: AppSecOps
+          enum:
+          - AppSecOps
+          - Assessments
+          - CloudOps
+          - FinOps
+          - Product_Admin
+          - SecOps
+          - Self Service
+          - StackOps
+          x-cs-enum-type: ProductEnum
+        description:
+          type: string
+          description: Description of the product
+        features:
+          type: array
+          items:
+            type: string
+            description: Feature for the account
+            example: appsecops__onboarding
+            enum:
+            - appsecops__onboarding
+            - assessments__wellarchitected
+            - assessments__wellarchitected__auto_assessment
+            - assessments__wellarchitected__auto_assessment__aws_sync
+            - assessments__wellarchitected__custom_framework__aws_sync
+            - cloudops__activity
+            - cloudops__activity__periodic
+            - cloudops__activity__real_time_sync_read
+            - cloudops__activity__real_time_sync_write
+            - cloudops__backup_management
+            - cloudops__cloudwatch_agent
+            - cloudops__monitoring_alerts
+            - cloudops__monitoring_alerts__periodic
+            - cloudops__monitoring_alerts__real_time_sync_read
+            - cloudops__monitoring_alerts__real_time_sync_write
+            - cloudops__patch_management
+            - cloudops__runbooks
+            - cloudops__utilization
+            - core__inventory
+            - core__inventory__management
+            - core__policy_engine
+            - core__policy_engine__aws_config
+            - core__policy_engine__azure_policy
+            - core__resource_discovery
+            - core__resource_discovery_extra
+            - core__tagging_governance
+            - core__tagging_governance_extra
+            - finops__assessments
+            - finops__azurehybridbenefit_recommendations
+            - finops__budget
+            - finops__cloud_native_recommendations
+            - finops__cost_anomaly
+            - finops__cost_processing
+            - finops__cost_savings
+            - finops__enterprise_discount_program
+            - finops__reservation
+            - finops__right_size_recommendations
+            - finops__savings_plans
+            - finops__schedule_recommendations
+            - governance__request
+            - integration__application_performance_monitoring
+            - integration__azure_security_graph
+            - integration__azure_sentinel
+            - integration__tenable_nessus
+            - secops__access
+            - secops__aws_security_hub
+            - secops__cloud_native_security_information_event_management
+            - secops__compliance
+            - secops__threats
+            - secops__threats__posture_read
+            - secops__threats__posture_write
+            - secops__threats__realtime_alerts_read
+            - secops__threats__realtime_alerts_write
+            - secops__vulnerabilities
+            - secops__vulnerabilities__read
+            - secops__vulnerabilities__write
+            - selfservice__governance
+            - stackops
+            - stackops__deployment
+            - system__roles
+            x-cs-enum-type: ServiceAccountFeature
+        role_templates:
+          type: array
+          description: Role templates mapped for the product
+          items:
+            type: string
+      type: object
+    ProductBundleDetails:
+      properties:
+        name:
+          type: string
+          description: Name of the product bundle
+        description:
+          type: string
+          description: Description of the product bundle
+        products:
+          type: array
+          description: Products included in the bundle
+          items:
+            type: string
+      type: object
     ServiceAccountFeatureRequirementPerProvider:
       properties:
         provider:
@@ -611,359 +720,6 @@ components:
           description: Cloud Access Policies required for this Provider
           items:
             $ref: '#/components/schemas/ServiceAccountCloudAccessPolicy'
-      type: object
-    ProductBundleDetails:
-      properties:
-        name:
-          type: string
-          description: Name of the product bundle
-        description:
-          type: string
-          description: Description of the product bundle
-        products:
-          type: array
-          description: Products included in the bundle
-          items:
-            type: string
-      type: object
-    ServiceAccountCloudAccessPolicy:
-      properties:
-        access_type:
-          type: string
-          description: Cloud access type to select
-          example: read
-          enum:
-          - read
-          - write
-          x-cs-enum-type: CloudAccountAccessType
-        access_policy:
-          type: string
-          description: Cloud Access Policy
-      type: object
-    RoleTemplatesDetails:
-      properties:
-        name:
-          type: string
-          description: Name of the role_template
-        role:
-          type: string
-          description: Role of the template defined
-        description:
-          type: string
-          description: Description of the role template
-        policies:
-          type: array
-          description: List of policy defined for corresponding role template
-          items:
-            $ref: '#/components/schemas/PolicyActionPair'
-        cloud_services:
-          type: array
-          description: List of cloud services supported for the role template
-          items:
-            type: string
-            description: Cloud Provider to select
-            example: AWS
-            enum:
-            - AWS
-            - Azure
-            - AzureStack
-            - Azure_CSP
-            - Azure_CSP-Direct
-            - Azure_EA
-            - Azure_MCA
-            - Cloudstack
-            - GCP
-            - MS_VMM
-            - OCI
-            - Openstack
-            - PrivateCloud
-            - Rackspace
-            - VMware
-            - VMware_VCD
-            - vCenter
-            x-cs-enum-type: CloudServiceName
-        integrated_tools:
-          type: array
-          description: List of integrated tools supported for the role template
-          items:
-            type: string
-            description: Integrated Tool to select
-            example: Anomaly_Detector
-            enum:
-            - Anomaly_Detector
-            - AppDynamics
-            - App_Insights
-            - ArrowSphere
-            - Azure_Devops
-            - Azure_Security_Graph
-            - Azure_Sentinel
-            - Corestack
-            - DockerHub
-            - ElasticSearch
-            - Freshservice
-            - GitHub
-            - JIRA_DataCenter
-            - JIRA_ServiceDesk
-            - JIRA_ServiceManagement
-            - Jenkins
-            - Logstash
-            - Microsoft_Teams
-            - Nagios
-            - Newrelic
-            - Prometheus
-            - Qualys
-            - RedHat_Satellite
-            - ServiceNow
-            - TCL_ITSM
-            - Tenable_Nessus
-            - ZOHO_ServiceDesk
-            - Zabbix
-            x-cs-enum-type: IntegratedToolName
-        resources:
-          type: array
-          description: List of resources supported for the role template
-          items:
-            type: string
-            description: Resource Service to select
-            example: kubernetes_cluster
-            enum:
-            - kubernetes_cluster
-            x-cs-enum-type: ResourceName
-        saas_services:
-          type: array
-          description: List of SaaS services supported for the role template
-          items:
-            type: string
-            description: SaaS Service to select
-            example: Anthropic
-            enum:
-            - Anthropic
-            - OpenAI
-            - Databricks
-            - Snowflake
-            - CircleCI
-            - Datadog
-            - Dropbox
-            - Dynatrace
-            - Elastic
-            - Grafana
-            - IBM_Tencent
-            - Microsoft_Teams
-            - New_Relic
-            - Okta
-            - SaasCustomTool
-            - Salesforce_Sales_Cloud
-            - Splunk
-            x-cs-enum-type: SaasServiceName
-      type: object
-    ProductDetails:
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: Name of the product
-          example: AppSecOps
-          enum:
-          - AppSecOps
-          - Assessments
-          - CloudOps
-          - FinOps
-          - Product_Admin
-          - SecOps
-          - Self Service
-          - StackOps
-          x-cs-enum-type: ProductEnum
-        description:
-          type: string
-          description: Description of the product
-        features:
-          type: array
-          items:
-            type: string
-            description: Feature for the account
-            example: appsecops__onboarding
-            enum:
-            - appsecops__onboarding
-            - assessments__wellarchitected
-            - assessments__wellarchitected__auto_assessment
-            - assessments__wellarchitected__auto_assessment__aws_sync
-            - assessments__wellarchitected__custom_framework__aws_sync
-            - cloudops__activity
-            - cloudops__activity__periodic
-            - cloudops__activity__real_time_sync_read
-            - cloudops__activity__real_time_sync_write
-            - cloudops__backup_management
-            - cloudops__cloudwatch_agent
-            - cloudops__monitoring_alerts
-            - cloudops__monitoring_alerts__periodic
-            - cloudops__monitoring_alerts__real_time_sync_read
-            - cloudops__monitoring_alerts__real_time_sync_write
-            - cloudops__patch_management
-            - cloudops__runbooks
-            - cloudops__utilization
-            - core__inventory
-            - core__inventory__management
-            - core__policy_engine
-            - core__policy_engine__aws_config
-            - core__policy_engine__azure_policy
-            - core__resource_discovery
-            - core__resource_discovery_extra
-            - core__tagging_governance
-            - core__tagging_governance_extra
-            - finops__assessments
-            - finops__azurehybridbenefit_recommendations
-            - finops__budget
-            - finops__cloud_native_recommendations
-            - finops__cost_anomaly
-            - finops__cost_processing
-            - finops__cost_savings
-            - finops__enterprise_discount_program
-            - finops__reservation
-            - finops__right_size_recommendations
-            - finops__savings_plans
-            - finops__schedule_recommendations
-            - governance__request
-            - integration__application_performance_monitoring
-            - integration__azure_security_graph
-            - integration__azure_sentinel
-            - integration__tenable_nessus
-            - secops__access
-            - secops__aws_security_hub
-            - secops__cloud_native_security_information_event_management
-            - secops__compliance
-            - secops__threats
-            - secops__threats__posture_read
-            - secops__threats__posture_write
-            - secops__threats__realtime_alerts_read
-            - secops__threats__realtime_alerts_write
-            - secops__vulnerabilities
-            - secops__vulnerabilities__read
-            - secops__vulnerabilities__write
-            - selfservice__governance
-            - stackops
-            - stackops__deployment
-            - system__roles
-            x-cs-enum-type: ServiceAccountFeature
-        role_templates:
-          type: array
-          description: Role templates mapped for the product
-          items:
-            type: string
-      type: object
-    ServiceAccountFeatureRequirement:
-      properties:
-        feature:
-          type: string
-          description: CoreStack Feature
-          example: appsecops__onboarding
-          enum:
-          - appsecops__onboarding
-          - assessments__wellarchitected
-          - assessments__wellarchitected__auto_assessment
-          - assessments__wellarchitected__auto_assessment__aws_sync
-          - assessments__wellarchitected__custom_framework__aws_sync
-          - cloudops__activity
-          - cloudops__activity__periodic
-          - cloudops__activity__real_time_sync_read
-          - cloudops__activity__real_time_sync_write
-          - cloudops__backup_management
-          - cloudops__cloudwatch_agent
-          - cloudops__monitoring_alerts
-          - cloudops__monitoring_alerts__periodic
-          - cloudops__monitoring_alerts__real_time_sync_read
-          - cloudops__monitoring_alerts__real_time_sync_write
-          - cloudops__patch_management
-          - cloudops__runbooks
-          - cloudops__utilization
-          - core__inventory
-          - core__inventory__management
-          - core__policy_engine
-          - core__policy_engine__aws_config
-          - core__policy_engine__azure_policy
-          - core__resource_discovery
-          - core__resource_discovery_extra
-          - core__tagging_governance
-          - core__tagging_governance_extra
-          - finops__assessments
-          - finops__azurehybridbenefit_recommendations
-          - finops__budget
-          - finops__cloud_native_recommendations
-          - finops__cost_anomaly
-          - finops__cost_processing
-          - finops__cost_savings
-          - finops__enterprise_discount_program
-          - finops__reservation
-          - finops__right_size_recommendations
-          - finops__savings_plans
-          - finops__schedule_recommendations
-          - governance__request
-          - integration__application_performance_monitoring
-          - integration__azure_security_graph
-          - integration__azure_sentinel
-          - integration__tenable_nessus
-          - secops__access
-          - secops__aws_security_hub
-          - secops__cloud_native_security_information_event_management
-          - secops__compliance
-          - secops__threats
-          - secops__threats__posture_read
-          - secops__threats__posture_write
-          - secops__threats__realtime_alerts_read
-          - secops__threats__realtime_alerts_write
-          - secops__vulnerabilities
-          - secops__vulnerabilities__read
-          - secops__vulnerabilities__write
-          - selfservice__governance
-          - stackops
-          - stackops__deployment
-          - system__roles
-          x-cs-enum-type: ServiceAccountFeature
-        access_type:
-          type: string
-          description: Limit to matching access types
-          example: read
-          enum:
-          - read
-          - write
-          x-cs-enum-type: CloudAccountAccessType
-        providers:
-          type: array
-          description: Requirements for this feature, based on Provider
-          items:
-            $ref: '#/components/schemas/ServiceAccountFeatureRequirementPerProvider'
-        executor:
-          type: string
-          description: Executor responsible for this feature
-          example: AI
-          enum:
-          - AI
-          - AI_AGENT
-          - AI_BG
-          - BROKER
-          - COMPLIANCE
-          - COST
-          - COST_BG
-          - COST_BG_CLOUD_BILLING
-          - COST_BG_K8S_BILLING
-          - FEATURE_FLAGS
-          - GOVERNANCE
-          - HEATSTACK
-          - HEATSTACK_BG
-          - IDENTITY
-          - IDENTITY_BG
-          - OPERATIONS
-          - REPORT_GENERATION
-          - RESOURCE_INVENTORY
-          - RESOURCE_INVENTORY_BG
-          - SECURITY
-          x-cs-enum-type: BackgroundJobExecutor
-        system_only:
-          type: boolean
-          description: If set, managed by the system
-        all_products:
-          type: boolean
-          description: If set, allowed in any account
       type: object
     ModelError:
       required:
@@ -1203,6 +959,250 @@ components:
         subtype_name: ServiceAccountNativeDetailsForCustomSaasTool
       - subtype_model: ServiceAccountNativeDetailsForZabbix
         subtype_name: ServiceAccountNativeDetailsForZabbix
+    ServiceAccountFeatureRequirement:
+      properties:
+        feature:
+          type: string
+          description: CoreStack Feature
+          example: appsecops__onboarding
+          enum:
+          - appsecops__onboarding
+          - assessments__wellarchitected
+          - assessments__wellarchitected__auto_assessment
+          - assessments__wellarchitected__auto_assessment__aws_sync
+          - assessments__wellarchitected__custom_framework__aws_sync
+          - cloudops__activity
+          - cloudops__activity__periodic
+          - cloudops__activity__real_time_sync_read
+          - cloudops__activity__real_time_sync_write
+          - cloudops__backup_management
+          - cloudops__cloudwatch_agent
+          - cloudops__monitoring_alerts
+          - cloudops__monitoring_alerts__periodic
+          - cloudops__monitoring_alerts__real_time_sync_read
+          - cloudops__monitoring_alerts__real_time_sync_write
+          - cloudops__patch_management
+          - cloudops__runbooks
+          - cloudops__utilization
+          - core__inventory
+          - core__inventory__management
+          - core__policy_engine
+          - core__policy_engine__aws_config
+          - core__policy_engine__azure_policy
+          - core__resource_discovery
+          - core__resource_discovery_extra
+          - core__tagging_governance
+          - core__tagging_governance_extra
+          - finops__assessments
+          - finops__azurehybridbenefit_recommendations
+          - finops__budget
+          - finops__cloud_native_recommendations
+          - finops__cost_anomaly
+          - finops__cost_processing
+          - finops__cost_savings
+          - finops__enterprise_discount_program
+          - finops__reservation
+          - finops__right_size_recommendations
+          - finops__savings_plans
+          - finops__schedule_recommendations
+          - governance__request
+          - integration__application_performance_monitoring
+          - integration__azure_security_graph
+          - integration__azure_sentinel
+          - integration__tenable_nessus
+          - secops__access
+          - secops__aws_security_hub
+          - secops__cloud_native_security_information_event_management
+          - secops__compliance
+          - secops__threats
+          - secops__threats__posture_read
+          - secops__threats__posture_write
+          - secops__threats__realtime_alerts_read
+          - secops__threats__realtime_alerts_write
+          - secops__vulnerabilities
+          - secops__vulnerabilities__read
+          - secops__vulnerabilities__write
+          - selfservice__governance
+          - stackops
+          - stackops__deployment
+          - system__roles
+          x-cs-enum-type: ServiceAccountFeature
+        access_type:
+          type: string
+          description: Limit to matching access types
+          example: read
+          enum:
+          - read
+          - write
+          x-cs-enum-type: CloudAccountAccessType
+        providers:
+          type: array
+          description: Requirements for this feature, based on Provider
+          items:
+            $ref: '#/components/schemas/ServiceAccountFeatureRequirementPerProvider'
+        executor:
+          type: string
+          description: Executor responsible for this feature
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        system_only:
+          type: boolean
+          description: If set, managed by the system
+        all_products:
+          type: boolean
+          description: If set, allowed in any account
+      type: object
+    RoleTemplatesDetails:
+      properties:
+        name:
+          type: string
+          description: Name of the role_template
+        role:
+          type: string
+          description: Role of the template defined
+        description:
+          type: string
+          description: Description of the role template
+        policies:
+          type: array
+          description: List of policy defined for corresponding role template
+          items:
+            $ref: '#/components/schemas/PolicyActionPair'
+        cloud_services:
+          type: array
+          description: List of cloud services supported for the role template
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        integrated_tools:
+          type: array
+          description: List of integrated tools supported for the role template
+          items:
+            type: string
+            description: Integrated Tool to select
+            example: Anomaly_Detector
+            enum:
+            - Anomaly_Detector
+            - AppDynamics
+            - App_Insights
+            - ArrowSphere
+            - Azure_Devops
+            - Azure_Security_Graph
+            - Azure_Sentinel
+            - Corestack
+            - DockerHub
+            - ElasticSearch
+            - Freshservice
+            - GitHub
+            - JIRA_DataCenter
+            - JIRA_ServiceDesk
+            - JIRA_ServiceManagement
+            - Jenkins
+            - Logstash
+            - Microsoft_Teams
+            - Nagios
+            - Newrelic
+            - Prometheus
+            - Qualys
+            - RedHat_Satellite
+            - ServiceNow
+            - TCL_ITSM
+            - Tenable_Nessus
+            - ZOHO_ServiceDesk
+            - Zabbix
+            x-cs-enum-type: IntegratedToolName
+        resources:
+          type: array
+          description: List of resources supported for the role template
+          items:
+            type: string
+            description: Resource Service to select
+            example: kubernetes_cluster
+            enum:
+            - kubernetes_cluster
+            x-cs-enum-type: ResourceName
+        saas_services:
+          type: array
+          description: List of SaaS services supported for the role template
+          items:
+            type: string
+            description: SaaS Service to select
+            example: Anthropic
+            enum:
+            - Anthropic
+            - OpenAI
+            - Databricks
+            - Snowflake
+            - CircleCI
+            - Datadog
+            - Dropbox
+            - Dynatrace
+            - Elastic
+            - Grafana
+            - IBM_Tencent
+            - Microsoft_Teams
+            - New_Relic
+            - Okta
+            - SaasCustomTool
+            - Salesforce_Sales_Cloud
+            - Splunk
+            x-cs-enum-type: SaasServiceName
+      type: object
+    ServiceAccountCloudAccessPolicy:
+      properties:
+        access_type:
+          type: string
+          description: Cloud access type to select
+          example: read
+          enum:
+          - read
+          - write
+          x-cs-enum-type: CloudAccountAccessType
+        access_policy:
+          type: string
+          description: Cloud Access Policy
+      type: object
   securitySchemes:
     auth_token:
       type: apiKey

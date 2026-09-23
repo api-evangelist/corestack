@@ -117,7 +117,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/FreshserviceTicketFiltersResponse'
       summary: Freshservice Ticket Filters
-      description: Freshservice Ticket Filters
       operationId: FreshserviceTicketFilters
       security:
       - auth_token: []
@@ -192,7 +191,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/FreshserviceSupportTicketListResponse'
       summary: List FreshService Tickets
-      description: List FreshService Tickets
       operationId: ListTickets
       security:
       - auth_token: []
@@ -206,56 +204,6 @@ paths:
         required: true
 components:
   schemas:
-    ListContext:
-      properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
-      type: object
-    FreshserviceDepartmentDetails:
-      properties:
-        department_id:
-          type: integer
-          description: Department Id
-        name:
-          type: string
-          description: Department Name
-      type: object
-    FreshserviceTicketFiltersResponse:
-      properties:
-        status:
-          type: array
-          description: Status List
-          items:
-            $ref: '#/components/schemas/FreshserviceTicketFilterElement'
-        priority:
-          type: array
-          description: Priority List
-          items:
-            $ref: '#/components/schemas/FreshserviceTicketFilterElement'
-        department:
-          type: array
-          description: Department List
-          items:
-            $ref: '#/components/schemas/FreshserviceTicketFilterElement'
-      type: object
-    FreshserviceSupportTicketListResponse:
-      properties:
-        results:
-          type: array
-          description: Tickets List
-          items:
-            $ref: '#/components/schemas/FreshserviceTicketDetails'
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
     FreshserviceTicketDetails:
       properties:
         ticket_id:
@@ -358,45 +306,51 @@ components:
           items:
             $ref: '#/components/schemas/FreshserviceTicketAttachment'
       type: object
-    FreshserviceTicketCreateRequest:
-      required:
-      - description
-      - priority
-      - subject
+    FreshserviceTicketFiltersResponse:
       properties:
-        subject:
-          type: string
-          description: Subject
-        description:
-          type: string
-          description: Description of the ticket
-        priority:
-          type: string
-          description: Filter By Priority
-          example: urgent
-          enum:
-          - urgent
-          - high
-          - medium
-          - low
-          x-cs-enum-type: FreshserviceTicketPriority
-        department_id:
-          type: integer
-          description: Department Id
-        attachments:
+        status:
           type: array
-          description: List of Attachment Ids
+          description: Status List
           items:
-            type: string
+            $ref: '#/components/schemas/FreshserviceTicketFilterElement'
+        priority:
+          type: array
+          description: Priority List
+          items:
+            $ref: '#/components/schemas/FreshserviceTicketFilterElement'
+        department:
+          type: array
+          description: Department List
+          items:
+            $ref: '#/components/schemas/FreshserviceTicketFilterElement'
       type: object
-    FreshserviceTicketListRequest:
+    FreshserviceTicketFilterElement:
       properties:
-        list_context:
-          description: Optional list context
+        id:
+          type: string
+          description: Id
+        name:
+          type: string
+          description: Name
+      type: object
+    FreshserviceSupportTicketListResponse:
+      properties:
+        results:
+          type: array
+          description: Tickets List
+          items:
+            $ref: '#/components/schemas/FreshserviceTicketDetails'
+        next_list_context:
+          description: List context
           $ref: '#/components/schemas/ListContext'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/FreshserviceTicketFilters'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
       type: object
     FreshserviceTicketAttachment:
       properties:
@@ -410,22 +364,26 @@ components:
           type: string
           description: Attachment Url
       type: object
-    ModelError:
-      required:
-      - message
+    ListContext:
       properties:
-        message:
-          type: string
-          description: Error response message.
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
       type: object
-    FreshserviceTicketFilterElement:
+    FreshserviceDepartmentDetails:
       properties:
-        id:
-          type: string
-          description: Id
+        department_id:
+          type: integer
+          description: Department Id
         name:
           type: string
-          description: Name
+          description: Department Name
       type: object
     FreshserviceTicketFilters:
       properties:
@@ -466,6 +424,46 @@ components:
           type: string
           format: date
           description: specify the end date
+      type: object
+    FreshserviceTicketCreateRequest:
+      required:
+      - description
+      - priority
+      - subject
+      properties:
+        subject:
+          type: string
+          description: Subject
+        description:
+          type: string
+          description: Description of the ticket
+        priority:
+          type: string
+          description: Filter By Priority
+          example: urgent
+          enum:
+          - urgent
+          - high
+          - medium
+          - low
+          x-cs-enum-type: FreshserviceTicketPriority
+        department_id:
+          type: integer
+          description: Department Id
+        attachments:
+          type: array
+          description: List of Attachment Ids
+          items:
+            type: string
+      type: object
+    FreshserviceTicketListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/FreshserviceTicketFilters'
       type: object
   securitySchemes:
     auth_token:

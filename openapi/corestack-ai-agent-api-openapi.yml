@@ -346,6 +346,8 @@ paths:
       - auth_token: []
       tags:
       - AI Agent
+      summary: List chat suggestions
+      x-summary-source: derived
   /v1/agent/chat/list:
     post:
       responses:
@@ -577,7 +579,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserQueryResponse'
-      summary: Submit a new query for the specific agent and retrieve the agent's response for the given feed query
+      summary: Submit a new query for the specific agent and retrieve the agent's response for…
       description: Submit a new query for the specific agent and retrieve the agent's response for the given feed query.
       operationId: AgenticFeed
       security:
@@ -618,7 +620,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/PromptBatchResponse'
       summary: Retrieve the saved prompt details for the specified ids
-      description: Retrieve the saved prompt details for the specified ids
       operationId: BatchSavedPrompts
       security:
       - auth_token: []
@@ -1242,38 +1243,144 @@ paths:
         required: true
 components:
   schemas:
-    PromptListRequest:
+    BaseForAgentResponse:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ResponseForAgentText
+        subtype_name: Text
+      - subtype_model: ResponseForAgentTable
+        subtype_name: Table
+      - subtype_model: ResponseForAgentLimitation
+        subtype_name: Limitation
+      - subtype_model: ResponseForAgentChart
+        subtype_name: Chart
+      - subtype_model: ResponseForAgentActionForm
+        subtype_name: ActionForm
+    ChatConversationListResponse:
       properties:
-        list_context:
-          description: Optional list context
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+            x-cs-type: ObjectId
+        next_list_context:
+          description: List context
           $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/PromptSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/PromptFilters'
       type: object
-    McpServerListResponse:
-      properties:
-        total_count:
-          type: integer
-          description: Total number of servers.
-        mcp_servers:
-          type: array
-          description: MCP Server list.
-          items:
-            $ref: '#/components/schemas/McpServerItem'
-      type: object
-    ChatConversationBatchResponse:
+    AgentChatBatchResponse:
       properties:
         results:
           type: object
           description: Map from identifier to response model
           additionalProperties:
-            $ref: '#/components/schemas/ConversationDetails'
+            $ref: '#/components/schemas/AgentChat'
+      type: object
+    ReportConfiguration:
+      required:
+      - __type
+      properties:
+        export_format:
+          type: string
+          description: Specifies the format of the file being exported.
+          default: PDF
+          example: PDF
+          enum:
+          - PDF
+          - CSV
+          x-cs-enum-type: ExportFormat
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ReportConfigurationForAiAgent
+        subtype_name: ReportConfigurationForAiAgent
+      - subtype_model: BaseReportConfigurationForAssessmentAgent
+        subtype_name: BaseReportConfigurationForAssessmentAgent
+      - subtype_model: ReportConfigurationForAssessment
+        subtype_name: ReportConfigurationForAssessment
+      - subtype_model: ReportConfigurationForWorkload
+        subtype_name: ReportConfigurationForWorkload
+      - subtype_model: ReportConfigurationForExecutiveDashboard
+        subtype_name: ReportConfigurationForExecutiveDashboard
+      - subtype_model: ConfigurationForNextGenReportBase
+        subtype_name: ConfigurationForNextGenReportBase
+      - subtype_model: ConfigurationForFinOpsConsolidatedReport
+        subtype_name: ConfigurationForFinOpsConsolidatedReport
+      - subtype_model: ConfigurationForAwsConsolidatedChargesReport
+        subtype_name: ConfigurationForAwsConsolidatedChargesReport
+      - subtype_model: ConfigurationForAzureConsolidatedChargesReport
+        subtype_name: ConfigurationForAzureConsolidatedChargesReport
+      - subtype_model: ConfigurationForGcpConsolidatedChargesReport
+        subtype_name: ConfigurationForGcpConsolidatedChargesReport
+      - subtype_model: ConfigurationForOciConsolidatedChargesReport
+        subtype_name: ConfigurationForOciConsolidatedChargesReport
+      - subtype_model: ConfigurationForDistributorConsolidatedReport
+        subtype_name: ConfigurationForDistributorConsolidatedReport
+      - subtype_model: ReportConfigurationForAssessmentRun
+        subtype_name: ReportConfigurationForAssessmentRun
+      - subtype_model: ReportConfigurationForAssessmentRunDetail
+        subtype_name: ReportConfigurationForAssessmentRunDetail
+      - subtype_model: ReportConfigurationForAssessmentRunSummary
+        subtype_name: ReportConfigurationForAssessmentRunSummary
+      - subtype_model: ReportConfigurationForAssessmentRunViolation
+        subtype_name: ReportConfigurationForAssessmentRunViolation
+    AgentChatDeleteResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AgentChatDelete'
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    UserQueryResponse:
+      properties:
+        conversation_details:
+          description: Conversation details
+          $ref: '#/components/schemas/ConversationDetails'
+        suggested_prompts:
+          type: array
+          description: List of suggested prompt based on the query
+          items:
+            type: string
+      type: object
+    PromptSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          x-cs-enum-type: PromptSortColumn
+        ascending:
+          type: boolean
+      type: object
+    PromptFiltersResponse:
+      properties:
+        tags:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
       type: object
     PromptListResponse:
       properties:
@@ -1296,133 +1403,20 @@ components:
           type: object
           description: Streaming data either progress data or response data
       type: object
-    AgentChatSortCriteria:
-      required:
-      - column
+    AgentFieldsBase:
       properties:
-        column:
+        sys_id:
           type: string
-          example: Name
-          enum:
-          - Name
-          - CreatedAt
-          - UpdatedAt
-          x-cs-enum-type: AgentChatSortColumn
-        ascending:
-          type: boolean
-      type: object
-    AgentChatDelete:
-      properties:
-        status:
-          type: boolean
-          description: Indicates if the chat is deleted
-      type: object
-    PromptFiltersRequest:
-      required:
-      - agent_ids
-      - prompt_type
-      properties:
-        agent_ids:
-          type: array
-          description: IDs of the agent
-          items:
-            type: string
-            x-cs-type: ObjectId
-        prompt_type:
-          type: string
-          description: Type of the prompt
-          example: default
-          enum:
-          - default
-          - custom
-          x-cs-enum-type: AgentPromptTypes
-      type: object
-    PromptFiltersResponse:
-      properties:
-        tags:
-          type: array
-          description: List of tag key/value pairs
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-      type: object
-    AgentCreateChatRequest:
-      properties:
-        name:
-          type: string
-          description: Name of the chat
-        agent_id:
-          type: string
-          description: ID of the agent
+          description: Unique identifier for the document
           x-cs-type: ObjectId
-        tenant_id:
+        created_at:
           type: string
-          description: ID of the tenant
-          x-cs-type: ObjectId
-      type: object
-    AgentResponse:
-      properties:
-        response:
-          type: array
-          description: Response from the agent
-          items:
-            $ref: '#/components/schemas/BaseForAgentResponse'
-        status:
+          format: date-time
+          description: Timestamp when the document was created
+        updated_at:
           type: string
-          description: Status of the response
-          example: failed
-          enum:
-          - failed
-          - in_progress
-          - success
-          x-cs-enum-type: AgentResponseStatus
-      type: object
-    PromptFilters:
-      allOf:
-      - $ref: '#/components/schemas/PromptFiltersRequest'
-      - properties:
-          prompt:
-            type: string
-            description: Name of the prompt
-          tags:
-            type: array
-            description: List of tag key/value pairs
-            items:
-              $ref: '#/components/schemas/KeyValuePair'
-        type: object
-    PromptSortCriteria:
-      required:
-      - column
-      properties:
-        column:
-          type: string
-          example: CreatedAt
-          enum:
-          - CreatedAt
-          x-cs-enum-type: PromptSortColumn
-        ascending:
-          type: boolean
-      type: object
-    ChatConversationRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/ChatConversationSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/ChatConversationFilter'
-      type: object
-    AgentChatBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/AgentChat'
+          format: date-time
+          description: Timestamp when the document was last updated
       type: object
     PromptSaveRequest:
       required:
@@ -1441,36 +1435,6 @@ components:
           items:
             $ref: '#/components/schemas/KeyValuePair'
       type: object
-    AiAgentReport:
-      properties:
-        sys_id:
-          type: string
-          description: Unique ID for the report
-        background_job:
-          description: Identity of the background job used to generate the report, null if the job has completed
-          $ref: '#/components/schemas/RecordIdentity'
-        attachment_id:
-          type: string
-          description: ID of the attachment where the report contents are stored.
-      type: object
-    ValidationResults:
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationResult'
-      type: object
-    UserQueryResponse:
-      properties:
-        conversation_details:
-          description: Conversation details
-          $ref: '#/components/schemas/ConversationDetails'
-        suggested_prompts:
-          type: array
-          description: List of suggested prompt based on the query
-          items:
-            type: string
-      type: object
     McpToolsResponse:
       properties:
         total_count:
@@ -1482,44 +1446,38 @@ components:
           items:
             type: object
       type: object
-    AgentFieldsBase:
+    AgentChat:
+      allOf:
+      - $ref: '#/components/schemas/AgentFieldsBase'
+      - properties:
+          name:
+            type: string
+            description: Name of the chat
+          created_by:
+            type: string
+            description: Name of the user who created the chat.
+          agent_id:
+            type: string
+            description: ID of the agent
+            x-cs-type: ObjectId
+          tenant_id:
+            type: string
+            description: ID of the tenant
+            x-cs-type: ObjectId
+          metadata:
+            description: Metadata for the chat
+            $ref: '#/components/schemas/ChatMetadata'
+        type: object
+    McpServerListResponse:
       properties:
-        sys_id:
-          type: string
-          description: Unique identifier for the document
-          x-cs-type: ObjectId
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the document was created
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the document was last updated
-      type: object
-    BaseForAgentResponse:
-      required:
-      - __type
-      properties: {}
-      discriminator:
-        propertyName: __type
-      type: object
-      x-cs-subtypes:
-      - subtype_model: ResponseForAgentText
-        subtype_name: Text
-      - subtype_model: ResponseForAgentTable
-        subtype_name: Table
-      - subtype_model: ResponseForAgentLimitation
-        subtype_name: Limitation
-      - subtype_model: ResponseForAgentChart
-        subtype_name: Chart
-      - subtype_model: ResponseForAgentActionForm
-        subtype_name: ActionForm
-    ConversationFeedbackRequest:
-      properties:
-        rating:
+        total_count:
           type: integer
-          description: Rating of the query
+          description: Total number of servers.
+        mcp_servers:
+          type: array
+          description: MCP Server list.
+          items:
+            $ref: '#/components/schemas/McpServerItem'
       type: object
     ModelError:
       required:
@@ -1529,25 +1487,85 @@ components:
           type: string
           description: Error response message.
       type: object
-    ChatMetadata:
+    Prompt:
+      allOf:
+      - $ref: '#/components/schemas/AgentFieldsBase'
+      - properties:
+          prompt:
+            type: string
+            description: Input given to the agent
+          tags:
+            type: array
+            description: List of tag key/value pairs
+            items:
+              $ref: '#/components/schemas/KeyValuePair'
+          agent_id:
+            type: string
+            description: ID of the agent
+            x-cs-type: ObjectId
+          created_by:
+            type: string
+            description: Name of the user who created the prompt.
+          prompt_type:
+            type: string
+            description: Type of the prompt
+            example: default
+            enum:
+            - default
+            - custom
+            x-cs-enum-type: AgentPromptTypes
+        type: object
+    AgentCreateChatRequest:
       properties:
-        last_state:
+        name:
           type: string
-          description: Last state ID
+          description: Name of the chat
+        agent_id:
+          type: string
+          description: ID of the agent
           x-cs-type: ObjectId
-        framework_name:
+        tenant_id:
           type: string
-          description: Name of the framework
+          description: ID of the tenant
+          x-cs-type: ObjectId
       type: object
-    McpServerSetEnabledRequest:
-      required:
-      - is_enabled
+    BatchRequest:
       properties:
-        is_enabled:
-          type: boolean
-          description: Set to true to enable the server, false to disable.
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
       type: object
-    AgentListChatRequest:
+    McpServerItem:
+      allOf:
+      - $ref: '#/components/schemas/McpServerRequest'
+      - properties:
+          sys_id:
+            type: string
+            description: Unique server ID for MCP
+            x-cs-type: ObjectId
+          created_by:
+            type: string
+            description: Name of the user who registered the server.
+          created_at:
+            type: string
+            description: Timestamp when the server was registered
+          updated_by:
+            type: string
+            description: Name of the user who last updated the server.
+          updated_at:
+            type: string
+            description: Timestamp when the server was last updated
+        type: object
+    ValidationResult:
+      properties:
+        field:
+          type: string
+        reason:
+          type: string
+      type: object
+    ChatConversationRequest:
       properties:
         list_context:
           description: Optional list context
@@ -1556,62 +1574,47 @@ components:
           type: array
           description: Sort criteria
           items:
-            $ref: '#/components/schemas/AgentChatSortCriteria'
+            $ref: '#/components/schemas/ChatConversationSortCriteria'
         filters:
           description: Filters for the request
-          $ref: '#/components/schemas/AgentChatFilter'
+          $ref: '#/components/schemas/ChatConversationFilter'
       type: object
-    ChatConversationFilter:
-      required:
-      - chat_id
+    ConversationFeedbackRequest:
       properties:
-        chat_id:
+        rating:
+          type: integer
+          description: Rating of the query
+      type: object
+    AgentChatFilter:
+      required:
+      - agent_id
+      - tenant_id
+      properties:
+        agent_id:
           type: string
           description: ID of the agent type
           x-cs-type: ObjectId
-      type: object
-    KeyValuePair:
-      properties:
-        key:
+        tenant_id:
           type: string
-          description: Key of the pair
-        value:
+          description: ID of the tenant
+          x-cs-type: ObjectId
+        name:
           type: string
-          description: Value of the pair
+          description: Name of the chat
       type: object
-    RecordIdentity:
-      properties:
-        sysId:
-          type: string
-          description: Unique Identifier of the tracked item
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Last update of the tracked item
-        table:
-          type: string
-          description: Context of the tracked item
-      type: object
-    AgentChatDeleteResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/AgentChatDelete'
-      type: object
-    ListContext:
-      properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
-      type: object
+    PromptFilters:
+      allOf:
+      - $ref: '#/components/schemas/PromptFiltersRequest'
+      - properties:
+          prompt:
+            type: string
+            description: Name of the prompt
+          tags:
+            type: array
+            description: List of tag key/value pairs
+            items:
+              $ref: '#/components/schemas/KeyValuePair'
+        type: object
     AgentActionConfirmRequest:
       required:
       - action_id
@@ -1636,19 +1639,6 @@ components:
           type: object
           description: User-submitted form data; required when status is 'confirm'
       type: object
-    AgentChatUpdateRequest:
-      properties:
-        name:
-          type: string
-          description: Name of the chat
-      type: object
-    ValidationResult:
-      properties:
-        field:
-          type: string
-        reason:
-          type: string
-      type: object
     McpServerListRequest:
       required:
       - tenant_id
@@ -1661,6 +1651,173 @@ components:
           type: boolean
           description: Filter by enabled/disabled status.
       type: object
+    PromptBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/Prompt'
+      type: object
+    ReportConfigurationForAiAgent:
+      allOf:
+      - $ref: '#/components/schemas/ReportConfiguration'
+      - required:
+        - agent_id
+        properties:
+          agent_id:
+            type: string
+            description: Id of the Agent.
+            x-cs-type: ObjectId
+        type: object
+      x-cs-type-name: ReportConfigurationForAiAgent
+    AgentTypeResponse:
+      properties:
+        agent_types:
+          type: array
+          description: List of agent types
+          items:
+            $ref: '#/components/schemas/AgentType'
+      type: object
+    ChatConversationFilter:
+      required:
+      - chat_id
+      properties:
+        chat_id:
+          type: string
+          description: ID of the agent type
+          x-cs-type: ObjectId
+      type: object
+    AiAgentReportCreateRequest:
+      properties:
+        configuration:
+          description: Report configuration to generate report
+          $ref: '#/components/schemas/ReportConfigurationForAiAgent'
+      type: object
+    AgentChatSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: Name
+          enum:
+          - Name
+          - CreatedAt
+          - UpdatedAt
+          x-cs-enum-type: AgentChatSortColumn
+        ascending:
+          type: boolean
+      type: object
+    AgentListChatResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+            x-cs-type: ObjectId
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    AgentChatDeleteRequest:
+      properties:
+        chat_ids:
+          type: array
+          description: List of chat IDs to be deleted
+          items:
+            type: string
+            x-cs-type: ObjectId
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+      type: object
+    AgentResponse:
+      properties:
+        response:
+          type: array
+          description: Response from the agent
+          items:
+            $ref: '#/components/schemas/BaseForAgentResponse'
+        status:
+          type: string
+          description: Status of the response
+          example: failed
+          enum:
+          - failed
+          - in_progress
+          - success
+          x-cs-enum-type: AgentResponseStatus
+      type: object
+    ValidationResults:
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationResult'
+      type: object
+    AgentType:
+      allOf:
+      - $ref: '#/components/schemas/AgentFieldsBase'
+      - properties:
+          name:
+            type: string
+            description: AI agents available in the system
+            example: Assessment Agent
+            enum:
+            - Assessment Agent
+            - Graphion Agent
+            - Rate Optimization Agent
+            x-cs-enum-type: Agents
+          is_enabled:
+            type: boolean
+            description: Is the agent type enabled
+        type: object
+    AgentPromptSuggestionResponse:
+      properties:
+        suggested_prompts:
+          type: array
+          description: List of suggested prompts
+          items:
+            type: string
+      type: object
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
+      type: object
+    ConversationDetails:
+      allOf:
+      - $ref: '#/components/schemas/AgentFieldsBase'
+      - properties:
+          chat_id:
+            type: string
+            description: ID of the chat
+            x-cs-type: ObjectId
+          user_query:
+            type: string
+            description: User query
+          agent_response:
+            description: Response from the agent
+            $ref: '#/components/schemas/AgentResponse'
+          rating:
+            type: integer
+            description: Rating of the query
+          is_interrupted:
+            type: boolean
+            description: Indicates if the conversation was interrupted
+            default: false
+          is_action_response:
+            type: boolean
+            description: Indicates if the conversation was actionable
+            default: false
+        type: object
     McpServerRequest:
       required:
       - business_agents
@@ -1743,198 +1900,91 @@ components:
           type: integer
           description: Tool selection priority — lower value means higher preference (e.g. 10 beats 100).
       type: object
-    AgentType:
-      allOf:
-      - $ref: '#/components/schemas/AgentFieldsBase'
-      - properties:
-          name:
-            type: string
-            description: AI agents available in the system
-            example: Assessment Agent
-            enum:
-            - Assessment Agent
-            - Graphion Agent
-            - Rate Optimization Agent
-            x-cs-enum-type: Agents
-          is_enabled:
-            type: boolean
-            description: Is the agent type enabled
-        type: object
-    AgentListChatResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-            x-cs-type: ObjectId
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    ReportConfiguration:
+    McpServerSetEnabledRequest:
       required:
-      - __type
+      - is_enabled
       properties:
-        export_format:
+        is_enabled:
+          type: boolean
+          description: Set to true to enable the server, false to disable.
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
           type: string
-          description: Specifies the format of the file being exported.
-          default: PDF
-          example: PDF
-          enum:
-          - PDF
-          - CSV
-          x-cs-enum-type: ExportFormat
-      discriminator:
-        propertyName: __type
-      type: object
-      x-cs-subtypes:
-      - subtype_model: ReportConfigurationForAiAgent
-        subtype_name: ReportConfigurationForAiAgent
-      - subtype_model: BaseReportConfigurationForAssessmentAgent
-        subtype_name: BaseReportConfigurationForAssessmentAgent
-      - subtype_model: ReportConfigurationForAssessment
-        subtype_name: ReportConfigurationForAssessment
-      - subtype_model: ReportConfigurationForWorkload
-        subtype_name: ReportConfigurationForWorkload
-      - subtype_model: ReportConfigurationForExecutiveDashboard
-        subtype_name: ReportConfigurationForExecutiveDashboard
-      - subtype_model: ConfigurationForNextGenReportBase
-        subtype_name: ConfigurationForNextGenReportBase
-      - subtype_model: ConfigurationForFinOpsConsolidatedReport
-        subtype_name: ConfigurationForFinOpsConsolidatedReport
-      - subtype_model: ConfigurationForAwsConsolidatedChargesReport
-        subtype_name: ConfigurationForAwsConsolidatedChargesReport
-      - subtype_model: ConfigurationForAzureConsolidatedChargesReport
-        subtype_name: ConfigurationForAzureConsolidatedChargesReport
-      - subtype_model: ConfigurationForGcpConsolidatedChargesReport
-        subtype_name: ConfigurationForGcpConsolidatedChargesReport
-      - subtype_model: ConfigurationForOciConsolidatedChargesReport
-        subtype_name: ConfigurationForOciConsolidatedChargesReport
-      - subtype_model: ConfigurationForDistributorConsolidatedReport
-        subtype_name: ConfigurationForDistributorConsolidatedReport
-      - subtype_model: ReportConfigurationForAssessmentRun
-        subtype_name: ReportConfigurationForAssessmentRun
-      - subtype_model: ReportConfigurationForAssessmentRunDetail
-        subtype_name: ReportConfigurationForAssessmentRunDetail
-      - subtype_model: ReportConfigurationForAssessmentRunSummary
-        subtype_name: ReportConfigurationForAssessmentRunSummary
-      - subtype_model: ReportConfigurationForAssessmentRunViolation
-        subtype_name: ReportConfigurationForAssessmentRunViolation
-    AgentChatDeleteRequest:
-      properties:
-        chat_ids:
-          type: array
-          description: List of chat IDs to be deleted
-          items:
-            type: string
-            x-cs-type: ObjectId
-        tenant_id:
+          description: Unique Identifier of the tracked item
+        lastUpdate:
           type: string
-          description: ID of the tenant
-          x-cs-type: ObjectId
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
       type: object
-    BatchRequest:
+    AgentListChatRequest:
       properties:
-        ids:
-          type: array
-          description: Identifiers to fetch
-          items:
-            type: string
-      type: object
-    AgentChat:
-      allOf:
-      - $ref: '#/components/schemas/AgentFieldsBase'
-      - properties:
-          name:
-            type: string
-            description: Name of the chat
-          created_by:
-            type: string
-            description: Name of the user who created the chat.
-          agent_id:
-            type: string
-            description: ID of the agent
-            x-cs-type: ObjectId
-          tenant_id:
-            type: string
-            description: ID of the tenant
-            x-cs-type: ObjectId
-          metadata:
-            description: Metadata for the chat
-            $ref: '#/components/schemas/ChatMetadata'
-        type: object
-    ReportConfigurationForAiAgent:
-      allOf:
-      - $ref: '#/components/schemas/ReportConfiguration'
-      - required:
-        - agent_id
-        properties:
-          agent_id:
-            type: string
-            description: Id of the Agent.
-            x-cs-type: ObjectId
-        type: object
-      x-cs-type-name: ReportConfigurationForAiAgent
-    ConversationDetails:
-      allOf:
-      - $ref: '#/components/schemas/AgentFieldsBase'
-      - properties:
-          chat_id:
-            type: string
-            description: ID of the chat
-            x-cs-type: ObjectId
-          user_query:
-            type: string
-            description: User query
-          agent_response:
-            description: Response from the agent
-            $ref: '#/components/schemas/AgentResponse'
-          rating:
-            type: integer
-            description: Rating of the query
-          is_interrupted:
-            type: boolean
-            description: Indicates if the conversation was interrupted
-            default: false
-          is_action_response:
-            type: boolean
-            description: Indicates if the conversation was actionable
-            default: false
-        type: object
-    ChatConversationListResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-            x-cs-type: ObjectId
-        next_list_context:
-          description: List context
+        list_context:
+          description: Optional list context
           $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/AgentChatSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AgentChatFilter'
       type: object
-    PromptBatchResponse:
+    ChatConversationSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          - UpdatedAt
+          x-cs-enum-type: ChatConversationSortColumn
+        ascending:
+          type: boolean
+      type: object
+    ChatConversationBatchResponse:
       properties:
         results:
           type: object
           description: Map from identifier to response model
           additionalProperties:
-            $ref: '#/components/schemas/Prompt'
+            $ref: '#/components/schemas/ConversationDetails'
       type: object
-    AiAgentReportCreateRequest:
+    McpToolsRequest:
+      required:
+      - business_agent
+      - tenant_id
       properties:
-        configuration:
-          description: Report configuration to generate report
-          $ref: '#/components/schemas/ReportConfigurationForAiAgent'
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+        business_agent:
+          type: string
+          description: Business agent name used to scope the tool list.
+          example: Assessment Agent
+          enum:
+          - Assessment Agent
+          - Graphion Agent
+          - Rate Optimization Agent
+          x-cs-enum-type: Agents
       type: object
-    AgentPromptSuggestionResponse:
+    ChatMetadata:
       properties:
-        suggested_prompts:
-          type: array
-          description: List of suggested prompts
-          items:
-            type: string
+        last_state:
+          type: string
+          description: Last state ID
+          x-cs-type: ObjectId
+        framework_name:
+          type: string
+          description: Name of the framework
       type: object
     UserQueryRequest:
       required:
@@ -1956,112 +2006,63 @@ components:
           type: string
           description: User query
       type: object
-    Prompt:
-      allOf:
-      - $ref: '#/components/schemas/AgentFieldsBase'
-      - properties:
-          prompt:
-            type: string
-            description: Input given to the agent
-          tags:
-            type: array
-            description: List of tag key/value pairs
-            items:
-              $ref: '#/components/schemas/KeyValuePair'
-          agent_id:
-            type: string
-            description: ID of the agent
-            x-cs-type: ObjectId
-          created_by:
-            type: string
-            description: Name of the user who created the prompt.
-          prompt_type:
-            type: string
-            description: Type of the prompt
-            example: default
-            enum:
-            - default
-            - custom
-            x-cs-enum-type: AgentPromptTypes
-        type: object
-    ChatConversationSortCriteria:
-      required:
-      - column
+    PromptListRequest:
       properties:
-        column:
-          type: string
-          example: CreatedAt
-          enum:
-          - CreatedAt
-          - UpdatedAt
-          x-cs-enum-type: ChatConversationSortColumn
-        ascending:
-          type: boolean
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/PromptSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/PromptFilters'
       type: object
-    AgentChatFilter:
-      required:
-      - agent_id
-      - tenant_id
+    AgentChatUpdateRequest:
       properties:
-        agent_id:
-          type: string
-          description: ID of the agent type
-          x-cs-type: ObjectId
-        tenant_id:
-          type: string
-          description: ID of the tenant
-          x-cs-type: ObjectId
         name:
           type: string
           description: Name of the chat
       type: object
-    AgentTypeResponse:
+    AgentChatDelete:
       properties:
-        agent_types:
-          type: array
-          description: List of agent types
-          items:
-            $ref: '#/components/schemas/AgentType'
+        status:
+          type: boolean
+          description: Indicates if the chat is deleted
       type: object
-    McpServerItem:
-      allOf:
-      - $ref: '#/components/schemas/McpServerRequest'
-      - properties:
-          sys_id:
-            type: string
-            description: Unique server ID for MCP
-            x-cs-type: ObjectId
-          created_by:
-            type: string
-            description: Name of the user who registered the server.
-          created_at:
-            type: string
-            description: Timestamp when the server was registered
-          updated_by:
-            type: string
-            description: Name of the user who last updated the server.
-          updated_at:
-            type: string
-            description: Timestamp when the server was last updated
-        type: object
-    McpToolsRequest:
-      required:
-      - business_agent
-      - tenant_id
+    AiAgentReport:
       properties:
-        tenant_id:
+        sys_id:
           type: string
-          description: ID of the tenant
-          x-cs-type: ObjectId
-        business_agent:
+          description: Unique ID for the report
+        background_job:
+          description: Identity of the background job used to generate the report, null if the job has completed
+          $ref: '#/components/schemas/RecordIdentity'
+        attachment_id:
           type: string
-          description: Business agent name used to scope the tool list.
-          example: Assessment Agent
+          description: ID of the attachment where the report contents are stored.
+      type: object
+    PromptFiltersRequest:
+      required:
+      - agent_ids
+      - prompt_type
+      properties:
+        agent_ids:
+          type: array
+          description: IDs of the agent
+          items:
+            type: string
+            x-cs-type: ObjectId
+        prompt_type:
+          type: string
+          description: Type of the prompt
+          example: default
           enum:
-          - Assessment Agent
-          - Graphion Agent
-          - Rate Optimization Agent
-          x-cs-enum-type: Agents
+          - default
+          - custom
+          x-cs-enum-type: AgentPromptTypes
       type: object
   securitySchemes:
     auth_token:

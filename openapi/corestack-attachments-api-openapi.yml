@@ -141,7 +141,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Attachment'
       summary: Get an Attachment
-      description: Get an Attachment
       operationId: get
       security:
       - auth_token: []
@@ -174,7 +173,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Attachment'
       summary: Update an Attachment
-      description: Update an Attachment
       operationId: update
       security:
       - auth_token: []
@@ -220,7 +218,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Attachment'
       summary: Upload an Attachment
-      description: Upload an Attachment
       operationId: upload
       security:
       - auth_token: []
@@ -277,7 +274,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/InputStream'
       summary: Download an Attachment
-      description: Download an Attachment
       operationId: download
       security:
       - auth_token: []

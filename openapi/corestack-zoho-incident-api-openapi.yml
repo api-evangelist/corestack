@@ -49,7 +49,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/ZohoServiceDeskSite'
       summary: List Zoho ServiceDesk Sites
-      description: List Zoho ServiceDesk Sites
       operationId: ListZohoServiceDeskSites
       security:
       - auth_token: []
@@ -91,7 +90,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/ZohoServiceDeskUser'
       summary: List Zoho ServiceDesk Users
-      description: List Zoho ServiceDesk Users
       operationId: ListZohoServiceDeskUsers
       security:
       - auth_token: []
@@ -99,6 +97,15 @@ paths:
       - Zoho Incident
 components:
   schemas:
+    ZohoServiceDeskSite:
+      properties:
+        key:
+          type: string
+          description: Key for ZOHO ServiceDesk Site
+        name:
+          type: string
+          description: Name for ZOHO ServiceDesk Site
+      type: object
     ZohoServiceDeskUser:
       properties:
         user_id:
@@ -115,15 +122,6 @@ components:
         message:
           type: string
           description: Error response message.
-      type: object
-    ZohoServiceDeskSite:
-      properties:
-        key:
-          type: string
-          description: Key for ZOHO ServiceDesk Site
-        name:
-          type: string
-          description: Name for ZOHO ServiceDesk Site
       type: object
   securitySchemes:
     auth_token:

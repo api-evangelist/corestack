@@ -46,7 +46,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CloudWiseUsageResponse'
-      summary: Get cloud-wise cost usage and top resource consumption data for the service accounts in a tenant
+      summary: Get cloud-wise cost usage and top resource consumption data for the service…
       description: Get cloud-wise cost usage and top resource consumption data for the service accounts in a tenant
       operationId: CloudWiseUsage
       security:
@@ -83,21 +83,6 @@ components:
           items:
             $ref: '#/components/schemas/TopConsumptionUsage'
       type: object
-    TopConsumptionUsage:
-      properties:
-        category:
-          type: string
-          description: Category of the top consumption usage
-        component:
-          type: string
-          description: Component associated with the top consumption usage
-        resource:
-          type: string
-          description: Resource associated with the top consumption usage
-        count:
-          type: integer
-          description: Count of the top consumption usage
-      type: object
     ProductCategoryWiseUsage:
       properties:
         name:
@@ -106,14 +91,6 @@ components:
         cost:
           type: number
           description: Cost of the resource in the usage
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
       type: object
     CloudWiseUsageRequest:
       required:
@@ -153,22 +130,41 @@ components:
           type: boolean
           description: Flag to indicate if the cost is projected
       type: object
-    ServiceNameWiseUsage:
+    CloudWiseUsageResponse:
       properties:
-        service_name:
-          type: string
-          description: Name of the service
-        group_by:
-          type: string
-          description: Group by field for the service usage
-        day:
-          type: string
-          description: Day of the usage data
-        service_accounts:
+        cost_details:
           type: array
-          description: List of cloud account-wise usage data
+          description: List of service name-wise usage data
           items:
-            $ref: '#/components/schemas/CloudAccountWiseUsage'
+            $ref: '#/components/schemas/ServiceNameWiseUsage'
+        inventory_details:
+          type: array
+          description: List of inventory-wise usage data
+          items:
+            $ref: '#/components/schemas/InventoryWiseUsage'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    TopConsumptionUsage:
+      properties:
+        category:
+          type: string
+          description: Category of the top consumption usage
+        component:
+          type: string
+          description: Component associated with the top consumption usage
+        resource:
+          type: string
+          description: Resource associated with the top consumption usage
+        count:
+          type: integer
+          description: Count of the top consumption usage
       type: object
     CloudAccountWiseUsage:
       properties:
@@ -196,18 +192,22 @@ components:
           items:
             $ref: '#/components/schemas/ProductCategoryWiseUsage'
       type: object
-    CloudWiseUsageResponse:
+    ServiceNameWiseUsage:
       properties:
-        cost_details:
+        service_name:
+          type: string
+          description: Name of the service
+        group_by:
+          type: string
+          description: Group by field for the service usage
+        day:
+          type: string
+          description: Day of the usage data
+        service_accounts:
           type: array
-          description: List of service name-wise usage data
+          description: List of cloud account-wise usage data
           items:
-            $ref: '#/components/schemas/ServiceNameWiseUsage'
-        inventory_details:
-          type: array
-          description: List of inventory-wise usage data
-          items:
-            $ref: '#/components/schemas/InventoryWiseUsage'
+            $ref: '#/components/schemas/CloudAccountWiseUsage'
       type: object
   securitySchemes:
     auth_token:

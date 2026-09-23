@@ -61,33 +61,6 @@ paths:
         required: true
 components:
   schemas:
-    PricingRateItem:
-      properties:
-        pricing_type:
-          type: string
-          description: ON_DEMAND | RESERVED | SAVINGS_PLAN | SPOT
-        payment_option:
-          type: string
-          description: NO_UPFRONT | PARTIAL_UPFRONT | ALL_UPFRONT — RESERVED only
-        commitment_term:
-          type: string
-          description: 1yr | 3yr — RESERVED only
-        price:
-          type: string
-          description: Hourly rate as a string Decimal (e.g. "0.1920000000")
-        upfront_cost:
-          type: string
-          description: One-time upfront fee for RESERVED pricing
-        on_demand_rate:
-          type: string
-          description: On-demand baseline rate — populated on RESERVED docs after backfill
-        effective_date:
-          type: string
-          description: ISO 8601 date the rate became effective
-        description:
-          type: string
-          description: Human-readable rate description from AWS
-      type: object
     PricingResponse:
       properties:
         sku_id:
@@ -164,6 +137,33 @@ components:
         attributes:
           type: object
           description: 'Service-specific filter fields: os, db_engine, deployment, cache_engine'
+      type: object
+    PricingRateItem:
+      properties:
+        pricing_type:
+          type: string
+          description: ON_DEMAND | RESERVED | SAVINGS_PLAN | SPOT
+        payment_option:
+          type: string
+          description: NO_UPFRONT | PARTIAL_UPFRONT | ALL_UPFRONT — RESERVED only
+        commitment_term:
+          type: string
+          description: 1yr | 3yr — RESERVED only
+        price:
+          type: string
+          description: Hourly rate as a string Decimal (e.g. "0.1920000000")
+        upfront_cost:
+          type: string
+          description: One-time upfront fee for RESERVED pricing
+        on_demand_rate:
+          type: string
+          description: On-demand baseline rate — populated on RESERVED docs after backfill
+        effective_date:
+          type: string
+          description: ISO 8601 date the rate became effective
+        description:
+          type: string
+          description: Human-readable rate description from AWS
       type: object
     ModelError:
       required:

@@ -321,7 +321,6 @@ paths:
               schema:
                 type: boolean
       summary: Create view of the report
-      description: Create view of the report
       operationId: CreateReportsUserView
       security:
       - auth_token: []
@@ -361,7 +360,6 @@ paths:
               schema:
                 type: boolean
       summary: Delete view of the report
-      description: Delete view of the report
       operationId: DeleteReportsUserView
       security:
       - auth_token: []
@@ -446,7 +444,6 @@ paths:
               schema:
                 type: boolean
       summary: Update view of the report
-      description: Update view of the report
       operationId: UpdateReportsUserView
       security:
       - auth_token: []
@@ -481,11 +478,32 @@ components:
           type: integer
           description: Secure score for the tenant
       type: object
-    ReportsUserViewCreateRequest:
+    SecureScoreDetails:
       properties:
-        report_id:
+        id:
           type: string
-          description: Id of the report
+          description: ID of the cloud account subscription
+        name:
+          type: string
+          description: Secure score name for azure subscription
+        type:
+          type: string
+          description: Microsoft api for secure scores
+        properties:
+          description: Secure score value
+          $ref: '#/components/schemas/SecureScoreDerivedDetails'
+      type: object
+    RecoveryServiceReportReq:
+      properties:
+        cloud_account_id:
+          type: string
+          description: Specify the Cloud Account ID. This can be fetched from List CloudAccounts API call.
+        tenant_id:
+          type: string
+          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+      type: object
+    ReportViewDetails:
+      properties:
         view_name:
           type: string
           description: Name of the View
@@ -494,8 +512,15 @@ components:
           description: powerBI unique state id
         default_view:
           type: boolean
-          description: default view
-          default: false
+          description: Boolean to indicate default view
+        created_at:
+          type: string
+          format: date-time
+          description: view created datetime
+        updated_at:
+          type: string
+          format: date-time
+          description: view latest update datetime
       type: object
     ReportsUserViewUpdateRequest:
       properties:
@@ -522,27 +547,11 @@ components:
           type: string
           description: name of the view
       type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    ReportDetails:
+    ReportsUserViewCreateRequest:
       properties:
         report_id:
           type: string
           description: Id of the report
-        views:
-          type: array
-          description: List of Views
-          items:
-            $ref: '#/components/schemas/ReportViewDetails'
-      type: object
-    ReportViewDetails:
-      properties:
         view_name:
           type: string
           description: Name of the View
@@ -551,36 +560,40 @@ components:
           description: powerBI unique state id
         default_view:
           type: boolean
-          description: Boolean to indicate default view
-        created_at:
-          type: string
-          format: date-time
-          description: view created datetime
-        updated_at:
-          type: string
-          format: date-time
-          description: view latest update datetime
+          description: default view
+          default: false
       type: object
-    SecureScore:
+    ModelError:
+      required:
+      - message
       properties:
-        max:
-          type: integer
-          description: SecureScore max for the tenant
-        current:
-          type: number
-          description: SecureScore current for the tenant
-        percentage:
-          type: number
-          description: SecureScore percentage for the tenant
+        message:
+          type: string
+          description: Error response message.
       type: object
-    RecoveryServiceReportReq:
+    PatchComplianceReportRes:
       properties:
-        cloud_account_id:
+        status:
           type: string
-          description: Specify the Cloud Account ID. This can be fetched from List CloudAccounts API call.
-        tenant_id:
+          description: status response
+        message:
           type: string
-          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+          description: message response
+        data:
+          type: object
+          description: compliance data
+      type: object
+    BackupReportResponse:
+      properties:
+        status:
+          type: string
+          description: status response
+        message:
+          type: string
+          description: message response
+        data:
+          type: object
+          description: Backup data
       type: object
     CreateBackupReport:
       properties:
@@ -599,18 +612,6 @@ components:
         tenant_id:
           type: string
           description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
-      type: object
-    BackupReportResponse:
-      properties:
-        status:
-          type: string
-          description: status response
-        message:
-          type: string
-          description: message response
-        data:
-          type: object
-          description: Backup data
       type: object
     PatchComplianceReportReq:
       properties:
@@ -632,44 +633,17 @@ components:
           type: string
           description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
       type: object
-    SecureScoreDetails:
+    SecureScore:
       properties:
-        id:
-          type: string
-          description: ID of the cloud account subscription
-        name:
-          type: string
-          description: Secure score name for azure subscription
-        type:
-          type: string
-          description: Microsoft api for secure scores
-        properties:
-          description: Secure score value
-          $ref: '#/components/schemas/SecureScoreDerivedDetails'
-      type: object
-    RecoveryServiceReportRes:
-      properties:
-        status:
-          type: string
-          description: status response
-        message:
-          type: string
-          description: message response
-        data:
-          type: object
-          description: recovery service data
-      type: object
-    PatchComplianceReportRes:
-      properties:
-        status:
-          type: string
-          description: status response
-        message:
-          type: string
-          description: message response
-        data:
-          type: object
-          description: compliance data
+        max:
+          type: integer
+          description: SecureScore max for the tenant
+        current:
+          type: number
+          description: SecureScore current for the tenant
+        percentage:
+          type: number
+          description: SecureScore percentage for the tenant
       type: object
     SecureDetails:
       properties:
@@ -715,6 +689,29 @@ components:
         recommendations:
           description: Secure score deatils
           $ref: '#/components/schemas/SecureScoreDerivedDetails'
+      type: object
+    RecoveryServiceReportRes:
+      properties:
+        status:
+          type: string
+          description: status response
+        message:
+          type: string
+          description: message response
+        data:
+          type: object
+          description: recovery service data
+      type: object
+    ReportDetails:
+      properties:
+        report_id:
+          type: string
+          description: Id of the report
+        views:
+          type: array
+          description: List of Views
+          items:
+            $ref: '#/components/schemas/ReportViewDetails'
       type: object
   securitySchemes:
     auth_token:

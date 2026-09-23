@@ -801,7 +801,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/WellArchitectedFrameworkQuestion'
       summary: Question Update
-      description: Update a Question in a  Well-Architected Framework
+      description: Update a Question in a Well-Architected Framework
       operationId: questions-update
       parameters:
       - name: tenant_id
@@ -822,16 +822,6 @@ paths:
         required: true
 components:
   schemas:
-    WellArchitectedFrameworkCustomLens:
-      required:
-      - __type
-      properties: {}
-      discriminator:
-        propertyName: __type
-      type: object
-      x-cs-subtypes:
-      - subtype_model: WellArchitectedFrameworkCustomLensForAws
-        subtype_name: WellArchitectedFrameworkCustomLensForAws
     WellArchitectedFramework:
       properties:
         created_on:
@@ -931,6 +921,29 @@ components:
           - SeparateBP
           x-cs-enum-type: WellArchitectedFrameworkHandleNoneOfTheAbove
       type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    WellArchitectedFrameworkCustomLens:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: WellArchitectedFrameworkCustomLensForAws
+        subtype_name: WellArchitectedFrameworkCustomLensForAws
     WellArchitectedFrameworkPillar:
       properties:
         framework_id:
@@ -955,71 +968,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RecordIdentity'
-      type: object
-    WellArchitectedFrameworkQuestionRequest:
-      properties:
-        questions:
-          type: array
-          description: Questions to process
-          items:
-            $ref: '#/components/schemas/WellArchitectedFrameworkQuestion'
-      type: object
-    WellArchitectedFrameworkBestPracticeRequest:
-      properties:
-        best_practices:
-          type: array
-          description: Best Practices to process
-          items:
-            $ref: '#/components/schemas/WellArchitectedFrameworkBestPractice'
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    WellArchitectedFrameworkQuestion:
-      properties:
-        created_on:
-          type: string
-          format: date-time
-          description: Well Architected Question created on
-        updated_on:
-          type: string
-          format: date-time
-          description: Well Architected Question updated on
-        framework_id:
-          type: string
-          description: ID of the framework associated with the question
-        pillar_id:
-          type: string
-          description: ID of the pillar associated with the question
-        question_id:
-          type: string
-          description: ID for the particular question
-        hyperscaler_question_id:
-          type: string
-          description: Id of question
-        question:
-          type: string
-          description: Question
-        description:
-          type: string
-          description: Description for the question
-        best_practices:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
-      type: object
-    WellArchitectedFrameworkPillarRequest:
-      properties:
-        pillars:
-          type: array
-          description: Pillars to process
-          items:
-            $ref: '#/components/schemas/WellArchitectedFrameworkPillar'
       type: object
     WellArchitectedFrameworkBestPractice:
       properties:
@@ -1084,18 +1032,70 @@ components:
           items:
             $ref: '#/components/schemas/RecordIdentity'
       type: object
-    RecordIdentity:
+    WellArchitectedFrameworkPillarRequest:
       properties:
-        sysId:
+        pillars:
+          type: array
+          description: Pillars to process
+          items:
+            $ref: '#/components/schemas/WellArchitectedFrameworkPillar'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
           type: string
-          description: Unique Identifier of the tracked item
-        lastUpdate:
+          description: Error response message.
+      type: object
+    WellArchitectedFrameworkQuestion:
+      properties:
+        created_on:
           type: string
           format: date-time
-          description: Last update of the tracked item
-        table:
+          description: Well Architected Question created on
+        updated_on:
           type: string
-          description: Context of the tracked item
+          format: date-time
+          description: Well Architected Question updated on
+        framework_id:
+          type: string
+          description: ID of the framework associated with the question
+        pillar_id:
+          type: string
+          description: ID of the pillar associated with the question
+        question_id:
+          type: string
+          description: ID for the particular question
+        hyperscaler_question_id:
+          type: string
+          description: Id of question
+        question:
+          type: string
+          description: Question
+        description:
+          type: string
+          description: Description for the question
+        best_practices:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    WellArchitectedFrameworkBestPracticeRequest:
+      properties:
+        best_practices:
+          type: array
+          description: Best Practices to process
+          items:
+            $ref: '#/components/schemas/WellArchitectedFrameworkBestPractice'
+      type: object
+    WellArchitectedFrameworkQuestionRequest:
+      properties:
+        questions:
+          type: array
+          description: Questions to process
+          items:
+            $ref: '#/components/schemas/WellArchitectedFrameworkQuestion'
       type: object
   securitySchemes:
     auth_token:

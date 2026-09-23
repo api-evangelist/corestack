@@ -212,6 +212,8 @@ paths:
             schema:
               $ref: '#/components/schemas/BackgroundJobInvalidation'
         required: true
+      summary: Background job invalidation
+      x-summary-source: derived
   /v1/admin/background_job/list:
     post:
       responses:
@@ -709,6 +711,67 @@ paths:
         required: true
 components:
   schemas:
+    ListDetailedResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    BackgroundJobForwardingCheckResponse:
+      properties:
+        hops:
+          type: integer
+          description: Number of hops to react executor
+      type: object
+    BackgroundJobHandlerConfigurationRequest:
+      properties:
+        executor:
+          type: string
+          description: Target executor
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        payload_type:
+          type: string
+          description: Target payload type
+      type: object
+    BackgroundJobLogRequest:
+      properties:
+        id:
+          description: The background job to extract the log for
+          $ref: '#/components/schemas/RecordIdentity'
+        offset:
+          type: integer
+          description: First log entry to extract
+        limit:
+          type: integer
+          description: Maximum number of log entries to return
+      type: object
     BackgroundJobLogger:
       properties:
         executor:
@@ -769,335 +832,23 @@ components:
           - NOTSET
           x-cs-enum-type: BackgroundJobLoggerLevel
       type: object
-    BackgroundJobHandlerListResponse:
+    ListContext:
       properties:
-        payload_types:
-          type: array
-          description: Active Background Job Handlers
-          items:
-            type: string
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
       type: object
-    BackgroundJobHeapAnalysis:
-      properties:
-        started_at:
-          type: string
-          format: date-time
-          description: When the Background Job was created
-        completed_at:
-          type: string
-          format: date-time
-          description: When the Background Job was created
-        processes:
-          type: array
-          description: Process data
-          items:
-            $ref: '#/components/schemas/BackgroundJobHeapAnalysisProcess'
-      type: object
-    BackgroundJobUpdateActivationRequest:
-      properties:
-        job:
-          description: Background Job to update
-          $ref: '#/components/schemas/RecordIdentity'
-        next_activation:
-          type: string
-          format: date-time
-          description: When the Background Job will execute
-      type: object
-    BackgroundJobHandlerConfigurationRequest:
-      properties:
-        executor:
-          type: string
-          description: Target executor
-          example: AI
-          enum:
-          - AI
-          - AI_AGENT
-          - AI_BG
-          - BROKER
-          - COMPLIANCE
-          - COST
-          - COST_BG
-          - COST_BG_CLOUD_BILLING
-          - COST_BG_K8S_BILLING
-          - FEATURE_FLAGS
-          - GOVERNANCE
-          - HEATSTACK
-          - HEATSTACK_BG
-          - IDENTITY
-          - IDENTITY_BG
-          - OPERATIONS
-          - REPORT_GENERATION
-          - RESOURCE_INVENTORY
-          - RESOURCE_INVENTORY_BG
-          - SECURITY
-          x-cs-enum-type: BackgroundJobExecutor
-        payload_type:
-          type: string
-          description: Target payload type
-      type: object
-    BackgroundJobStatisticsResponse:
-      properties:
-        workers:
-          type: object
-          description: Map from identifier to service statistics model
-          additionalProperties:
-            $ref: '#/components/schemas/BackgroundJobStatistics'
-      type: object
-    BackgroundJobInvalidation:
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: When the invalidation message was created
-        sent_at:
-          type: string
-          format: date-time
-          description: When the invalidation message was sent
-        executors:
-          type: array
-          description: Sources of the event
-          items:
-            type: string
-            description: Executor of the Background Job
-            example: AI
-            enum:
-            - AI
-            - AI_AGENT
-            - AI_BG
-            - BROKER
-            - COMPLIANCE
-            - COST
-            - COST_BG
-            - COST_BG_CLOUD_BILLING
-            - COST_BG_K8S_BILLING
-            - FEATURE_FLAGS
-            - GOVERNANCE
-            - HEATSTACK
-            - HEATSTACK_BG
-            - IDENTITY
-            - IDENTITY_BG
-            - OPERATIONS
-            - REPORT_GENERATION
-            - RESOURCE_INVENTORY
-            - RESOURCE_INVENTORY_BG
-            - SECURITY
-            x-cs-enum-type: BackgroundJobExecutor
-        jobs:
-          type: array
-          description: Job context
-          items:
-            $ref: '#/components/schemas/BackgroundJobIdentityWithStatus'
-        domains:
-          type: array
-          description: Domain context
-          items:
-            type: string
-      type: object
-    BackgroundJobBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/BackgroundJob'
-      type: object
-    BackgroundJobBatchRequest:
+    BackgroundJobIdentityWithStatus:
       allOf:
-      - $ref: '#/components/schemas/RecordIdentityBatchRequest'
+      - $ref: '#/components/schemas/RecordIdentity'
       - properties:
-          include_details:
-            type: boolean
-            description: Include payload details if true
-          include_only_status:
-            type: boolean
-            description: Include just the status field if true
-        type: object
-    BackgroundJobQueryCounter:
-      properties:
-        identifier:
-          type: string
-          description: Counter identifier
-        action:
-          type: string
-          description: Operation
-        parametrized_query:
-          type: object
-          description: Summarized query
-        query_planner:
-          type: object
-          description: Query Plan
-        hits:
-          type: integer
-          description: Total number of calls
-        execution_time:
-          type: number
-          description: Total execution time in seconds
-      type: object
-    BackgroundJobHandlerConfiguration:
-      properties:
-        max_parallel_jobs:
-          type: integer
-          description: Maximum number of concurrent jobs to process
-        max_processes:
-          type: integer
-          description: Maximum number of workers to run jobs
-        default_max_parallel_jobs:
-          type: integer
-          description: Default value for number of concurrent jobs to process
-        default_max_processes:
-          type: integer
-          description: Default value for number of workers to run jobs
-        override_expiration:
-          type: string
-          format: date-time
-          description: Override defaults until expiration
-      type: object
-    BackgroundJobQueueRequest:
-      properties:
-        executor:
-          type: string
-          description: Target Executor for the job
-          example: AI
-          enum:
-          - AI
-          - AI_AGENT
-          - AI_BG
-          - BROKER
-          - COMPLIANCE
-          - COST
-          - COST_BG
-          - COST_BG_CLOUD_BILLING
-          - COST_BG_K8S_BILLING
-          - FEATURE_FLAGS
-          - GOVERNANCE
-          - HEATSTACK
-          - HEATSTACK_BG
-          - IDENTITY
-          - IDENTITY_BG
-          - OPERATIONS
-          - REPORT_GENERATION
-          - RESOURCE_INVENTORY
-          - RESOURCE_INVENTORY_BG
-          - SECURITY
-          x-cs-enum-type: BackgroundJobExecutor
-        payload:
-          description: Data associated with the Background Job
-          $ref: '#/components/schemas/BackgroundJobPayloadBase'
-        priority:
-          type: integer
-          description: Priority of the Background Job
-        next_activation:
-          type: string
-          format: date-time
-          description: When the Background Job will execute
-        synchronize_federation:
-          type: boolean
-          description: Ensure all the federation updates are sent
-        check_for_queued_job:
-          type: boolean
-          description: Only queue if no other job is already queued. Queue if other job is already running
-        check_for_running_job:
-          type: boolean
-          description: Only queue if no matching job is found
-        queue_after_running_job:
-          type: boolean
-          description: Queue to run after any matching job
-        auto_retries:
-          type: integer
-          description: Number of auto retries left for this Background Job
-        auto_retry_delay:
-          type: number
-          description: Number of seconds to wait before a retry for this Background Job
-        waiting_on:
-          type: array
-          description: Background Jobs this job is dependent for
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
-      type: object
-    BackgroundJobHeapAnalysisModule:
-      properties:
-        name:
-          type: string
-          description: Module name
-        size:
-          type: integer
-          description: Bytes used in module
-        count:
-          type: integer
-          description: Object counted in module
-      type: object
-    BackgroundJobQueryCounterPerCaller:
-      properties:
-        frames:
-          type: array
-          description: Stack frames for the thread
-          items:
-            $ref: '#/components/schemas/BackgroundJobThreadFrame'
-        hits:
-          type: integer
-          description: Total number of calls
-        execution_time:
-          type: number
-          description: Total execution time in seconds
-      type: object
-    BackgroundJobUpdatePriorityRequest:
-      properties:
-        job:
-          description: Background Job to update
-          $ref: '#/components/schemas/RecordIdentity'
-        priority:
-          type: integer
-          description: New priority of the Background Job
-      type: object
-    ListDetailedResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    BackgroundJobFilter:
-      properties:
-        executor:
-          type: string
-          description: Limit results to jobs from this executor
-          example: AI
-          enum:
-          - AI
-          - AI_AGENT
-          - AI_BG
-          - BROKER
-          - COMPLIANCE
-          - COST
-          - COST_BG
-          - COST_BG_CLOUD_BILLING
-          - COST_BG_K8S_BILLING
-          - FEATURE_FLAGS
-          - GOVERNANCE
-          - HEATSTACK
-          - HEATSTACK_BG
-          - IDENTITY
-          - IDENTITY_BG
-          - OPERATIONS
-          - REPORT_GENERATION
-          - RESOURCE_INVENTORY
-          - RESOURCE_INVENTORY_BG
-          - SECURITY
-          x-cs-enum-type: BackgroundJobExecutor
-        payload_type:
-          type: string
-          description: Limit results to jobs with the same payload type
-        payload_identifier:
-          type: string
-          description: Limit results to jobs with the same payload identifier
-        status:
-          type: array
-          description: Sets of Status values to filter on
-          items:
+          status:
             type: string
             description: Status of Background Job
             example: Ready
@@ -1109,120 +860,15 @@ components:
             - Completed
             - Cancelled
             x-cs-enum-type: BackgroundJobStatus
-      type: object
-    BackgroundJobLog:
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-          description: When the log entry was created
-        logger:
-          type: string
-          description: Name of the logger
-        logger_level:
-          type: string
-          description: Level of the log entry
-        code_context:
-          type: string
-          description: Where the log entry was generated
-        message:
-          type: string
-          description: Content of the log
-      type: object
-    BackgroundJobLogRequest:
-      properties:
-        id:
-          description: The background job to extract the log for
-          $ref: '#/components/schemas/RecordIdentity'
-        offset:
-          type: integer
-          description: First log entry to extract
-        limit:
-          type: integer
-          description: Maximum number of log entries to return
-      type: object
-    BackgroundJobThreadFrame:
-      properties:
-        filename:
-          type: string
-          description: Name of the file for the function
-        lineno:
-          type: integer
-          description: Number line for the function
-        name:
-          type: string
-          description: Name of the function
-        line:
-          type: string
-          description: Text of the line
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    BackgroundJobSortCriteria:
-      required:
-      - column
-      properties:
-        column:
-          type: string
-          example: CreatedAt
-          enum:
-          - CreatedAt
-          - NextActivation
-          - PayloadClass
-          x-cs-enum-type: BackgroundJobSortColumn
-        ascending:
-          type: boolean
-      type: object
-    BackgroundJobStatisticsRequest:
-      properties:
-        executor:
-          type: string
-          description: Filter to threads in this executor
-          example: AI
-          enum:
-          - AI
-          - AI_AGENT
-          - AI_BG
-          - BROKER
-          - COMPLIANCE
-          - COST
-          - COST_BG
-          - COST_BG_CLOUD_BILLING
-          - COST_BG_K8S_BILLING
-          - FEATURE_FLAGS
-          - GOVERNANCE
-          - HEATSTACK
-          - HEATSTACK_BG
-          - IDENTITY
-          - IDENTITY_BG
-          - OPERATIONS
-          - REPORT_GENERATION
-          - RESOURCE_INVENTORY
-          - RESOURCE_INVENTORY_BG
-          - SECURITY
-          x-cs-enum-type: BackgroundJobExecutor
-        include_invalidations:
-          type: boolean
-          description: If true, invalidation counters will be returned
-        include_query_counters:
-          type: boolean
-          description: If true, query counters will be returned
-        include_query_counters_per_caller:
-          type: string
-          description: If set, query counters per caller will be returned for the selected context
-        trigger_heap_analysis:
-          type: boolean
-          description: If true, a new heap analysis is started
-        include_heap_analysis:
-          type: boolean
-          description: If true, the historical heap analysis will be returned
-      type: object
+        type: object
+    BackgroundJobHandlerConfigurationUpdateRequest:
+      allOf:
+      - $ref: '#/components/schemas/BackgroundJobHandlerConfigurationRequest'
+      - properties:
+          config:
+            description: New configuration
+            $ref: '#/components/schemas/BackgroundJobHandlerConfiguration'
+        type: object
     BackgroundJobLoggerRequest:
       properties:
         executor:
@@ -1252,312 +898,32 @@ components:
           - SECURITY
           x-cs-enum-type: BackgroundJobExecutor
       type: object
-    BackgroundJobForwardingCheckRequest:
+    BackgroundJobBatchResponse:
       properties:
-        target_executor:
-          type: string
-          description: Target Executor for the job
-          example: AI
-          enum:
-          - AI
-          - AI_AGENT
-          - AI_BG
-          - BROKER
-          - COMPLIANCE
-          - COST
-          - COST_BG
-          - COST_BG_CLOUD_BILLING
-          - COST_BG_K8S_BILLING
-          - FEATURE_FLAGS
-          - GOVERNANCE
-          - HEATSTACK
-          - HEATSTACK_BG
-          - IDENTITY
-          - IDENTITY_BG
-          - OPERATIONS
-          - REPORT_GENERATION
-          - RESOURCE_INVENTORY
-          - RESOURCE_INVENTORY_BG
-          - SECURITY
-          x-cs-enum-type: BackgroundJobExecutor
-        path_executors:
-          type: array
-          description: Path of the request
-          items:
-            type: string
-            description: Executor of the Background Job
-            example: AI
-            enum:
-            - AI
-            - AI_AGENT
-            - AI_BG
-            - BROKER
-            - COMPLIANCE
-            - COST
-            - COST_BG
-            - COST_BG_CLOUD_BILLING
-            - COST_BG_K8S_BILLING
-            - FEATURE_FLAGS
-            - GOVERNANCE
-            - HEATSTACK
-            - HEATSTACK_BG
-            - IDENTITY
-            - IDENTITY_BG
-            - OPERATIONS
-            - REPORT_GENERATION
-            - RESOURCE_INVENTORY
-            - RESOURCE_INVENTORY_BG
-            - SECURITY
-            x-cs-enum-type: BackgroundJobExecutor
-      type: object
-    RecordIdentityBatchRequest:
-      properties:
-        ids:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
-      type: object
-    BackgroundJobThreadRequest:
-      properties:
-        executor:
-          type: string
-          description: Filter to threads in this executor
-          example: AI
-          enum:
-          - AI
-          - AI_AGENT
-          - AI_BG
-          - BROKER
-          - COMPLIANCE
-          - COST
-          - COST_BG
-          - COST_BG_CLOUD_BILLING
-          - COST_BG_K8S_BILLING
-          - FEATURE_FLAGS
-          - GOVERNANCE
-          - HEATSTACK
-          - HEATSTACK_BG
-          - IDENTITY
-          - IDENTITY_BG
-          - OPERATIONS
-          - REPORT_GENERATION
-          - RESOURCE_INVENTORY
-          - RESOURCE_INVENTORY_BG
-          - SECURITY
-          x-cs-enum-type: BackgroundJobExecutor
-      type: object
-    RecordIdentity:
-      properties:
-        sysId:
-          type: string
-          description: Unique Identifier of the tracked item
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Last update of the tracked item
-        table:
-          type: string
-          description: Context of the tracked item
-      type: object
-    ListContext:
-      properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
-      type: object
-    BackgroundJobThread:
-      properties:
-        executor:
-          type: string
-          description: Executor of the Background Job
-          example: AI
-          enum:
-          - AI
-          - AI_AGENT
-          - AI_BG
-          - BROKER
-          - COMPLIANCE
-          - COST
-          - COST_BG
-          - COST_BG_CLOUD_BILLING
-          - COST_BG_K8S_BILLING
-          - FEATURE_FLAGS
-          - GOVERNANCE
-          - HEATSTACK
-          - HEATSTACK_BG
-          - IDENTITY
-          - IDENTITY_BG
-          - OPERATIONS
-          - REPORT_GENERATION
-          - RESOURCE_INVENTORY
-          - RESOURCE_INVENTORY_BG
-          - SECURITY
-          x-cs-enum-type: BackgroundJobExecutor
-        process_id:
-          type: integer
-          description: ID of the process
-        process_name:
-          type: string
-          description: Name of the process
-        thread_id:
-          type: integer
-          description: ID of the thread
-        thread_name:
-          type: string
-          description: Name of the thread
-        frames:
-          type: array
-          description: Stack frames for the thread
-          items:
-            $ref: '#/components/schemas/BackgroundJobThreadFrame'
-      type: object
-    BackgroundJobIdentityWithStatus:
-      allOf:
-      - $ref: '#/components/schemas/RecordIdentity'
-      - properties:
-          status:
-            type: string
-            description: Status of Background Job
-            example: Ready
-            enum:
-            - Ready
-            - Pending
-            - Waiting
-            - Failed
-            - Completed
-            - Cancelled
-            x-cs-enum-type: BackgroundJobStatus
-        type: object
-    BackgroundJobStatistics:
-      properties:
-        executing_jobs:
-          type: integer
-          description: Number of jobs currently executing
-        processed_jobs:
-          type: integer
-          description: Number of jobs processed
-        restarted_jobs:
-          type: integer
-          description: Number of jobs restarted
-        failed_jobs:
-          type: integer
-          description: Number of jobs that failed
-        invalidations:
+        results:
           type: object
-          description: Map from context to number of invalidations
+          description: Map from identifier to response model
           additionalProperties:
-            type: integer
-        query_counters:
-          type: object
-          description: Map from context to counter details
-          additionalProperties:
-            $ref: '#/components/schemas/BackgroundJobQueryCounters'
-        query_counters_per_caller:
-          type: array
-          description: Query counters by callers for selected context
-          items:
-            $ref: '#/components/schemas/BackgroundJobQueryCounterPerCaller'
-        heap_analysis_pending:
-          type: boolean
-          description: If true, heap processing is ongoing
-        heap_analysis:
-          type: array
-          description: Historical heap analysis
-          items:
-            $ref: '#/components/schemas/BackgroundJobHeapAnalysis'
+            $ref: '#/components/schemas/BackgroundJob'
       type: object
-    BackgroundJob:
+    BackgroundJobLog:
       properties:
-        id:
-          $ref: '#/components/schemas/RecordIdentity'
-        created_at:
+        timestamp:
           type: string
           format: date-time
-          description: When the Background Job was created
-        updated_at:
+          description: When the log entry was created
+        logger:
           type: string
-          format: date-time
-          description: When the Background Job was last updated
-        cancel_requested:
-          type: boolean
-          description: If True, the Background Job should stop processing as soon as possible
-        status:
+          description: Name of the logger
+        logger_level:
           type: string
-          description: Status of Background Job
-          example: Ready
-          enum:
-          - Ready
-          - Pending
-          - Waiting
-          - Failed
-          - Completed
-          - Cancelled
-          x-cs-enum-type: BackgroundJobStatus
-        priority:
-          type: integer
-          description: Priority of the Background Job
-        next_activation:
+          description: Level of the log entry
+        code_context:
           type: string
-          format: date-time
-          description: When the Background Job will execute
-        worker_id:
+          description: Where the log entry was generated
+        message:
           type: string
-          description: Identifier of the worker processing this job
-        execution_start:
-          type: string
-          format: date-time
-          description: When the Background Job started executing
-        execution_end:
-          type: string
-          format: date-time
-          description: When the Background Job completed execution
-        auto_retries:
-          type: integer
-          description: Number of auto retries left for this Background Job
-        auto_retry_delay:
-          type: number
-          description: Number of seconds to wait before a retry for this Background Job
-        failure:
-          type: object
-          description: Details in case the execution of the job failed
-        waiting_set:
-          type: array
-          description: Background Jobs this job is waiting for
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
-        waited_set:
-          type: array
-          description: Background Jobs this job waited on
-          items:
-            $ref: '#/components/schemas/BackgroundJobIdentityWithStatus'
-        waited_set_failed:
-          type: array
-          description: Failed Background Jobs this job waited on
-          items:
-            $ref: '#/components/schemas/BackgroundJobIdentityWithStatus'
-        payload:
-          description: Data associated with the Background Job
-          $ref: '#/components/schemas/BackgroundJobPayloadBase'
-      type: object
-    BackgroundJobListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/BackgroundJobSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/BackgroundJobFilter'
+          description: Content of the log
       type: object
     BackgroundJobQueryCounters:
       properties:
@@ -1567,14 +933,36 @@ components:
           items:
             $ref: '#/components/schemas/BackgroundJobQueryCounter'
       type: object
-    BackgroundJobHandlerConfigurationUpdateRequest:
-      allOf:
-      - $ref: '#/components/schemas/BackgroundJobHandlerConfigurationRequest'
-      - properties:
-          config:
-            description: New configuration
-            $ref: '#/components/schemas/BackgroundJobHandlerConfiguration'
-        type: object
+    BackgroundJobSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          - NextActivation
+          - PayloadClass
+          x-cs-enum-type: BackgroundJobSortColumn
+        ascending:
+          type: boolean
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
     BackgroundJobPayloadBase:
       required:
       - __type
@@ -2056,11 +1444,404 @@ components:
         subtype_name: BackgroundJobPayloadForDefaultWorkloadCreation
       - subtype_model: BackgroundJobPayloadForPeriodicWorkloadRecommendationSnapshotDaily
         subtype_name: BackgroundJobPayloadForPeriodicWorkloadRecommendationSnapshotDaily
-    BackgroundJobForwardingCheckResponse:
+    BackgroundJobHeapAnalysisModule:
       properties:
-        hops:
+        name:
+          type: string
+          description: Module name
+        size:
           type: integer
-          description: Number of hops to react executor
+          description: Bytes used in module
+        count:
+          type: integer
+          description: Object counted in module
+      type: object
+    BackgroundJobHeapAnalysis:
+      properties:
+        started_at:
+          type: string
+          format: date-time
+          description: When the Background Job was created
+        completed_at:
+          type: string
+          format: date-time
+          description: When the Background Job was created
+        processes:
+          type: array
+          description: Process data
+          items:
+            $ref: '#/components/schemas/BackgroundJobHeapAnalysisProcess'
+      type: object
+    BackgroundJobHandlerListResponse:
+      properties:
+        payload_types:
+          type: array
+          description: Active Background Job Handlers
+          items:
+            type: string
+      type: object
+    BackgroundJobQueueRequest:
+      properties:
+        executor:
+          type: string
+          description: Target Executor for the job
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        payload:
+          description: Data associated with the Background Job
+          $ref: '#/components/schemas/BackgroundJobPayloadBase'
+        priority:
+          type: integer
+          description: Priority of the Background Job
+        next_activation:
+          type: string
+          format: date-time
+          description: When the Background Job will execute
+        synchronize_federation:
+          type: boolean
+          description: Ensure all the federation updates are sent
+        check_for_queued_job:
+          type: boolean
+          description: Only queue if no other job is already queued. Queue if other job is already running
+        check_for_running_job:
+          type: boolean
+          description: Only queue if no matching job is found
+        queue_after_running_job:
+          type: boolean
+          description: Queue to run after any matching job
+        auto_retries:
+          type: integer
+          description: Number of auto retries left for this Background Job
+        auto_retry_delay:
+          type: number
+          description: Number of seconds to wait before a retry for this Background Job
+        waiting_on:
+          type: array
+          description: Background Jobs this job is dependent for
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    BackgroundJobForwardingCheckRequest:
+      properties:
+        target_executor:
+          type: string
+          description: Target Executor for the job
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        path_executors:
+          type: array
+          description: Path of the request
+          items:
+            type: string
+            description: Executor of the Background Job
+            example: AI
+            enum:
+            - AI
+            - AI_AGENT
+            - AI_BG
+            - BROKER
+            - COMPLIANCE
+            - COST
+            - COST_BG
+            - COST_BG_CLOUD_BILLING
+            - COST_BG_K8S_BILLING
+            - FEATURE_FLAGS
+            - GOVERNANCE
+            - HEATSTACK
+            - HEATSTACK_BG
+            - IDENTITY
+            - IDENTITY_BG
+            - OPERATIONS
+            - REPORT_GENERATION
+            - RESOURCE_INVENTORY
+            - RESOURCE_INVENTORY_BG
+            - SECURITY
+            x-cs-enum-type: BackgroundJobExecutor
+      type: object
+    BackgroundJobQueryCounterPerCaller:
+      properties:
+        frames:
+          type: array
+          description: Stack frames for the thread
+          items:
+            $ref: '#/components/schemas/BackgroundJobThreadFrame'
+        hits:
+          type: integer
+          description: Total number of calls
+        execution_time:
+          type: number
+          description: Total execution time in seconds
+      type: object
+    BackgroundJobStatisticsRequest:
+      properties:
+        executor:
+          type: string
+          description: Filter to threads in this executor
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        include_invalidations:
+          type: boolean
+          description: If true, invalidation counters will be returned
+        include_query_counters:
+          type: boolean
+          description: If true, query counters will be returned
+        include_query_counters_per_caller:
+          type: string
+          description: If set, query counters per caller will be returned for the selected context
+        trigger_heap_analysis:
+          type: boolean
+          description: If true, a new heap analysis is started
+        include_heap_analysis:
+          type: boolean
+          description: If true, the historical heap analysis will be returned
+      type: object
+    BackgroundJobQueryCounter:
+      properties:
+        identifier:
+          type: string
+          description: Counter identifier
+        action:
+          type: string
+          description: Operation
+        parametrized_query:
+          type: object
+          description: Summarized query
+        query_planner:
+          type: object
+          description: Query Plan
+        hits:
+          type: integer
+          description: Total number of calls
+        execution_time:
+          type: number
+          description: Total execution time in seconds
+      type: object
+    BackgroundJobListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/BackgroundJobSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/BackgroundJobFilter'
+      type: object
+    BackgroundJobHeapAnalysisProcess:
+      properties:
+        name:
+          type: string
+          description: Process name
+        modules:
+          type: array
+          description: Module data
+          items:
+            $ref: '#/components/schemas/BackgroundJobHeapAnalysisModule'
+      type: object
+    BackgroundJobHandlerConfiguration:
+      properties:
+        max_parallel_jobs:
+          type: integer
+          description: Maximum number of concurrent jobs to process
+        max_processes:
+          type: integer
+          description: Maximum number of workers to run jobs
+        default_max_parallel_jobs:
+          type: integer
+          description: Default value for number of concurrent jobs to process
+        default_max_processes:
+          type: integer
+          description: Default value for number of workers to run jobs
+        override_expiration:
+          type: string
+          format: date-time
+          description: Override defaults until expiration
+      type: object
+    BackgroundJob:
+      properties:
+        id:
+          $ref: '#/components/schemas/RecordIdentity'
+        created_at:
+          type: string
+          format: date-time
+          description: When the Background Job was created
+        updated_at:
+          type: string
+          format: date-time
+          description: When the Background Job was last updated
+        cancel_requested:
+          type: boolean
+          description: If True, the Background Job should stop processing as soon as possible
+        status:
+          type: string
+          description: Status of Background Job
+          example: Ready
+          enum:
+          - Ready
+          - Pending
+          - Waiting
+          - Failed
+          - Completed
+          - Cancelled
+          x-cs-enum-type: BackgroundJobStatus
+        priority:
+          type: integer
+          description: Priority of the Background Job
+        next_activation:
+          type: string
+          format: date-time
+          description: When the Background Job will execute
+        worker_id:
+          type: string
+          description: Identifier of the worker processing this job
+        execution_start:
+          type: string
+          format: date-time
+          description: When the Background Job started executing
+        execution_end:
+          type: string
+          format: date-time
+          description: When the Background Job completed execution
+        auto_retries:
+          type: integer
+          description: Number of auto retries left for this Background Job
+        auto_retry_delay:
+          type: number
+          description: Number of seconds to wait before a retry for this Background Job
+        failure:
+          type: object
+          description: Details in case the execution of the job failed
+        waiting_set:
+          type: array
+          description: Background Jobs this job is waiting for
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+        waited_set:
+          type: array
+          description: Background Jobs this job waited on
+          items:
+            $ref: '#/components/schemas/BackgroundJobIdentityWithStatus'
+        waited_set_failed:
+          type: array
+          description: Failed Background Jobs this job waited on
+          items:
+            $ref: '#/components/schemas/BackgroundJobIdentityWithStatus'
+        payload:
+          description: Data associated with the Background Job
+          $ref: '#/components/schemas/BackgroundJobPayloadBase'
+      type: object
+    BackgroundJobUpdatePriorityRequest:
+      properties:
+        job:
+          description: Background Job to update
+          $ref: '#/components/schemas/RecordIdentity'
+        priority:
+          type: integer
+          description: New priority of the Background Job
+      type: object
+    BackgroundJobStatistics:
+      properties:
+        executing_jobs:
+          type: integer
+          description: Number of jobs currently executing
+        processed_jobs:
+          type: integer
+          description: Number of jobs processed
+        restarted_jobs:
+          type: integer
+          description: Number of jobs restarted
+        failed_jobs:
+          type: integer
+          description: Number of jobs that failed
+        invalidations:
+          type: object
+          description: Map from context to number of invalidations
+          additionalProperties:
+            type: integer
+        query_counters:
+          type: object
+          description: Map from context to counter details
+          additionalProperties:
+            $ref: '#/components/schemas/BackgroundJobQueryCounters'
+        query_counters_per_caller:
+          type: array
+          description: Query counters by callers for selected context
+          items:
+            $ref: '#/components/schemas/BackgroundJobQueryCounterPerCaller'
+        heap_analysis_pending:
+          type: boolean
+          description: If true, heap processing is ongoing
+        heap_analysis:
+          type: array
+          description: Historical heap analysis
+          items:
+            $ref: '#/components/schemas/BackgroundJobHeapAnalysis'
       type: object
     BackgroundJobLogResponse:
       properties:
@@ -2073,16 +1854,237 @@ components:
           items:
             $ref: '#/components/schemas/BackgroundJobLog'
       type: object
-    BackgroundJobHeapAnalysisProcess:
+    BackgroundJobInvalidation:
       properties:
+        created_at:
+          type: string
+          format: date-time
+          description: When the invalidation message was created
+        sent_at:
+          type: string
+          format: date-time
+          description: When the invalidation message was sent
+        executors:
+          type: array
+          description: Sources of the event
+          items:
+            type: string
+            description: Executor of the Background Job
+            example: AI
+            enum:
+            - AI
+            - AI_AGENT
+            - AI_BG
+            - BROKER
+            - COMPLIANCE
+            - COST
+            - COST_BG
+            - COST_BG_CLOUD_BILLING
+            - COST_BG_K8S_BILLING
+            - FEATURE_FLAGS
+            - GOVERNANCE
+            - HEATSTACK
+            - HEATSTACK_BG
+            - IDENTITY
+            - IDENTITY_BG
+            - OPERATIONS
+            - REPORT_GENERATION
+            - RESOURCE_INVENTORY
+            - RESOURCE_INVENTORY_BG
+            - SECURITY
+            x-cs-enum-type: BackgroundJobExecutor
+        jobs:
+          type: array
+          description: Job context
+          items:
+            $ref: '#/components/schemas/BackgroundJobIdentityWithStatus'
+        domains:
+          type: array
+          description: Domain context
+          items:
+            type: string
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    BackgroundJobThreadFrame:
+      properties:
+        filename:
+          type: string
+          description: Name of the file for the function
+        lineno:
+          type: integer
+          description: Number line for the function
         name:
           type: string
-          description: Process name
-        modules:
+          description: Name of the function
+        line:
+          type: string
+          description: Text of the line
+      type: object
+    BackgroundJobThreadRequest:
+      properties:
+        executor:
+          type: string
+          description: Filter to threads in this executor
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+      type: object
+    BackgroundJobStatisticsResponse:
+      properties:
+        workers:
+          type: object
+          description: Map from identifier to service statistics model
+          additionalProperties:
+            $ref: '#/components/schemas/BackgroundJobStatistics'
+      type: object
+    BackgroundJobUpdateActivationRequest:
+      properties:
+        job:
+          description: Background Job to update
+          $ref: '#/components/schemas/RecordIdentity'
+        next_activation:
+          type: string
+          format: date-time
+          description: When the Background Job will execute
+      type: object
+    BackgroundJobThread:
+      properties:
+        executor:
+          type: string
+          description: Executor of the Background Job
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        process_id:
+          type: integer
+          description: ID of the process
+        process_name:
+          type: string
+          description: Name of the process
+        thread_id:
+          type: integer
+          description: ID of the thread
+        thread_name:
+          type: string
+          description: Name of the thread
+        frames:
           type: array
-          description: Module data
+          description: Stack frames for the thread
           items:
-            $ref: '#/components/schemas/BackgroundJobHeapAnalysisModule'
+            $ref: '#/components/schemas/BackgroundJobThreadFrame'
+      type: object
+    BackgroundJobBatchRequest:
+      allOf:
+      - $ref: '#/components/schemas/RecordIdentityBatchRequest'
+      - properties:
+          include_details:
+            type: boolean
+            description: Include payload details if true
+          include_only_status:
+            type: boolean
+            description: Include just the status field if true
+        type: object
+    BackgroundJobFilter:
+      properties:
+        executor:
+          type: string
+          description: Limit results to jobs from this executor
+          example: AI
+          enum:
+          - AI
+          - AI_AGENT
+          - AI_BG
+          - BROKER
+          - COMPLIANCE
+          - COST
+          - COST_BG
+          - COST_BG_CLOUD_BILLING
+          - COST_BG_K8S_BILLING
+          - FEATURE_FLAGS
+          - GOVERNANCE
+          - HEATSTACK
+          - HEATSTACK_BG
+          - IDENTITY
+          - IDENTITY_BG
+          - OPERATIONS
+          - REPORT_GENERATION
+          - RESOURCE_INVENTORY
+          - RESOURCE_INVENTORY_BG
+          - SECURITY
+          x-cs-enum-type: BackgroundJobExecutor
+        payload_type:
+          type: string
+          description: Limit results to jobs with the same payload type
+        payload_identifier:
+          type: string
+          description: Limit results to jobs with the same payload identifier
+        status:
+          type: array
+          description: Sets of Status values to filter on
+          items:
+            type: string
+            description: Status of Background Job
+            example: Ready
+            enum:
+            - Ready
+            - Pending
+            - Waiting
+            - Failed
+            - Completed
+            - Cancelled
+            x-cs-enum-type: BackgroundJobStatus
       type: object
     BackgroundJobQueueResponse:
       properties:

@@ -95,6 +95,41 @@ paths:
         required: true
 components:
   schemas:
+    MetricDetailedData:
+      properties:
+        date:
+          type: string
+          format: date-time
+          description: Time stamp For which metrics are being measured.
+        value:
+          type: number
+          description: Value for the metric in the provided time frame.
+      type: object
+    UtilizationAggregateResponse:
+      properties:
+        results:
+          type: array
+          description: Resource Aggregate.
+          items:
+            $ref: '#/components/schemas/ResourceLevelUtilizationAggregate'
+      type: object
+    DiskUtilizationBatchResponse:
+      properties:
+        path:
+          type: string
+          description: Path For which metrics are being measured.
+        device:
+          type: string
+          description: Device name For which metrics are being measured.
+        fstype:
+          type: string
+          description: Type of the disk partition for which metrics are being measured.
+        values:
+          type: array
+          description: Data Related to the Disk Utilization Metric.
+          items:
+            $ref: '#/components/schemas/DiskUtilizationMetricDetail'
+      type: object
     IndividualKpiBase:
       properties:
         name:
@@ -122,42 +157,34 @@ components:
           type: number
           description: Average Utilization Crossed for the instance/vm.
       type: object
-    MetricDetailedData:
+    DiskUtilizationMetricDetail:
       properties:
         date:
           type: string
-          format: date-time
-          description: Time stamp For which metrics are being measured.
-        value:
+          description: Time stamp in string for which metrics are being measured.
+        free:
           type: number
-          description: Value for the metric in the provided time frame.
+          description: Free Space for the metric in the provided time frame.
+        used:
+          type: number
+          description: Utilized Space for the metric in the provided time frame.
       type: object
-    PatchReadinessStatistics:
+    UtilizationStatisticsResponse:
       properties:
-        supported_resources:
+        configured:
+          type: boolean
+          description: Indicates whether the tenant level configuration is done or not.
+        total_resources:
           type: integer
           description: Total number of resources for which the dashboard needs to present the data.
-        ready_to_update:
-          type: integer
-          description: Total number of instance/vm which is ready for updating the patch.
-      type: object
-    ResourceLevelUtilizationAggregate:
-      properties:
-        resource_id:
-          type: string
-          description: Unique Id of the resource for which utilization detail is being shown.
-        service_account_id:
-          type: string
-          description: Id of the service account to which the resource belongs to.
-          x-cs-type: ObjectId
-        platform:
-          type: string
-          description: Name of the os for the instance or vm.
-        resource_name:
-          type: string
-          description: Name of the resource for which utilization detail is being shown.
-        metric_data:
-          $ref: '#/components/schemas/KpiMetricAggregate'
+        overall_statistics:
+          type: array
+          description: A statistical Data for the Kpi metrics at the selected tenant level.
+          items:
+            $ref: '#/components/schemas/IndividualKpiBase'
+        patch_readiness_status:
+          description: Details Describing the Patch readiness Kpi metrics.
+          $ref: '#/components/schemas/PatchReadinessStatistics'
       type: object
     UtilizationStatisticsRequest:
       required:
@@ -169,6 +196,23 @@ components:
           items:
             type: string
             x-cs-type: ObjectId
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    PatchReadinessStatistics:
+      properties:
+        supported_resources:
+          type: integer
+          description: Total number of resources for which the dashboard needs to present the data.
+        ready_to_update:
+          type: integer
+          description: Total number of instance/vm which is ready for updating the patch.
       type: object
     UtilizationAggregationRequest:
       allOf:
@@ -192,6 +236,42 @@ components:
             format: date-time
             description: specify the end date.
         type: object
+    ResourceLevelUtilizationAggregate:
+      properties:
+        resource_id:
+          type: string
+          description: Unique Id of the resource for which utilization detail is being shown.
+        service_account_id:
+          type: string
+          description: Id of the service account to which the resource belongs to.
+          x-cs-type: ObjectId
+        platform:
+          type: string
+          description: Name of the os for the instance or vm.
+        resource_name:
+          type: string
+          description: Name of the resource for which utilization detail is being shown.
+        metric_data:
+          $ref: '#/components/schemas/KpiMetricAggregate'
+      type: object
+    KpiMetricAggregate:
+      properties:
+        cpu_utilization:
+          type: array
+          description: Statistics about the CPU Utilization.
+          items:
+            $ref: '#/components/schemas/MetricDetailedData'
+        memory_utilization:
+          type: array
+          description: Statistics about the Memory Utilization.
+          items:
+            $ref: '#/components/schemas/MetricDetailedData'
+        disk_space_utilization:
+          type: array
+          description: Statistics about the Disk Space Utilization.
+          items:
+            $ref: '#/components/schemas/DiskUtilizationBatchResponse'
+      type: object
     QueryOperator:
       required:
       - __type
@@ -652,86 +732,6 @@ components:
         subtype_name: WorkloadQueryWorkloadType
       - subtype_model: WorkloadQueryWorkloadId
         subtype_name: WorkloadQueryWorkloadId
-    DiskUtilizationMetricDetail:
-      properties:
-        date:
-          type: string
-          description: Time stamp in string for which metrics are being measured.
-        free:
-          type: number
-          description: Free Space for the metric in the provided time frame.
-        used:
-          type: number
-          description: Utilized Space for the metric in the provided time frame.
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    KpiMetricAggregate:
-      properties:
-        cpu_utilization:
-          type: array
-          description: Statistics about the CPU Utilization.
-          items:
-            $ref: '#/components/schemas/MetricDetailedData'
-        memory_utilization:
-          type: array
-          description: Statistics about the Memory Utilization.
-          items:
-            $ref: '#/components/schemas/MetricDetailedData'
-        disk_space_utilization:
-          type: array
-          description: Statistics about the Disk Space Utilization.
-          items:
-            $ref: '#/components/schemas/DiskUtilizationBatchResponse'
-      type: object
-    UtilizationStatisticsResponse:
-      properties:
-        configured:
-          type: boolean
-          description: Indicates whether the tenant level configuration is done or not.
-        total_resources:
-          type: integer
-          description: Total number of resources for which the dashboard needs to present the data.
-        overall_statistics:
-          type: array
-          description: A statistical Data for the Kpi metrics at the selected tenant level.
-          items:
-            $ref: '#/components/schemas/IndividualKpiBase'
-        patch_readiness_status:
-          description: Details Describing the Patch readiness Kpi metrics.
-          $ref: '#/components/schemas/PatchReadinessStatistics'
-      type: object
-    DiskUtilizationBatchResponse:
-      properties:
-        path:
-          type: string
-          description: Path For which metrics are being measured.
-        device:
-          type: string
-          description: Device name For which metrics are being measured.
-        fstype:
-          type: string
-          description: Type of the disk partition for which metrics are being measured.
-        values:
-          type: array
-          description: Data Related to the Disk Utilization Metric.
-          items:
-            $ref: '#/components/schemas/DiskUtilizationMetricDetail'
-      type: object
-    UtilizationAggregateResponse:
-      properties:
-        results:
-          type: array
-          description: Resource Aggregate.
-          items:
-            $ref: '#/components/schemas/ResourceLevelUtilizationAggregate'
-      type: object
   securitySchemes:
     auth_token:
       type: apiKey

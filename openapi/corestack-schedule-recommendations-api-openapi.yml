@@ -41,7 +41,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ScheduleRecommendationFiltersResponse'
       summary: Schedule Recommendations Filters
-      description: Schedule Recommendations Filters
       operationId: ScheduleRecommendationsFilters
       security:
       - auth_token: []
@@ -83,7 +82,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/ScheduleRecommendationResourceScheduleDetails'
       summary: Schedule Recommendations Resource Schedule List
-      description: Schedule Recommendations Resource Schedule List
       operationId: ScheduleRecommendationsListResourceSchedule
       security:
       - auth_token: []
@@ -123,7 +121,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ScheduleRecommendationScheduleResponse'
       summary: Schedule Recommendations Schedule List
-      description: Schedule Recommendations Schedule List
       operationId: ScheduleRecommendationsListSchedules
       security:
       - auth_token: []
@@ -163,7 +160,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ScheduleRecommendationDetailsOverviewResponse'
       summary: Schedule Recommendations Overview
-      description: Schedule Recommendations Overview
       operationId: ScheduleRecommendationsOverview
       security:
       - auth_token: []
@@ -367,7 +363,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/ScheduleRecommendationResourceDetails'
       summary: Schedule Recommendations Resource Details
-      description: Schedule Recommendations Resource Details
       operationId: ScheduleRecommendationsResourceDetails
       security:
       - auth_token: []
@@ -407,7 +402,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ScheduleRecommendationSummaryResponse'
       summary: Schedule Recommendations Summary
-      description: Schedule Recommendations Summary
       operationId: ScheduleRecommendationsSummary
       security:
       - auth_token: []
@@ -489,7 +483,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/ScheduleRecommendationUtilizationDefinition'
       summary: Schedule Recommendations Utilization Definitions
-      description: Schedule Recommendations Utilization Definitions
       operationId: ScheduleRecommendationsUtilizationDefinitions
       security:
       - auth_token: []
@@ -531,7 +524,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/ScheduleRecommendationUtilizationMetric'
       summary: Schedule Recommendations Utilization Metrics
-      description: Schedule Recommendations Utilization Metrics
       operationId: ScheduleRecommendationsUtilizationMetrics
       security:
       - auth_token: []
@@ -545,6 +537,346 @@ paths:
         required: true
 components:
   schemas:
+    ScheduleRecommendationScheduleRequestFilter:
+      properties:
+        estimate_minimum:
+          type: integer
+          description: Minimum Estimated Cost to Filter
+        estimate_maximum:
+          type: integer
+          description: Maximum Estimated Cost to Filter
+      type: object
+    ScheduleRecommendationCalculateCostSavings:
+      required:
+      - service_account_ids
+      properties:
+        service_account_ids:
+          type: array
+          description: Service Account Ids
+          items:
+            type: string
+      type: object
+    ResourceDetailsOverview:
+      properties:
+        cpu:
+          type: array
+          description: Resource Details By CPU
+          items:
+            $ref: '#/components/schemas/ResourceRecord'
+        memory:
+          type: array
+          description: Resource Details by Memory
+          items:
+            $ref: '#/components/schemas/ResourceRecord'
+      type: object
+    ScheduleRecommendationUtilizationDefinitionRequest:
+      allOf:
+      - $ref: '#/components/schemas/ScheduleRecommendationDetailsBaseRequest'
+      - properties: {}
+        type: object
+    ResourceRecord:
+      properties:
+        name:
+          type: string
+          description: Name of Resource Property
+        value:
+          type: string
+          description: Value of Property
+      type: object
+    ScheduleRecommendationActionBaseRequest:
+      required:
+      - recommendation_id
+      - schedule_finding
+      - schedule_periods
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant Id
+        recommendation_id:
+          type: string
+          description: Recommendation id
+        schedule_finding:
+          type: string
+          description: Schedule Finding Type
+          example: hourly
+          enum:
+          - hourly
+          - weekly
+          x-cs-enum-type: ScheduleFinding
+        schedule_periods:
+          type: array
+          description: List of from_times or days for the recommendation
+          items:
+            type: string
+      type: object
+    ResourceUtilizationOverview:
+      properties:
+        from_time:
+          type: integer
+          description: Utilization Start Hour Of Day (0-23)
+        to_time:
+          type: integer
+          description: Utilization End Hour Of Day (0-23)
+        day:
+          type: string
+          example: MONDAY
+          enum:
+          - MONDAY
+          - TUESDAY
+          - WEDNESDAY
+          - THURSDAY
+          - FRIDAY
+          - SATURDAY
+          - SUNDAY
+          x-cs-enum-type: DayOfWeek
+        utilization:
+          type: string
+          description: Schedule Recommendation Utilization
+          example: LOW
+          enum:
+          - LOW
+          - MEDIUM
+          - HIGH
+          x-cs-enum-type: ScheduleRecommendationUtilization
+      type: object
+    ResourceUtilizationSummary:
+      properties:
+        from_time:
+          type: integer
+          description: Utilization Start Hour Of Day (0-23)
+        day:
+          type: string
+          example: MONDAY
+          enum:
+          - MONDAY
+          - TUESDAY
+          - WEDNESDAY
+          - THURSDAY
+          - FRIDAY
+          - SATURDAY
+          - SUNDAY
+          x-cs-enum-type: DayOfWeek
+        utilization:
+          type: number
+          description: Utilization Value
+      type: object
+    ScheduleRecommendationFiltersRequest:
+      properties:
+        tenant_ids:
+          type: array
+          description: Tenant Ids
+          items:
+            type: string
+        service_account_ids:
+          type: array
+          description: Service Account Ids
+          items:
+            type: string
+        service_names:
+          type: array
+          description: Service Names
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+      type: object
+    ScheduleRecommendationSummaryResponse:
+      properties:
+        potential_savings:
+          type: number
+          description: Potential Cost Savings
+        weekly_recommendations:
+          type: integer
+          description: Count of Weekly Recommendations
+        hourly_recommendations:
+          type: integer
+          description: Count of Hourly Recommendations
+        impacting_resources:
+          type: integer
+          description: Count of Impacting Resources
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ScheduleRecommendationResourceScheduleRequest:
+      required:
+      - service_account_ids
+      properties:
+        service_account_ids:
+          type: array
+          description: Service Account Ids
+          items:
+            type: string
+            x-cs-type: ObjectId
+        schedule_finding:
+          type: string
+          description: Schedule Finding Type
+          example: hourly
+          enum:
+          - hourly
+          - weekly
+          x-cs-enum-type: ScheduleFinding
+        statistical_method:
+          type: string
+          description: Schedule Recommendation Statistical Method Name
+          example: Average
+          enum:
+          - Average
+          - Minimum
+          - Maximum
+          x-cs-enum-type: ScheduleRecommendationStatisticalMethod
+        min_saving:
+          type: number
+          description: Minimum Cost Savings Filter
+        max_saving:
+          type: number
+          description: Maximum Cost Savings Filter
+        search:
+          type: string
+          description: Search resource_name and resource_type fields
+      type: object
+    ScheduleRecommendationSummaryRequest:
+      properties:
+        tenant_ids:
+          type: array
+          description: Tenant Ids
+          items:
+            type: string
+            x-cs-type: ObjectId
+        service_account_ids:
+          type: array
+          description: Service Account Ids
+          items:
+            type: string
+            x-cs-type: ObjectId
+        service_names:
+          type: array
+          description: Service Names
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        currency:
+          type: string
+          description: Currency
+          example: AED
+          enum:
+          - AED
+          - ALL
+          - ARS
+          - AUD
+          - BAM
+          - BDT
+          - BGN
+          - BHD
+          - BRL
+          - CAD
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CZK
+          - DKK
+          - EGP
+          - EUR
+          - GBP
+          - HKD
+          - HRK
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - ISK
+          - JPY
+          - KES
+          - KRW
+          - KWD
+          - KZT
+          - MOP
+          - MVR
+          - MXN
+          - MYR
+          - NOK
+          - NZD
+          - OMR
+          - PEN
+          - PHP
+          - PKR
+          - PLN
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - SAR
+          - SEK
+          - SGD
+          - THB
+          - TRY
+          - TWD
+          - USD
+          - VND
+          - ZAR
+          x-cs-enum-type: Currency
+      type: object
+    ScheduleRecommendationScheduleResponse:
+      properties:
+        recommendations:
+          type: array
+          description: Recommendation Details By Account
+          items:
+            $ref: '#/components/schemas/ScheduleRecommendationDetails'
+        overall_savings_percentage:
+          type: number
+          description: Overall Savings Percentage
+        total_count:
+          type: integer
+          description: Total Count of Resources
+      type: object
     ScheduleRecommendationResourceDetails:
       properties:
         currency:
@@ -676,111 +1008,6 @@ components:
           format: date-time
           description: Schedule End Time
       type: object
-    ScheduleRecommendationFiltersResponse:
-      properties:
-        currencies:
-          type: array
-          description: Currencies
-          items:
-            type: string
-            description: currency of the cost. Example 'currency':'USD'
-            example: AED
-            enum:
-            - AED
-            - ALL
-            - ARS
-            - AUD
-            - BAM
-            - BDT
-            - BGN
-            - BHD
-            - BRL
-            - CAD
-            - CHF
-            - CLP
-            - CNY
-            - COP
-            - CRC
-            - CZK
-            - DKK
-            - EGP
-            - EUR
-            - GBP
-            - HKD
-            - HRK
-            - HUF
-            - IDR
-            - ILS
-            - INR
-            - ISK
-            - JPY
-            - KES
-            - KRW
-            - KWD
-            - KZT
-            - MOP
-            - MVR
-            - MXN
-            - MYR
-            - NOK
-            - NZD
-            - OMR
-            - PEN
-            - PHP
-            - PKR
-            - PLN
-            - QAR
-            - RON
-            - RSD
-            - RUB
-            - SAR
-            - SEK
-            - SGD
-            - THB
-            - TRY
-            - TWD
-            - USD
-            - VND
-            - ZAR
-            x-cs-enum-type: Currency
-        services:
-          type: array
-          description: Service Names
-          items:
-            type: string
-            description: Cloud Provider to select
-            example: AWS
-            enum:
-            - AWS
-            - Azure
-            - AzureStack
-            - Azure_CSP
-            - Azure_CSP-Direct
-            - Azure_EA
-            - Azure_MCA
-            - Cloudstack
-            - GCP
-            - MS_VMM
-            - OCI
-            - Openstack
-            - PrivateCloud
-            - Rackspace
-            - VMware
-            - VMware_VCD
-            - vCenter
-            x-cs-enum-type: CloudServiceName
-        tenant_ids:
-          type: array
-          description: Tenant Ids
-          items:
-            type: string
-        service_account_ids:
-          type: array
-          description: Service Account Ids
-          items:
-            type: string
-            x-cs-type: ObjectId
-      type: object
     ScheduleRecommendationScheduleRequest:
       required:
       - currencies
@@ -896,32 +1123,6 @@ components:
           type: string
           description: Search String for filter Service Accounts
       type: object
-    ScheduleRecommendationUtilizationDefinition:
-      properties:
-        metric_name:
-          type: string
-          description: Name of the Metric
-        metric_unit:
-          type: string
-          description: Unit of the metric
-        minimum_value:
-          type: number
-          description: Minimum Metric Value
-        maximum_value:
-          type: number
-          description: Maximum Metric Value
-        low_utilization:
-          type: number
-          description: Minimum Utilization Value
-        high_utilization:
-          type: number
-          description: Maximum Utilization Value
-      type: object
-    ScheduleRecommendationResourceDetailsRequest:
-      allOf:
-      - $ref: '#/components/schemas/ScheduleRecommendationDetailsBaseRequest'
-      - properties: {}
-        type: object
     ScheduleRecommendationResourceScheduleDetails:
       properties:
         schedule_recommendation_id:
@@ -1033,311 +1234,86 @@ components:
           - Maximum
           x-cs-enum-type: ScheduleRecommendationStatisticalMethod
       type: object
-    ResourceDetailsOverview:
-      properties:
-        cpu:
-          type: array
-          description: Resource Details By CPU
-          items:
-            $ref: '#/components/schemas/ResourceRecord'
-        memory:
-          type: array
-          description: Resource Details by Memory
-          items:
-            $ref: '#/components/schemas/ResourceRecord'
-      type: object
-    ScheduleRecommendationResourceScheduleRequest:
-      required:
-      - service_account_ids
-      properties:
-        service_account_ids:
-          type: array
-          description: Service Account Ids
-          items:
-            type: string
-            x-cs-type: ObjectId
-        schedule_finding:
-          type: string
-          description: Schedule Finding Type
-          example: hourly
-          enum:
-          - hourly
-          - weekly
-          x-cs-enum-type: ScheduleFinding
-        statistical_method:
-          type: string
-          description: Schedule Recommendation Statistical Method Name
-          example: Average
-          enum:
-          - Average
-          - Minimum
-          - Maximum
-          x-cs-enum-type: ScheduleRecommendationStatisticalMethod
-        min_saving:
-          type: number
-          description: Minimum Cost Savings Filter
-        max_saving:
-          type: number
-          description: Maximum Cost Savings Filter
-        search:
-          type: string
-          description: Search resource_name and resource_type fields
-      type: object
-    ResourceUtilizationSummary:
-      properties:
-        from_time:
-          type: integer
-          description: Utilization Start Hour Of Day (0-23)
-        day:
-          type: string
-          example: MONDAY
-          enum:
-          - MONDAY
-          - TUESDAY
-          - WEDNESDAY
-          - THURSDAY
-          - FRIDAY
-          - SATURDAY
-          - SUNDAY
-          x-cs-enum-type: DayOfWeek
-        utilization:
-          type: number
-          description: Utilization Value
-      type: object
-    ScheduleRecommendationFiltersRequest:
-      properties:
-        tenant_ids:
-          type: array
-          description: Tenant Ids
-          items:
-            type: string
-        service_account_ids:
-          type: array
-          description: Service Account Ids
-          items:
-            type: string
-        service_names:
-          type: array
-          description: Service Names
-          items:
-            type: string
-            description: Cloud Provider to select
-            example: AWS
-            enum:
-            - AWS
-            - Azure
-            - AzureStack
-            - Azure_CSP
-            - Azure_CSP-Direct
-            - Azure_EA
-            - Azure_MCA
-            - Cloudstack
-            - GCP
-            - MS_VMM
-            - OCI
-            - Openstack
-            - PrivateCloud
-            - Rackspace
-            - VMware
-            - VMware_VCD
-            - vCenter
-            x-cs-enum-type: CloudServiceName
-      type: object
     ScheduleRecommendationReactivateRequest:
       allOf:
       - $ref: '#/components/schemas/ScheduleRecommendationActionBaseRequest'
       - properties: {}
         type: object
-    ScheduleRecommendationDetailsBaseRequest:
-      required:
-      - resource_id
-      - schedule_finding
-      - service_account_id
-      - tenant_id
+    ScheduleRecommendationUtilizationDefinition:
       properties:
-        tenant_id:
+        metric_name:
           type: string
-          description: Tenant Id
-        service_account_id:
+          description: Name of the Metric
+        metric_unit:
           type: string
-          description: Service Account Id
-        resource_id:
-          type: string
-          description: Unique Resource Id of Inventory
-        schedule_finding:
-          type: string
-          description: Schedule Finding Type
-          example: hourly
-          enum:
-          - hourly
-          - weekly
-          x-cs-enum-type: ScheduleFinding
-      type: object
-    ScheduleRecommendationSummaryRequest:
-      properties:
-        tenant_ids:
-          type: array
-          description: Tenant Ids
-          items:
-            type: string
-            x-cs-type: ObjectId
-        service_account_ids:
-          type: array
-          description: Service Account Ids
-          items:
-            type: string
-            x-cs-type: ObjectId
-        service_names:
-          type: array
-          description: Service Names
-          items:
-            type: string
-            description: Cloud Provider to select
-            example: AWS
-            enum:
-            - AWS
-            - Azure
-            - AzureStack
-            - Azure_CSP
-            - Azure_CSP-Direct
-            - Azure_EA
-            - Azure_MCA
-            - Cloudstack
-            - GCP
-            - MS_VMM
-            - OCI
-            - Openstack
-            - PrivateCloud
-            - Rackspace
-            - VMware
-            - VMware_VCD
-            - vCenter
-            x-cs-enum-type: CloudServiceName
-        currency:
-          type: string
-          description: Currency
-          example: AED
-          enum:
-          - AED
-          - ALL
-          - ARS
-          - AUD
-          - BAM
-          - BDT
-          - BGN
-          - BHD
-          - BRL
-          - CAD
-          - CHF
-          - CLP
-          - CNY
-          - COP
-          - CRC
-          - CZK
-          - DKK
-          - EGP
-          - EUR
-          - GBP
-          - HKD
-          - HRK
-          - HUF
-          - IDR
-          - ILS
-          - INR
-          - ISK
-          - JPY
-          - KES
-          - KRW
-          - KWD
-          - KZT
-          - MOP
-          - MVR
-          - MXN
-          - MYR
-          - NOK
-          - NZD
-          - OMR
-          - PEN
-          - PHP
-          - PKR
-          - PLN
-          - QAR
-          - RON
-          - RSD
-          - RUB
-          - SAR
-          - SEK
-          - SGD
-          - THB
-          - TRY
-          - TWD
-          - USD
-          - VND
-          - ZAR
-          x-cs-enum-type: Currency
-      type: object
-    ResourceUtilizationOverview:
-      properties:
-        from_time:
-          type: integer
-          description: Utilization Start Hour Of Day (0-23)
-        to_time:
-          type: integer
-          description: Utilization End Hour Of Day (0-23)
-        day:
-          type: string
-          example: MONDAY
-          enum:
-          - MONDAY
-          - TUESDAY
-          - WEDNESDAY
-          - THURSDAY
-          - FRIDAY
-          - SATURDAY
-          - SUNDAY
-          x-cs-enum-type: DayOfWeek
-        utilization:
-          type: string
-          description: Schedule Recommendation Utilization
-          example: LOW
-          enum:
-          - LOW
-          - MEDIUM
-          - HIGH
-          x-cs-enum-type: ScheduleRecommendationUtilization
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    ScheduleRecommendationScheduleResponse:
-      properties:
-        recommendations:
-          type: array
-          description: Recommendation Details By Account
-          items:
-            $ref: '#/components/schemas/ScheduleRecommendationDetails'
-        overall_savings_percentage:
+          description: Unit of the metric
+        minimum_value:
           type: number
-          description: Overall Savings Percentage
-        total_count:
-          type: integer
-          description: Total Count of Resources
+          description: Minimum Metric Value
+        maximum_value:
+          type: number
+          description: Maximum Metric Value
+        low_utilization:
+          type: number
+          description: Minimum Utilization Value
+        high_utilization:
+          type: number
+          description: Maximum Utilization Value
       type: object
-    ScheduleRecommendationCalculateCostSavings:
-      required:
-      - service_account_ids
-      properties:
-        service_account_ids:
-          type: array
-          description: Service Account Ids
-          items:
+    ScheduleRecommendationPostponeRequest:
+      allOf:
+      - $ref: '#/components/schemas/ScheduleRecommendationActionBaseRequest'
+      - required:
+        - duration
+        - emails
+        - unit
+        properties:
+          duration:
+            type: integer
+            description: Duration of Delay to perform postpone
+          unit:
             type: string
-      type: object
+            description: Unit for duration
+            example: hours
+            enum:
+            - hours
+            - days
+            x-cs-enum-type: ScheduleRecommendationDurationUnit
+          emails:
+            type: array
+            description: Email addresses to notify
+            items:
+              type: string
+          resource_type:
+            type: string
+            description: Name of the resource component
+          resource:
+            type: string
+            description: Name of the resource
+          day:
+            type: string
+            example: MONDAY
+            enum:
+            - MONDAY
+            - TUESDAY
+            - WEDNESDAY
+            - THURSDAY
+            - FRIDAY
+            - SATURDAY
+            - SUNDAY
+            x-cs-enum-type: DayOfWeek
+          from_time:
+            type: string
+            format: date-time
+            description: FromTime of the calculation
+          to_time:
+            type: string
+            format: date-time
+            description: ToTime of the calculation
+          potential_cost_savings_monthly:
+            type: number
+            description: Monthly Cost Savings of the Recommendation
+        type: object
     ScheduleRecommendationDetails:
       properties:
         service_account_id:
@@ -1406,59 +1382,115 @@ components:
             format: date-time
             description: Schedule End Time
         type: object
-    ScheduleRecommendationPostponeRequest:
+    ScheduleRecommendationFiltersResponse:
+      properties:
+        currencies:
+          type: array
+          description: Currencies
+          items:
+            type: string
+            description: currency of the cost. Example 'currency':'USD'
+            example: AED
+            enum:
+            - AED
+            - ALL
+            - ARS
+            - AUD
+            - BAM
+            - BDT
+            - BGN
+            - BHD
+            - BRL
+            - CAD
+            - CHF
+            - CLP
+            - CNY
+            - COP
+            - CRC
+            - CZK
+            - DKK
+            - EGP
+            - EUR
+            - GBP
+            - HKD
+            - HRK
+            - HUF
+            - IDR
+            - ILS
+            - INR
+            - ISK
+            - JPY
+            - KES
+            - KRW
+            - KWD
+            - KZT
+            - MOP
+            - MVR
+            - MXN
+            - MYR
+            - NOK
+            - NZD
+            - OMR
+            - PEN
+            - PHP
+            - PKR
+            - PLN
+            - QAR
+            - RON
+            - RSD
+            - RUB
+            - SAR
+            - SEK
+            - SGD
+            - THB
+            - TRY
+            - TWD
+            - USD
+            - VND
+            - ZAR
+            x-cs-enum-type: Currency
+        services:
+          type: array
+          description: Service Names
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        tenant_ids:
+          type: array
+          description: Tenant Ids
+          items:
+            type: string
+        service_account_ids:
+          type: array
+          description: Service Account Ids
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    ScheduleRecommendationResourceDetailsRequest:
       allOf:
-      - $ref: '#/components/schemas/ScheduleRecommendationActionBaseRequest'
-      - required:
-        - duration
-        - emails
-        - unit
-        properties:
-          duration:
-            type: integer
-            description: Duration of Delay to perform postpone
-          unit:
-            type: string
-            description: Unit for duration
-            example: hours
-            enum:
-            - hours
-            - days
-            x-cs-enum-type: ScheduleRecommendationDurationUnit
-          emails:
-            type: array
-            description: Email addresses to notify
-            items:
-              type: string
-          resource_type:
-            type: string
-            description: Name of the resource component
-          resource:
-            type: string
-            description: Name of the resource
-          day:
-            type: string
-            example: MONDAY
-            enum:
-            - MONDAY
-            - TUESDAY
-            - WEDNESDAY
-            - THURSDAY
-            - FRIDAY
-            - SATURDAY
-            - SUNDAY
-            x-cs-enum-type: DayOfWeek
-          from_time:
-            type: string
-            format: date-time
-            description: FromTime of the calculation
-          to_time:
-            type: string
-            format: date-time
-            description: ToTime of the calculation
-          potential_cost_savings_monthly:
-            type: number
-            description: Monthly Cost Savings of the Recommendation
+      - $ref: '#/components/schemas/ScheduleRecommendationDetailsBaseRequest'
+      - properties: {}
         type: object
     ScheduleRecommendationUtilizationMetric:
       properties:
@@ -1482,39 +1514,6 @@ components:
           type: number
           description: Utilization Value
       type: object
-    ScheduleRecommendationRejectRequest:
-      allOf:
-      - $ref: '#/components/schemas/ScheduleRecommendationActionBaseRequest'
-      - required:
-        - service_account_id
-        properties:
-          service_account_id:
-            type: string
-            description: Service Account Id
-          reason:
-            type: string
-            description: Reason for Rejection
-        type: object
-    ScheduleRecommendationSummaryResponse:
-      properties:
-        potential_savings:
-          type: number
-          description: Potential Cost Savings
-        weekly_recommendations:
-          type: integer
-          description: Count of Weekly Recommendations
-        hourly_recommendations:
-          type: integer
-          description: Count of Hourly Recommendations
-        impacting_resources:
-          type: integer
-          description: Count of Impacting Resources
-      type: object
-    ScheduleRecommendationUtilizationDefinitionRequest:
-      allOf:
-      - $ref: '#/components/schemas/ScheduleRecommendationDetailsBaseRequest'
-      - properties: {}
-        type: object
     ScheduleRecommendationDetailsOverviewResponse:
       properties:
         resource_utilization_level:
@@ -1531,19 +1530,22 @@ components:
           description: Resource Details By CPU and Memory
           $ref: '#/components/schemas/ResourceDetailsOverview'
       type: object
-    ScheduleRecommendationActionBaseRequest:
+    ScheduleRecommendationDetailsBaseRequest:
       required:
-      - recommendation_id
+      - resource_id
       - schedule_finding
-      - schedule_periods
+      - service_account_id
       - tenant_id
       properties:
         tenant_id:
           type: string
           description: Tenant Id
-        recommendation_id:
+        service_account_id:
           type: string
-          description: Recommendation id
+          description: Service Account Id
+        resource_id:
+          type: string
+          description: Unique Resource Id of Inventory
         schedule_finding:
           type: string
           description: Schedule Finding Type
@@ -1552,30 +1554,20 @@ components:
           - hourly
           - weekly
           x-cs-enum-type: ScheduleFinding
-        schedule_periods:
-          type: array
-          description: List of from_times or days for the recommendation
-          items:
+      type: object
+    ScheduleRecommendationRejectRequest:
+      allOf:
+      - $ref: '#/components/schemas/ScheduleRecommendationActionBaseRequest'
+      - required:
+        - service_account_id
+        properties:
+          service_account_id:
             type: string
-      type: object
-    ScheduleRecommendationScheduleRequestFilter:
-      properties:
-        estimate_minimum:
-          type: integer
-          description: Minimum Estimated Cost to Filter
-        estimate_maximum:
-          type: integer
-          description: Maximum Estimated Cost to Filter
-      type: object
-    ResourceRecord:
-      properties:
-        name:
-          type: string
-          description: Name of Resource Property
-        value:
-          type: string
-          description: Value of Property
-      type: object
+            description: Service Account Id
+          reason:
+            type: string
+            description: Reason for Rejection
+        type: object
     ScheduleRecommendationUtilizationMetricRequest:
       allOf:
       - $ref: '#/components/schemas/ScheduleRecommendationDetailsBaseRequest'

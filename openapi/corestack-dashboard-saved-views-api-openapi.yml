@@ -240,33 +240,6 @@ paths:
         required: true
 components:
   schemas:
-    SavedViewCreateRequest:
-      allOf:
-      - $ref: '#/components/schemas/SavedViewBase'
-      - properties: {}
-        type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    SavedViewUpdateRequest:
-      allOf:
-      - $ref: '#/components/schemas/SavedViewBase'
-      - properties: {}
-        type: object
-    SavedViewListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/SavedViewFilter'
-      type: object
     ListContext:
       properties:
         batch_size:
@@ -311,6 +284,36 @@ components:
           - private
           x-cs-enum-type: SavedViewVisibility
       type: object
+    SavedViewListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/SavedViewFilter'
+      type: object
+    SavedViewUpdateRequest:
+      allOf:
+      - $ref: '#/components/schemas/SavedViewBase'
+      - properties: {}
+        type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    SavedViewDetail:
+      allOf:
+      - $ref: '#/components/schemas/SavedViewBase'
+      - properties:
+          id:
+            type: string
+            description: Unique identifier of the saved view
+        type: object
     SavedViewListResponse:
       properties:
         results:
@@ -359,13 +362,10 @@ components:
           description: Polymorphic view payload (DashboardViewState)
           $ref: '#/components/schemas/ViewState'
       type: object
-    SavedViewDetail:
+    SavedViewCreateRequest:
       allOf:
       - $ref: '#/components/schemas/SavedViewBase'
-      - properties:
-          id:
-            type: string
-            description: Unique identifier of the saved view
+      - properties: {}
         type: object
   securitySchemes:
     auth_token:

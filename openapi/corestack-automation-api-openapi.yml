@@ -1806,363 +1806,96 @@ paths:
         required: true
 components:
   schemas:
-    TemplateGetParamsResponse:
-      required:
-      - args
-      - cloud_accounts
-      properties:
-        args:
-          type: object
-          description: Arguments to the template
-        cloud_accounts:
-          type: array
-          description: Cloud account details to execute the template
-          items:
-            $ref: '#/components/schemas/CloudAccountDetailsResponse'
-      type: object
-    ListContext:
-      properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
-      type: object
-    CreateBlueprintRequest:
-      required:
-      - name
-      - resources
-      - scope
-      properties:
-        name:
-          type: string
-          description: Blueprint Name
-        resources:
-          type: array
-          description: Resource Details
-          items:
-            $ref: '#/components/schemas/ResourceRequest'
-        scope:
-          type: string
-          description: Scope of the Blueprint
-          example: private
-          enum:
-          - private
-          - tenant
-          - global
-          - account
-          x-cs-enum-type: BlueprintScope
-      type: object
-    ScheduleData:
-      required:
-      - args
-      - created_at
-      - created_by
-      - description
-      - id
-      - name
-      - next_run
-      - recurrence
-      - resource_details
-      - schedule
-      - type
+    TemplateJobUpdateResponse:
       properties:
         id:
           type: string
-          description: Schedule ID
+          description: Unique ID of the Template Job
         name:
           type: string
-          description: Schedule Name
-        type:
-          type: string
-          description: Schedule type
-          example: template
-          enum:
-          - template
-          - script
-          - policy
-          x-cs-enum-type: ScheduleType
-        description:
-          type: string
-          description: Description of the schedule
-        recurrence:
-          type: string
-          description: Re-occurrence of the schedule
-        next_run:
-          type: string
-          description: When will the schedule run for the next time
-        schedule:
-          type: object
-          description: Schedule date and time details
-        args:
-          type: object
-          description: Input Parameters for that Template/Script/Policy that is scheduled
-        resource_details:
-          type: array
-          description: Template/Script/Policy Details that is scheduled
-          items:
-            $ref: '#/components/schemas/ResourceDetails'
-        created_at:
-          type: string
-          description: When the schedule is created
-        created_by:
-          type: string
-          description: Who has created the schedule
-      type: object
-    TemplateCreateResponse:
-      required:
-      - template_id
-      properties:
-        template_id:
-          type: string
-          description: Unique Id of the template
-      type: object
-    AutomationTemplateResourceTypesMapping:
-      properties:
-        service_name:
-          type: string
-          description: Cloud Service and it's resource type.
-          example: AWS
-          enum:
-          - AWS
-          - Azure
-          - AzureStack
-          - Azure_CSP
-          - Azure_CSP-Direct
-          - Azure_EA
-          - Azure_MCA
-          - Cloudstack
-          - GCP
-          - MS_VMM
-          - OCI
-          - Openstack
-          - PrivateCloud
-          - Rackspace
-          - VMware
-          - VMware_VCD
-          - vCenter
-          x-cs-enum-type: CloudServiceName
-        resource_types:
-          type: array
-          description: Resource type of the service.
-          items:
-            type: string
-      type: object
-    ListBlueprintDetails:
-      required:
-      - blueprints
-      - page_count
-      - total_count
-      properties:
-        page_count:
-          type: integer
-          description: Page count
-        total_count:
-          type: integer
-          description: Total count
-        blueprints:
-          type: array
-          description: Blueprints Details
-          items:
-            $ref: '#/components/schemas/BlueprintDetails'
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    ScanScriptResponse:
-      required:
-      - hosts
-      - scanned_parameters
-      properties:
-        scanned_parameters:
-          type: object
-          description: A JSON object which contains the scanned parameters of the script.
-        hosts:
-          type: array
-          description: Hosts available in the playbook if any
-          items:
-            type: string
-      type: object
-    TemplateJobListResponse:
-      required:
-      - jobs
-      properties:
-        jobs:
-          $ref: '#/components/schemas/TemplateJobsList'
-      type: object
-    CreateScheduleResponse:
-      properties:
-        schedule_id:
-          type: string
-          description: Schedule ID
-      type: object
-    ParameterBase:
-      required:
-      - __type
-      properties:
-        description:
-          type: string
-          description: A brief explanation of the policy parameter
-        default_value:
-          type: string
-          description: Default value of the parameter, encoded as a JSON string
-        hide_parameter:
-          type: boolean
-          description: Hide/Show a parameter for visibility as part of deployment
-      discriminator:
-        propertyName: __type
-      type: object
-      x-cs-subtypes:
-      - subtype_model: ParameterStringType
-        subtype_name: ParameterStringType
-      - subtype_model: ParameterNumberType
-        subtype_name: ParameterNumberType
-      - subtype_model: ParameterBooleanType
-        subtype_name: ParameterBooleanType
-      - subtype_model: ParameterBaseWithSchema
-        subtype_name: ParameterBaseWithSchema
-      - subtype_model: ParameterArray
-        subtype_name: ParameterArray
-      - subtype_model: ParameterMap
-        subtype_name: ParameterMap
-      - subtype_model: ParameterObject
-        subtype_name: ParameterObject
-      - subtype_model: ParameterJsonBlob
-        subtype_name: ParameterJsonBlob
-    ViewScheduleResponse:
-      required:
-      - args
-      - created_at
-      - created_by
-      - description
-      - execution_logs
-      - name
-      - next_run
-      - recurrence
-      - resource
-      - schedule
-      - type
-      - updated_at
-      - updated_by
-      properties:
-        name:
-          type: string
-          description: Schedule Name
-        type:
-          type: string
-          description: Schedule type
-          example: template
-          enum:
-          - template
-          - script
-          - policy
-          x-cs-enum-type: ScheduleType
-        description:
-          type: string
-          description: Description of the schedule
-        recurrence:
-          type: string
-          description: Re-occurence of the schedule
-        next_run:
-          type: string
-          description: When will the schedule run for the next time
-        schedule:
-          type: object
-          description: Schedule date and time details
-        args:
-          type: object
-          description: Input Parameters for that Template/Policy/Script that is scheduled
-        resource:
-          type: array
-          description: Template/Policy/Script Details that is scheduled
-          items:
-            $ref: '#/components/schemas/ResourceViewDetails'
-        execution_logs:
-          type: array
-          description: Execution Log Details
-          items:
-            $ref: '#/components/schemas/ExecutionLogDetails'
-        created_at:
-          type: string
-          description: When the schedule is created
-        created_by:
-          type: string
-          description: Who has created the schedule
-        updated_by:
-          type: string
-          description: Who has updated the schedule
-        updated_at:
-          type: string
-          description: When the schedule is updated
-      type: object
-    UpdateBlueprintResponse:
-      required:
-      - blueprint_id
-      properties:
-        blueprint_id:
-          type: string
-          description: Blueprint ID
-      type: object
-    ValidationResults:
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationResult'
-      type: object
-    ScriptJobScriptInfo:
-      required:
-      - config_type
-      - output_parameters
-      - parameters
-      - script_id
-      - script_name
-      - started_at
-      - status
-      - status_reason
-      properties:
-        script_id:
-          type: string
-          description: Script Id
-        script_name:
-          type: string
-          description: Script Name
-        config_type:
-          type: string
-          description: Config type of the script(s)
-        parameters:
-          type: object
-          description: Parameters of the script.
-        parameter_source:
-          type: string
-          description: Parameter source - whether as per the one defined in script or custom json
-          default: script
-          example: script
-          enum:
-          - script
-          - json
-          x-cs-enum-type: ParameterSource
-        output_parameters:
-          type: object
-          description: Output parameters of the script (all applied parameters).
+          description: Name of the Template Job
         status:
           type: string
-          description: Status of the script execution
+          description: Overall status of the template execution
+          example: CANCELED
+          enum:
+          - CANCELED
+          - COMPLETED
+          - CREATE_FAILED
+          - CREATE_IN_PROGRESS
+          - DELETED
+          - DELETE_FAILED
+          - DELETE_IN_PROGRESS
+          - FAILED
+          - IN_PROGRESS
+          - SNAPSHOT_COMPLETED
+          - SNAPSHOT_FAILED
+          - SNAPSHOT_IN_PROGRESS
+          - UPDATED
+          - UPDATE_FAILED
+          - UPDATE_IN_PROGRESS
+          x-cs-enum-type: TemplateJobStatus
         status_reason:
           type: string
           description: Error message if failed
-        started_at:
+        created_at:
           type: string
-          description: Execution start time in UTC
+          format: date-time
+          description: Template Job start time in UTC
+        completed_at:
+          type: string
+          format: date-time
+          description: Template Job completion time in UTC
+        execution_type:
+          type: string
+          description: Template Job execution type
+          example: on_demand
+          enum:
+          - on_demand
+          - scheduled
+          - event_driven
+          - system
+          x-cs-enum-type: TemplateExecutionType
+        terraform_state:
+          type: string
+          description: Terraform Template state
+        args:
+          type: object
+          description: Template Job execution template inputs arguments
+          additionalProperties:
+            type: string
+        output:
+          type: string
+          description: Template Job outputs
+        attachment_id:
+          type: string
+          description: Terraform job log ID
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateJobResource'
+      type: object
+    ScriptMinimumRequirements:
+      properties:
+        ram(MB):
+          type: number
+          description: Minimum RAM required(in MB) to install the script.
+          default: 0.0
+        cpu:
+          type: integer
+          description: Minimum CPU core required(in MB) to install the script.
+          default: 0
+        disk(MB):
+          type: number
+          description: Minimum disk space required(in MB) to install the script.
+          default: 0.0
+      type: object
+    ValidationResult:
+      properties:
+        field:
+          type: string
+        reason:
+          type: string
       type: object
     TemplateJobResource:
       properties:
@@ -2208,6 +1941,292 @@ components:
           format: date-time
           description: Template job end time.
       type: object
+    NamedParameter:
+      required:
+      - is_required
+      - name
+      - schema
+      properties:
+        name:
+          type: string
+          description: Name of the parameter
+        display_name:
+          type: string
+          description: Display Name of the parameter
+        is_required:
+          type: boolean
+          description: Whether the parameter is required.
+        schema:
+          $ref: '#/components/schemas/ParameterBase'
+      type: object
+    ScriptJobDataView:
+      required:
+      - completed_at
+      - execution_type
+      - initiated_by
+      - started_at
+      - status
+      - status_reason
+      properties:
+        script_job_id:
+          type: string
+          description: Unique ID of the Script Job
+        script_job_name:
+          type: string
+          description: Name of the Script Job
+        status:
+          type: string
+          description: Overall status of the script execution
+        status_reason:
+          type: string
+          description: Error message if failed
+        started_at:
+          type: string
+          description: Script Job start time in UTC
+        completed_at:
+          type: string
+          description: Script Job completion time in UTC
+        execution_type:
+          type: string
+          description: Script Job execution type (on_demand/scheduled)
+        initiated_by:
+          type: string
+          description: User who initiated script execution
+        job_info:
+          description: Script execution details
+          $ref: '#/components/schemas/ScriptJobInfo'
+      type: object
+    ValidationResults:
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationResult'
+      type: object
+    TemplateValidateResponse:
+      required:
+      - validation_status
+      properties:
+        validation_status:
+          type: string
+          description: Job identifier of the executed template
+      type: object
+    ScriptDataView:
+      required:
+      - category
+      - cookbook_name
+      - cookbook_path
+      - created_at
+      - created_by
+      - description
+      - module_name
+      - module_path
+      - operating_system
+      - parameters
+      - path_type
+      - platform
+      - playbook_name
+      - playbook_path
+      - scope
+      - script_id
+      - script_name
+      - shell_script_name
+      - shell_script_path
+      - status
+      - type
+      - updated_at
+      - updated_by
+      - uri
+      properties:
+        script_id:
+          type: string
+          description: Unique Id of the script
+        script_name:
+          type: string
+          description: Name of the script
+        uri:
+          type: string
+          description: Unique URI for script
+        description:
+          type: string
+          description: Description about script
+        status:
+          type: string
+          description: Status of the script(active/inactive). Only active scripts can be executed
+        category:
+          type: array
+          description: Category the script belongs to the script
+          items:
+            type: string
+            example: Application
+            enum:
+            - Application
+            - Languages
+            - Database
+            - Security
+            - System
+            - Web Server
+            - Others
+            x-cs-enum-type: ScriptCategory
+        platform:
+          type: array
+          description: Platforms supported by script.
+          items:
+            type: string
+            description:
+            - OS platform of the target machine (linux/windows)
+            example: linux
+            enum:
+            - linux
+            - windows
+            x-cs-enum-type: Platform
+        operating_system:
+          type: array
+          description: OS supported by script
+          items:
+            type: object
+        type:
+          type: string
+          description: Config type of the script (chef/ansible/shell/puppet)
+        scope:
+          type: string
+          description: Scope of the script  (global/account/tenant/private)
+        path_type:
+          type: string
+          description: Script path type such as git/url/repository(puppet_alone)/galaxy(ansible).
+        playbook_path:
+          type: string
+          description: Playbook path - available for ansible alone
+        playbook_name:
+          type: string
+          description: Playbook name - available for ansible alone
+        cookbook_path:
+          type: string
+          description: Cookbook path - available for chef alone.
+        cookbook_name:
+          type: string
+          description: Cookbook path - available for chef alone
+        shell_script_path:
+          type: string
+          description: Shell script path - available for shell alone
+        shell_script_name:
+          type: string
+          description: Shell script path - available for shell alone
+        module_path:
+          type: string
+          description: Module path - available for puppet alone
+        module_name:
+          type: string
+          description: Module path - available for puppet alone.
+        parameters:
+          type: object
+          description: A JSON object which contains the parameters of the script.
+        created_by:
+          type: string
+          description: Name of the user who created the script.
+        created_at:
+          type: string
+          description: Script creation time in UTC
+        updated_by:
+          type: string
+          description: 'Name of the user who updated the script. '
+        updated_at:
+          type: string
+          description: Script update time in UTC
+      type: object
+    JobDetails:
+      required:
+      - host
+      - keypair_flag
+      - parameters
+      - platform
+      - port
+      - script_name
+      - username
+      properties:
+        username:
+          type: string
+          description: User name of virtual machine where the script will be scheduled
+        parameters:
+          description: Parameters (Chef and Shell) or the manifest files to the execution
+          $ref: '#/components/schemas/ParameterDetails'
+        keypair_flag:
+          type: string
+          description: Status of the key value pair set in Virtual Machine
+          example: 'true'
+          enum:
+          - 'true'
+          - 'false'
+          x-cs-enum-type: TrueFalse
+        script_name:
+          type: array
+          description: Script Name to be scheduled
+          items:
+            type: string
+        platform:
+          type: string
+          description: OS(Operating System) Platform of the virtual machine
+        host:
+          type: string
+          description: Host IP address of virtual machine
+        key_file:
+          type: string
+          description: Key Value Pair(.pem file).Note - If key_file field is given, password field can be empty
+        password:
+          type: string
+          description: Password of virtual machine.Note - If password is given, key_file field can be empty
+        port:
+          type: string
+          description: Port of the Virtual Machine
+      type: object
+    CreateScheduleResponse:
+      properties:
+        schedule_id:
+          type: string
+          description: Schedule ID
+      type: object
+    UpdateScheduleRequest:
+      required:
+      - attributes
+      - name
+      - recurrence
+      - resource
+      - schedule
+      properties:
+        name:
+          type: string
+          description: Schedule Name to be create
+        description:
+          type: string
+          description: Description of the schedule
+        recurrence:
+          type: string
+          description: Recurrence of the schedule
+          example: Once
+          enum:
+          - Once
+          - Minutes
+          - Hours
+          - Daily
+          - Weekly
+          - Monthly
+          - Annually
+          x-cs-enum-type: ScheduleRecurrence
+        schedule:
+          description: Schedule date and time details
+          $ref: '#/components/schemas/DateAndTimeDetails'
+        resource:
+          type: array
+          description: Template/Script/Policy Id.can be retrieved using the List Policy Schedules
+          items:
+            type: string
+        attributes:
+          description: Attribute Details
+          $ref: '#/components/schemas/AttributeDetails'
+        args:
+          type: object
+          description: Input Parameters for the Template/Script/Policy
+      type: object
     CloudAccountDetails:
       required:
       - id
@@ -2215,128 +2234,6 @@ components:
         id:
           type: string
           description: Cloud account id is unique can be obtained from the list cloud
-      type: object
-    CreateBlueprintDetails:
-      properties:
-        blueprint_id:
-          type: string
-          description: Blueprint ID
-      type: object
-    ScriptInfo:
-      required:
-      - name
-      - path
-      - path_type
-      properties:
-        name:
-          type: string
-          description: Script Name as available in the path
-        path_type:
-          type: string
-          description: Path type for script
-          example: file
-          enum:
-          - file
-          - git
-          - local
-          - repository
-          - url
-          x-cs-enum-type: ScriptPathType
-        content:
-          type: string
-          description: File content, if path type is specified as file
-        path:
-          type: string
-          description: 'Path of the script. ExamplesFor git path_type: https://github.com/ansible/test-playbooks.git,For url path_type: https://s3.amazonaws.com/ansible/test-playbooks.tar,For galaxy: https://galaxy.ansible.com/community/zabbix.'
-      type: object
-    CreateTemplateRequest:
-      required:
-      - classification
-      - content
-      - engine_type
-      - name
-      - services
-      - type
-      properties:
-        name:
-          type: string
-          description: template name which is unique and does not allow special character or space
-        description:
-          type: string
-          description: Usage of the template.
-        content:
-          type: string
-          description: The template content
-        metadata:
-          description: Metadata like file name, file format
-          $ref: '#/components/schemas/MetaDataModel'
-        status:
-          type: string
-          description: 'Status of the template [active/inactive].
-
-            active:- Templates which can be executed.
-
-            inactive:- Template which cannot be executed'
-        classification:
-          type: array
-          description: Templates are classified based orchestration actions like Provision, Configure, Backup, Catalog Builder, Deployment, Autoscaling
-          items:
-            type: string
-        scope:
-          type: string
-          description: 'The scope of the template:
-
-            Account scope - All users under that account will have access to view and execute Only Account admins can update/delete the templates,
-
-            Tenant Scope - Users with access to the specific tenant will have access to templates who can describe or execute templates. Tenant admins can only update/delete.
-
-            Private Scope - User who created will only have access'
-          example: private
-          enum:
-          - private
-          - account
-          - tenant
-          x-cs-enum-type: AccountScope
-        type:
-          type: array
-          description: Type of the template (Cloud, Monitoring, Virtualization)
-          items:
-            type: string
-        services:
-          type: array
-          description: Displays the service associated with the template, for example, AWS, AzureRM, Openstack., etc
-          items:
-            type: string
-        engine_type:
-          type: string
-          description: Template formats such as AWS CFN, Azure ARM, Openstack Heat and Mistral
-          example: cfn
-          enum:
-          - cfn
-          - arm
-          - terraform
-          - mistral
-          - heat
-          - oracle
-          - dm
-          x-cs-enum-type: TemplateEngineType
-        blueprint_support:
-          type: boolean
-          description: Flag to add template to blueprints
-      type: object
-    ExecuteResponse:
-      properties:
-        script_job_id:
-          type: string
-          description: Unique ID of the Script Job. Use this ID in describeScriptJob API and check the execution status
-      type: object
-    TemplateExecuteResponse:
-      required:
-      - data
-      properties:
-        data:
-          type: object
-          description: Job identifier of the executed template
       type: object
     QueryOperator:
       required:
@@ -2798,15 +2695,170 @@ components:
         subtype_name: WorkloadQueryWorkloadType
       - subtype_model: WorkloadQueryWorkloadId
         subtype_name: WorkloadQueryWorkloadId
-    ResourceViewDetails:
+    CloudAccount:
       required:
-      - resource_details
+      - cloud
+      - cloud_account_id
       properties:
-        resource_details:
+        cloud:
+          type: string
+          description: Displays the cloud associated with the template, for example, AWS, GCP, Azure etc
+        cloud_account_id:
+          type: string
+          description: Unique Identifier of the cloud account onboarded in the on boarding section
+        region:
+          type: string
+          description: The region of the cloud account where it needs to be executed. Mandatory for AWS
+        zones:
+          type: string
+          description: The zones of the cloud account where it needs to be executed. Mandatory for GCP
+        resourcegroup:
+          type: string
+          description: Resource group for which you need to execute the template for. Mandatory for Azure
+        location:
+          type: string
+          description: Location under which you need to execute the template for. Mandatory for Azure
+      type: object
+    ResourceRequest:
+      required:
+      - action
+      - execution_type
+      - id
+      - name
+      - param_mapper
+      - type
+      properties:
+        execution_type:
+          type: string
+          description: Indicates whether this template/script will be executed immediately on executing the blueprint or will be scheduled for  one/more occurrences
+          example: on_demand
+          enum:
+          - on_demand
+          - scheduled
+          x-cs-enum-type: ExecutionType
+        action:
+          type: string
+          description: A short name that represents the action performed by the template. Useful while viewing the job output while executing the blueprint.
+        name:
+          type: string
+          description: Resource Name
+        param_mapper:
+          type: object
+          description: mapping of input parameter for this template to the output parameter of any of the previous templates
+        type:
+          type: string
+          description: Type for the blueprint
+          example: template
+          enum:
+          - template
+          - script
+          x-cs-enum-type: BlueprintType
+        id:
+          type: string
+          description: Object Id of the Template or Script. You can get this from Describe Template/Script call
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    BlueprintDetails:
+      required:
+      - created_at
+      - created_by
+      - description
+      - id
+      - name
+      - resources
+      - scope
+      - status
+      - updated_at
+      - updated_by
+      properties:
+        id:
+          type: string
+          description: Blueprint ID
+        name:
+          type: string
+          description: Blueprint Name
+        description:
+          type: string
+          description: Blueprints Description
+        resources:
           type: array
-          description: Template/Scripts/Policies Details that is scheduled to run
+          description: Resource Details
           items:
-            $ref: '#/components/schemas/ResourceDetails'
+            $ref: '#/components/schemas/ResourcesDetails'
+        scope:
+          type: string
+          description: Scope of the blueprint
+        status:
+          type: string
+          description: Status of the blueprint
+        created_by:
+          type: string
+          description: Who has created the blueprint
+        created_at:
+          type: string
+          description: When was the blueprint created
+        updated_by:
+          type: string
+          description: Who has updated the blueprint
+        updated_at:
+          type: string
+          description: When was the blueprint updated
+      type: object
+    ResourcesDetails:
+      required:
+      - action
+      - execution_type
+      - id
+      - name
+      - param_mapper
+      properties:
+        param_mapper:
+          type: object
+          description: Mapping of input parameter for this template to the output parameter of any of the previous templates
+        execution_type:
+          type: string
+          description: Can be “on_demand” or “scheduled”. Indicates whether this template/script will be executed immediately on executing the blueprint or will be scheduled for one/more occurrences
+        action:
+          type: string
+          description: A short name that represents the action performed by the template. Useful while viewing the job output while executing the blueprint
+        name:
+          type: string
+          description: Resource Name
+        id:
+          type: string
+          description: Resource ID
+      type: object
+    ParameterDetails:
+      required:
+      - ansible
+      - chef
+      - puppet
+      - shell
+      properties:
+        chef:
+          type: object
+          description: Input for the Chef Script to be executed
+        shell:
+          type: object
+          description: Input for the Shell Script to be executed
+        puppet:
+          type: object
+          description: Input for the Puppet Script to be executed
+        ansible:
+          type: object
+          description: Input for the Ansible Script to be executed
       type: object
     ExecuteScriptRequest:
       required:
@@ -2822,134 +2874,174 @@ components:
           items:
             $ref: '#/components/schemas/ExecuteScriptJobData'
       type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    TemplateIncidentReference:
+      properties:
+        integrated_tool_account_id:
+          type: string
+          description: Integrated tool account id
+          x-cs-type: ObjectId
+        incident_id:
+          type: string
+          description: Incident Id
+      type: object
+    DateAndTimeDetails:
+      required:
+      - dayofmonth
+      - month
+      - time
+      - weekday
+      - year
+      properties:
+        month:
+          type: string
+          description: 'Month when the Template/Script/Policy is scheduled to run. Allowed values: 01-12'
+        time:
+          description: Time when the Template/Script/Policy is scheduled to run.
+          $ref: '#/components/schemas/TimeDetails'
+        dayofmonth:
+          description: 'At which day of that month the Template/Script/Policy is scheduled to run.Note - weekday and dayofmonth are alternate.Allowed values: 01-31'
+          $ref: '#/components/schemas/DayDetails'
+        weekday:
+          description: 'At which day of that week the Template/Script/Policy is scheduled to run.Note - weekday and dayofmonth are alternate.Allowed values: 01-07'
+          $ref: '#/components/schemas/DayDetails'
+        year:
+          type: string
+          description: Year when the Template/Script/Policy is scheduled to run. Example:'year':'2022'
+      type: object
+    ScheduleData:
+      required:
+      - args
+      - created_at
+      - created_by
+      - description
+      - id
+      - name
+      - next_run
+      - recurrence
+      - resource_details
+      - schedule
+      - type
+      properties:
+        id:
+          type: string
+          description: Schedule ID
+        name:
+          type: string
+          description: Schedule Name
+        type:
+          type: string
+          description: Schedule type
+          example: template
+          enum:
+          - template
+          - script
+          - policy
+          x-cs-enum-type: ScheduleType
+        description:
+          type: string
+          description: Description of the schedule
+        recurrence:
+          type: string
+          description: Re-occurrence of the schedule
+        next_run:
+          type: string
+          description: When will the schedule run for the next time
+        schedule:
+          type: object
+          description: Schedule date and time details
+        args:
+          type: object
+          description: Input Parameters for that Template/Script/Policy that is scheduled
+        resource_details:
+          type: array
+          description: Template/Script/Policy Details that is scheduled
+          items:
+            $ref: '#/components/schemas/ResourceDetails'
+        created_at:
+          type: string
+          description: When the schedule is created
+        created_by:
+          type: string
+          description: Who has created the schedule
+      type: object
     CreateScriptResponse:
       properties:
         script_id:
           type: string
           description: Unique ID of the script
       type: object
-    RecordIdentityBatchRequest:
-      properties:
-        ids:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
-      type: object
-    UpdateScheduleRequest:
+    ExecutionLogDetails:
       required:
-      - attributes
       - name
-      - recurrence
-      - resource
-      - schedule
-      properties:
-        name:
-          type: string
-          description: Schedule Name to be create
-        description:
-          type: string
-          description: Description of the schedule
-        recurrence:
-          type: string
-          description: Recurrence of the schedule
-          example: Once
-          enum:
-          - Once
-          - Minutes
-          - Hours
-          - Daily
-          - Weekly
-          - Monthly
-          - Annually
-          x-cs-enum-type: ScheduleRecurrence
-        schedule:
-          description: Schedule date and time details
-          $ref: '#/components/schemas/DateAndTimeDetails'
-        resource:
-          type: array
-          description: Template/Script/Policy Id.can be retrieved using the List Policy Schedules
-          items:
-            type: string
-        attributes:
-          description: Attribute Details
-          $ref: '#/components/schemas/AttributeDetails'
-        args:
-          type: object
-          description: Input Parameters for the Template/Script/Policy
-      type: object
-    ScriptJobDataView:
-      required:
-      - completed_at
-      - execution_type
-      - initiated_by
-      - started_at
+      - run_time
       - status
-      - status_reason
       properties:
-        script_job_id:
-          type: string
-          description: Unique ID of the Script Job
-        script_job_name:
-          type: string
-          description: Name of the Script Job
         status:
           type: string
-          description: Overall status of the script execution
-        status_reason:
+          description: Status of the Execution Log
+        run_time:
           type: string
-          description: Error message if failed
-        started_at:
+          description: Run Time Execution of the schedule
+        name:
           type: string
-          description: Script Job start time in UTC
-        completed_at:
-          type: string
-          description: Script Job completion time in UTC
-        execution_type:
-          type: string
-          description: Script Job execution type (on_demand/scheduled)
-        initiated_by:
-          type: string
-          description: User who initiated script execution
-        job_info:
-          description: Script execution details
-          $ref: '#/components/schemas/ScriptJobInfo'
+          description: Job Name of the schedule execution log
       type: object
-    AutomationTemplateSubClassification:
-      properties:
-        key:
-          type: string
-          description: List sub-classification based on templates.
-        classifications:
-          type: array
-          description: List of sub-classification for templates.
-          items:
-            type: string
-      type: object
-    TimeDetails:
+    AutomationTemplateSortCriteria:
       required:
-      - hour
-      - minute
-      - seconds
+      - column
       properties:
-        seconds:
+        column:
           type: string
-          description: 'The Template/Script/Policy is scheduled at which second. Allowed values: 00-60'
-        minute:
-          type: string
-          description: 'The Template/Script/Policy is scheduled at which minute. Allowed values: 00-60'
-        hour:
-          type: string
-          description: 'The Template/Script/Policy is scheduled at which hour. Allowed values: 01-23'
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          - UpdatedAt
+          - Name
+          x-cs-enum-type: AutomationTemplateSortColumn
+        ascending:
+          type: boolean
       type: object
-    TemplateValidateRequest:
+    ResourceDetails:
       required:
-      - cloud_accounts
+      - id
+      - name
       properties:
-        cloud_accounts:
+        id:
+          type: string
+          description: ID of that Template/Script/Policy that is scheduled to run
+        name:
+          type: string
+          description: Name of the Template/Script/Policy that is scheduled to run
+      type: object
+    ListBlueprintDetails:
+      required:
+      - blueprints
+      - page_count
+      - total_count
+      properties:
+        page_count:
+          type: integer
+          description: Page count
+        total_count:
+          type: integer
+          description: Total count
+        blueprints:
           type: array
-          description: cloud account details to execute the template
+          description: Blueprints Details
           items:
-            $ref: '#/components/schemas/CloudAccount'
+            $ref: '#/components/schemas/BlueprintDetails'
       type: object
     ExecuteScriptJobData:
       required:
@@ -3014,16 +3106,6 @@ components:
           - json
           x-cs-enum-type: ParameterSource
       type: object
-    AttributeDetails:
-      required:
-      - service_accounts
-      properties:
-        service_accounts:
-          type: array
-          description: Service account id is unique can be obtained from the list cloud
-          items:
-            $ref: '#/components/schemas/CloudAccountDetails'
-      type: object
     AutomationTemplateListRequest:
       properties:
         list_context:
@@ -3038,511 +3120,24 @@ components:
           description: Filters for the request
           $ref: '#/components/schemas/AutomationTemplateFilters'
       type: object
-    TemplateJobUpdateResponse:
+    AutomationTemplateSubClassification:
       properties:
-        id:
+        key:
           type: string
-          description: Unique ID of the Template Job
-        name:
-          type: string
-          description: Name of the Template Job
-        status:
-          type: string
-          description: Overall status of the template execution
-          example: CANCELED
-          enum:
-          - CANCELED
-          - COMPLETED
-          - CREATE_FAILED
-          - CREATE_IN_PROGRESS
-          - DELETED
-          - DELETE_FAILED
-          - DELETE_IN_PROGRESS
-          - FAILED
-          - IN_PROGRESS
-          - SNAPSHOT_COMPLETED
-          - SNAPSHOT_FAILED
-          - SNAPSHOT_IN_PROGRESS
-          - UPDATED
-          - UPDATE_FAILED
-          - UPDATE_IN_PROGRESS
-          x-cs-enum-type: TemplateJobStatus
-        status_reason:
-          type: string
-          description: Error message if failed
-        created_at:
-          type: string
-          format: date-time
-          description: Template Job start time in UTC
-        completed_at:
-          type: string
-          format: date-time
-          description: Template Job completion time in UTC
-        execution_type:
-          type: string
-          description: Template Job execution type
-          example: on_demand
-          enum:
-          - on_demand
-          - scheduled
-          - event_driven
-          - system
-          x-cs-enum-type: TemplateExecutionType
-        terraform_state:
-          type: string
-          description: Terraform Template state
-        args:
-          type: object
-          description: Template Job execution template inputs arguments
-          additionalProperties:
-            type: string
-        output:
-          type: string
-          description: Template Job outputs
-        attachment_id:
-          type: string
-          description: Terraform job log ID
-        resources:
+          description: List sub-classification based on templates.
+        classifications:
           type: array
-          items:
-            $ref: '#/components/schemas/TemplateJobResource'
-      type: object
-    ScriptScanRequest:
-      required:
-      - config_type
-      - script_info
-      properties:
-        config_type:
-          type: string
-          description: Config type of the script
-          example: chef
-          enum:
-          - chef
-          - ansible
-          - puppet
-          - shell
-          x-cs-enum-type: ConfigType
-        script_info:
-          type: array
-          description: script info
-          items:
-            $ref: '#/components/schemas/ScriptInfo'
-        dependencies:
-          type: array
-          description: Details of the dependent scripts if any
-          items:
-            $ref: '#/components/schemas/ScriptInfo'
-        playbook_yaml:
-          type: string
-          description: Playbook yaml path - mandatory for ansible scripts
-      type: object
-    UpdateScheduleRequestScript:
-      required:
-      - attributes
-      - name
-      - recurrence
-      - resource
-      - schedule
-      properties:
-        name:
-          type: string
-          description: Schedule Name to be create
-        description:
-          type: string
-          description: Description of the schedule
-        recurrence:
-          type: string
-          description: Recurrence of the schedule
-          example: Once
-          enum:
-          - Once
-          - Minutes
-          - Hours
-          - Daily
-          - Weekly
-          - Monthly
-          - Annually
-          x-cs-enum-type: ScheduleRecurrence
-        schedule:
-          description: Schedule date and time details
-          $ref: '#/components/schemas/DateAndTimeDetails'
-        resource:
-          type: array
-          description: Template/Script/Policy Id.can be retrieved using the List Policy Schedules
+          description: List of sub-classification for templates.
           items:
             type: string
-        attributes:
-          description: Attribute Details
-          $ref: '#/components/schemas/AttributeDetails'
-        args:
-          description: Input Parameters for the Template/Script/Policy
-          $ref: '#/components/schemas/ArgsDetails'
       type: object
-    ResourceRequest:
+    UpdateScheduleResponse:
       required:
-      - action
-      - execution_type
       - id
-      - name
-      - param_mapper
-      - type
       properties:
-        execution_type:
-          type: string
-          description: Indicates whether this template/script will be executed immediately on executing the blueprint or will be scheduled for  one/more occurrences
-          example: on_demand
-          enum:
-          - on_demand
-          - scheduled
-          x-cs-enum-type: ExecutionType
-        action:
-          type: string
-          description: A short name that represents the action performed by the template. Useful while viewing the job output while executing the blueprint.
-        name:
-          type: string
-          description: Resource Name
-        param_mapper:
-          type: object
-          description: mapping of input parameter for this template to the output parameter of any of the previous templates
-        type:
-          type: string
-          description: Type for the blueprint
-          example: template
-          enum:
-          - template
-          - script
-          x-cs-enum-type: BlueprintType
         id:
           type: string
-          description: Object Id of the Template or Script. You can get this from Describe Template/Script call
-      type: object
-    ScriptJobListModel:
-      required:
-      - completed_at
-      - execution_type
-      - initiated_by
-      - started_at
-      - status
-      - status_reason
-      properties:
-        script_job_id:
-          type: string
-          description: Unique ID of the Script Job
-        script_job_name:
-          type: string
-          description: Name of the Script Job
-        status:
-          type: string
-          description: Overall status of the script execution
-        status_reason:
-          type: string
-          description: Error message if failed
-        started_at:
-          type: string
-          description: Script Job start time in UTC
-        completed_at:
-          type: string
-          description: Script Job completion time in UTC
-        execution_type:
-          type: string
-          description: Script Job execution type (on_demand/scheduled)
-        initiated_by:
-          type: string
-          description: User who initiated the script execution
-      type: object
-    ScriptJobListResponse:
-      required:
-      - script_jobs
-      - total_pages
-      - total_script_jobs
-      properties:
-        total_script_jobs:
-          type: string
-          description: Total number of script jobs available
-        total_pages:
-          type: string
-          description: Total number of pages
-        script_jobs:
-          description: Script Jobs List.
-          $ref: '#/components/schemas/ScriptJobListModel'
-      type: object
-    ResourcesDetails:
-      required:
-      - action
-      - execution_type
-      - id
-      - name
-      - param_mapper
-      properties:
-        param_mapper:
-          type: object
-          description: Mapping of input parameter for this template to the output parameter of any of the previous templates
-        execution_type:
-          type: string
-          description: Can be “on_demand” or “scheduled”. Indicates whether this template/script will be executed immediately on executing the blueprint or will be scheduled for one/more occurrences
-        action:
-          type: string
-          description: A short name that represents the action performed by the template. Useful while viewing the job output while executing the blueprint
-        name:
-          type: string
-          description: Resource Name
-        id:
-          type: string
-          description: Resource ID
-      type: object
-    TemplateParameterValidationRequest:
-      required:
-      - input_parameters
-      properties:
-        input_parameters:
-          type: string
-          description: Template execution parameters, encoded as a JSON string
-      type: object
-    ScriptListResponse:
-      required:
-      - scripts
-      - total_pages
-      - total_scripts
-      properties:
-        total_scripts:
-          type: string
-          description: Total number of scripts available
-        total_pages:
-          type: string
-          description: Total number of pages
-        scripts:
-          description: Scripts List.
-          $ref: '#/components/schemas/ScriptDataList'
-      type: object
-    ScriptDataView:
-      required:
-      - category
-      - cookbook_name
-      - cookbook_path
-      - created_at
-      - created_by
-      - description
-      - module_name
-      - module_path
-      - operating_system
-      - parameters
-      - path_type
-      - platform
-      - playbook_name
-      - playbook_path
-      - scope
-      - script_id
-      - script_name
-      - shell_script_name
-      - shell_script_path
-      - status
-      - type
-      - updated_at
-      - updated_by
-      - uri
-      properties:
-        script_id:
-          type: string
-          description: Unique Id of the script
-        script_name:
-          type: string
-          description: Name of the script
-        uri:
-          type: string
-          description: Unique URI for script
-        description:
-          type: string
-          description: Description about script
-        status:
-          type: string
-          description: Status of the script(active/inactive). Only active scripts can be executed
-        category:
-          type: array
-          description: Category the script belongs to the script
-          items:
-            type: string
-            example: Application
-            enum:
-            - Application
-            - Languages
-            - Database
-            - Security
-            - System
-            - Web Server
-            - Others
-            x-cs-enum-type: ScriptCategory
-        platform:
-          type: array
-          description: Platforms supported by script.
-          items:
-            type: string
-            description:
-            - OS platform of the target machine (linux/windows)
-            example: linux
-            enum:
-            - linux
-            - windows
-            x-cs-enum-type: Platform
-        operating_system:
-          type: array
-          description: OS supported by script
-          items:
-            type: object
-        type:
-          type: string
-          description: Config type of the script (chef/ansible/shell/puppet)
-        scope:
-          type: string
-          description: Scope of the script  (global/account/tenant/private)
-        path_type:
-          type: string
-          description: Script path type such as git/url/repository(puppet_alone)/galaxy(ansible).
-        playbook_path:
-          type: string
-          description: Playbook path - available for ansible alone
-        playbook_name:
-          type: string
-          description: Playbook name - available for ansible alone
-        cookbook_path:
-          type: string
-          description: Cookbook path - available for chef alone.
-        cookbook_name:
-          type: string
-          description: Cookbook path - available for chef alone
-        shell_script_path:
-          type: string
-          description: Shell script path - available for shell alone
-        shell_script_name:
-          type: string
-          description: Shell script path - available for shell alone
-        module_path:
-          type: string
-          description: Module path - available for puppet alone
-        module_name:
-          type: string
-          description: Module path - available for puppet alone.
-        parameters:
-          type: object
-          description: A JSON object which contains the parameters of the script.
-        created_by:
-          type: string
-          description: Name of the user who created the script.
-        created_at:
-          type: string
-          description: Script creation time in UTC
-        updated_by:
-          type: string
-          description: 'Name of the user who updated the script. '
-        updated_at:
-          type: string
-          description: Script update time in UTC
-      type: object
-    AutomationTemplateFilters:
-      properties:
-        from_date:
-          type: string
-          format: date-time
-          description: Filter from date
-        to_date:
-          type: string
-          format: date-time
-          description: Filter to date
-        scope:
-          type: string
-          description: Scope of the template.
-          example: MyTemplates
-          enum:
-          - MyTemplates
-          - Marketplace
-          x-cs-enum-type: AutomationTemplateScope
-        template_name:
-          type: string
-          description: Name of the template
-        query:
-          $ref: '#/components/schemas/QueryOperator'
-      type: object
-    TemplateViewResponse:
-      required:
-      - classification
-      - content
-      - content_files
-      - content_type
-      - content_url
-      - created_at
-      - created_by
-      - description
-      - dsl
-      - resource_type
-      - resources
-      - scope
-      - services
-      - template_id
-      - template_name
-      - type
-      - updated_at
-      - updated_by
-      properties:
-        template_id:
-          type: string
-          description: Unique Id of the template
-        services:
-          type: array
-          description: Service(s) associated with the template, for example, AWS, AzureRM, Openstack., etc
-          items:
-            type: string
-        template_name:
-          type: string
-          description: Name of the template
-        content:
-          type: string
-          description: Raw content of the template which is usually in YAML or JSON format
-        content_type:
-          type: string
-          description: Template content source (git, file)
-        content_url:
-          type: string
-          description: Git project URL when the content type is git required only in case of content type git
-        content_files:
-          type: string
-          description: Details about content like its data,filename
-        description:
-          type: string
-          description: Usage of template
-        resources:
-          type: string
-        resource_type:
-          type: string
-        status:
-          type: string
-          description: Status of the template[active/inactive]. Only active templates can be executed
-        type:
-          type: array
-          description: Type of the template like Cloud, Monitoring, Orchestration., etc
-          items:
-            type: string
-        dsl:
-          type: string
-          description: DSL of the template
-        classification:
-          type: array
-          description: Classification of the template
-          items:
-            type: string
-        scope:
-          type: string
-          description: Scope of the template [Account,Tenant,Private]
-        created_by:
-          type: string
-          description: Name of the user who created the template.
-        created_at:
-          type: string
-          description: Template creation time
-        updated_by:
-          type: string
-          description: 'Name of the user who updated the templated. '
-        updated_at:
-          type: string
-          description: Template updated time
+          description: Schedule ID
       type: object
     ListScheduleResponse:
       required:
@@ -3562,157 +3157,199 @@ components:
           items:
             $ref: '#/components/schemas/ScheduleData'
       type: object
-    ParameterDetails:
-      required:
-      - ansible
-      - chef
-      - puppet
-      - shell
+    ListResponse:
       properties:
-        chef:
-          type: object
-          description: Input for the Chef Script to be executed
-        shell:
-          type: object
-          description: Input for the Shell Script to be executed
-        puppet:
-          type: object
-          description: Input for the Puppet Script to be executed
-        ansible:
-          type: object
-          description: Input for the Ansible Script to be executed
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
       type: object
-    ValidationResult:
-      properties:
-        field:
-          type: string
-        reason:
-          type: string
-      type: object
-    UpdateScheduleResponse:
+    TemplateCreateResponse:
       required:
-      - id
+      - template_id
       properties:
-        id:
+        template_id:
           type: string
-          description: Schedule ID
+          description: Unique Id of the template
       type: object
-    DayDetails:
-      required:
-      - day
+    ExecuteResponse:
       properties:
-        day:
+        script_job_id:
           type: string
-          description: 'At which day of that month the Template/Script/Policy is scheduled to run.Allowed values: 01-31'
+          description: Unique ID of the Script Job. Use this ID in describeScriptJob API and check the execution status
       type: object
-    AutomationTemplateSortCriteria:
+    TemplateGetParamsRequest:
       required:
-      - column
+      - cloud_accounts
       properties:
-        column:
-          type: string
-          example: CreatedAt
-          enum:
-          - CreatedAt
-          - UpdatedAt
-          - Name
-          x-cs-enum-type: AutomationTemplateSortColumn
-        ascending:
-          type: boolean
+        cloud_accounts:
+          type: array
+          description: cloud account details to execute the template
+          items:
+            $ref: '#/components/schemas/CloudAccount'
       type: object
-    BlueprintDetails:
+    ViewScheduleResponse:
       required:
+      - args
       - created_at
       - created_by
       - description
-      - id
+      - execution_logs
       - name
-      - resources
-      - scope
-      - status
+      - next_run
+      - recurrence
+      - resource
+      - schedule
+      - type
       - updated_at
       - updated_by
       properties:
-        id:
-          type: string
-          description: Blueprint ID
         name:
           type: string
-          description: Blueprint Name
+          description: Schedule Name
+        type:
+          type: string
+          description: Schedule type
+          example: template
+          enum:
+          - template
+          - script
+          - policy
+          x-cs-enum-type: ScheduleType
         description:
           type: string
-          description: Blueprints Description
-        resources:
+          description: Description of the schedule
+        recurrence:
+          type: string
+          description: Re-occurence of the schedule
+        next_run:
+          type: string
+          description: When will the schedule run for the next time
+        schedule:
+          type: object
+          description: Schedule date and time details
+        args:
+          type: object
+          description: Input Parameters for that Template/Policy/Script that is scheduled
+        resource:
           type: array
-          description: Resource Details
+          description: Template/Policy/Script Details that is scheduled
           items:
-            $ref: '#/components/schemas/ResourcesDetails'
-        scope:
-          type: string
-          description: Scope of the blueprint
-        status:
-          type: string
-          description: Status of the blueprint
-        created_by:
-          type: string
-          description: Who has created the blueprint
+            $ref: '#/components/schemas/ResourceViewDetails'
+        execution_logs:
+          type: array
+          description: Execution Log Details
+          items:
+            $ref: '#/components/schemas/ExecutionLogDetails'
         created_at:
           type: string
-          description: When was the blueprint created
+          description: When the schedule is created
+        created_by:
+          type: string
+          description: Who has created the schedule
         updated_by:
           type: string
-          description: Who has updated the blueprint
+          description: Who has updated the schedule
         updated_at:
           type: string
-          description: When was the blueprint updated
+          description: When the schedule is updated
       type: object
-    DateAndTimeDetails:
-      required:
-      - dayofmonth
-      - month
-      - time
-      - weekday
-      - year
+    CreateBlueprintDetails:
       properties:
-        month:
+        blueprint_id:
           type: string
-          description: 'Month when the Template/Script/Policy is scheduled to run. Allowed values: 01-12'
-        time:
-          description: Time when the Template/Script/Policy is scheduled to run.
-          $ref: '#/components/schemas/TimeDetails'
-        dayofmonth:
-          description: 'At which day of that month the Template/Script/Policy is scheduled to run.Note - weekday and dayofmonth are alternate.Allowed values: 01-31'
-          $ref: '#/components/schemas/DayDetails'
-        weekday:
-          description: 'At which day of that week the Template/Script/Policy is scheduled to run.Note - weekday and dayofmonth are alternate.Allowed values: 01-07'
-          $ref: '#/components/schemas/DayDetails'
-        year:
-          type: string
-          description: Year when the Template/Script/Policy is scheduled to run. Example:'year':'2022'
+          description: Blueprint ID
       type: object
-    CloudAccount:
+    ScriptListResponse:
+      required:
+      - scripts
+      - total_pages
+      - total_scripts
+      properties:
+        total_scripts:
+          type: string
+          description: Total number of scripts available
+        total_pages:
+          type: string
+          description: Total number of pages
+        scripts:
+          description: Scripts List.
+          $ref: '#/components/schemas/ScriptDataList'
+      type: object
+    TemplateJobListResponse:
+      required:
+      - jobs
+      properties:
+        jobs:
+          $ref: '#/components/schemas/TemplateJobsList'
+      type: object
+    ScriptInfo:
+      required:
+      - name
+      - path
+      - path_type
+      properties:
+        name:
+          type: string
+          description: Script Name as available in the path
+        path_type:
+          type: string
+          description: Path type for script
+          example: file
+          enum:
+          - file
+          - git
+          - local
+          - repository
+          - url
+          x-cs-enum-type: ScriptPathType
+        content:
+          type: string
+          description: File content, if path type is specified as file
+        path:
+          type: string
+          description: 'Path of the script. ExamplesFor git path_type: https://github.com/ansible/test-playbooks.git,For url path_type: https://s3.amazonaws.com/ansible/test-playbooks.tar,For galaxy: https://galaxy.ansible.com/community/zabbix.'
+      type: object
+    CloudAccountDetailsResponse:
       required:
       - cloud
       - cloud_account_id
       properties:
         cloud:
           type: string
-          description: Displays the cloud associated with the template, for example, AWS, GCP, Azure etc
+          description: Displays the cloud associated with the template, for example, AWS, Azure etc
         cloud_account_id:
           type: string
           description: Unique Identifier of the cloud account onboarded in the on boarding section
         region:
           type: string
           description: The region of the cloud account where it needs to be executed. Mandatory for AWS
-        zones:
-          type: string
-          description: The zones of the cloud account where it needs to be executed. Mandatory for GCP
         resourcegroup:
           type: string
           description: Resource group for which you need to execute the template for. Mandatory for Azure
         location:
           type: string
           description: Location under which you need to execute the template for. Mandatory for Azure
+      type: object
+    TemplateListResponse:
+      required:
+      - templates
+      - total_pages
+      - total_templates
+      properties:
+        total_templates:
+          type: string
+          description: Total number of templates available
+        total_pages:
+          type: string
+          description: Total number of pages
+        templates:
+          description: Template Metadata Info.
+          $ref: '#/components/schemas/TemplateDataModelList'
       type: object
     TemplateDataModelList:
       required:
@@ -3756,113 +3393,406 @@ components:
           type: string
           description: scope of template (Account,Tenant,Private)
       type: object
-    JobDetails:
+    TemplateGetParamsResponse:
       required:
-      - host
-      - keypair_flag
-      - parameters
-      - platform
-      - port
-      - script_name
-      - username
+      - args
+      - cloud_accounts
       properties:
-        username:
-          type: string
-          description: User name of virtual machine where the script will be scheduled
-        parameters:
-          description: Parameters (Chef and Shell) or the manifest files to the execution
-          $ref: '#/components/schemas/ParameterDetails'
-        keypair_flag:
-          type: string
-          description: Status of the key value pair set in Virtual Machine
-          example: 'true'
-          enum:
-          - 'true'
-          - 'false'
-          x-cs-enum-type: TrueFalse
-        script_name:
+        args:
+          type: object
+          description: Arguments to the template
+        cloud_accounts:
           type: array
-          description: Script Name to be scheduled
+          description: Cloud account details to execute the template
           items:
-            type: string
-        platform:
-          type: string
-          description: OS(Operating System) Platform of the virtual machine
-        host:
-          type: string
-          description: Host IP address of virtual machine
-        key_file:
-          type: string
-          description: Key Value Pair(.pem file).Note - If key_file field is given, password field can be empty
-        password:
-          type: string
-          description: Password of virtual machine.Note - If password is given, key_file field can be empty
-        port:
-          type: string
-          description: Port of the Virtual Machine
+            $ref: '#/components/schemas/CloudAccountDetailsResponse'
       type: object
-    TemplateListResponse:
+    ScriptJobScriptInfo:
       required:
-      - templates
-      - total_pages
-      - total_templates
+      - config_type
+      - output_parameters
+      - parameters
+      - script_id
+      - script_name
+      - started_at
+      - status
+      - status_reason
       properties:
-        total_templates:
+        script_id:
           type: string
-          description: Total number of templates available
-        total_pages:
+          description: Script Id
+        script_name:
           type: string
-          description: Total number of pages
-        templates:
-          description: Template Metadata Info.
-          $ref: '#/components/schemas/TemplateDataModelList'
-      type: object
-    TemplateJobsList:
-      properties:
-        id:
+          description: Script Name
+        config_type:
           type: string
-          description: Unique ID of the template job.
-        name:
+          description: Config type of the script(s)
+        parameters:
+          type: object
+          description: Parameters of the script.
+        parameter_source:
           type: string
-          description: Name of the template job.
+          description: Parameter source - whether as per the one defined in script or custom json
+          default: script
+          example: script
+          enum:
+          - script
+          - json
+          x-cs-enum-type: ParameterSource
+        output_parameters:
+          type: object
+          description: Output parameters of the script (all applied parameters).
         status:
           type: string
-          description: Overall status of the template execution
-          example: CANCELED
-          enum:
-          - CANCELED
-          - COMPLETED
-          - CREATE_FAILED
-          - CREATE_IN_PROGRESS
-          - DELETED
-          - DELETE_FAILED
-          - DELETE_IN_PROGRESS
-          - FAILED
-          - IN_PROGRESS
-          - SNAPSHOT_COMPLETED
-          - SNAPSHOT_FAILED
-          - SNAPSHOT_IN_PROGRESS
-          - UPDATED
-          - UPDATE_FAILED
-          - UPDATE_IN_PROGRESS
-          x-cs-enum-type: TemplateJobStatus
-        type:
-          type: string
-          description: Type of the executed template [heat/mistral]
+          description: Status of the script execution
         status_reason:
           type: string
           description: Error message if failed
-        user_name:
+        started_at:
           type: string
-          description: User who initiated the template execution
-        job_actions:
+          description: Execution start time in UTC
+      type: object
+    CreateTemplateRequest:
+      required:
+      - classification
+      - content
+      - engine_type
+      - name
+      - services
+      - type
+      properties:
+        name:
+          type: string
+          description: template name which is unique and does not allow special character or space
+        description:
+          type: string
+          description: Usage of the template.
+        content:
+          type: string
+          description: The template content
+        metadata:
+          description: Metadata like file name, file format
+          $ref: '#/components/schemas/MetaDataModel'
+        status:
+          type: string
+          description: 'Status of the template [active/inactive].
+
+            active:- Templates which can be executed.
+
+            inactive:- Template which cannot be executed'
+        classification:
           type: array
-          description: list of actions supported for this job based on its type.
+          description: Templates are classified based orchestration actions like Provision, Configure, Backup, Catalog Builder, Deployment, Autoscaling
           items:
             type: string
-        incident_reference:
-          description: Incident reference details.
-          $ref: '#/components/schemas/TemplateIncidentReference'
+        scope:
+          type: string
+          description: 'The scope of the template:
+
+            Account scope - All users under that account will have access to view and execute Only Account admins can update/delete the templates,
+
+            Tenant Scope - Users with access to the specific tenant will have access to templates who can describe or execute templates. Tenant admins can only update/delete.
+
+            Private Scope - User who created will only have access'
+          example: private
+          enum:
+          - private
+          - account
+          - tenant
+          x-cs-enum-type: AccountScope
+        type:
+          type: array
+          description: Type of the template (Cloud, Monitoring, Virtualization)
+          items:
+            type: string
+        services:
+          type: array
+          description: Displays the service associated with the template, for example, AWS, AzureRM, Openstack., etc
+          items:
+            type: string
+        engine_type:
+          type: string
+          description: Template formats such as AWS CFN, Azure ARM, Openstack Heat and Mistral
+          example: cfn
+          enum:
+          - cfn
+          - arm
+          - terraform
+          - mistral
+          - heat
+          - oracle
+          - dm
+          x-cs-enum-type: TemplateEngineType
+        blueprint_support:
+          type: boolean
+          description: Flag to add template to blueprints
+      type: object
+    ParameterBase:
+      required:
+      - __type
+      properties:
+        description:
+          type: string
+          description: A brief explanation of the policy parameter
+        default_value:
+          type: string
+          description: Default value of the parameter, encoded as a JSON string
+        hide_parameter:
+          type: boolean
+          description: Hide/Show a parameter for visibility as part of deployment
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ParameterStringType
+        subtype_name: ParameterStringType
+      - subtype_model: ParameterNumberType
+        subtype_name: ParameterNumberType
+      - subtype_model: ParameterBooleanType
+        subtype_name: ParameterBooleanType
+      - subtype_model: ParameterBaseWithSchema
+        subtype_name: ParameterBaseWithSchema
+      - subtype_model: ParameterArray
+        subtype_name: ParameterArray
+      - subtype_model: ParameterMap
+        subtype_name: ParameterMap
+      - subtype_model: ParameterObject
+        subtype_name: ParameterObject
+      - subtype_model: ParameterJsonBlob
+        subtype_name: ParameterJsonBlob
+    ScriptJobListModel:
+      required:
+      - completed_at
+      - execution_type
+      - initiated_by
+      - started_at
+      - status
+      - status_reason
+      properties:
+        script_job_id:
+          type: string
+          description: Unique ID of the Script Job
+        script_job_name:
+          type: string
+          description: Name of the Script Job
+        status:
+          type: string
+          description: Overall status of the script execution
+        status_reason:
+          type: string
+          description: Error message if failed
+        started_at:
+          type: string
+          description: Script Job start time in UTC
+        completed_at:
+          type: string
+          description: Script Job completion time in UTC
+        execution_type:
+          type: string
+          description: Script Job execution type (on_demand/scheduled)
+        initiated_by:
+          type: string
+          description: User who initiated the script execution
+      type: object
+    ScanScriptResponse:
+      required:
+      - hosts
+      - scanned_parameters
+      properties:
+        scanned_parameters:
+          type: object
+          description: A JSON object which contains the scanned parameters of the script.
+        hosts:
+          type: array
+          description: Hosts available in the playbook if any
+          items:
+            type: string
+      type: object
+    TemplateParameterValidationRequest:
+      required:
+      - input_parameters
+      properties:
+        input_parameters:
+          type: string
+          description: Template execution parameters, encoded as a JSON string
+      type: object
+    ScriptJobListResponse:
+      required:
+      - script_jobs
+      - total_pages
+      - total_script_jobs
+      properties:
+        total_script_jobs:
+          type: string
+          description: Total number of script jobs available
+        total_pages:
+          type: string
+          description: Total number of pages
+        script_jobs:
+          description: Script Jobs List.
+          $ref: '#/components/schemas/ScriptJobListModel'
+      type: object
+    AttributeDetails:
+      required:
+      - service_accounts
+      properties:
+        service_accounts:
+          type: array
+          description: Service account id is unique can be obtained from the list cloud
+          items:
+            $ref: '#/components/schemas/CloudAccountDetails'
+      type: object
+    TemplateValidateRequest:
+      required:
+      - cloud_accounts
+      properties:
+        cloud_accounts:
+          type: array
+          description: cloud account details to execute the template
+          items:
+            $ref: '#/components/schemas/CloudAccount'
+      type: object
+    TimeDetails:
+      required:
+      - hour
+      - minute
+      - seconds
+      properties:
+        seconds:
+          type: string
+          description: 'The Template/Script/Policy is scheduled at which second. Allowed values: 00-60'
+        minute:
+          type: string
+          description: 'The Template/Script/Policy is scheduled at which minute. Allowed values: 00-60'
+        hour:
+          type: string
+          description: 'The Template/Script/Policy is scheduled at which hour. Allowed values: 01-23'
+      type: object
+    CreateScriptRequest:
+      required:
+      - category
+      - config_type
+      - name
+      - operating_system
+      - platform
+      - scope
+      - script_info
+      properties:
+        name:
+          type: string
+          description: Name of the script and it should be unique.
+        uri:
+          type: string
+          description: 'Unique URI for script - eg: script/ansi/linux/lamp_install. If not provided, corestack will generate it automatically'
+        description:
+          type: string
+          description: Detailed description about script
+        category:
+          type: array
+          description: Script Category
+          items:
+            type: string
+            example: Application
+            enum:
+            - Application
+            - Languages
+            - Database
+            - Security
+            - System
+            - Web Server
+            - Others
+            x-cs-enum-type: ScriptCategory
+        platform:
+          type: array
+          description: Platforms supported by script.
+          items:
+            type: string
+            description:
+            - OS platform of the target machine (linux/windows)
+            example: linux
+            enum:
+            - linux
+            - windows
+            x-cs-enum-type: Platform
+        operating_system:
+          type: array
+          description: OS supported by script
+          items:
+            type: string
+            example: centos
+            enum:
+            - centos
+            - ubuntu
+            - Win-2008(Server)
+            - Win-2012(Server)
+            - redhat
+            - fedora
+            - debian
+            - Win-2016(Server)
+            - Win-7(Desktop)
+            - Win-8(Desktop)
+            x-cs-enum-type: Os
+        config_type:
+          type: string
+          description: Config type of the script. Create is supported for ansible type scripts alone for now
+          example: ansible
+          enum:
+          - ansible
+          x-cs-enum-type: ScriptConfigType
+        scope:
+          type: string
+          description: 'The scope of the script:
+
+            Account scope - All users under that account will have access to view and execute Only Account admins can update/delete the scripts,
+
+            Tenant Scope - Users with access to the specific tenant will have access to scripts who can describe or execute scripts. Tenant admins can only update/delete.
+
+            Private Scope - User who created will only have access'
+          example: private
+          enum:
+          - private
+          - account
+          - tenant
+          x-cs-enum-type: AccountScope
+        script_info:
+          type: array
+          description: script info
+          items:
+            $ref: '#/components/schemas/ScriptInfo'
+        dependencies:
+          type: array
+          description: Details of the dependent scripts if any. For eg., A LAMP script will have apache, mysql, php as dependent scripts.This can be skipped if there are no dependent scripts or if the actual script takes care of installing all dependencies
+          items:
+            $ref: '#/components/schemas/ScriptInfo'
+        minimum_requirement:
+          description: Minimum requirements of the target machine to install the script
+          $ref: '#/components/schemas/ScriptMinimumRequirements'
+        playbook_yaml:
+          type: string
+          description: Playbook yaml path - mandatory for ansible scripts
+      type: object
+    ArgsDetails:
+      required:
+      - job_details
+      properties:
+        job_details:
+          type: array
+          description: The Job Details of the script
+          items:
+            $ref: '#/components/schemas/JobDetails'
+      type: object
+    TemplateGetParameterSchemaResponse:
+      properties:
+        input_parameters:
+          type: array
+          description: List of input parameters.
+          items:
+            $ref: '#/components/schemas/NamedParameter'
+        output_parameters:
+          type: array
+          description: List of output parameters.
+          items:
+            $ref: '#/components/schemas/NamedParameter'
       type: object
     ScriptJobInfo:
       required:
@@ -3882,191 +3812,6 @@ components:
         script_info:
           description: Script execution details
           $ref: '#/components/schemas/ScriptJobScriptInfo'
-      type: object
-    MetaDataModel:
-      required:
-      - tags
-      properties:
-        tags:
-          type: object
-          description: template tags
-      type: object
-    TemplateGetParamsRequest:
-      required:
-      - cloud_accounts
-      properties:
-        cloud_accounts:
-          type: array
-          description: cloud account details to execute the template
-          items:
-            $ref: '#/components/schemas/CloudAccount'
-      type: object
-    ListResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    CloudAccountDetailsResponse:
-      required:
-      - cloud
-      - cloud_account_id
-      properties:
-        cloud:
-          type: string
-          description: Displays the cloud associated with the template, for example, AWS, Azure etc
-        cloud_account_id:
-          type: string
-          description: Unique Identifier of the cloud account onboarded in the on boarding section
-        region:
-          type: string
-          description: The region of the cloud account where it needs to be executed. Mandatory for AWS
-        resourcegroup:
-          type: string
-          description: Resource group for which you need to execute the template for. Mandatory for Azure
-        location:
-          type: string
-          description: Location under which you need to execute the template for. Mandatory for Azure
-      type: object
-    ViewBlueprintDetails:
-      required:
-      - created_at
-      - created_by
-      - description
-      - id
-      - name
-      - resources
-      - scope
-      - status
-      - updated_at
-      - updated_by
-      properties:
-        id:
-          type: string
-          description: Blueprint ID
-        name:
-          type: string
-          description: Blueprint Name
-        description:
-          type: string
-          description: Blueprints Description
-        resources:
-          type: array
-          description: Resource Details
-          items:
-            $ref: '#/components/schemas/ResourcesDetails'
-        scope:
-          type: string
-          description: Scope of the blueprint
-        status:
-          type: string
-          description: Status of the blueprint
-        created_by:
-          type: string
-          description: Who has created the blueprint
-        created_at:
-          type: string
-          description: When was the blueprint created
-        updated_by:
-          type: string
-          description: Who has updated the blueprint
-        updated_at:
-          type: string
-          description: When was the blueprint updated
-      type: object
-    TemplateIncidentReference:
-      properties:
-        integrated_tool_account_id:
-          type: string
-          description: Integrated tool account id
-          x-cs-type: ObjectId
-        incident_id:
-          type: string
-          description: Incident Id
-      type: object
-    ArgsDetails:
-      required:
-      - job_details
-      properties:
-        job_details:
-          type: array
-          description: The Job Details of the script
-          items:
-            $ref: '#/components/schemas/JobDetails'
-      type: object
-    ScriptDataList:
-      required:
-      - category
-      - description
-      - operating_system
-      - platform
-      - scope
-      - script_id
-      - script_name
-      - status
-      - type
-      - uri
-      properties:
-        script_id:
-          type: string
-          description: Unique Id of the script
-        script_name:
-          type: string
-          description: Name of the script
-        uri:
-          type: string
-          description: Unique URI for script
-        description:
-          type: string
-          description: Description about script
-        status:
-          type: string
-          description: Status of the script
-        category:
-          type: array
-          description: Category of the script
-          items:
-            type: string
-        platform:
-          type: array
-          description: Platforms supported by script.
-          items:
-            type: string
-            description:
-            - OS platform of the target machine (linux/windows)
-            example: linux
-            enum:
-            - linux
-            - windows
-            x-cs-enum-type: Platform
-        operating_system:
-          type: array
-          description: OS supported by script
-          items:
-            type: string
-        type:
-          type: string
-          description: Config type of the script
-        scope:
-          type: string
-          description: Scope of the script (global/account/tenant/private)
-      type: object
-    ResourceDetails:
-      required:
-      - id
-      - name
-      properties:
-        id:
-          type: string
-          description: ID of that Template/Script/Policy that is scheduled to run
-        name:
-          type: string
-          description: Name of the Template/Script/Policy that is scheduled to run
       type: object
     AutomationTemplate:
       required:
@@ -4177,103 +3922,149 @@ components:
           type: boolean
           description: Blueprint support for the template
       type: object
-    TemplateExecuteRequest:
-      required:
-      - args
-      - cloud_accounts
+    RecordIdentityBatchRequest:
       properties:
-        args:
-          type: object
-          description: Arguments to the template
-        cloud_accounts:
+        ids:
           type: array
-          description: Cloud account details to execute the template
           items:
-            $ref: '#/components/schemas/CloudAccount'
-        incident_reference:
-          description: Incident reference.
-          $ref: '#/components/schemas/TemplateIncidentReference'
+            $ref: '#/components/schemas/RecordIdentity'
       type: object
-    TemplateGetParameterSchemaResponse:
+    TemplateJobsList:
       properties:
-        input_parameters:
-          type: array
-          description: List of input parameters.
-          items:
-            $ref: '#/components/schemas/NamedParameter'
-        output_parameters:
-          type: array
-          description: List of output parameters.
-          items:
-            $ref: '#/components/schemas/NamedParameter'
-      type: object
-    ScriptMinimumRequirements:
-      properties:
-        ram(MB):
-          type: number
-          description: Minimum RAM required(in MB) to install the script.
-          default: 0.0
-        cpu:
-          type: integer
-          description: Minimum CPU core required(in MB) to install the script.
-          default: 0
-        disk(MB):
-          type: number
-          description: Minimum disk space required(in MB) to install the script.
-          default: 0.0
-      type: object
-    NamedParameter:
-      required:
-      - is_required
-      - name
-      - schema
-      properties:
+        id:
+          type: string
+          description: Unique ID of the template job.
         name:
           type: string
-          description: Name of the parameter
-        display_name:
+          description: Name of the template job.
+        status:
           type: string
-          description: Display Name of the parameter
-        is_required:
-          type: boolean
-          description: Whether the parameter is required.
-        schema:
-          $ref: '#/components/schemas/ParameterBase'
+          description: Overall status of the template execution
+          example: CANCELED
+          enum:
+          - CANCELED
+          - COMPLETED
+          - CREATE_FAILED
+          - CREATE_IN_PROGRESS
+          - DELETED
+          - DELETE_FAILED
+          - DELETE_IN_PROGRESS
+          - FAILED
+          - IN_PROGRESS
+          - SNAPSHOT_COMPLETED
+          - SNAPSHOT_FAILED
+          - SNAPSHOT_IN_PROGRESS
+          - UPDATED
+          - UPDATE_FAILED
+          - UPDATE_IN_PROGRESS
+          x-cs-enum-type: TemplateJobStatus
+        type:
+          type: string
+          description: Type of the executed template [heat/mistral]
+        status_reason:
+          type: string
+          description: Error message if failed
+        user_name:
+          type: string
+          description: User who initiated the template execution
+        job_actions:
+          type: array
+          description: list of actions supported for this job based on its type.
+          items:
+            type: string
+        incident_reference:
+          description: Incident reference details.
+          $ref: '#/components/schemas/TemplateIncidentReference'
       type: object
-    CreateScriptRequest:
+    AutomationTemplateFilters:
+      properties:
+        from_date:
+          type: string
+          format: date-time
+          description: Filter from date
+        to_date:
+          type: string
+          format: date-time
+          description: Filter to date
+        scope:
+          type: string
+          description: Scope of the template.
+          example: MyTemplates
+          enum:
+          - MyTemplates
+          - Marketplace
+          x-cs-enum-type: AutomationTemplateScope
+        template_name:
+          type: string
+          description: Name of the template
+        query:
+          $ref: '#/components/schemas/QueryOperator'
+      type: object
+    TemplateExecuteResponse:
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          description: Job identifier of the executed template
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    MetaDataModel:
+      required:
+      - tags
+      properties:
+        tags:
+          type: object
+          description: template tags
+      type: object
+    UpdateBlueprintResponse:
+      required:
+      - blueprint_id
+      properties:
+        blueprint_id:
+          type: string
+          description: Blueprint ID
+      type: object
+    ScriptDataList:
       required:
       - category
-      - config_type
-      - name
+      - description
       - operating_system
       - platform
       - scope
-      - script_info
+      - script_id
+      - script_name
+      - status
+      - type
+      - uri
       properties:
-        name:
+        script_id:
           type: string
-          description: Name of the script and it should be unique.
+          description: Unique Id of the script
+        script_name:
+          type: string
+          description: Name of the script
         uri:
           type: string
-          description: 'Unique URI for script - eg: script/ansi/linux/lamp_install. If not provided, corestack will generate it automatically'
+          description: Unique URI for script
         description:
           type: string
-          description: Detailed description about script
+          description: Description about script
+        status:
+          type: string
+          description: Status of the script
         category:
           type: array
-          description: Script Category
+          description: Category of the script
           items:
             type: string
-            example: Application
-            enum:
-            - Application
-            - Languages
-            - Database
-            - Security
-            - System
-            - Web Server
-            - Others
-            x-cs-enum-type: ScriptCategory
         platform:
           type: array
           description: Platforms supported by script.
@@ -4291,41 +4082,198 @@ components:
           description: OS supported by script
           items:
             type: string
-            example: centos
-            enum:
-            - centos
-            - ubuntu
-            - Win-2008(Server)
-            - Win-2012(Server)
-            - redhat
-            - fedora
-            - debian
-            - Win-2016(Server)
-            - Win-7(Desktop)
-            - Win-8(Desktop)
-            x-cs-enum-type: Os
-        config_type:
+        type:
           type: string
-          description: Config type of the script. Create is supported for ansible type scripts alone for now
-          example: ansible
-          enum:
-          - ansible
-          x-cs-enum-type: ScriptConfigType
+          description: Config type of the script
         scope:
           type: string
-          description: 'The scope of the script:
-
-            Account scope - All users under that account will have access to view and execute Only Account admins can update/delete the scripts,
-
-            Tenant Scope - Users with access to the specific tenant will have access to scripts who can describe or execute scripts. Tenant admins can only update/delete.
-
-            Private Scope - User who created will only have access'
-          example: private
+          description: Scope of the script (global/account/tenant/private)
+      type: object
+    TemplateViewResponse:
+      required:
+      - classification
+      - content
+      - content_files
+      - content_type
+      - content_url
+      - created_at
+      - created_by
+      - description
+      - dsl
+      - resource_type
+      - resources
+      - scope
+      - services
+      - template_id
+      - template_name
+      - type
+      - updated_at
+      - updated_by
+      properties:
+        template_id:
+          type: string
+          description: Unique Id of the template
+        services:
+          type: array
+          description: Service(s) associated with the template, for example, AWS, AzureRM, Openstack., etc
+          items:
+            type: string
+        template_name:
+          type: string
+          description: Name of the template
+        content:
+          type: string
+          description: Raw content of the template which is usually in YAML or JSON format
+        content_type:
+          type: string
+          description: Template content source (git, file)
+        content_url:
+          type: string
+          description: Git project URL when the content type is git required only in case of content type git
+        content_files:
+          type: string
+          description: Details about content like its data,filename
+        description:
+          type: string
+          description: Usage of template
+        resources:
+          type: string
+        resource_type:
+          type: string
+        status:
+          type: string
+          description: Status of the template[active/inactive]. Only active templates can be executed
+        type:
+          type: array
+          description: Type of the template like Cloud, Monitoring, Orchestration., etc
+          items:
+            type: string
+        dsl:
+          type: string
+          description: DSL of the template
+        classification:
+          type: array
+          description: Classification of the template
+          items:
+            type: string
+        scope:
+          type: string
+          description: Scope of the template [Account,Tenant,Private]
+        created_by:
+          type: string
+          description: Name of the user who created the template.
+        created_at:
+          type: string
+          description: Template creation time
+        updated_by:
+          type: string
+          description: 'Name of the user who updated the templated. '
+        updated_at:
+          type: string
+          description: Template updated time
+      type: object
+    ViewBlueprintDetails:
+      required:
+      - created_at
+      - created_by
+      - description
+      - id
+      - name
+      - resources
+      - scope
+      - status
+      - updated_at
+      - updated_by
+      properties:
+        id:
+          type: string
+          description: Blueprint ID
+        name:
+          type: string
+          description: Blueprint Name
+        description:
+          type: string
+          description: Blueprints Description
+        resources:
+          type: array
+          description: Resource Details
+          items:
+            $ref: '#/components/schemas/ResourcesDetails'
+        scope:
+          type: string
+          description: Scope of the blueprint
+        status:
+          type: string
+          description: Status of the blueprint
+        created_by:
+          type: string
+          description: Who has created the blueprint
+        created_at:
+          type: string
+          description: When was the blueprint created
+        updated_by:
+          type: string
+          description: Who has updated the blueprint
+        updated_at:
+          type: string
+          description: When was the blueprint updated
+      type: object
+    ResourceViewDetails:
+      required:
+      - resource_details
+      properties:
+        resource_details:
+          type: array
+          description: Template/Scripts/Policies Details that is scheduled to run
+          items:
+            $ref: '#/components/schemas/ResourceDetails'
+      type: object
+    AutomationTemplateResourceTypesMapping:
+      properties:
+        service_name:
+          type: string
+          description: Cloud Service and it's resource type.
+          example: AWS
           enum:
-          - private
-          - account
-          - tenant
-          x-cs-enum-type: AccountScope
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          x-cs-enum-type: CloudServiceName
+        resource_types:
+          type: array
+          description: Resource type of the service.
+          items:
+            type: string
+      type: object
+    ScriptScanRequest:
+      required:
+      - config_type
+      - script_info
+      properties:
+        config_type:
+          type: string
+          description: Config type of the script
+          example: chef
+          enum:
+          - chef
+          - ansible
+          - puppet
+          - shell
+          x-cs-enum-type: ConfigType
         script_info:
           type: array
           description: script info
@@ -4333,52 +4281,104 @@ components:
             $ref: '#/components/schemas/ScriptInfo'
         dependencies:
           type: array
-          description: Details of the dependent scripts if any. For eg., A LAMP script will have apache, mysql, php as dependent scripts.This can be skipped if there are no dependent scripts or if the actual script takes care of installing all dependencies
+          description: Details of the dependent scripts if any
           items:
             $ref: '#/components/schemas/ScriptInfo'
-        minimum_requirement:
-          description: Minimum requirements of the target machine to install the script
-          $ref: '#/components/schemas/ScriptMinimumRequirements'
         playbook_yaml:
           type: string
           description: Playbook yaml path - mandatory for ansible scripts
       type: object
-    RecordIdentity:
-      properties:
-        sysId:
-          type: string
-          description: Unique Identifier of the tracked item
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Last update of the tracked item
-        table:
-          type: string
-          description: Context of the tracked item
-      type: object
-    TemplateValidateResponse:
+    DayDetails:
       required:
-      - validation_status
+      - day
       properties:
-        validation_status:
+        day:
           type: string
-          description: Job identifier of the executed template
+          description: 'At which day of that month the Template/Script/Policy is scheduled to run.Allowed values: 01-31'
       type: object
-    ExecutionLogDetails:
+    UpdateScheduleRequestScript:
       required:
+      - attributes
       - name
-      - run_time
-      - status
+      - recurrence
+      - resource
+      - schedule
       properties:
-        status:
-          type: string
-          description: Status of the Execution Log
-        run_time:
-          type: string
-          description: Run Time Execution of the schedule
         name:
           type: string
-          description: Job Name of the schedule execution log
+          description: Schedule Name to be create
+        description:
+          type: string
+          description: Description of the schedule
+        recurrence:
+          type: string
+          description: Recurrence of the schedule
+          example: Once
+          enum:
+          - Once
+          - Minutes
+          - Hours
+          - Daily
+          - Weekly
+          - Monthly
+          - Annually
+          x-cs-enum-type: ScheduleRecurrence
+        schedule:
+          description: Schedule date and time details
+          $ref: '#/components/schemas/DateAndTimeDetails'
+        resource:
+          type: array
+          description: Template/Script/Policy Id.can be retrieved using the List Policy Schedules
+          items:
+            type: string
+        attributes:
+          description: Attribute Details
+          $ref: '#/components/schemas/AttributeDetails'
+        args:
+          description: Input Parameters for the Template/Script/Policy
+          $ref: '#/components/schemas/ArgsDetails'
+      type: object
+    CreateBlueprintRequest:
+      required:
+      - name
+      - resources
+      - scope
+      properties:
+        name:
+          type: string
+          description: Blueprint Name
+        resources:
+          type: array
+          description: Resource Details
+          items:
+            $ref: '#/components/schemas/ResourceRequest'
+        scope:
+          type: string
+          description: Scope of the Blueprint
+          example: private
+          enum:
+          - private
+          - tenant
+          - global
+          - account
+          x-cs-enum-type: BlueprintScope
+      type: object
+    TemplateExecuteRequest:
+      required:
+      - args
+      - cloud_accounts
+      properties:
+        args:
+          type: object
+          description: Arguments to the template
+        cloud_accounts:
+          type: array
+          description: Cloud account details to execute the template
+          items:
+            $ref: '#/components/schemas/CloudAccount'
+        incident_reference:
+          description: Incident reference.
+          $ref: '#/components/schemas/TemplateIncidentReference'
       type: object
   securitySchemes:
     auth_token:

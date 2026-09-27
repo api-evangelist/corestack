@@ -1,5 +1,8 @@
 aid: corestack
 name: CoreStack
+x-docs-platform: readme
+x-docs-platform-confidence: high
+x-docs-platform-checked: 2026-09-24
 x-enrichment:
   date: '2026-08-11'
   status: enriched
@@ -60,7 +63,7 @@ tags:
 - Policy as Code
 - cloudops
 - MCP
-- agent-native
+- Agent-Native
 - Kubernetes
 tags_raw:
 - cloud-governance
@@ -88,7 +91,7 @@ apis:
   baseURL: https://cloud.corestack.io/mcp
   tags:
   - MCP
-  - agent-native
+  - Agent-Native
   - FinOps
   - CNAPP
   - Cloud Governance
@@ -1912,8 +1915,6 @@ apis:
   humanURL: https://docs.corestack.io/docs/mcp-tool-guide
   baseURL: https://cloud.corestack.io/mcp
   tags:
-  - Audit Logs
-  tags_raw:
   - Audit Log
   properties:
   - type: OpenAPI

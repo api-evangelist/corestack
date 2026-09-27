@@ -486,6 +486,47 @@ paths:
         required: true
 components:
   schemas:
+    TagBaselineRule:
+      required:
+      - __type
+      properties:
+        category:
+          type: array
+          description: Categories for this tag
+          items:
+            type: string
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: TagBaselineRuleAllowedValues
+        subtype_name: TagBaselineRuleAllowedValues
+      - subtype_model: TagBaselineRuleRegex
+        subtype_name: TagBaselineRuleRegex
+      - subtype_model: TagBaselineRuleCondition
+        subtype_name: TagBaselineRuleCondition
+    TagBaselineCustomTags:
+      allOf:
+      - $ref: '#/components/schemas/TagBaselineAvailableTag'
+      - properties:
+          regex_pattern:
+            type: string
+            description: Regular expression pattern to validate tag values, ensuring they follow a predefined format.
+        type: object
+    TagBaselineAvailableTagListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/TagBaselineAvailableTagSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/TagBaselineAvailableTagFilters'
+      type: object
     TagBaselineDefinition:
       allOf:
       - $ref: '#/components/schemas/BaseDefinition'
@@ -511,60 +552,6 @@ components:
             type: boolean
             description: States if the baseline definition is active or not
         type: object
-    TagBaselineGenerateRequest:
-      required:
-      - user_prompt_text
-      properties:
-        user_prompt_text:
-          type: string
-          description: User prompt to generate tags
-        scope:
-          description: At what scope level the baseline should work
-          $ref: '#/components/schemas/TagBaselineScope'
-      type: object
-    TagBaselineDefinitionVersion:
-      allOf:
-      - $ref: '#/components/schemas/BaseDefinitionVersion'
-      - properties:
-          details:
-            description: Details of the version
-            $ref: '#/components/schemas/TagBaselineConfiguration'
-        type: object
-    TagBaselineCustomTags:
-      allOf:
-      - $ref: '#/components/schemas/TagBaselineAvailableTag'
-      - properties:
-          regex_pattern:
-            type: string
-            description: Regular expression pattern to validate tag values, ensuring they follow a predefined format.
-        type: object
-    TagBaselineRule:
-      required:
-      - __type
-      properties:
-        category:
-          type: array
-          description: Categories for this tag
-          items:
-            type: string
-      discriminator:
-        propertyName: __type
-      type: object
-      x-cs-subtypes:
-      - subtype_model: TagBaselineRuleAllowedValues
-        subtype_name: TagBaselineRuleAllowedValues
-      - subtype_model: TagBaselineRuleRegex
-        subtype_name: TagBaselineRuleRegex
-      - subtype_model: TagBaselineRuleCondition
-        subtype_name: TagBaselineRuleCondition
-    TagBaselineAvailableTagBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/TagBaselineAvailableTag'
-      type: object
     AccountFilters:
       properties:
         tenants:
@@ -627,6 +614,32 @@ components:
           items:
             type: string
       type: object
+    TagBaselineDefinitionVersion:
+      allOf:
+      - $ref: '#/components/schemas/BaseDefinitionVersion'
+      - properties:
+          details:
+            description: Details of the version
+            $ref: '#/components/schemas/TagBaselineConfiguration'
+        type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    TagBaselineGenerateRequest:
+      required:
+      - user_prompt_text
+      properties:
+        user_prompt_text:
+          type: string
+          description: User prompt to generate tags
+        scope:
+          description: At what scope level the baseline should work
+          $ref: '#/components/schemas/TagBaselineScope'
+      type: object
     ListContext:
       properties:
         batch_size:
@@ -638,6 +651,14 @@ components:
         total:
           type: integer
           description: Total number of results
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
       type: object
     TagBaselineAvailableTagSortCriteria:
       required:
@@ -652,68 +673,6 @@ components:
         ascending:
           type: boolean
       type: object
-    TagBaselineAvailableTagListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/TagBaselineAvailableTagSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/TagBaselineAvailableTagFilters'
-      type: object
-    ListResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    BaseDefinition:
-      properties:
-        sysId:
-          type: string
-          description: Identifier of the definition
-        createdOn:
-          type: string
-          format: date-time
-          description: Definition created on
-        updatedOn:
-          type: string
-          format: date-time
-          description: Definition updated on
-        headVersion:
-          description: Reference to the editable version of the definition
-          $ref: '#/components/schemas/RecordIdentity'
-        releaseVersion:
-          description: Reference to the release version of the definition
-          $ref: '#/components/schemas/RecordIdentity'
-      type: object
-    TagBaselineConfiguration:
-      required:
-      - tags
-      properties:
-        tags:
-          type: object
-          description: Tag rules in this baseline
-          additionalProperties:
-            $ref: '#/components/schemas/TagBaselineRule'
-      type: object
-    RecordIdentityBatchRequest:
-      properties:
-        ids:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
-      type: object
     TagBaselineAvailableTagFilters:
       properties:
         tag_key_query:
@@ -722,22 +681,6 @@ components:
         filters:
           description: Account filters for the tags
           $ref: '#/components/schemas/AccountFilters'
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    BatchRequest:
-      properties:
-        ids:
-          type: array
-          description: Identifiers to fetch
-          items:
-            type: string
       type: object
     TagBaselineAvailableTag:
       properties:
@@ -749,6 +692,55 @@ components:
           description: Values for the tag key
           items:
             type: string
+      type: object
+    TagBaselineAvailableTagBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/TagBaselineAvailableTag'
+      type: object
+    TagBaselineAvailableTagBatchRequest:
+      allOf:
+      - $ref: '#/components/schemas/BatchRequest'
+      - properties:
+          filters:
+            description: Account filters for the tags
+            $ref: '#/components/schemas/AccountFilters'
+        type: object
+    TagBaselineConfiguration:
+      required:
+      - tags
+      properties:
+        tags:
+          type: object
+          description: Tag rules in this baseline
+          additionalProperties:
+            $ref: '#/components/schemas/TagBaselineRule'
+      type: object
+    BaseDefinitionVersion:
+      properties:
+        sysId:
+          type: string
+          description: Identifier of the version
+        createdOn:
+          type: string
+          format: date-time
+          description: Version created on
+        updatedOn:
+          type: string
+          format: date-time
+          description: Version  updated on
+        version:
+          type: integer
+          default: Sequence number of the version
+        definition:
+          description: Reference to the definition
+          $ref: '#/components/schemas/RecordIdentity'
+        predecessor:
+          description: Reference to the previous version
+          $ref: '#/components/schemas/RecordIdentity'
       type: object
     TagBaselineEnhanceRequest:
       required:
@@ -773,6 +765,17 @@ components:
           type: string
           description: Context of the tracked item
       type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
     TagBaselineScope:
       required:
       - __type
@@ -790,37 +793,34 @@ components:
         subtype_name: TagBaselineScopeTenant
       - subtype_model: TagBaselineScopeCloudAccount
         subtype_name: TagBaselineScopeCloudAccount
-    BaseDefinitionVersion:
+    BatchRequest:
+      properties:
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
+      type: object
+    BaseDefinition:
       properties:
         sysId:
           type: string
-          description: Identifier of the version
+          description: Identifier of the definition
         createdOn:
           type: string
           format: date-time
-          description: Version created on
+          description: Definition created on
         updatedOn:
           type: string
           format: date-time
-          description: Version  updated on
-        version:
-          type: integer
-          default: Sequence number of the version
-        definition:
-          description: Reference to the definition
+          description: Definition updated on
+        headVersion:
+          description: Reference to the editable version of the definition
           $ref: '#/components/schemas/RecordIdentity'
-        predecessor:
-          description: Reference to the previous version
+        releaseVersion:
+          description: Reference to the release version of the definition
           $ref: '#/components/schemas/RecordIdentity'
       type: object
-    TagBaselineAvailableTagBatchRequest:
-      allOf:
-      - $ref: '#/components/schemas/BatchRequest'
-      - properties:
-          filters:
-            description: Account filters for the tags
-            $ref: '#/components/schemas/AccountFilters'
-        type: object
   securitySchemes:
     auth_token:
       type: apiKey

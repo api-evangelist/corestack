@@ -581,33 +581,14 @@ paths:
       - Self Service
 components:
   schemas:
-    ResourceCatalogGetDataModel:
-      required:
-      - data
+    ResourceCatalogTenantDataModel:
       properties:
-        data:
-          type: object
-          description: Resource Data
-      type: object
-    ResourceCatalogCreateDataModel:
-      required:
-      - data
-      - message
-      properties:
-        message:
+        location:
           type: string
-          description: Resource created
-        data:
+          description: Location.for example, /subscriptions/subscription_id->'eg:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'/location/location->'eg:northeurope
+        resourcegroup:
           type: string
-          description: Catalog Id
-      type: object
-    ResourceCatalogCostDataModel:
-      required:
-      - value
-      properties:
-        value:
-          type: integer
-          description: Cloud account resource cost. for example, 0.1, 10, etc
+          description: Resource group. for example, /subscriptions/subscription_id->'eg:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'/resourceGroups/rg_name->'eg:default_rg
       type: object
     ResourceCatalogServiceLevelDataModel:
       required:
@@ -658,13 +639,40 @@ components:
           type: string
           description: Error response message.
       type: object
-    CustomerDashboardReportModel:
+    ResourceCatalogCostDataModel:
+      required:
+      - value
+      properties:
+        value:
+          type: integer
+          description: Cloud account resource cost. for example, 0.1, 10, etc
+      type: object
+    ResourceCatalogCreateDataModel:
       required:
       - data
+      - message
       properties:
+        message:
+          type: string
+          description: Resource created
         data:
-          type: object
-          description: catalog type
+          type: string
+          description: Catalog Id
+      type: object
+    SelfServiceCatalogHierarchyComponent:
+      properties:
+        level1:
+          type: string
+          description: Catalog Classification First Level
+        level2:
+          type: string
+          description: Catalog Classification Second Level
+        level3:
+          type: string
+          description: Catalog Classification Third Level
+        classification_name:
+          type: string
+          description: Catalog Classification Name
       type: object
     OrderHistoryReportModel:
       required:
@@ -673,6 +681,38 @@ components:
         data:
           type: string
           description: Order details
+      type: object
+    CustomerDashboardReportModel:
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          description: catalog type
+      type: object
+    WorkSpaceReportModel:
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          description: Returned Workspace
+      type: object
+    ResourceCatalogGetDataModel:
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          description: Resource Data
+      type: object
+    ServiceCatalogGetDataModel:
+      required:
+      - data
+      properties:
+        data:
+          type: string
+          description: catalog type
       type: object
     ResourceCatalogAttributeDataModel:
       required:
@@ -719,46 +759,6 @@ components:
         resource_id:
           type: string
           description: Specify the resource_id, This can be retrieved using the List Resource Catalog API
-      type: object
-    ResourceCatalogTenantDataModel:
-      properties:
-        location:
-          type: string
-          description: Location.for example, /subscriptions/subscription_id->'eg:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'/location/location->'eg:northeurope
-        resourcegroup:
-          type: string
-          description: Resource group. for example, /subscriptions/subscription_id->'eg:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'/resourceGroups/rg_name->'eg:default_rg
-      type: object
-    WorkSpaceReportModel:
-      required:
-      - data
-      properties:
-        data:
-          type: object
-          description: Returned Workspace
-      type: object
-    ServiceCatalogGetDataModel:
-      required:
-      - data
-      properties:
-        data:
-          type: string
-          description: catalog type
-      type: object
-    SelfServiceCatalogHierarchyComponent:
-      properties:
-        level1:
-          type: string
-          description: Catalog Classification First Level
-        level2:
-          type: string
-          description: Catalog Classification Second Level
-        level3:
-          type: string
-          description: Catalog Classification Third Level
-        classification_name:
-          type: string
-          description: Catalog Classification Name
       type: object
   securitySchemes:
     auth_token:

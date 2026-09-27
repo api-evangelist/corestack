@@ -327,38 +327,40 @@ paths:
         required: true
 components:
   schemas:
-    WorkFlowPersistedRule:
+    WorkFlowDefinitionDetails:
+      allOf:
+      - $ref: '#/components/schemas/MinimizedWorkFlowForBaseVersion'
+      - properties:
+          filters:
+            description: Query based on Resource Group, Region, resource_id, resource_name and resource
+            $ref: '#/components/schemas/QueryOperator'
+          actions:
+            type: array
+            items:
+              $ref: '#/components/schemas/WorkFlowActionDetails'
+          rules:
+            type: array
+            items:
+              $ref: '#/components/schemas/WorkFlowPersistedRule'
+          notifications:
+            type: array
+            items:
+              $ref: '#/components/schemas/WorkFlowNotifications'
+        type: object
+    WorkFlowNotifications:
       properties:
-        rule_id:
+        notification_type:
           type: string
-          description: master rule sys id
-        default_inputs:
+          description: Type of the notifications.
+          example: email
+          enum:
+          - email
+          x-cs-enum-type: WorkFlowNotificationsType
+        values:
           type: array
-          description: input parameters the user wants to override
+          description: Value for the notifications.
           items:
             type: string
-      type: object
-    WorkFlowsListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/WorkFlowsSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/WorkFlowDefinitionFilter'
-      type: object
-    WorkFlowRuleList:
-      properties:
-        rules:
-          type: array
-          description: The list of workflow rules.
-          items:
-            $ref: '#/components/schemas/WorkFlowRuleDetailBase'
       type: object
     WorkFlowsSortCriteria:
       required:
@@ -374,6 +376,73 @@ components:
         ascending:
           type: boolean
       type: object
+    WorkFlowDefinitionsBase:
+      properties:
+        name:
+          type: string
+          description: Name for the workflow.
+        module:
+          type: string
+          description: Module for which the workflow which has to be generated.
+          example: FINOPS
+          enum:
+          - FINOPS
+          x-cs-enum-type: WorkFlowModules
+        is_active:
+          type: boolean
+          description: Boolean represents whether the workflow is active or not
+          default: true
+        tenant_id:
+          type: string
+          description: Sys Id of the master account where the workflow belongs to
+          x-cs-type: ObjectId
+        category:
+          type: string
+          description: SubCategory for which the workflow which has to be generated.
+          example: recommendation
+          enum:
+          - recommendation
+          - cost_anomaly
+          x-cs-enum-type: WorkFlowCategory
+        workflow_id:
+          type: string
+          description: Unique Sys Id for a workflow
+        created_on:
+          type: string
+          format: date-time
+          description: Created time for the workflow.
+        updated_on:
+          type: string
+          format: date-time
+          description: Last Updated time for the workflow.
+        created_by:
+          type: string
+          description: User who created the workflow
+        updated_by:
+          type: string
+          description: User who last updated the workflow
+      type: object
+    WorkFlowRuleDetailBase:
+      allOf:
+      - $ref: '#/components/schemas/WorkFlowRuleBase'
+      - properties:
+          is_rule_override:
+            type: boolean
+            description: Boolean to check whether the input has been override in the workflow
+          values:
+            type: array
+            description: inputs with which the rules are getting scanned.
+            items:
+              type: string
+        type: object
+    WorkFlowBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/WorkFlowDefinitionsBase'
+      type: object
     ListContext:
       properties:
         batch_size:
@@ -385,6 +454,159 @@ components:
         total:
           type: integer
           description: Total number of results
+      type: object
+    MinimizedWorkFlowForBaseVersion:
+      allOf:
+      - $ref: '#/components/schemas/WorkFlowDefinitionsBase'
+      - properties:
+          owners:
+            type: array
+            description: Owners of the workflow.
+            items:
+              type: string
+        type: object
+    WorkFlowRuleList:
+      properties:
+        rules:
+          type: array
+          description: The list of workflow rules.
+          items:
+            $ref: '#/components/schemas/WorkFlowRuleDetailBase'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    WorkFlowRuleListRequest:
+      properties:
+        category:
+          type: string
+          description: SubCategory for which the workflow which has to be generated.
+          example: recommendation
+          enum:
+          - recommendation
+          - cost_anomaly
+          x-cs-enum-type: WorkFlowCategory
+        tenant_id:
+          type: string
+          description: Sys Id of the tenant account where the workflow belongs to
+        workflow_sys_id:
+          type: string
+          description: workflow sys id for which the rules are required
+      type: object
+    WorkFlowRuleBase:
+      properties:
+        name:
+          type: string
+          description: name of the rule which are scanned against the workflow impacted resources.
+        description:
+          type: string
+          description: description of the rule which are scanned against the workflow impacted resources.
+        inputs:
+          type: array
+          description: The input with which the rules are getting scanned.
+          items:
+            type: string
+        rule_category:
+          type: string
+          description: SubCategory for which the workflow which has to be generated.
+          example: recommendation
+          enum:
+          - recommendation
+          - cost_anomaly
+          x-cs-enum-type: WorkFlowCategory
+        reference_id:
+          type: string
+          description: reference id for the rule which will be used in engine
+        sys_id:
+          type: string
+          description: Identity of the rule which are scanned against the workflow impacted resources.
+      type: object
+    WorkFlowActionDetails:
+      properties:
+        action_source:
+          type: string
+          description: Source of the Action to be taken.
+          example: ITSM
+          enum:
+          - ITSM
+          x-cs-enum-type: WorkFlowSource
+        action_type:
+          type: string
+          description: Type of the Action based on source selected.
+          example: Task
+          enum:
+          - Task
+          x-cs-enum-type: WorkFlowActionsType
+        approval_required:
+          type: boolean
+          description: Key represents whether the approval is required or not.
+          default: true
+        applicable_service_account:
+          type: string
+          description: Identifier of the tool account.
+      type: object
+    WorkFlowsListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/WorkFlowsSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/WorkFlowDefinitionFilter'
+      type: object
+    WorkFlowPersistedRule:
+      properties:
+        rule_id:
+          type: string
+          description: master rule sys id
+        default_inputs:
+          type: array
+          description: input parameters the user wants to override
+          items:
+            type: string
+      type: object
+    WorkFlowDefinitionFilter:
+      properties:
+        name:
+          type: string
+          description: Regular expression to match against the name
+        module:
+          type: string
+          description: Module for which the workflow which has to be generated.
+          example: FINOPS
+          enum:
+          - FINOPS
+          x-cs-enum-type: WorkFlowModules
+        category:
+          type: string
+          description: SubCategory for which the workflow which has to be generated.
+          example: recommendation
+          enum:
+          - recommendation
+          - cost_anomaly
+          x-cs-enum-type: WorkFlowCategory
+        tenant_ids:
+          type: array
+          description: Only include accounts from these Tenants.
+          items:
+            type: string
+            x-cs-type: ObjectId
+        owner:
+          type: string
+          description: User id for which the workflows needs to be listed.
+        search:
+          type: string
+          description: Search term to be matched against the workflow name and description.
       type: object
     QueryOperator:
       required:
@@ -857,37 +1079,6 @@ components:
           description: List context
           $ref: '#/components/schemas/ListContext'
       type: object
-    WorkFlowNotifications:
-      properties:
-        notification_type:
-          type: string
-          description: Type of the notifications.
-          example: email
-          enum:
-          - email
-          x-cs-enum-type: WorkFlowNotificationsType
-        values:
-          type: array
-          description: Value for the notifications.
-          items:
-            type: string
-      type: object
-    WorkFlowBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/WorkFlowDefinitionsBase'
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
     BatchRequest:
       properties:
         ids:
@@ -895,197 +1086,6 @@ components:
           description: Identifiers to fetch
           items:
             type: string
-      type: object
-    WorkFlowRuleDetailBase:
-      allOf:
-      - $ref: '#/components/schemas/WorkFlowRuleBase'
-      - properties:
-          is_rule_override:
-            type: boolean
-            description: Boolean to check whether the input has been override in the workflow
-          values:
-            type: array
-            description: inputs with which the rules are getting scanned.
-            items:
-              type: string
-        type: object
-    WorkFlowRuleBase:
-      properties:
-        name:
-          type: string
-          description: name of the rule which are scanned against the workflow impacted resources.
-        description:
-          type: string
-          description: description of the rule which are scanned against the workflow impacted resources.
-        inputs:
-          type: array
-          description: The input with which the rules are getting scanned.
-          items:
-            type: string
-        rule_category:
-          type: string
-          description: SubCategory for which the workflow which has to be generated.
-          example: recommendation
-          enum:
-          - recommendation
-          - cost_anomaly
-          x-cs-enum-type: WorkFlowCategory
-        reference_id:
-          type: string
-          description: reference id for the rule which will be used in engine
-        sys_id:
-          type: string
-          description: Identity of the rule which are scanned against the workflow impacted resources.
-      type: object
-    WorkFlowDefinitionsBase:
-      properties:
-        name:
-          type: string
-          description: Name for the workflow.
-        module:
-          type: string
-          description: Module for which the workflow which has to be generated.
-          example: FINOPS
-          enum:
-          - FINOPS
-          x-cs-enum-type: WorkFlowModules
-        is_active:
-          type: boolean
-          description: Boolean represents whether the workflow is active or not
-          default: true
-        tenant_id:
-          type: string
-          description: Sys Id of the master account where the workflow belongs to
-          x-cs-type: ObjectId
-        category:
-          type: string
-          description: SubCategory for which the workflow which has to be generated.
-          example: recommendation
-          enum:
-          - recommendation
-          - cost_anomaly
-          x-cs-enum-type: WorkFlowCategory
-        workflow_id:
-          type: string
-          description: Unique Sys Id for a workflow
-        created_on:
-          type: string
-          format: date-time
-          description: Created time for the workflow.
-        updated_on:
-          type: string
-          format: date-time
-          description: Last Updated time for the workflow.
-        created_by:
-          type: string
-          description: User who created the workflow
-        updated_by:
-          type: string
-          description: User who last updated the workflow
-      type: object
-    MinimizedWorkFlowForBaseVersion:
-      allOf:
-      - $ref: '#/components/schemas/WorkFlowDefinitionsBase'
-      - properties:
-          owners:
-            type: array
-            description: Owners of the workflow.
-            items:
-              type: string
-        type: object
-    WorkFlowDefinitionFilter:
-      properties:
-        name:
-          type: string
-          description: Regular expression to match against the name
-        module:
-          type: string
-          description: Module for which the workflow which has to be generated.
-          example: FINOPS
-          enum:
-          - FINOPS
-          x-cs-enum-type: WorkFlowModules
-        category:
-          type: string
-          description: SubCategory for which the workflow which has to be generated.
-          example: recommendation
-          enum:
-          - recommendation
-          - cost_anomaly
-          x-cs-enum-type: WorkFlowCategory
-        tenant_ids:
-          type: array
-          description: Only include accounts from these Tenants.
-          items:
-            type: string
-            x-cs-type: ObjectId
-        owner:
-          type: string
-          description: User id for which the workflows needs to be listed.
-        search:
-          type: string
-          description: Search term to be matched against the workflow name and description.
-      type: object
-    WorkFlowRuleListRequest:
-      properties:
-        category:
-          type: string
-          description: SubCategory for which the workflow which has to be generated.
-          example: recommendation
-          enum:
-          - recommendation
-          - cost_anomaly
-          x-cs-enum-type: WorkFlowCategory
-        tenant_id:
-          type: string
-          description: Sys Id of the tenant account where the workflow belongs to
-        workflow_sys_id:
-          type: string
-          description: workflow sys id for which the rules are required
-      type: object
-    WorkFlowDefinitionDetails:
-      allOf:
-      - $ref: '#/components/schemas/MinimizedWorkFlowForBaseVersion'
-      - properties:
-          filters:
-            description: Query based on Resource Group, Region, resource_id, resource_name and resource
-            $ref: '#/components/schemas/QueryOperator'
-          actions:
-            type: array
-            items:
-              $ref: '#/components/schemas/WorkFlowActionDetails'
-          rules:
-            type: array
-            items:
-              $ref: '#/components/schemas/WorkFlowPersistedRule'
-          notifications:
-            type: array
-            items:
-              $ref: '#/components/schemas/WorkFlowNotifications'
-        type: object
-    WorkFlowActionDetails:
-      properties:
-        action_source:
-          type: string
-          description: Source of the Action to be taken.
-          example: ITSM
-          enum:
-          - ITSM
-          x-cs-enum-type: WorkFlowSource
-        action_type:
-          type: string
-          description: Type of the Action based on source selected.
-          example: Task
-          enum:
-          - Task
-          x-cs-enum-type: WorkFlowActionsType
-        approval_required:
-          type: boolean
-          description: Key represents whether the approval is required or not.
-          default: true
-        applicable_service_account:
-          type: string
-          description: Identifier of the tool account.
       type: object
   securitySchemes:
     auth_token:

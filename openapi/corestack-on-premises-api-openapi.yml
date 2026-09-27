@@ -56,51 +56,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    TimeSeriesPoint:
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-          description: Timestamp in ISO format
-        average:
-          type: number
-          description: Average value
-        total:
-          type: number
-          description: Total value
-        minimum:
-          type: number
-          description: Minimum value
-        maximum:
-          type: number
-          description: Maximum value
-        count:
-          type: integer
-          description: Count
-      type: object
-    UtilizationResourceAggregationResponse:
-      properties:
-        hourly_aggregations:
-          type: array
-          description: List of supported hourly aggregation types (e.g., avg, min, max) for utilization metrics
-          items:
-            type: string
-        daily_aggregations:
-          type: array
-          description: List of supported daily aggregation types (e.g., avg, min, max) for utilization metrics
-          items:
-            type: string
-        time_aggregation:
-          type: array
-          description: Time-based aggregation levels available for utilization data (hourly, daily)
-          items:
-            type: string
-        metrics:
-          type: array
-          description: List of utilization metrics and their supported aggregation configurations
-          items:
-            $ref: '#/components/schemas/ResourceUtilizationMetric'
-      type: object
     ModelError:
       required:
       - message
@@ -138,6 +93,29 @@ components:
           format: date-time
           description: End timestamp (ISO string or epoch). If not provided, defaults to now.
       type: object
+    UtilizationResourceAggregationResponse:
+      properties:
+        hourly_aggregations:
+          type: array
+          description: List of supported hourly aggregation types (e.g., avg, min, max) for utilization metrics
+          items:
+            type: string
+        daily_aggregations:
+          type: array
+          description: List of supported daily aggregation types (e.g., avg, min, max) for utilization metrics
+          items:
+            type: string
+        time_aggregation:
+          type: array
+          description: Time-based aggregation levels available for utilization data (hourly, daily)
+          items:
+            type: string
+        metrics:
+          type: array
+          description: List of utilization metrics and their supported aggregation configurations
+          items:
+            $ref: '#/components/schemas/ResourceUtilizationMetric'
+      type: object
     ResourceUtilizationMetric:
       properties:
         unit:
@@ -150,6 +128,28 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TimeSeriesPoint'
+      type: object
+    TimeSeriesPoint:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp in ISO format
+        average:
+          type: number
+          description: Average value
+        total:
+          type: number
+          description: Total value
+        minimum:
+          type: number
+          description: Minimum value
+        maximum:
+          type: number
+          description: Maximum value
+        count:
+          type: integer
+          description: Count
       type: object
   securitySchemes:
     auth_token:

@@ -265,17 +265,69 @@ paths:
         required: true
 components:
   schemas:
-    ListContext:
+    CustomMetricConfigurationListRequestContext:
       properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
+        tenant_id:
+          type: string
+          description: Tenant id to filter configurations.
+          x-cs-type: ObjectId
+        service_account_id:
+          type: string
+          description: Cloud Account Id  associated with custom metrics.
+          x-cs-type: ObjectId
+        regions:
+          type: array
+          description: Region in which custom metrics were created
+          items:
+            type: string
+        resource:
+          type: string
+          description: Name of the Resource.
+        metric_namespace:
+          type: string
+          description: The namespace for the metric specified in metric_name.
+        status:
+          type: string
+          description: Status of the custom Metric Configuration
+          example: completed
+          enum:
+          - completed
+          - pending
+          - in_progress
+          - error
+          x-cs-enum-type: CustomMetricConfigurationStatus
+      type: object
+    CustomMetricConfigurationBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/CustomMetricConfigurationDetails'
+      type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
       type: object
     CustomMetricConfigurationDetails:
       required:
@@ -382,13 +434,18 @@ components:
             - configuration_change
             x-cs-enum-type: EventSubscriptionResourceType
       type: object
-    CustomMetricConfigurationBatchResponse:
+    CustomMetricConfigurationListRequestSortCriteria:
+      required:
+      - column
       properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/CustomMetricConfigurationDetails'
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          x-cs-enum-type: CustomMetricConfigurationListRequestSortColumn
+        ascending:
+          type: boolean
       type: object
     ModelError:
       required:
@@ -406,71 +463,6 @@ components:
         value:
           type: string
           description: Value of the pair
-      type: object
-    RecordIdentity:
-      properties:
-        sysId:
-          type: string
-          description: Unique Identifier of the tracked item
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Last update of the tracked item
-        table:
-          type: string
-          description: Context of the tracked item
-      type: object
-    ListResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    CustomMetricConfigurationSyncRequest:
-      required:
-      - service_account_id
-      properties:
-        service_account_id:
-          type: string
-          description: Cloud Account ID for which the sync to be triggered.
-          x-cs-type: ObjectId
-      type: object
-    CustomMetricConfigurationListRequestContext:
-      properties:
-        tenant_id:
-          type: string
-          description: Tenant id to filter configurations.
-          x-cs-type: ObjectId
-        service_account_id:
-          type: string
-          description: Cloud Account Id  associated with custom metrics.
-          x-cs-type: ObjectId
-        regions:
-          type: array
-          description: Region in which custom metrics were created
-          items:
-            type: string
-        resource:
-          type: string
-          description: Name of the Resource.
-        metric_namespace:
-          type: string
-          description: The namespace for the metric specified in metric_name.
-        status:
-          type: string
-          description: Status of the custom Metric Configuration
-          example: completed
-          enum:
-          - completed
-          - pending
-          - in_progress
-          - error
-          x-cs-enum-type: CustomMetricConfigurationStatus
       type: object
     CustomMetricConfigurationListRequest:
       properties:
@@ -493,18 +485,26 @@ components:
           items:
             $ref: '#/components/schemas/RecordIdentity'
       type: object
-    CustomMetricConfigurationListRequestSortCriteria:
+    CustomMetricConfigurationSyncRequest:
       required:
-      - column
+      - service_account_id
       properties:
-        column:
+        service_account_id:
           type: string
-          example: CreatedAt
-          enum:
-          - CreatedAt
-          x-cs-enum-type: CustomMetricConfigurationListRequestSortColumn
-        ascending:
-          type: boolean
+          description: Cloud Account ID for which the sync to be triggered.
+          x-cs-type: ObjectId
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
       type: object
   securitySchemes:
     auth_token:

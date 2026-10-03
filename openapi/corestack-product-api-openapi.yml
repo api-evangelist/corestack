@@ -159,6 +159,101 @@ paths:
       - Product
 components:
   schemas:
+    ProductDetails:
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Name of the product
+          example: AppSecOps
+          enum:
+          - AppSecOps
+          - Assessments
+          - CloudOps
+          - FinOps
+          - Product_Admin
+          - SecOps
+          - Self Service
+          - StackOps
+          x-cs-enum-type: ProductEnum
+        description:
+          type: string
+          description: Description of the product
+        features:
+          type: array
+          items:
+            type: string
+            description: Feature for the account
+            example: appsecops__onboarding
+            enum:
+            - appsecops__onboarding
+            - assessments__wellarchitected
+            - assessments__wellarchitected__auto_assessment
+            - assessments__wellarchitected__auto_assessment__aws_sync
+            - assessments__wellarchitected__custom_framework__aws_sync
+            - cloudops__activity
+            - cloudops__activity__periodic
+            - cloudops__activity__real_time_sync_read
+            - cloudops__activity__real_time_sync_write
+            - cloudops__backup_management
+            - cloudops__cloudwatch_agent
+            - cloudops__monitoring_alerts
+            - cloudops__monitoring_alerts__periodic
+            - cloudops__monitoring_alerts__real_time_sync_read
+            - cloudops__monitoring_alerts__real_time_sync_write
+            - cloudops__patch_management
+            - cloudops__runbooks
+            - cloudops__utilization
+            - core__inventory
+            - core__inventory__management
+            - core__policy_engine
+            - core__policy_engine__aws_config
+            - core__policy_engine__azure_policy
+            - core__resource_discovery
+            - core__resource_discovery_extra
+            - core__tagging_governance
+            - core__tagging_governance_extra
+            - finops__assessments
+            - finops__azurehybridbenefit_recommendations
+            - finops__budget
+            - finops__cloud_native_recommendations
+            - finops__cost_anomaly
+            - finops__cost_processing
+            - finops__cost_savings
+            - finops__enterprise_discount_program
+            - finops__reservation
+            - finops__right_size_recommendations
+            - finops__savings_plans
+            - finops__schedule_recommendations
+            - governance__request
+            - integration__application_performance_monitoring
+            - integration__azure_security_graph
+            - integration__azure_sentinel
+            - integration__tenable_nessus
+            - secops__access
+            - secops__aws_security_hub
+            - secops__cloud_native_security_information_event_management
+            - secops__compliance
+            - secops__threats
+            - secops__threats__posture_read
+            - secops__threats__posture_write
+            - secops__threats__realtime_alerts_read
+            - secops__threats__realtime_alerts_write
+            - secops__vulnerabilities
+            - secops__vulnerabilities__read
+            - secops__vulnerabilities__write
+            - selfservice__governance
+            - stackops
+            - stackops__deployment
+            - system__roles
+            x-cs-enum-type: ServiceAccountFeature
+        role_templates:
+          type: array
+          description: Role templates mapped for the product
+          items:
+            type: string
+      type: object
     ServiceAccountCloudAccessPolicy:
       properties:
         access_type:
@@ -288,6 +383,14 @@ components:
             - Salesforce_Sales_Cloud
             - Splunk
             x-cs-enum-type: SaasServiceName
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
       type: object
     PolicyActionPair:
       properties:
@@ -523,353 +626,6 @@ components:
           - view_quota
           - vulnerability_analytics
           x-cs-enum-type: ActionEnum
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    ProductDetails:
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: Name of the product
-          example: AppSecOps
-          enum:
-          - AppSecOps
-          - Assessments
-          - CloudOps
-          - FinOps
-          - Product_Admin
-          - SecOps
-          - Self Service
-          - StackOps
-          x-cs-enum-type: ProductEnum
-        description:
-          type: string
-          description: Description of the product
-        features:
-          type: array
-          items:
-            type: string
-            description: Feature for the account
-            example: appsecops__onboarding
-            enum:
-            - appsecops__onboarding
-            - assessments__wellarchitected
-            - assessments__wellarchitected__auto_assessment
-            - assessments__wellarchitected__auto_assessment__aws_sync
-            - assessments__wellarchitected__custom_framework__aws_sync
-            - cloudops__activity
-            - cloudops__activity__periodic
-            - cloudops__activity__real_time_sync_read
-            - cloudops__activity__real_time_sync_write
-            - cloudops__backup_management
-            - cloudops__cloudwatch_agent
-            - cloudops__monitoring_alerts
-            - cloudops__monitoring_alerts__periodic
-            - cloudops__monitoring_alerts__real_time_sync_read
-            - cloudops__monitoring_alerts__real_time_sync_write
-            - cloudops__patch_management
-            - cloudops__runbooks
-            - cloudops__utilization
-            - core__inventory
-            - core__inventory__management
-            - core__policy_engine
-            - core__policy_engine__aws_config
-            - core__policy_engine__azure_policy
-            - core__resource_discovery
-            - core__resource_discovery_extra
-            - core__tagging_governance
-            - core__tagging_governance_extra
-            - finops__assessments
-            - finops__azurehybridbenefit_recommendations
-            - finops__budget
-            - finops__cloud_native_recommendations
-            - finops__cost_anomaly
-            - finops__cost_processing
-            - finops__cost_savings
-            - finops__enterprise_discount_program
-            - finops__reservation
-            - finops__right_size_recommendations
-            - finops__savings_plans
-            - finops__schedule_recommendations
-            - governance__request
-            - integration__application_performance_monitoring
-            - integration__azure_security_graph
-            - integration__azure_sentinel
-            - integration__tenable_nessus
-            - secops__access
-            - secops__aws_security_hub
-            - secops__cloud_native_security_information_event_management
-            - secops__compliance
-            - secops__threats
-            - secops__threats__posture_read
-            - secops__threats__posture_write
-            - secops__threats__realtime_alerts_read
-            - secops__threats__realtime_alerts_write
-            - secops__vulnerabilities
-            - secops__vulnerabilities__read
-            - secops__vulnerabilities__write
-            - selfservice__governance
-            - stackops
-            - stackops__deployment
-            - system__roles
-            x-cs-enum-type: ServiceAccountFeature
-        role_templates:
-          type: array
-          description: Role templates mapped for the product
-          items:
-            type: string
-      type: object
-    ServiceAccountNativeDetailsBase:
-      required:
-      - type
-      properties: {}
-      discriminator:
-        propertyName: type
-      type: object
-      x-cs-subtypes:
-      - subtype_model: ServiceAccountNativeDetailsBaseForCostCenter
-        subtype_name: ServiceAccountNativeDetailsBaseForCostCenter
-      - subtype_model: ServiceAccountNativeDetailsBaseForStructure
-        subtype_name: ServiceAccountNativeDetailsBaseForStructure
-      - subtype_model: ServiceAccountNativeDetailsBaseForCostCenterCloud
-        subtype_name: ServiceAccountNativeDetailsBaseForCostCenterCloud
-      - subtype_model: ServiceAccountNativeDetailsBaseForCostCenterDimension
-        subtype_name: ServiceAccountNativeDetailsBaseForCostCenterDimension
-      - subtype_model: ServiceAccountNativeDetailsForCostCenterDimension
-        subtype_name: ServiceAccountNativeDetailsForCostCenterDimension
-      - subtype_model: ServiceAccountNativeDetailsForCostCenterDimensionGroupingRule
-        subtype_name: ServiceAccountNativeDetailsForCostCenterDimensionGroupingRule
-      - subtype_model: ServiceAccountNativeDetailsBaseForCloud
-        subtype_name: ServiceAccountNativeDetailsBaseForCloud
-      - subtype_model: ServiceAccountNativeDetailsBaseForAws
-        subtype_name: ServiceAccountNativeDetailsBaseForAws
-      - subtype_model: ServiceAccountNativeDetailsForAwsOrganizationUnit
-        subtype_name: ServiceAccountNativeDetailsForAwsOrganizationUnit
-      - subtype_model: ServiceAccountNativeDetailsForAwsManagementAccount
-        subtype_name: ServiceAccountNativeDetailsForAwsManagementAccount
-      - subtype_model: ServiceAccountNativeDetailsForAwsMemberAccount
-        subtype_name: ServiceAccountNativeDetailsForAwsMemberAccount
-      - subtype_model: ServiceAccountNativeDetailsForCostCenterAws
-        subtype_name: ServiceAccountNativeDetailsForCostCenterAws
-      - subtype_model: ServiceAccountNativeDetailsBaseForAzure
-        subtype_name: ServiceAccountNativeDetailsBaseForAzure
-      - subtype_model: ServiceAccountNativeDetailsForAzureCspMaster
-        subtype_name: ServiceAccountNativeDetailsForAzureCspMaster
-      - subtype_model: ServiceAccountNativeDetailsForAzureCspPartner
-        subtype_name: ServiceAccountNativeDetailsForAzureCspPartner
-      - subtype_model: ServiceAccountNativeDetailsForAzureCspCustomer
-        subtype_name: ServiceAccountNativeDetailsForAzureCspCustomer
-      - subtype_model: ServiceAccountNativeDetailsBaseForAzureSubscription
-        subtype_name: ServiceAccountNativeDetailsBaseForAzureSubscription
-      - subtype_model: ServiceAccountNativeDetailsForAzureSubscription
-        subtype_name: ServiceAccountNativeDetailsForAzureSubscription
-      - subtype_model: ServiceAccountNativeDetailsForAzureCspSubscription
-        subtype_name: ServiceAccountNativeDetailsForAzureCspSubscription
-      - subtype_model: ServiceAccountNativeDetailsBaseForAzureEaMaster
-        subtype_name: ServiceAccountNativeDetailsBaseForAzureEaMaster
-      - subtype_model: ServiceAccountNativeDetailsForAzureEaApiKeyMaster
-        subtype_name: ServiceAccountNativeDetailsForAzureEaApiKeyMaster
-      - subtype_model: ServiceAccountNativeDetailsForAzureEaApplicationMaster
-        subtype_name: ServiceAccountNativeDetailsForAzureEaApplicationMaster
-      - subtype_model: ServiceAccountNativeDetailsForAzureEaDepartment
-        subtype_name: ServiceAccountNativeDetailsForAzureEaDepartment
-      - subtype_model: ServiceAccountNativeDetailsForAzureEaAccount
-        subtype_name: ServiceAccountNativeDetailsForAzureEaAccount
-      - subtype_model: ServiceAccountNativeDetailsForAzureEaSubscription
-        subtype_name: ServiceAccountNativeDetailsForAzureEaSubscription
-      - subtype_model: ServiceAccountNativeDetailsForAzureMcaBillingAccount
-        subtype_name: ServiceAccountNativeDetailsForAzureMcaBillingAccount
-      - subtype_model: ServiceAccountNativeDetailsForAzureMcaBillingProfile
-        subtype_name: ServiceAccountNativeDetailsForAzureMcaBillingProfile
-      - subtype_model: ServiceAccountNativeDetailsForAzureMcaInvoiceSection
-        subtype_name: ServiceAccountNativeDetailsForAzureMcaInvoiceSection
-      - subtype_model: ServiceAccountNativeDetailsForAzureMcaSubscription
-        subtype_name: ServiceAccountNativeDetailsForAzureMcaSubscription
-      - subtype_model: ServiceAccountNativeDetailsForCostCenterAzure
-        subtype_name: ServiceAccountNativeDetailsForCostCenterAzure
-      - subtype_model: ServiceAccountNativeDetailsBaseForGcp
-        subtype_name: ServiceAccountNativeDetailsBaseForGcp
-      - subtype_model: ServiceAccountNativeDetailsForGcpBillingAccount
-        subtype_name: ServiceAccountNativeDetailsForGcpBillingAccount
-      - subtype_model: ServiceAccountNativeDetailsForGcpParentBillingAccount
-        subtype_name: ServiceAccountNativeDetailsForGcpParentBillingAccount
-      - subtype_model: ServiceAccountNativeDetailsForGcpBillingSubAccount
-        subtype_name: ServiceAccountNativeDetailsForGcpBillingSubAccount
-      - subtype_model: ServiceAccountNativeDetailsForGcpOrganization
-        subtype_name: ServiceAccountNativeDetailsForGcpOrganization
-      - subtype_model: ServiceAccountNativeDetailsForGcpFolder
-        subtype_name: ServiceAccountNativeDetailsForGcpFolder
-      - subtype_model: ServiceAccountNativeDetailsForGcpProject
-        subtype_name: ServiceAccountNativeDetailsForGcpProject
-      - subtype_model: ServiceAccountNativeDetailsForCostCenterGcp
-        subtype_name: ServiceAccountNativeDetailsForCostCenterGcp
-      - subtype_model: ServiceAccountNativeDetailsForOciTenancy
-        subtype_name: ServiceAccountNativeDetailsForOciTenancy
-      - subtype_model: ServiceAccountNativeDetailsForCostCenterOci
-        subtype_name: ServiceAccountNativeDetailsForCostCenterOci
-      - subtype_model: ServiceAccountNativeDetailsForAzureStack
-        subtype_name: ServiceAccountNativeDetailsForAzureStack
-      - subtype_model: ServiceAccountNativeDetailsForCloudstack
-        subtype_name: ServiceAccountNativeDetailsForCloudstack
-      - subtype_model: ServiceAccountNativeDetailsForOpenstack
-        subtype_name: ServiceAccountNativeDetailsForOpenstack
-      - subtype_model: ServiceAccountNativeDetailsForRackspace
-        subtype_name: ServiceAccountNativeDetailsForRackspace
-      - subtype_model: ServiceAccountNativeDetailsForVmware
-        subtype_name: ServiceAccountNativeDetailsForVmware
-      - subtype_model: ServiceAccountNativeDetailsForVcenter
-        subtype_name: ServiceAccountNativeDetailsForVcenter
-      - subtype_model: ServiceAccountNativeDetailsForMsVmm
-        subtype_name: ServiceAccountNativeDetailsForMsVmm
-      - subtype_model: ServiceAccountNativeDetailsForVmwareVcdMaster
-        subtype_name: ServiceAccountNativeDetailsForVmwareVcdMaster
-      - subtype_model: ServiceAccountNativeDetailsForVmwareVcdOrganization
-        subtype_name: ServiceAccountNativeDetailsForVmwareVcdOrganization
-      - subtype_model: ServiceAccountNativeDetailsForVmwareVcdOrganizationVdc
-        subtype_name: ServiceAccountNativeDetailsForVmwareVcdOrganizationVdc
-      - subtype_model: ServiceAccountNativeDetailsForPrivateCloud
-        subtype_name: ServiceAccountNativeDetailsForPrivateCloud
-      - subtype_model: ServiceAccountNativeDetailsBaseForIntegratedTool
-        subtype_name: ServiceAccountNativeDetailsBaseForIntegratedTool
-      - subtype_model: ServiceAccountNativeDetailsForAppDynamics
-        subtype_name: ServiceAccountNativeDetailsForAppDynamics
-      - subtype_model: ServiceAccountNativeDetailsForAppInsights
-        subtype_name: ServiceAccountNativeDetailsForAppInsights
-      - subtype_model: ServiceAccountNativeDetailsForAzureDevops
-        subtype_name: ServiceAccountNativeDetailsForAzureDevops
-      - subtype_model: ServiceAccountNativeDetailsForAzureSecurityGraph
-        subtype_name: ServiceAccountNativeDetailsForAzureSecurityGraph
-      - subtype_model: ServiceAccountNativeDetailsForAzureSentinel
-        subtype_name: ServiceAccountNativeDetailsForAzureSentinel
-      - subtype_model: ServiceAccountNativeDetailsForCorestack
-        subtype_name: ServiceAccountNativeDetailsForCorestack
-      - subtype_model: ServiceAccountNativeDetailsForDockerHub
-        subtype_name: ServiceAccountNativeDetailsForDockerHub
-      - subtype_model: ServiceAccountNativeDetailsForElasticSearch
-        subtype_name: ServiceAccountNativeDetailsForElasticSearch
-      - subtype_model: ServiceAccountNativeDetailsForFreshservice
-        subtype_name: ServiceAccountNativeDetailsForFreshservice
-      - subtype_model: ServiceAccountNativeDetailsBaseForJiraServiceManagement
-        subtype_name: ServiceAccountNativeDetailsBaseForJiraServiceManagement
-      - subtype_model: ServiceAccountNativeDetailsForJiraServiceManagementParent
-        subtype_name: ServiceAccountNativeDetailsForJiraServiceManagementParent
-      - subtype_model: ServiceAccountNativeDetailsForJiraServiceManagementProject
-        subtype_name: ServiceAccountNativeDetailsForJiraServiceManagementProject
-      - subtype_model: ServiceAccountNativeDetailsForGithub
-        subtype_name: ServiceAccountNativeDetailsForGithub
-      - subtype_model: ServiceAccountNativeDetailsForJiraDataCenter
-        subtype_name: ServiceAccountNativeDetailsForJiraDataCenter
-      - subtype_model: ServiceAccountNativeDetailsForJiraServiceDesk
-        subtype_name: ServiceAccountNativeDetailsForJiraServiceDesk
-      - subtype_model: ServiceAccountNativeDetailsForJenkins
-        subtype_name: ServiceAccountNativeDetailsForJenkins
-      - subtype_model: ServiceAccountNativeDetailsForLogstash
-        subtype_name: ServiceAccountNativeDetailsForLogstash
-      - subtype_model: ServiceAccountNativeDetailsForMicrosoftTeams
-        subtype_name: ServiceAccountNativeDetailsForMicrosoftTeams
-      - subtype_model: ServiceAccountNativeDetailsForNagios
-        subtype_name: ServiceAccountNativeDetailsForNagios
-      - subtype_model: ServiceAccountNativeDetailsForNewrelic
-        subtype_name: ServiceAccountNativeDetailsForNewrelic
-      - subtype_model: ServiceAccountNativeDetailsForPrometheus
-        subtype_name: ServiceAccountNativeDetailsForPrometheus
-      - subtype_model: ServiceAccountNativeDetailsForQualys
-        subtype_name: ServiceAccountNativeDetailsForQualys
-      - subtype_model: ServiceAccountNativeDetailsForRedhatSatellite
-        subtype_name: ServiceAccountNativeDetailsForRedhatSatellite
-      - subtype_model: ServiceAccountNativeDetailsForServiceNow
-        subtype_name: ServiceAccountNativeDetailsForServiceNow
-      - subtype_model: ServiceAccountNativeDetailsForArrowSphere
-        subtype_name: ServiceAccountNativeDetailsForArrowSphere
-      - subtype_model: ServiceAccountNativeDetailsForTclItsm
-        subtype_name: ServiceAccountNativeDetailsForTclItsm
-      - subtype_model: ServiceAccountNativeDetailsForTenableNessus
-        subtype_name: ServiceAccountNativeDetailsForTenableNessus
-      - subtype_model: ServiceAccountNativeDetailsForZohoServiceDesk
-        subtype_name: ServiceAccountNativeDetailsForZohoServiceDesk
-      - subtype_model: ServiceAccountNativeDetailsBaseForResource
-        subtype_name: ServiceAccountNativeDetailsBaseForResource
-      - subtype_model: ServiceAccountNativeDetailsBaseForKubernetesCluster
-        subtype_name: ServiceAccountNativeDetailsBaseForKubernetesCluster
-      - subtype_model: ServiceAccountNativeDetailsBaseForKubernetesClusterCloud
-        subtype_name: ServiceAccountNativeDetailsBaseForKubernetesClusterCloud
-      - subtype_model: ServiceAccountNativeDetailsBaseForKubernetesClusterOthers
-        subtype_name: ServiceAccountNativeDetailsBaseForKubernetesClusterOthers
-      - subtype_model: ServiceAccountNativeDetailsForAwsEksCluster
-        subtype_name: ServiceAccountNativeDetailsForAwsEksCluster
-      - subtype_model: ServiceAccountNativeDetailsForAzureAksCluster
-        subtype_name: ServiceAccountNativeDetailsForAzureAksCluster
-      - subtype_model: ServiceAccountNativeDetailsForGcpGkeCluster
-        subtype_name: ServiceAccountNativeDetailsForGcpGkeCluster
-      - subtype_model: ServiceAccountNativeDetailsForOciOkeCluster
-        subtype_name: ServiceAccountNativeDetailsForOciOkeCluster
-      - subtype_model: ServiceAccountNativeDetailsForSelfManagedCluster
-        subtype_name: ServiceAccountNativeDetailsForSelfManagedCluster
-      - subtype_model: ServiceAccountNativeDetailsBaseForSaas
-        subtype_name: ServiceAccountNativeDetailsBaseForSaas
-      - subtype_model: ServiceAccountNativeDetailsBaseForSaasAiServices
-        subtype_name: ServiceAccountNativeDetailsBaseForSaasAiServices
-      - subtype_model: ServiceAccountNativeDetailsForOpenAI
-        subtype_name: ServiceAccountNativeDetailsForOpenAI
-      - subtype_model: ServiceAccountNativeDetailsForAnthropic
-        subtype_name: ServiceAccountNativeDetailsForAnthropic
-      - subtype_model: ServiceAccountNativeDetailsBaseForSaasDataServices
-        subtype_name: ServiceAccountNativeDetailsBaseForSaasDataServices
-      - subtype_model: ServiceAccountNativeDetailsForSnowflake
-        subtype_name: ServiceAccountNativeDetailsForSnowflake
-      - subtype_model: ServiceAccountNativeDetailsForDataBricks
-        subtype_name: ServiceAccountNativeDetailsForDataBricks
-      - subtype_model: ServiceAccountNativeDetailsBaseForSaasOtherServices
-        subtype_name: ServiceAccountNativeDetailsBaseForSaasOtherServices
-      - subtype_model: ServiceAccountNativeDetailsForDataDog
-        subtype_name: ServiceAccountNativeDetailsForDataDog
-      - subtype_model: ServiceAccountNativeDetailsForSplunk
-        subtype_name: ServiceAccountNativeDetailsForSplunk
-      - subtype_model: ServiceAccountNativeDetailsForCircleCI
-        subtype_name: ServiceAccountNativeDetailsForCircleCI
-      - subtype_model: ServiceAccountNativeDetailsForElastic
-        subtype_name: ServiceAccountNativeDetailsForElastic
-      - subtype_model: ServiceAccountNativeDetailsForSaasMicrosoftTeams
-        subtype_name: ServiceAccountNativeDetailsForSaasMicrosoftTeams
-      - subtype_model: ServiceAccountNativeDetailsForSalesForceSalesCloud
-        subtype_name: ServiceAccountNativeDetailsForSalesForceSalesCloud
-      - subtype_model: ServiceAccountNativeDetailsForDropbox
-        subtype_name: ServiceAccountNativeDetailsForDropbox
-      - subtype_model: ServiceAccountNativeDetailsForOkta
-        subtype_name: ServiceAccountNativeDetailsForOkta
-      - subtype_model: ServiceAccountNativeDetailsForSaasNewRelic
-        subtype_name: ServiceAccountNativeDetailsForSaasNewRelic
-      - subtype_model: ServiceAccountNativeDetailsForDynatrace
-        subtype_name: ServiceAccountNativeDetailsForDynatrace
-      - subtype_model: ServiceAccountNativeDetailsForGrafana
-        subtype_name: ServiceAccountNativeDetailsForGrafana
-      - subtype_model: ServiceAccountNativeDetailsForIbmTencent
-        subtype_name: ServiceAccountNativeDetailsForIbmTencent
-      - subtype_model: ServiceAccountNativeDetailsForCustomSaasTool
-        subtype_name: ServiceAccountNativeDetailsForCustomSaasTool
-      - subtype_model: ServiceAccountNativeDetailsForZabbix
-        subtype_name: ServiceAccountNativeDetailsForZabbix
-    ProductBundleDetails:
-      properties:
-        name:
-          type: string
-          description: Name of the product bundle
-        description:
-          type: string
-          description: Description of the product bundle
-        products:
-          type: array
-          description: Products included in the bundle
-          items:
-            type: string
       type: object
     ServiceAccountFeatureRequirement:
       properties:
@@ -1202,6 +958,250 @@ components:
           description: Cloud Access Policies required for this Provider
           items:
             $ref: '#/components/schemas/ServiceAccountCloudAccessPolicy'
+      type: object
+    ServiceAccountNativeDetailsBase:
+      required:
+      - type
+      properties: {}
+      discriminator:
+        propertyName: type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ServiceAccountNativeDetailsBaseForCostCenter
+        subtype_name: ServiceAccountNativeDetailsBaseForCostCenter
+      - subtype_model: ServiceAccountNativeDetailsBaseForStructure
+        subtype_name: ServiceAccountNativeDetailsBaseForStructure
+      - subtype_model: ServiceAccountNativeDetailsBaseForCostCenterCloud
+        subtype_name: ServiceAccountNativeDetailsBaseForCostCenterCloud
+      - subtype_model: ServiceAccountNativeDetailsBaseForCostCenterDimension
+        subtype_name: ServiceAccountNativeDetailsBaseForCostCenterDimension
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterDimension
+        subtype_name: ServiceAccountNativeDetailsForCostCenterDimension
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterDimensionGroupingRule
+        subtype_name: ServiceAccountNativeDetailsForCostCenterDimensionGroupingRule
+      - subtype_model: ServiceAccountNativeDetailsBaseForCloud
+        subtype_name: ServiceAccountNativeDetailsBaseForCloud
+      - subtype_model: ServiceAccountNativeDetailsBaseForAws
+        subtype_name: ServiceAccountNativeDetailsBaseForAws
+      - subtype_model: ServiceAccountNativeDetailsForAwsOrganizationUnit
+        subtype_name: ServiceAccountNativeDetailsForAwsOrganizationUnit
+      - subtype_model: ServiceAccountNativeDetailsForAwsManagementAccount
+        subtype_name: ServiceAccountNativeDetailsForAwsManagementAccount
+      - subtype_model: ServiceAccountNativeDetailsForAwsMemberAccount
+        subtype_name: ServiceAccountNativeDetailsForAwsMemberAccount
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterAws
+        subtype_name: ServiceAccountNativeDetailsForCostCenterAws
+      - subtype_model: ServiceAccountNativeDetailsBaseForAzure
+        subtype_name: ServiceAccountNativeDetailsBaseForAzure
+      - subtype_model: ServiceAccountNativeDetailsForAzureCspMaster
+        subtype_name: ServiceAccountNativeDetailsForAzureCspMaster
+      - subtype_model: ServiceAccountNativeDetailsForAzureCspPartner
+        subtype_name: ServiceAccountNativeDetailsForAzureCspPartner
+      - subtype_model: ServiceAccountNativeDetailsForAzureCspCustomer
+        subtype_name: ServiceAccountNativeDetailsForAzureCspCustomer
+      - subtype_model: ServiceAccountNativeDetailsBaseForAzureSubscription
+        subtype_name: ServiceAccountNativeDetailsBaseForAzureSubscription
+      - subtype_model: ServiceAccountNativeDetailsForAzureSubscription
+        subtype_name: ServiceAccountNativeDetailsForAzureSubscription
+      - subtype_model: ServiceAccountNativeDetailsForAzureCspSubscription
+        subtype_name: ServiceAccountNativeDetailsForAzureCspSubscription
+      - subtype_model: ServiceAccountNativeDetailsBaseForAzureEaMaster
+        subtype_name: ServiceAccountNativeDetailsBaseForAzureEaMaster
+      - subtype_model: ServiceAccountNativeDetailsForAzureEaApiKeyMaster
+        subtype_name: ServiceAccountNativeDetailsForAzureEaApiKeyMaster
+      - subtype_model: ServiceAccountNativeDetailsForAzureEaApplicationMaster
+        subtype_name: ServiceAccountNativeDetailsForAzureEaApplicationMaster
+      - subtype_model: ServiceAccountNativeDetailsForAzureEaDepartment
+        subtype_name: ServiceAccountNativeDetailsForAzureEaDepartment
+      - subtype_model: ServiceAccountNativeDetailsForAzureEaAccount
+        subtype_name: ServiceAccountNativeDetailsForAzureEaAccount
+      - subtype_model: ServiceAccountNativeDetailsForAzureEaSubscription
+        subtype_name: ServiceAccountNativeDetailsForAzureEaSubscription
+      - subtype_model: ServiceAccountNativeDetailsForAzureMcaBillingAccount
+        subtype_name: ServiceAccountNativeDetailsForAzureMcaBillingAccount
+      - subtype_model: ServiceAccountNativeDetailsForAzureMcaBillingProfile
+        subtype_name: ServiceAccountNativeDetailsForAzureMcaBillingProfile
+      - subtype_model: ServiceAccountNativeDetailsForAzureMcaInvoiceSection
+        subtype_name: ServiceAccountNativeDetailsForAzureMcaInvoiceSection
+      - subtype_model: ServiceAccountNativeDetailsForAzureMcaSubscription
+        subtype_name: ServiceAccountNativeDetailsForAzureMcaSubscription
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterAzure
+        subtype_name: ServiceAccountNativeDetailsForCostCenterAzure
+      - subtype_model: ServiceAccountNativeDetailsBaseForGcp
+        subtype_name: ServiceAccountNativeDetailsBaseForGcp
+      - subtype_model: ServiceAccountNativeDetailsForGcpBillingAccount
+        subtype_name: ServiceAccountNativeDetailsForGcpBillingAccount
+      - subtype_model: ServiceAccountNativeDetailsForGcpParentBillingAccount
+        subtype_name: ServiceAccountNativeDetailsForGcpParentBillingAccount
+      - subtype_model: ServiceAccountNativeDetailsForGcpBillingSubAccount
+        subtype_name: ServiceAccountNativeDetailsForGcpBillingSubAccount
+      - subtype_model: ServiceAccountNativeDetailsForGcpOrganization
+        subtype_name: ServiceAccountNativeDetailsForGcpOrganization
+      - subtype_model: ServiceAccountNativeDetailsForGcpFolder
+        subtype_name: ServiceAccountNativeDetailsForGcpFolder
+      - subtype_model: ServiceAccountNativeDetailsForGcpProject
+        subtype_name: ServiceAccountNativeDetailsForGcpProject
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterGcp
+        subtype_name: ServiceAccountNativeDetailsForCostCenterGcp
+      - subtype_model: ServiceAccountNativeDetailsForOciTenancy
+        subtype_name: ServiceAccountNativeDetailsForOciTenancy
+      - subtype_model: ServiceAccountNativeDetailsForCostCenterOci
+        subtype_name: ServiceAccountNativeDetailsForCostCenterOci
+      - subtype_model: ServiceAccountNativeDetailsForAzureStack
+        subtype_name: ServiceAccountNativeDetailsForAzureStack
+      - subtype_model: ServiceAccountNativeDetailsForCloudstack
+        subtype_name: ServiceAccountNativeDetailsForCloudstack
+      - subtype_model: ServiceAccountNativeDetailsForOpenstack
+        subtype_name: ServiceAccountNativeDetailsForOpenstack
+      - subtype_model: ServiceAccountNativeDetailsForRackspace
+        subtype_name: ServiceAccountNativeDetailsForRackspace
+      - subtype_model: ServiceAccountNativeDetailsForVmware
+        subtype_name: ServiceAccountNativeDetailsForVmware
+      - subtype_model: ServiceAccountNativeDetailsForVcenter
+        subtype_name: ServiceAccountNativeDetailsForVcenter
+      - subtype_model: ServiceAccountNativeDetailsForMsVmm
+        subtype_name: ServiceAccountNativeDetailsForMsVmm
+      - subtype_model: ServiceAccountNativeDetailsForVmwareVcdMaster
+        subtype_name: ServiceAccountNativeDetailsForVmwareVcdMaster
+      - subtype_model: ServiceAccountNativeDetailsForVmwareVcdOrganization
+        subtype_name: ServiceAccountNativeDetailsForVmwareVcdOrganization
+      - subtype_model: ServiceAccountNativeDetailsForVmwareVcdOrganizationVdc
+        subtype_name: ServiceAccountNativeDetailsForVmwareVcdOrganizationVdc
+      - subtype_model: ServiceAccountNativeDetailsForPrivateCloud
+        subtype_name: ServiceAccountNativeDetailsForPrivateCloud
+      - subtype_model: ServiceAccountNativeDetailsBaseForIntegratedTool
+        subtype_name: ServiceAccountNativeDetailsBaseForIntegratedTool
+      - subtype_model: ServiceAccountNativeDetailsForAppDynamics
+        subtype_name: ServiceAccountNativeDetailsForAppDynamics
+      - subtype_model: ServiceAccountNativeDetailsForAppInsights
+        subtype_name: ServiceAccountNativeDetailsForAppInsights
+      - subtype_model: ServiceAccountNativeDetailsForAzureDevops
+        subtype_name: ServiceAccountNativeDetailsForAzureDevops
+      - subtype_model: ServiceAccountNativeDetailsForAzureSecurityGraph
+        subtype_name: ServiceAccountNativeDetailsForAzureSecurityGraph
+      - subtype_model: ServiceAccountNativeDetailsForAzureSentinel
+        subtype_name: ServiceAccountNativeDetailsForAzureSentinel
+      - subtype_model: ServiceAccountNativeDetailsForCorestack
+        subtype_name: ServiceAccountNativeDetailsForCorestack
+      - subtype_model: ServiceAccountNativeDetailsForDockerHub
+        subtype_name: ServiceAccountNativeDetailsForDockerHub
+      - subtype_model: ServiceAccountNativeDetailsForElasticSearch
+        subtype_name: ServiceAccountNativeDetailsForElasticSearch
+      - subtype_model: ServiceAccountNativeDetailsForFreshservice
+        subtype_name: ServiceAccountNativeDetailsForFreshservice
+      - subtype_model: ServiceAccountNativeDetailsBaseForJiraServiceManagement
+        subtype_name: ServiceAccountNativeDetailsBaseForJiraServiceManagement
+      - subtype_model: ServiceAccountNativeDetailsForJiraServiceManagementParent
+        subtype_name: ServiceAccountNativeDetailsForJiraServiceManagementParent
+      - subtype_model: ServiceAccountNativeDetailsForJiraServiceManagementProject
+        subtype_name: ServiceAccountNativeDetailsForJiraServiceManagementProject
+      - subtype_model: ServiceAccountNativeDetailsForGithub
+        subtype_name: ServiceAccountNativeDetailsForGithub
+      - subtype_model: ServiceAccountNativeDetailsForJiraDataCenter
+        subtype_name: ServiceAccountNativeDetailsForJiraDataCenter
+      - subtype_model: ServiceAccountNativeDetailsForJiraServiceDesk
+        subtype_name: ServiceAccountNativeDetailsForJiraServiceDesk
+      - subtype_model: ServiceAccountNativeDetailsForJenkins
+        subtype_name: ServiceAccountNativeDetailsForJenkins
+      - subtype_model: ServiceAccountNativeDetailsForLogstash
+        subtype_name: ServiceAccountNativeDetailsForLogstash
+      - subtype_model: ServiceAccountNativeDetailsForMicrosoftTeams
+        subtype_name: ServiceAccountNativeDetailsForMicrosoftTeams
+      - subtype_model: ServiceAccountNativeDetailsForNagios
+        subtype_name: ServiceAccountNativeDetailsForNagios
+      - subtype_model: ServiceAccountNativeDetailsForNewrelic
+        subtype_name: ServiceAccountNativeDetailsForNewrelic
+      - subtype_model: ServiceAccountNativeDetailsForPrometheus
+        subtype_name: ServiceAccountNativeDetailsForPrometheus
+      - subtype_model: ServiceAccountNativeDetailsForQualys
+        subtype_name: ServiceAccountNativeDetailsForQualys
+      - subtype_model: ServiceAccountNativeDetailsForRedhatSatellite
+        subtype_name: ServiceAccountNativeDetailsForRedhatSatellite
+      - subtype_model: ServiceAccountNativeDetailsForServiceNow
+        subtype_name: ServiceAccountNativeDetailsForServiceNow
+      - subtype_model: ServiceAccountNativeDetailsForArrowSphere
+        subtype_name: ServiceAccountNativeDetailsForArrowSphere
+      - subtype_model: ServiceAccountNativeDetailsForTclItsm
+        subtype_name: ServiceAccountNativeDetailsForTclItsm
+      - subtype_model: ServiceAccountNativeDetailsForTenableNessus
+        subtype_name: ServiceAccountNativeDetailsForTenableNessus
+      - subtype_model: ServiceAccountNativeDetailsForZohoServiceDesk
+        subtype_name: ServiceAccountNativeDetailsForZohoServiceDesk
+      - subtype_model: ServiceAccountNativeDetailsBaseForResource
+        subtype_name: ServiceAccountNativeDetailsBaseForResource
+      - subtype_model: ServiceAccountNativeDetailsBaseForKubernetesCluster
+        subtype_name: ServiceAccountNativeDetailsBaseForKubernetesCluster
+      - subtype_model: ServiceAccountNativeDetailsBaseForKubernetesClusterCloud
+        subtype_name: ServiceAccountNativeDetailsBaseForKubernetesClusterCloud
+      - subtype_model: ServiceAccountNativeDetailsBaseForKubernetesClusterOthers
+        subtype_name: ServiceAccountNativeDetailsBaseForKubernetesClusterOthers
+      - subtype_model: ServiceAccountNativeDetailsForAwsEksCluster
+        subtype_name: ServiceAccountNativeDetailsForAwsEksCluster
+      - subtype_model: ServiceAccountNativeDetailsForAzureAksCluster
+        subtype_name: ServiceAccountNativeDetailsForAzureAksCluster
+      - subtype_model: ServiceAccountNativeDetailsForGcpGkeCluster
+        subtype_name: ServiceAccountNativeDetailsForGcpGkeCluster
+      - subtype_model: ServiceAccountNativeDetailsForOciOkeCluster
+        subtype_name: ServiceAccountNativeDetailsForOciOkeCluster
+      - subtype_model: ServiceAccountNativeDetailsForSelfManagedCluster
+        subtype_name: ServiceAccountNativeDetailsForSelfManagedCluster
+      - subtype_model: ServiceAccountNativeDetailsBaseForSaas
+        subtype_name: ServiceAccountNativeDetailsBaseForSaas
+      - subtype_model: ServiceAccountNativeDetailsBaseForSaasAiServices
+        subtype_name: ServiceAccountNativeDetailsBaseForSaasAiServices
+      - subtype_model: ServiceAccountNativeDetailsForOpenAI
+        subtype_name: ServiceAccountNativeDetailsForOpenAI
+      - subtype_model: ServiceAccountNativeDetailsForAnthropic
+        subtype_name: ServiceAccountNativeDetailsForAnthropic
+      - subtype_model: ServiceAccountNativeDetailsBaseForSaasDataServices
+        subtype_name: ServiceAccountNativeDetailsBaseForSaasDataServices
+      - subtype_model: ServiceAccountNativeDetailsForSnowflake
+        subtype_name: ServiceAccountNativeDetailsForSnowflake
+      - subtype_model: ServiceAccountNativeDetailsForDataBricks
+        subtype_name: ServiceAccountNativeDetailsForDataBricks
+      - subtype_model: ServiceAccountNativeDetailsBaseForSaasOtherServices
+        subtype_name: ServiceAccountNativeDetailsBaseForSaasOtherServices
+      - subtype_model: ServiceAccountNativeDetailsForDataDog
+        subtype_name: ServiceAccountNativeDetailsForDataDog
+      - subtype_model: ServiceAccountNativeDetailsForSplunk
+        subtype_name: ServiceAccountNativeDetailsForSplunk
+      - subtype_model: ServiceAccountNativeDetailsForCircleCI
+        subtype_name: ServiceAccountNativeDetailsForCircleCI
+      - subtype_model: ServiceAccountNativeDetailsForElastic
+        subtype_name: ServiceAccountNativeDetailsForElastic
+      - subtype_model: ServiceAccountNativeDetailsForSaasMicrosoftTeams
+        subtype_name: ServiceAccountNativeDetailsForSaasMicrosoftTeams
+      - subtype_model: ServiceAccountNativeDetailsForSalesForceSalesCloud
+        subtype_name: ServiceAccountNativeDetailsForSalesForceSalesCloud
+      - subtype_model: ServiceAccountNativeDetailsForDropbox
+        subtype_name: ServiceAccountNativeDetailsForDropbox
+      - subtype_model: ServiceAccountNativeDetailsForOkta
+        subtype_name: ServiceAccountNativeDetailsForOkta
+      - subtype_model: ServiceAccountNativeDetailsForSaasNewRelic
+        subtype_name: ServiceAccountNativeDetailsForSaasNewRelic
+      - subtype_model: ServiceAccountNativeDetailsForDynatrace
+        subtype_name: ServiceAccountNativeDetailsForDynatrace
+      - subtype_model: ServiceAccountNativeDetailsForGrafana
+        subtype_name: ServiceAccountNativeDetailsForGrafana
+      - subtype_model: ServiceAccountNativeDetailsForIbmTencent
+        subtype_name: ServiceAccountNativeDetailsForIbmTencent
+      - subtype_model: ServiceAccountNativeDetailsForCustomSaasTool
+        subtype_name: ServiceAccountNativeDetailsForCustomSaasTool
+      - subtype_model: ServiceAccountNativeDetailsForZabbix
+        subtype_name: ServiceAccountNativeDetailsForZabbix
+    ProductBundleDetails:
+      properties:
+        name:
+          type: string
+          description: Name of the product bundle
+        description:
+          type: string
+          description: Description of the product bundle
+        products:
+          type: array
+          description: Products included in the bundle
+          items:
+            type: string
       type: object
   securitySchemes:
     auth_token:

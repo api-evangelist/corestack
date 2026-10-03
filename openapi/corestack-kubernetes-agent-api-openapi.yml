@@ -313,6 +313,12 @@ paths:
       - Kubernetes Agent
 components:
   schemas:
+    KubernetesManifestResponse:
+      properties:
+        attachment_id:
+          type: string
+          description: Yaml content
+      type: object
     KubernetesCostWeightage:
       properties:
         cpu_weight:
@@ -325,78 +331,24 @@ components:
           type: number
           description: GPU cost weight
       type: object
-    KubernetesManifestResponse:
+    ClusterFrequencyTimeDetails:
       properties:
-        attachment_id:
+        day:
           type: string
-          description: Yaml content
+          description: Cost Resolution Frequency Day
+        hour:
+          type: string
+          description: Cost Resolution Frequency Hour
+        minute:
+          type: string
+          description: Cost Resolution Frequency Minute
       type: object
-    FileDetails:
+    KubernetesAgentPreSignedUrlResponse:
       properties:
-        file_name:
-          type: string
-          description: Name of the file
-        file_size:
-          type: integer
-          description: Size of the file
-        multipart_metadata:
-          description: Multi part upload metadata details
-          $ref: '#/components/schemas/MultipartUploadMetadata'
-      type: object
-    MultiPartDetail:
-      properties:
-        part_number:
-          type: integer
-          description: Part number of the file part
-        etag:
-          type: string
-          description: ETag of the uploaded part
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    KubernetesAgentCompletePartPreSignedUrlRequest:
-      properties:
-        file_name:
-          type: string
-          description: Name of the file
-        upload_id:
-          type: string
-          description: Upload ID for the multipart upload
-        multi_parts:
+        signed_url_details:
           type: array
           items:
-            $ref: '#/components/schemas/MultiPartDetail'
-      type: object
-    SignedUrlDetails:
-      properties:
-        file_name:
-          type: string
-          description: Name of the file to generate re signed url
-        file_size:
-          type: integer
-          description: Size of the file to be uploaded
-        upload_id:
-          type: string
-          description: Upload ID for the multipart upload
-        upload_part_size:
-          type: integer
-          description: Upload part size in bytes
-        pre_signed_urls:
-          type: array
-          items:
-            $ref: '#/components/schemas/PresignedUrlDetails'
-      type: object
-    KubernetesClusterFrequency:
-      properties:
-        cost_resolution:
-          description: Cost Resolution Details
-          $ref: '#/components/schemas/ClusterFrequencyTimeDetails'
+            $ref: '#/components/schemas/SignedUrlDetails'
       type: object
     GovernanceConfigurationBase:
       required:
@@ -491,40 +443,6 @@ components:
         subtype_name: GovernanceConfigurationForCostSavings
       - subtype_model: GovernanceConfigurationForKubernetesCluster
         subtype_name: GovernanceConfigurationForKubernetesCluster
-    KubernetesAgentPreSignedUrlResponse:
-      properties:
-        signed_url_details:
-          type: array
-          items:
-            $ref: '#/components/schemas/SignedUrlDetails'
-      type: object
-    GovernanceConfigurationBaseForResource:
-      allOf:
-      - $ref: '#/components/schemas/GovernanceConfigurationBase'
-      - properties: {}
-        type: object
-    KubernetesClusterSyncUpdateRequest:
-      allOf:
-      - $ref: '#/components/schemas/ProgressDetailsForKubernetesAgentSyncStatus'
-      - required:
-        - syncer_type
-        properties:
-          syncer_type:
-            type: string
-            description: Kubernetes Sync Status Types
-            example: heartbeat
-            enum:
-            - heartbeat
-            - data_sync
-            x-cs-enum-type: KubernetesSyncStatusTypes
-        type: object
-    KubernetesAgentPreSignedUrlRequest:
-      properties:
-        file_data:
-          type: array
-          items:
-            $ref: '#/components/schemas/FileDetails'
-      type: object
     GovernanceConfigurationForKubernetesCluster:
       allOf:
       - $ref: '#/components/schemas/GovernanceConfigurationBaseForResource'
@@ -537,6 +455,24 @@ components:
             $ref: '#/components/schemas/KubernetesCostWeightage'
         type: object
       x-cs-type-name: GovernanceConfigurationForKubernetesCluster
+    KubernetesAgentCompletePartPreSignedUrlRequest:
+      properties:
+        file_name:
+          type: string
+          description: Name of the file
+        upload_id:
+          type: string
+          description: Upload ID for the multipart upload
+        multi_parts:
+          type: array
+          items:
+            $ref: '#/components/schemas/MultiPartDetail'
+      type: object
+    GovernanceConfigurationBaseForResource:
+      allOf:
+      - $ref: '#/components/schemas/GovernanceConfigurationBase'
+      - properties: {}
+        type: object
     MultipartUploadMetadata:
       properties:
         upload_id:
@@ -549,6 +485,79 @@ components:
           type: integer
           description: Size of each uploaded part in bytes.
       type: object
+    KubernetesAgentPreSignedUrlRequest:
+      properties:
+        file_data:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileDetails'
+      type: object
+    KubernetesClusterFrequency:
+      properties:
+        cost_resolution:
+          description: Cost Resolution Details
+          $ref: '#/components/schemas/ClusterFrequencyTimeDetails'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    FileDetails:
+      properties:
+        file_name:
+          type: string
+          description: Name of the file
+        file_size:
+          type: integer
+          description: Size of the file
+        multipart_metadata:
+          description: Multi part upload metadata details
+          $ref: '#/components/schemas/MultipartUploadMetadata'
+      type: object
+    ProgressDetailsForKubernetesAgentSyncStatus:
+      allOf:
+      - $ref: '#/components/schemas/ProgressDetails'
+      - properties:
+          run_id:
+            type: string
+            description: run id from the agent about the sync
+          log_trace:
+            type: array
+            description: log trace from the agent about the sync
+            items:
+              type: string
+          data_collection_start:
+            type: string
+            format: date-time
+            description: Data Collection Start Datetime
+          data_collection_end:
+            type: string
+            format: date-time
+            description: Data Collection end Datetime
+        type: object
+    SignedUrlDetails:
+      properties:
+        file_name:
+          type: string
+          description: Name of the file to generate re signed url
+        file_size:
+          type: integer
+          description: Size of the file to be uploaded
+        upload_id:
+          type: string
+          description: Upload ID for the multipart upload
+        upload_part_size:
+          type: integer
+          description: Upload part size in bytes
+        pre_signed_urls:
+          type: array
+          items:
+            $ref: '#/components/schemas/PresignedUrlDetails'
+      type: object
     PresignedUrlDetails:
       properties:
         part_number:
@@ -558,17 +567,18 @@ components:
           type: string
           description: Presigned URL for uploading the file part
       type: object
-    ClusterFrequencyTimeDetails:
+    RecordIdentity:
       properties:
-        day:
+        sysId:
           type: string
-          description: Cost Resolution Frequency Day
-        hour:
+          description: Unique Identifier of the tracked item
+        lastUpdate:
           type: string
-          description: Cost Resolution Frequency Hour
-        minute:
+          format: date-time
+          description: Last update of the tracked item
+        table:
           type: string
-          description: Cost Resolution Frequency Minute
+          description: Context of the tracked item
       type: object
     ProgressDetails:
       properties:
@@ -596,40 +606,30 @@ components:
           description: Background Job Id of the run
           $ref: '#/components/schemas/RecordIdentity'
       type: object
-    RecordIdentity:
-      properties:
-        sysId:
-          type: string
-          description: Unique Identifier of the tracked item
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Last update of the tracked item
-        table:
-          type: string
-          description: Context of the tracked item
-      type: object
-    ProgressDetailsForKubernetesAgentSyncStatus:
+    KubernetesClusterSyncUpdateRequest:
       allOf:
-      - $ref: '#/components/schemas/ProgressDetails'
-      - properties:
-          run_id:
+      - $ref: '#/components/schemas/ProgressDetailsForKubernetesAgentSyncStatus'
+      - required:
+        - syncer_type
+        properties:
+          syncer_type:
             type: string
-            description: run id from the agent about the sync
-          log_trace:
-            type: array
-            description: log trace from the agent about the sync
-            items:
-              type: string
-          data_collection_start:
-            type: string
-            format: date-time
-            description: Data Collection Start Datetime
-          data_collection_end:
-            type: string
-            format: date-time
-            description: Data Collection end Datetime
+            description: Kubernetes Sync Status Types
+            example: heartbeat
+            enum:
+            - heartbeat
+            - data_sync
+            x-cs-enum-type: KubernetesSyncStatusTypes
         type: object
+    MultiPartDetail:
+      properties:
+        part_number:
+          type: integer
+          description: Part number of the file part
+        etag:
+          type: string
+          description: ETag of the uploaded part
+      type: object
   securitySchemes:
     auth_token:
       type: apiKey

@@ -118,6 +118,16 @@ components:
           type: object
           description: Summary of validation result
       type: object
+    AssessmentValidationResponseList:
+      required:
+      - assessment_validation_list
+      properties:
+        assessment_validation_list:
+          type: array
+          description: Assessment Validation data
+          items:
+            $ref: '#/components/schemas/AssessmentValidationResponse'
+      type: object
     ModelError:
       required:
       - message
@@ -148,16 +158,6 @@ components:
         configuration_status:
           type: object
           description: Configuration Status
-      type: object
-    AssessmentValidationResponseList:
-      required:
-      - assessment_validation_list
-      properties:
-        assessment_validation_list:
-          type: array
-          description: Assessment Validation data
-          items:
-            $ref: '#/components/schemas/AssessmentValidationResponse'
       type: object
     AssessmentValidationRequest:
       required:

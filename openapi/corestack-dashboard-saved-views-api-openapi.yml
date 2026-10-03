@@ -240,18 +240,16 @@ paths:
         required: true
 components:
   schemas:
-    ListContext:
-      properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
-      type: object
+    SavedViewCreateRequest:
+      allOf:
+      - $ref: '#/components/schemas/SavedViewBase'
+      - properties: {}
+        type: object
+    SavedViewUpdateRequest:
+      allOf:
+      - $ref: '#/components/schemas/SavedViewBase'
+      - properties: {}
+        type: object
     ViewState:
       required:
       - __type
@@ -262,6 +260,34 @@ components:
       x-cs-subtypes:
       - subtype_model: DashboardViewState
         subtype_name: DashboardViewState
+    SavedViewListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/SavedViewFilter'
+      type: object
+    SavedViewListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            $ref: '#/components/schemas/SavedViewDetail'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
     SavedViewFilter:
       properties:
         dashboard_id:
@@ -283,47 +309,6 @@ components:
           - shared
           - private
           x-cs-enum-type: SavedViewVisibility
-      type: object
-    SavedViewListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/SavedViewFilter'
-      type: object
-    SavedViewUpdateRequest:
-      allOf:
-      - $ref: '#/components/schemas/SavedViewBase'
-      - properties: {}
-        type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    SavedViewDetail:
-      allOf:
-      - $ref: '#/components/schemas/SavedViewBase'
-      - properties:
-          id:
-            type: string
-            description: Unique identifier of the saved view
-        type: object
-    SavedViewListResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            $ref: '#/components/schemas/SavedViewDetail'
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
       type: object
     SavedViewBase:
       required:
@@ -362,10 +347,25 @@ components:
           description: Polymorphic view payload (DashboardViewState)
           $ref: '#/components/schemas/ViewState'
       type: object
-    SavedViewCreateRequest:
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    SavedViewDetail:
       allOf:
       - $ref: '#/components/schemas/SavedViewBase'
-      - properties: {}
+      - properties:
+          id:
+            type: string
+            description: Unique identifier of the saved view
         type: object
   securitySchemes:
     auth_token:

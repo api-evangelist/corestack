@@ -590,55 +590,6 @@ components:
           type: string
           description: Resource group. for example, /subscriptions/subscription_id->'eg:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'/resourceGroups/rg_name->'eg:default_rg
       type: object
-    ResourceCatalogServiceLevelDataModel:
-      required:
-      - classification
-      - name
-      - resource
-      - resource_attributes
-      - resource_type
-      - scope
-      - service_account
-      - service_levels
-      properties:
-        classification:
-          type: string
-          description: Account classification is by default its 'default'. for example, default
-        name:
-          type: string
-          description: Cloud account catalog name.
-        resource:
-          type: string
-          description: Specify the resource, This can be retrieved using the List Resource Catalog API
-        resource_attributes:
-          description: Resource attributes includes.
-          $ref: '#/components/schemas/ResourceCatalogAttributeDataModel'
-        resource_type:
-          type: string
-          description: Cloud account resource type. for example, disk_sku
-        scope:
-          type: string
-          description: Cloud account scope . for example, tenant, private, etc
-        service_account:
-          type: string
-          description: Cloud service account id . for example, '60xxxxxxxxxxxxxxxxxxxxxxxx0b'
-        service_levels:
-          type: array
-          description: Update Activity Request Body. Example:["gold, silver, bronze, iron"]
-          items:
-            type: string
-        tenant_info:
-          description: tenants information.
-          $ref: '#/components/schemas/ResourceCatalogTenantDataModel'
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
     ResourceCatalogCostDataModel:
       required:
       - value
@@ -659,59 +610,12 @@ components:
           type: string
           description: Catalog Id
       type: object
-    SelfServiceCatalogHierarchyComponent:
-      properties:
-        level1:
-          type: string
-          description: Catalog Classification First Level
-        level2:
-          type: string
-          description: Catalog Classification Second Level
-        level3:
-          type: string
-          description: Catalog Classification Third Level
-        classification_name:
-          type: string
-          description: Catalog Classification Name
-      type: object
-    OrderHistoryReportModel:
-      required:
-      - data
-      properties:
-        data:
-          type: string
-          description: Order details
-      type: object
     CustomerDashboardReportModel:
       required:
       - data
       properties:
         data:
           type: object
-          description: catalog type
-      type: object
-    WorkSpaceReportModel:
-      required:
-      - data
-      properties:
-        data:
-          type: object
-          description: Returned Workspace
-      type: object
-    ResourceCatalogGetDataModel:
-      required:
-      - data
-      properties:
-        data:
-          type: object
-          description: Resource Data
-      type: object
-    ServiceCatalogGetDataModel:
-      required:
-      - data
-      properties:
-        data:
-          type: string
           description: catalog type
       type: object
     ResourceCatalogAttributeDataModel:
@@ -759,6 +663,102 @@ components:
         resource_id:
           type: string
           description: Specify the resource_id, This can be retrieved using the List Resource Catalog API
+      type: object
+    OrderHistoryReportModel:
+      required:
+      - data
+      properties:
+        data:
+          type: string
+          description: Order details
+      type: object
+    SelfServiceCatalogHierarchyComponent:
+      properties:
+        level1:
+          type: string
+          description: Catalog Classification First Level
+        level2:
+          type: string
+          description: Catalog Classification Second Level
+        level3:
+          type: string
+          description: Catalog Classification Third Level
+        classification_name:
+          type: string
+          description: Catalog Classification Name
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ServiceCatalogGetDataModel:
+      required:
+      - data
+      properties:
+        data:
+          type: string
+          description: catalog type
+      type: object
+    ResourceCatalogServiceLevelDataModel:
+      required:
+      - classification
+      - name
+      - resource
+      - resource_attributes
+      - resource_type
+      - scope
+      - service_account
+      - service_levels
+      properties:
+        classification:
+          type: string
+          description: Account classification is by default its 'default'. for example, default
+        name:
+          type: string
+          description: Cloud account catalog name.
+        resource:
+          type: string
+          description: Specify the resource, This can be retrieved using the List Resource Catalog API
+        resource_attributes:
+          description: Resource attributes includes.
+          $ref: '#/components/schemas/ResourceCatalogAttributeDataModel'
+        resource_type:
+          type: string
+          description: Cloud account resource type. for example, disk_sku
+        scope:
+          type: string
+          description: Cloud account scope . for example, tenant, private, etc
+        service_account:
+          type: string
+          description: Cloud service account id . for example, '60xxxxxxxxxxxxxxxxxxxxxxxx0b'
+        service_levels:
+          type: array
+          description: Update Activity Request Body. Example:["gold, silver, bronze, iron"]
+          items:
+            type: string
+        tenant_info:
+          description: tenants information.
+          $ref: '#/components/schemas/ResourceCatalogTenantDataModel'
+      type: object
+    ResourceCatalogGetDataModel:
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          description: Resource Data
+      type: object
+    WorkSpaceReportModel:
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          description: Returned Workspace
       type: object
   securitySchemes:
     auth_token:

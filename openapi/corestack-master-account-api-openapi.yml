@@ -267,6 +267,160 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    FiscalYearConfiguration:
+      properties:
+        start:
+          type: string
+          description: Start Date for Financial Year in DD-MMM format
+        end:
+          type: string
+          description: End Date for Financial Year in DD-MMM format
+      type: object
+    MasterAccountSubscription:
+      properties:
+        action:
+          type: string
+          description: Action will be create for project master creation
+        subscription_id:
+          type: string
+          description: Subscription id of user
+      type: object
+    BatchRequest:
+      properties:
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
+      type: object
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
+      type: object
+    MasterAccountListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/MasterAccountDetailsSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/MasterAccountListFilters'
+      type: object
+    MasterAccountAuthConfig:
+      properties:
+        auth_type:
+          type: string
+          description: Type of Authentication
+        domain_info:
+          type: array
+          description: Domain information
+          items:
+            $ref: '#/components/schemas/MasterAccountDomainInfo'
+      type: object
+    CostProcessingSettings:
+      properties:
+        max_tag_value_count:
+          type: integer
+          description: Maximum number of unique values per tag to process for cost allocation tags
+        number_of_months_to_backfill:
+          type: integer
+          description: Back filling value for cost processing (in months)
+      type: object
+    MasterAccountDomainInfo:
+      properties:
+        domain_name:
+          type: string
+          description: Domain Name
+        role_ids:
+          type: array
+          description: list of role ids
+          items:
+            type: string
+            x-cs-type: ObjectId
+        allow_auto_signup:
+          type: boolean
+          description: Flag set to allow auto signup for new users
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    ConfigurationForNotifications:
+      properties:
+        enabled:
+          type: boolean
+          description: Whether Notifications Are Enabled
+        emails:
+          type: array
+          description: Emails
+          items:
+            type: string
+        webhooks:
+          type: array
+          description: Webhooks
+          items:
+            type: string
+        microsoft_teams_webhooks:
+          type: array
+          description: Microsoft Teams Webhooks
+          items:
+            type: string
+      type: object
+    CreateMasterAccountResponse:
+      properties:
+        id:
+          type: string
+          description: Account master id
+        status:
+          type: string
+          description: Account master status
+        tenant_id:
+          type: string
+          description: Tenant id
+        role_info:
+          description: Role info
+          $ref: '#/components/schemas/RoleInfoModel'
+      type: object
+    ConfigurationForCostAnomalyNotification:
+      allOf:
+      - $ref: '#/components/schemas/ConfigurationForNotifications'
+      - properties:
+          enable_realtime_notification:
+            type: boolean
+            description: Specifies whether realtime notification enabled or not.
+          enable_daily_summary_notification:
+            type: boolean
+            description: Specifies whether daily summary notification enabled or not.
+        type: object
+    RoleInfoModel:
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant id
+        roles:
+          type: array
+          description: list of role ids assigned to user
+          items:
+            type: string
+      type: object
     MasterAccountDetails:
       allOf:
       - $ref: '#/components/schemas/MasterAccountBase'
@@ -316,14 +470,164 @@ components:
           nextgen_report_settings:
             $ref: '#/components/schemas/NextgenReportSettings'
         type: object
-    MasterAccountSubscription:
+    ListResponse:
       properties:
-        action:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    CostAnomalySetting:
+      properties:
+        category:
           type: string
-          description: Action will be create for project master creation
+          description: Cost anomaly settings category.
+          example: all
+          enum:
+          - all
+          - product_category
+          - resource_category
+          x-cs-enum-type: CostAnomalySettingCategory
+        category_values:
+          type: array
+          description: List of categories.
+          items:
+            type: string
+        minimum_cost_spend:
+          type: integer
+          description: Minimum Cost Spend
+          default: 0
+        minimum_cost_impact:
+          type: integer
+          description: Minimum Cost Impact
+          default: 0
+        minimum_cost_impact_percentage:
+          type: integer
+          description: Minimum Cost Anomaly Impact Percentage
+          default: 0
+        cost_impact_spend_operator:
+          type: string
+          description: Cost Impact and Spend condition
+          default: and
+          example: and
+          enum:
+          - and
+          - or
+          x-cs-enum-type: CostImpactSpendOperator
+      type: object
+    MasterAccountBase:
+      properties:
+        name:
+          type: string
+          description: Master account name
+        subscription_info:
+          description: Subscription Info
+          $ref: '#/components/schemas/MasterAccountSubscription'
+        notification_settings:
+          description: Notification settings
+          $ref: '#/components/schemas/MasterAccountNotificationSetting'
+        fiscal_year_configuration:
+          description: Fiscal Year settings
+          $ref: '#/components/schemas/FiscalYearConfiguration'
+        crm_id:
+          type: string
+          description: CRM id
+        mfa_enabled:
+          type: boolean
+          description: Flag to enable MFA for the master account
+        custom_tags:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+        hierarchy_level:
+          type: string
+          description: Hierarchy level
+        parent_master_account_id:
+          type: string
+          description: ID of the parent master account.
+        products:
+          type: array
+          description: Products
+          items:
+            type: string
+        require_access_key:
+          type: boolean
+          description: Flag to set API keys generation is allowed or not for the users of this master account.
+        priority:
+          type: integer
+          description: Priority of the master account.
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ThirdPartySubscription:
+      properties:
+        provider:
+          type: string
+          description: Provider of subscription
+        type:
+          type: string
+          description: Type of subscription
+          example: marketplace
+          enum:
+          - marketplace
+          x-cs-enum-type: ThirdPartySubscriptionType
+        subscription_name:
+          type: string
+          description: Subscription Name
         subscription_id:
           type: string
-          description: Subscription id of user
+          description: Subscription ID
+        plan_id:
+          type: string
+          description: Plan ID
+        offer_id:
+          type: string
+          description: Offer ID
+        purchaser_email:
+          type: string
+          description: Purchaser Email Id
+        activation_details:
+          description: Activation Details
+          $ref: '#/components/schemas/ActivationDetails'
+      type: object
+    MasterAccountEmailSetting:
+      required:
+      - email
+      - password
+      - smtp
+      - smtp_port
+      - username
+      properties:
+        smtp:
+          type: string
+          description: SMTP
+        smtp_port:
+          type: integer
+          description: Smtp port no
+        username:
+          type: string
+          description: User name
+        email:
+          type: string
+          description: Email
+        password:
+          type: string
+          description: Password for email
+          x-cs-type: SensitiveString
+        enable_starttls:
+          type: boolean
+          description: Enable Starttls
       type: object
     MasterAccountListFilters:
       properties:
@@ -366,61 +670,12 @@ components:
           type: string
           description: 'Datetime string to filter accounts by created date. Format: yyyy-mm-dd hh:mm:ss.fff'
       type: object
-    CreateMasterAccountResponse:
+    NextgenReportSettings:
       properties:
-        id:
-          type: string
-          description: Account master id
-        status:
-          type: string
-          description: Account master status
-        tenant_id:
-          type: string
-          description: Tenant id
-        role_info:
-          description: Role info
-          $ref: '#/components/schemas/RoleInfoModel'
+        max_allowed_groupby_count:
+          type: integer
+          description: Maximum number of group by fields allowed in a report
       type: object
-    CreateMasterAccountRequest:
-      allOf:
-      - $ref: '#/components/schemas/MasterAccountBase'
-      - required:
-        - name
-        - tenant_name
-        properties:
-          name:
-            type: string
-            description: Name of the master account. It can be only alphanumeric
-          tenant_name:
-            type: string
-            description: Tenant name. It can be only alphanumeric
-          sso_tenant_id:
-            type: string
-            description: SSO tenant id
-          third_party_subscription_details:
-            description: Third party subscription details
-            $ref: '#/components/schemas/ThirdPartySubscription'
-        type: object
-    FiscalYearConfiguration:
-      properties:
-        start:
-          type: string
-          description: Start Date for Financial Year in DD-MMM format
-        end:
-          type: string
-          description: End Date for Financial Year in DD-MMM format
-      type: object
-    ConfigurationForCostAnomalyNotification:
-      allOf:
-      - $ref: '#/components/schemas/ConfigurationForNotifications'
-      - properties:
-          enable_realtime_notification:
-            type: boolean
-            description: Specifies whether realtime notification enabled or not.
-          enable_daily_summary_notification:
-            type: boolean
-            description: Specifies whether daily summary notification enabled or not.
-        type: object
     MasterAccountNotificationSetting:
       properties:
         organization_name:
@@ -501,93 +756,61 @@ components:
           type: boolean
           description: Enable/Disable cloud native recommendation sync for the product
       type: object
-    MasterAccountBase:
-      properties:
-        name:
-          type: string
-          description: Master account name
-        subscription_info:
-          description: Subscription Info
-          $ref: '#/components/schemas/MasterAccountSubscription'
-        notification_settings:
-          description: Notification settings
-          $ref: '#/components/schemas/MasterAccountNotificationSetting'
-        fiscal_year_configuration:
-          description: Fiscal Year settings
-          $ref: '#/components/schemas/FiscalYearConfiguration'
-        crm_id:
-          type: string
-          description: CRM id
-        mfa_enabled:
-          type: boolean
-          description: Flag to enable MFA for the master account
-        custom_tags:
-          type: array
-          description: List of tag key/value pairs
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-        hierarchy_level:
-          type: string
-          description: Hierarchy level
-        parent_master_account_id:
-          type: string
-          description: ID of the parent master account.
-        products:
-          type: array
-          description: Products
-          items:
+    CreateMasterAccountRequest:
+      allOf:
+      - $ref: '#/components/schemas/MasterAccountBase'
+      - required:
+        - name
+        - tenant_name
+        properties:
+          name:
             type: string
-        require_access_key:
-          type: boolean
-          description: Flag to set API keys generation is allowed or not for the users of this master account.
-        priority:
-          type: integer
-          description: Priority of the master account.
-      type: object
-    ListContext:
+            description: Name of the master account. It can be only alphanumeric
+          tenant_name:
+            type: string
+            description: Tenant name. It can be only alphanumeric
+          sso_tenant_id:
+            type: string
+            description: SSO tenant id
+          third_party_subscription_details:
+            description: Third party subscription details
+            $ref: '#/components/schemas/ThirdPartySubscription'
+        type: object
+    ActivationDetails:
       properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
-      type: object
-    MasterAccountListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/MasterAccountDetailsSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/MasterAccountListFilters'
-      type: object
-    MasterAccountAuthConfig:
-      properties:
-        auth_type:
+        status:
           type: string
-          description: Type of Authentication
-        domain_info:
-          type: array
-          description: Domain information
-          items:
-            $ref: '#/components/schemas/MasterAccountDomainInfo'
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
+          description: Status of the activation details
+          example: activated
+          enum:
+          - activated
+          - failed
+          - pending_activation
+          x-cs-enum-type: ActivationDetailsStatus
         message:
           type: string
-          description: Error response message.
+          description: Message of the activation details
+      type: object
+    MasterAccountBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/MasterAccountDetails'
+      type: object
+    MasterAccountDetailsSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          x-cs-enum-type: MasterAccountDetailsSortColumn
+        ascending:
+          type: boolean
       type: object
     CostAnomalyConfiguration:
       properties:
@@ -609,229 +832,6 @@ components:
           - raw_effective_cost
           - customer_true_cost
           x-cs-enum-type: CostAnomalyBillingMetrics
-      type: object
-    CostAnomalySetting:
-      properties:
-        category:
-          type: string
-          description: Cost anomaly settings category.
-          example: all
-          enum:
-          - all
-          - product_category
-          - resource_category
-          x-cs-enum-type: CostAnomalySettingCategory
-        category_values:
-          type: array
-          description: List of categories.
-          items:
-            type: string
-        minimum_cost_spend:
-          type: integer
-          description: Minimum Cost Spend
-          default: 0
-        minimum_cost_impact:
-          type: integer
-          description: Minimum Cost Impact
-          default: 0
-        minimum_cost_impact_percentage:
-          type: integer
-          description: Minimum Cost Anomaly Impact Percentage
-          default: 0
-        cost_impact_spend_operator:
-          type: string
-          description: Cost Impact and Spend condition
-          default: and
-          example: and
-          enum:
-          - and
-          - or
-          x-cs-enum-type: CostImpactSpendOperator
-      type: object
-    MasterAccountBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/MasterAccountDetails'
-      type: object
-    MasterAccountDomainInfo:
-      properties:
-        domain_name:
-          type: string
-          description: Domain Name
-        role_ids:
-          type: array
-          description: list of role ids
-          items:
-            type: string
-            x-cs-type: ObjectId
-        allow_auto_signup:
-          type: boolean
-          description: Flag set to allow auto signup for new users
-      type: object
-    CostProcessingSettings:
-      properties:
-        max_tag_value_count:
-          type: integer
-          description: Maximum number of unique values per tag to process for cost allocation tags
-        number_of_months_to_backfill:
-          type: integer
-          description: Back filling value for cost processing (in months)
-      type: object
-    ConfigurationForNotifications:
-      properties:
-        enabled:
-          type: boolean
-          description: Whether Notifications Are Enabled
-        emails:
-          type: array
-          description: Emails
-          items:
-            type: string
-        webhooks:
-          type: array
-          description: Webhooks
-          items:
-            type: string
-        microsoft_teams_webhooks:
-          type: array
-          description: Microsoft Teams Webhooks
-          items:
-            type: string
-      type: object
-    ActivationDetails:
-      properties:
-        status:
-          type: string
-          description: Status of the activation details
-          example: activated
-          enum:
-          - activated
-          - failed
-          - pending_activation
-          x-cs-enum-type: ActivationDetailsStatus
-        message:
-          type: string
-          description: Message of the activation details
-      type: object
-    NextgenReportSettings:
-      properties:
-        max_allowed_groupby_count:
-          type: integer
-          description: Maximum number of group by fields allowed in a report
-      type: object
-    ThirdPartySubscription:
-      properties:
-        provider:
-          type: string
-          description: Provider of subscription
-        type:
-          type: string
-          description: Type of subscription
-          example: marketplace
-          enum:
-          - marketplace
-          x-cs-enum-type: ThirdPartySubscriptionType
-        subscription_name:
-          type: string
-          description: Subscription Name
-        subscription_id:
-          type: string
-          description: Subscription ID
-        plan_id:
-          type: string
-          description: Plan ID
-        offer_id:
-          type: string
-          description: Offer ID
-        purchaser_email:
-          type: string
-          description: Purchaser Email Id
-        activation_details:
-          description: Activation Details
-          $ref: '#/components/schemas/ActivationDetails'
-      type: object
-    MasterAccountDetailsSortCriteria:
-      required:
-      - column
-      properties:
-        column:
-          type: string
-          example: CreatedAt
-          enum:
-          - CreatedAt
-          x-cs-enum-type: MasterAccountDetailsSortColumn
-        ascending:
-          type: boolean
-      type: object
-    RoleInfoModel:
-      properties:
-        tenant_id:
-          type: string
-          description: Tenant id
-        roles:
-          type: array
-          description: list of role ids assigned to user
-          items:
-            type: string
-      type: object
-    KeyValuePair:
-      properties:
-        key:
-          type: string
-          description: Key of the pair
-        value:
-          type: string
-          description: Value of the pair
-      type: object
-    ListResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    MasterAccountEmailSetting:
-      required:
-      - email
-      - password
-      - smtp
-      - smtp_port
-      - username
-      properties:
-        smtp:
-          type: string
-          description: SMTP
-        smtp_port:
-          type: integer
-          description: Smtp port no
-        username:
-          type: string
-          description: User name
-        email:
-          type: string
-          description: Email
-        password:
-          type: string
-          description: Password for email
-          x-cs-type: SensitiveString
-        enable_starttls:
-          type: boolean
-          description: Enable Starttls
-      type: object
-    BatchRequest:
-      properties:
-        ids:
-          type: array
-          description: Identifiers to fetch
-          items:
-            type: string
       type: object
   securitySchemes:
     auth_token:

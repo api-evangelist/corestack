@@ -291,20 +291,121 @@ components:
           additionalProperties:
             $ref: '#/components/schemas/CurrencyExchangeConfigurationDefinition'
       type: object
-    CurrencyExchangeConfigurationFilter:
+    CurrencyExchangeConfigurationDefinition:
+      allOf:
+      - $ref: '#/components/schemas/CurrencyExchangeConfigurationComponentBase'
+      - required:
+        - configurations
+        - conversion_type
+        - is_enabled
+        - name
+        - scope
+        - target_currency
+        properties:
+          name:
+            type: string
+            description: Name of Currency Exchange Configuration
+          description:
+            type: string
+            description: Description of Currency Exchange Configuration
+          configurations:
+            type: array
+            description: Configured Currency Exchange Configuration
+            items:
+              $ref: '#/components/schemas/CurrencyRateConfiguration'
+          conversion_type:
+            type: string
+            description: Conversion type of currency exchange configuration.
+            example: CustomExchangeRate
+            enum:
+            - CustomExchangeRate
+            - DynamicExchangeRate
+            - CsvFileCustomExchangeRate
+            x-cs-enum-type: CurrencyConversionType
+          target_currency:
+            type: string
+            description: Target Currency for Exchange Configuration
+            example: AED
+            enum:
+            - AED
+            - ALL
+            - ARS
+            - AUD
+            - BAM
+            - BDT
+            - BGN
+            - BHD
+            - BRL
+            - CAD
+            - CHF
+            - CLP
+            - CNY
+            - COP
+            - CRC
+            - CZK
+            - DKK
+            - EGP
+            - EUR
+            - GBP
+            - HKD
+            - HRK
+            - HUF
+            - IDR
+            - ILS
+            - INR
+            - ISK
+            - JPY
+            - KES
+            - KRW
+            - KWD
+            - KZT
+            - MOP
+            - MVR
+            - MXN
+            - MYR
+            - NOK
+            - NZD
+            - OMR
+            - PEN
+            - PHP
+            - PKR
+            - PLN
+            - QAR
+            - RON
+            - RSD
+            - RUB
+            - SAR
+            - SEK
+            - SGD
+            - THB
+            - TRY
+            - TWD
+            - USD
+            - VND
+            - ZAR
+            x-cs-enum-type: Currency
+          is_enabled:
+            type: boolean
+            description: Is currency exchange enabled
+          scope:
+            type: string
+            description: Scope of currency exchange configuration.
+            example: Account
+            enum:
+            - Account
+            - Tenant
+            x-cs-enum-type: CurrencyConversionScope
+        type: object
+    ListResponse:
       properties:
-        tenant_ids:
+        results:
           type: array
+          description: List of result identifiers
           items:
             type: string
-            description: Tenant IDs
-            x-cs-type: ObjectId
-        text_filter:
-          type: string
-          description: Text filter used to search names
-        query:
-          description: Query operator
-          $ref: '#/components/schemas/QueryOperator'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
       type: object
     QueryOperator:
       required:
@@ -766,17 +867,76 @@ components:
         subtype_name: WorkloadQueryWorkloadType
       - subtype_model: WorkloadQueryWorkloadId
         subtype_name: WorkloadQueryWorkloadId
-    ListContext:
+    CurrencyExchangeConfigurationListRequest:
       properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/CurrencyExchangeConfigurationListSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/CurrencyExchangeConfigurationFilter'
+      type: object
+    CurrencyRateConfiguration:
+      required:
+      - currency_rate
+      - start_date
+      properties:
+        currency_rate:
+          type: array
+          description: Currency Rate of Currency Exchange Configuration
+          items:
+            $ref: '#/components/schemas/ExchangeCurrencyRate'
+        start_date:
+          type: string
+          format: date-time
+          description: Start date of the Currency Exchange Configuration
+        end_date:
+          type: string
+          format: date-time
+          description: End date of the Currency Exchange Configuration
+      type: object
+    CurrencyExchangeConfigurationListSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: Name
+          enum:
+          - Name
+          - CreatedOn
+          - UpdatedOn
+          x-cs-enum-type: CurrencyExchangeConfigurationListSortColumn
+        ascending:
+          type: boolean
+      type: object
+    CurrencyExchangeConfigurationFilter:
+      properties:
+        tenant_ids:
+          type: array
+          items:
+            type: string
+            description: Tenant IDs
+            x-cs-type: ObjectId
+        text_filter:
+          type: string
+          description: Text filter used to search names
+        query:
+          description: Query operator
+          $ref: '#/components/schemas/QueryOperator'
+      type: object
+    BatchRequest:
+      properties:
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
       type: object
     ModelError:
       required:
@@ -801,32 +961,6 @@ components:
               description: Tenant IDs
               x-cs-type: ObjectId
         type: object
-    ListResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    CurrencyExchangeConfigurationListSortCriteria:
-      required:
-      - column
-      properties:
-        column:
-          type: string
-          example: Name
-          enum:
-          - Name
-          - CreatedOn
-          - UpdatedOn
-          x-cs-enum-type: CurrencyExchangeConfigurationListSortColumn
-        ascending:
-          type: boolean
-      type: object
     CurrencyExchangeConfigurationBase:
       properties:
         sysId:
@@ -918,152 +1052,18 @@ components:
           type: number
           description: Exchange Rate of Currency Exchange Configuration
       type: object
-    BatchRequest:
+    ListContext:
       properties:
-        ids:
-          type: array
-          description: Identifiers to fetch
-          items:
-            type: string
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
       type: object
-    CurrencyExchangeConfigurationListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/CurrencyExchangeConfigurationListSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/CurrencyExchangeConfigurationFilter'
-      type: object
-    CurrencyRateConfiguration:
-      required:
-      - currency_rate
-      - start_date
-      properties:
-        currency_rate:
-          type: array
-          description: Currency Rate of Currency Exchange Configuration
-          items:
-            $ref: '#/components/schemas/ExchangeCurrencyRate'
-        start_date:
-          type: string
-          format: date-time
-          description: Start date of the Currency Exchange Configuration
-        end_date:
-          type: string
-          format: date-time
-          description: End date of the Currency Exchange Configuration
-      type: object
-    CurrencyExchangeConfigurationDefinition:
-      allOf:
-      - $ref: '#/components/schemas/CurrencyExchangeConfigurationComponentBase'
-      - required:
-        - configurations
-        - conversion_type
-        - is_enabled
-        - name
-        - scope
-        - target_currency
-        properties:
-          name:
-            type: string
-            description: Name of Currency Exchange Configuration
-          description:
-            type: string
-            description: Description of Currency Exchange Configuration
-          configurations:
-            type: array
-            description: Configured Currency Exchange Configuration
-            items:
-              $ref: '#/components/schemas/CurrencyRateConfiguration'
-          conversion_type:
-            type: string
-            description: Conversion type of currency exchange configuration.
-            example: CustomExchangeRate
-            enum:
-            - CustomExchangeRate
-            - DynamicExchangeRate
-            - CsvFileCustomExchangeRate
-            x-cs-enum-type: CurrencyConversionType
-          target_currency:
-            type: string
-            description: Target Currency for Exchange Configuration
-            example: AED
-            enum:
-            - AED
-            - ALL
-            - ARS
-            - AUD
-            - BAM
-            - BDT
-            - BGN
-            - BHD
-            - BRL
-            - CAD
-            - CHF
-            - CLP
-            - CNY
-            - COP
-            - CRC
-            - CZK
-            - DKK
-            - EGP
-            - EUR
-            - GBP
-            - HKD
-            - HRK
-            - HUF
-            - IDR
-            - ILS
-            - INR
-            - ISK
-            - JPY
-            - KES
-            - KRW
-            - KWD
-            - KZT
-            - MOP
-            - MVR
-            - MXN
-            - MYR
-            - NOK
-            - NZD
-            - OMR
-            - PEN
-            - PHP
-            - PKR
-            - PLN
-            - QAR
-            - RON
-            - RSD
-            - RUB
-            - SAR
-            - SEK
-            - SGD
-            - THB
-            - TRY
-            - TWD
-            - USD
-            - VND
-            - ZAR
-            x-cs-enum-type: Currency
-          is_enabled:
-            type: boolean
-            description: Is currency exchange enabled
-          scope:
-            type: string
-            description: Scope of currency exchange configuration.
-            example: Account
-            enum:
-            - Account
-            - Tenant
-            x-cs-enum-type: CurrencyConversionScope
-        type: object
   securitySchemes:
     auth_token:
       type: apiKey

@@ -863,6 +863,49 @@ paths:
         required: true
 components:
   schemas:
+    ResourceCountByAccount:
+      required:
+      - open
+      properties:
+        open:
+          type: integer
+          description: Resource count that are open
+      type: object
+    ListResourceRecommendationRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/ResourceRecommendationsSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/ListResourceRecommendationFilters'
+      type: object
+    RecommendationExclusionRuleGetResponse:
+      allOf:
+      - $ref: '#/components/schemas/RecommendationExclusionRule'
+      - properties: {}
+        type: object
+    ExecuteActionRecommendationResponse:
+      required:
+      - data
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: Status of pre-execute
+        message:
+          type: string
+          description: pre-execute
+        data:
+          type: object
+          description: Data for pre-execute
+      type: object
     RecommendationResourceScopeBase:
       required:
       - service_name
@@ -907,192 +950,92 @@ components:
           description: Query based on Resource Group, Region, resource_id, resource_name and resource
           $ref: '#/components/schemas/QueryOperator'
       type: object
-    RecommendationExclusionRuleResponse:
-      allOf:
-      - $ref: '#/components/schemas/RecommendationExclusionRule'
-      - properties: {}
-        type: object
-    ListRecommendationByAccountResponse:
-      required:
-      - page_count
-      - recommendations
-      - total_count
-      properties:
-        page_count:
-          type: integer
-          description: Page count
-        total_count:
-          type: integer
-          description: Total count
-        recommendations:
-          type: array
-          description: Recommendation Details
-          items:
-            $ref: '#/components/schemas/RecommendationByAccount'
-      type: object
-    ListRecommendationByCategoryResponse:
-      required:
-      - page_count
-      - recommendations
-      - total_count
-      properties:
-        page_count:
-          type: integer
-          description: Page count
-        total_count:
-          type: integer
-          description: Total count
-        recommendations:
-          type: array
-          description: Recommendation Details
-          items:
-            $ref: '#/components/schemas/RecommendationByCategory'
-      type: object
-    RecommendationDetails:
-      properties:
-        name:
-          type: string
-          description: Name of the recommendation
-        tenant_id:
-          type: string
-          description: Recommendation tenant ID
-          x-cs-type: ObjectId
-        service_account_id:
-          type: string
-          description: Recommendation service account ID
-          x-cs-type: ObjectId
-        policy_ids:
-          type: array
-          description: List of policy IDs for which the recommendation is generated
-          items:
-            type: string
-        policy_classification:
-          type: string
-          description: Policy Classification
-          example: Access
-          enum:
-          - Access
-          - Cost
-          - Data
-          - Network
-          - Operation
-          - Performance
-          - Resource
-          - Security
-          x-cs-enum-type: PolicyClassification
-        policy_sub_classification:
-          type: string
-          description: Policy Sub Classification
-          example: Access
-          enum:
-          - Access
-          - Anomaly
-          - Application
-          - Application_Integration
-          - Availability
-          - Backup
-          - Billing
-          - Budget
-          - Config
-          - Data
-          - Databases
-          - Encryption
-          - End Point Protection
-          - Governance
-          - High
-          - Host
-          - Identity
-          - Idle
-          - Logging
-          - Monitoring
-          - Naming Standards
-          - Network
-          - Operation
-          - Optimized
-          - Orphaned
-          - Performance
-          - SNS
-          - Security
-          - Standards
-          - Storage
-          - Tags
-          - Underutilized
-          - Utilization
-          - medium
-          x-cs-enum-type: PolicySubClassification
-        recommendation_source:
-          type: string
-          description: Source of the recommendation
-          example: AWS-compute-optimizer
-          enum:
-          - AWS-compute-optimizer
-          - AWS-ec2-compute-optimizer
-          - AWS-lambda-compute-optimizer
-          - AWS_advisor
-          - Corestack-Profiler
-          - Custom
-          - GCP_advisor
-          - OCI_advisor
-          - activity_log
-          - azure_advisor
-          - policy
-          - security_threats
-          x-cs-enum-type: RecommendationSource
-        impact:
-          type: string
-          description: Impact of the recommendation
-          example: critical
-          enum:
-          - critical
-          - high
-          - informational
-          - low
-          - medium
-          - uncategorized
-          x-cs-enum-type: PolicyResourceRecommendationImpact
-        status:
-          type: string
-          description: Status of the recommendation
-          example: error
-          enum:
-          - error
-          - in_progress
-          - open
-          - resolved
-          - skipped
-          - system_skipped
-          x-cs-enum-type: PolicyResourceRecommendationStatus
-      type: object
-    ResourceCountByAccount:
+    ResourceCount:
       required:
       - open
       properties:
         open:
           type: integer
-          description: Resource count that are open
+          description: The resources that are open based on the recommendation
       type: object
-    RecommendationFilterBase:
-      required:
-      - tenant_ids
+    CostSavingResourceDetails:
       properties:
-        tenant_ids:
-          type: array
-          description: List of Tenant Ids to get the recommendation rules.
-          items:
-            type: string
-            x-cs-type: ObjectId
-        service_account_ids:
-          type: array
-          description: List of service account IDs to get the recommendation details. If empty, all accounts will be selected by default.
-          items:
-            type: string
-            x-cs-type: ObjectId
+        currency:
+          type: string
+          description: currency of the cost. Example 'currency':'USD'
+          example: AED
+          enum:
+          - AED
+          - ALL
+          - ARS
+          - AUD
+          - BAM
+          - BDT
+          - BGN
+          - BHD
+          - BRL
+          - CAD
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CZK
+          - DKK
+          - EGP
+          - EUR
+          - GBP
+          - HKD
+          - HRK
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - ISK
+          - JPY
+          - KES
+          - KRW
+          - KWD
+          - KZT
+          - MOP
+          - MVR
+          - MXN
+          - MYR
+          - NOK
+          - NZD
+          - OMR
+          - PEN
+          - PHP
+          - PKR
+          - PLN
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - SAR
+          - SEK
+          - SGD
+          - THB
+          - TRY
+          - TWD
+          - USD
+          - VND
+          - ZAR
+          x-cs-enum-type: Currency
+        saving_per_day:
+          type: number
+          description: Cost saving per day by resource
+        saving_per_month:
+          type: number
+          description: Cost saving per day by resource
+        saving_per_year:
+          type: number
+          description: Cost saving per year by resource
+        updated_at:
+          type: string
+          format: date-time
+          description: Recently Updated time
       type: object
-    RecommendationExclusionRuleGetResponse:
-      allOf:
-      - $ref: '#/components/schemas/RecommendationExclusionRule'
-      - properties: {}
-        type: object
     RecommendationByCategory:
       required:
       - classification
@@ -1157,10 +1100,26 @@ components:
           description: Count of the resource that are open
           $ref: '#/components/schemas/ResourceCountByCategory'
       type: object
-    ResolveRecommendationsRequest:
+    BatchRequest:
+      properties:
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
+      type: object
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
+      type: object
+    ResolveDefRecommendationsRequest:
       required:
       - action_name
-      - apply_for_all
       - resources
       properties:
         action_name:
@@ -1168,40 +1127,72 @@ components:
           description: Action Name to resolve the recommendation
         resources:
           type: array
-          description: Resource ID
+          description: Specify the Resource IDs. It will be fetched from list recommendation api
           items:
             type: string
-        apply_for_all:
-          type: boolean
-          description: Apply for all the resources.Allowed Values true or false
-        args:
-          type: object
-          description: arguments to resolve action
       type: object
-    ResourceRecommendationResponse:
+    RecommendationExclusionRuleFilters:
+      allOf:
+      - $ref: '#/components/schemas/RecommendationClassificationFilter'
+      - properties:
+          search:
+            type: string
+            description: Search based on name, classification, sub_classification
+        type: object
+    ResourceRecommendationITSMEvent:
       properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/ResourceRecommendationsBatchResponse'
-      type: object
-    RecommendationExclusionRuleBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/RecommendationExclusionRule'
-      type: object
-    ListRecommendationByAccountRequest:
-      properties:
+        service:
+          type: string
+          description: Name of the integrated ITSM service where the event was raised (e.g. ServiceNow, Jira)
+          example: Anomaly_Detector
+          enum:
+          - Anomaly_Detector
+          - AppDynamics
+          - App_Insights
+          - ArrowSphere
+          - Azure_Devops
+          - Azure_Security_Graph
+          - Azure_Sentinel
+          - Corestack
+          - DockerHub
+          - ElasticSearch
+          - Freshservice
+          - GitHub
+          - JIRA_DataCenter
+          - JIRA_ServiceDesk
+          - JIRA_ServiceManagement
+          - Jenkins
+          - Logstash
+          - Microsoft_Teams
+          - Nagios
+          - Newrelic
+          - Prometheus
+          - Qualys
+          - RedHat_Satellite
+          - ServiceNow
+          - TCL_ITSM
+          - Tenable_Nessus
+          - ZOHO_ServiceDesk
+          - Zabbix
+          x-cs-enum-type: IntegratedToolName
         service_account_id:
           type: string
+          description: Service account ID associated with the ITSM integration
           x-cs-type: ObjectId
-        policy_id:
+        event_type:
           type: string
-          x-cs-type: ObjectId
+          description: Type of ITSM event raised for the remediation (e.g. incident creation)
+        status:
+          type: string
+          description: Status of the ITSM event raised for the remediation (e.g. success, failure)
+          example: success
+          enum:
+          - success
+          - failed
+          x-cs-enum-type: ITSMEventStatus
+        incident_id:
+          type: string
+          description: Incident number created in the integrated ITSM tool for the resource
       type: object
     ListContext:
       properties:
@@ -1215,13 +1206,456 @@ components:
           type: integer
           description: Total number of results
       type: object
-    ResourceCount:
-      required:
-      - open
+    ResourceRemediationActionDetails:
       properties:
-        open:
+        action_name:
+          type: string
+          description: Name of the remediation action triggered for the resource
+        job_id:
+          type: string
+          description: Unique ID of the remediation job triggered for the resource
+        auto_triggered:
+          type: boolean
+          description: Indicates whether the remediation was triggered automatically (true) or manually by a user (false)
+        status_reason:
+          type: string
+          description: Reason explaining the current status of the remediation action
+      type: object
+    ListResourceRecommendationFilters:
+      allOf:
+      - $ref: '#/components/schemas/RecommendationFilterBase'
+      - properties:
+          recommendation_ids:
+            type: array
+            description: List of recommendation IDs to get the resource recommendations.
+            items:
+              type: string
+          rule_ids:
+            type: array
+            description: List of exclusion rule Ids to get resources to exclude.
+            items:
+              type: string
+              x-cs-type: ObjectId
+          search:
+            type: string
+            description: Search based on resource_id, resource_name, resource, resource category, resource type and region/location.
+          filters:
+            description: Query based on Resource Group, Region, resource_id, resource_name and resource
+            $ref: '#/components/schemas/QueryOperator'
+        type: object
+    RecommendationExclusionRuleApplyRequest:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Rules to apply on provided tenant.
+          x-cs-type: ObjectId
+      type: object
+    RecommendationExclusionRulesSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: name
+          enum:
+          - name
+          - created_at
+          x-cs-enum-type: RecommendationExclusionRulesSortColumn
+        ascending:
+          type: boolean
+      type: object
+    RecommendationFilterBase:
+      required:
+      - tenant_ids
+      properties:
+        tenant_ids:
+          type: array
+          description: List of Tenant Ids to get the recommendation rules.
+          items:
+            type: string
+            x-cs-type: ObjectId
+        service_account_ids:
+          type: array
+          description: List of service account IDs to get the recommendation details. If empty, all accounts will be selected by default.
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    ActionDetails:
+      required:
+      - action_resource_name
+      - action_type
+      - description
+      - name
+      - preexecute_required
+      - terms_and_conditions
+      properties:
+        name:
+          type: string
+          description: Name of the action
+        terms_and_conditions:
+          type: string
+          description: Terms and Conditions of the action
+        preexecute_required:
+          type: string
+          description: Pre execute is required or not
+        action_type:
+          type: string
+          description: Action Type
+        action_resource_name:
+          type: string
+          description: Action Resource Name
+        description:
+          type: string
+          description: Description of the action
+      type: object
+    ResourceRecommendationSkippedDetails:
+      properties:
+        action:
+          type: string
+          description: Action name for skipped resource
+        id:
+          type: string
+          description: ID from where the resource is being skipped.
+      type: object
+    ResourceRecommendationsSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: resource_id
+          enum:
+          - resource_id
+          - resource_name
+          - resource_type
+          - resource_category
+          - resource
+          x-cs-enum-type: ResourceRecommendationsSortColumn
+        ascending:
+          type: boolean
+      type: object
+    RecommendationExclusionRulesListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/RecommendationExclusionRulesSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/RecommendationExclusionRuleFilters'
+      type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    RecommendationByAccount:
+      required:
+      - classification
+      - cloud_account_id
+      - cloud_account_name
+      - created_at
+      - id
+      - impact
+      - name
+      - policy_id
+      - policy_name
+      - resource_counts
+      - service_name
+      - source
+      - status
+      - sub_classification
+      - tenant_name
+      properties:
+        id:
+          type: string
+          description: Recommendation ID
+        policy_id:
+          type: string
+          description: Policy ID
+        policy_name:
+          type: string
+          description: Policy Name
+        name:
+          type: string
+          description: Name of the policy recommendation
+        status:
+          type: string
+          description: Status
+        impact:
+          type: string
+          description: Impact
+        classification:
+          type: string
+          description: Oscar Classification
+        sub_classification:
+          type: string
+          description: Sub classification of the above classification
+        cloud_account_id:
+          type: string
+          description: Cloud Account ID
+        cloud_account_name:
+          type: string
+          description: Cloud Account Name
+        service_name:
+          type: string
+          description: Cloud Service Name
+        tenant_name:
+          type: string
+          description: Tenant Name
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        created_at:
+          type: string
+          description: Time of creation
+        source:
+          type: string
+          description: Source
+        resource_counts:
+          description: Count of the resource that are open
+          $ref: '#/components/schemas/ResourceCountByAccount'
+      type: object
+    ListRecommendationFilters:
+      allOf:
+      - $ref: '#/components/schemas/RecommendationFilterBase'
+      - properties:
+          policy_classifications:
+            description: Policy classification with sub-classifications.
+            $ref: '#/components/schemas/PolicyClassificationWithSubClassifications'
+          policy_ids:
+            type: array
+            description: List of policy ids to get the recommendations.
+            items:
+              type: string
+          resource_ids:
+            type: array
+            description: List of resource ids to get the recommendations.
+            items:
+              type: string
+          resource_types:
+            type: array
+            description: List of resource types to get the recommendations.
+            items:
+              type: string
+          resources:
+            type: array
+            description: List of resources to get the recommendations.
+            items:
+              type: string
+          service_names:
+            type: array
+            description: List of cloud service name
+            items:
+              type: string
+              description: Cloud Provider to select
+              example: AWS
+              enum:
+              - AWS
+              - Azure
+              - AzureStack
+              - Azure_CSP
+              - Azure_CSP-Direct
+              - Azure_EA
+              - Azure_MCA
+              - Cloudstack
+              - GCP
+              - MS_VMM
+              - OCI
+              - Openstack
+              - PrivateCloud
+              - Rackspace
+              - VMware
+              - VMware_VCD
+              - vCenter
+              x-cs-enum-type: CloudServiceName
+          sources:
+            type: array
+            description: List of recommendation source to filter the recommendations.
+            items:
+              type: string
+              description: Recommendation source
+              example: AWS-compute-optimizer
+              enum:
+              - AWS-compute-optimizer
+              - AWS-ec2-compute-optimizer
+              - AWS-lambda-compute-optimizer
+              - AWS_advisor
+              - Corestack-Profiler
+              - Custom
+              - GCP_advisor
+              - OCI_advisor
+              - activity_log
+              - azure_advisor
+              - policy
+              - security_threats
+              x-cs-enum-type: RecommendationSource
+          statuses:
+            type: array
+            description: List of recommendation status to filter the recommendations.
+            items:
+              type: string
+              description: Status of the policy resource recommendation
+              example: error
+              enum:
+              - error
+              - in_progress
+              - open
+              - resolved
+              - skipped
+              - system_skipped
+              x-cs-enum-type: PolicyResourceRecommendationStatus
+        type: object
+    ListRecommendationByCategoryResponse:
+      required:
+      - page_count
+      - recommendations
+      - total_count
+      properties:
+        page_count:
           type: integer
-          description: The resources that are open based on the recommendation
+          description: Page count
+        total_count:
+          type: integer
+          description: Total count
+        recommendations:
+          type: array
+          description: Recommendation Details
+          items:
+            $ref: '#/components/schemas/RecommendationByCategory'
+      type: object
+    ResourceRecommendationResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/ResourceRecommendationsBatchResponse'
+      type: object
+    ListRecommendationRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/ListRecommendationFilters'
+      type: object
+    RecommendationExclusionRuleBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/RecommendationExclusionRule'
+      type: object
+    ListPolicyRecommendationsResponse:
+      required:
+      - actions
+      - classification
+      - cloud_account_id
+      - cloud_account_name
+      - created_at
+      - description
+      - impact
+      - name
+      - page_count
+      - policy_description
+      - policy_id
+      - policy_name
+      - resource_counts
+      - resources
+      - service_name
+      - status
+      - sub_classification
+      - tenant_name
+      - total_count
+      properties:
+        policy_id:
+          type: array
+          description: Policy ID
+          items:
+            type: string
+        policy_name:
+          type: string
+          description: Policy Name
+        policy_description:
+          type: string
+          description: Policy Description
+        name:
+          type: string
+          description: Name of the policy recommendation
+        status:
+          type: string
+          description: Status
+        impact:
+          type: string
+          description: Impact
+        classification:
+          type: string
+          description: Oscar Classification
+        sub_classification:
+          type: string
+          description: Sub classification of the above classification
+        cloud_account_id:
+          type: string
+          description: Cloud Account ID
+        cloud_account_name:
+          type: string
+          description: Cloud Account Name
+        service_name:
+          type: string
+          description: Cloud Service Name
+        tenant_name:
+          type: string
+          description: Tenant Name
+        created_at:
+          type: string
+          description: Time of creation
+        resource_counts:
+          description: Count of the resource that are open
+          $ref: '#/components/schemas/ResourceCount'
+        description:
+          type: string
+          description: Description of the policy
+        actions:
+          type: array
+          description: Action to be taken for that policy recommendation
+          items:
+            $ref: '#/components/schemas/ActionDetails'
+        total_count:
+          type: integer
+          description: Total count
+        page_count:
+          type: integer
+          description: Page count
+        resources:
+          type: array
+          description: Resources Details
+          items:
+            type: object
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
       type: object
     PolicyClassificationWithSubClassifications:
       properties:
@@ -1350,235 +1784,10 @@ components:
             - medium
             x-cs-enum-type: PolicySecuritySubClassification
       type: object
-    ListResourceRecommendationRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/ResourceRecommendationsSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/ListResourceRecommendationFilters'
-      type: object
-    ExecuteRecommendationRespModel:
-      required:
-      - data
-      - message
-      - status
-      properties:
-        status:
-          type: string
-          description: Status of that HTTP call
-        message:
-          type: string
-          description: Message of HTTP call
-        data:
-          type: object
-          description: response data
-      type: object
-    ListResourceRecommendationFilters:
-      allOf:
-      - $ref: '#/components/schemas/RecommendationFilterBase'
-      - properties:
-          recommendation_ids:
-            type: array
-            description: List of recommendation IDs to get the resource recommendations.
-            items:
-              type: string
-          rule_ids:
-            type: array
-            description: List of exclusion rule Ids to get resources to exclude.
-            items:
-              type: string
-              x-cs-type: ObjectId
-          search:
-            type: string
-            description: Search based on resource_id, resource_name, resource, resource category, resource type and region/location.
-          filters:
-            description: Query based on Resource Group, Region, resource_id, resource_name and resource
-            $ref: '#/components/schemas/QueryOperator'
-        type: object
-    RecommendationExclusionRuleBase:
-      required:
-      - name
-      - resource_scope
-      - scope
-      properties:
-        name:
-          type: string
-          description: Recommendation Exclusion Rule Name
-        activation_date:
-          type: string
-          format: date-time
-          description: Rule Activation date
-        description:
-          type: string
-          description: Rule Description
-        expiry_date:
-          type: string
-          format: date-time
-          description: Rule expiry date
-        is_enabled:
-          type: boolean
-          description: Rule status
-        scope:
-          type: string
-          description: Rule Scope
-          example: account
-          enum:
-          - account
-          - tenant
-          x-cs-enum-type: RecommendationExclusionRuleScope
-        resource_scope:
-          description: Filter for the rule.
-          $ref: '#/components/schemas/RecommendationResourceScopeBase'
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    ResourceRecommendationSkippedDetails:
-      properties:
-        action:
-          type: string
-          description: Action name for skipped resource
-        id:
-          type: string
-          description: ID from where the resource is being skipped.
-      type: object
-    RecommendationExclusionRulesListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/RecommendationExclusionRulesSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/RecommendationExclusionRuleFilters'
-      type: object
-    RecommendationExclusionRuleApplyRequest:
-      required:
-      - tenant_id
-      properties:
-        tenant_id:
-          type: string
-          description: Rules to apply on provided tenant.
-          x-cs-type: ObjectId
-      type: object
-    ActionDetails:
-      required:
-      - action_resource_name
-      - action_type
-      - description
-      - name
-      - preexecute_required
-      - terms_and_conditions
-      properties:
-        name:
-          type: string
-          description: Name of the action
-        terms_and_conditions:
-          type: string
-          description: Terms and Conditions of the action
-        preexecute_required:
-          type: string
-          description: Pre execute is required or not
-        action_type:
-          type: string
-          description: Action Type
-        action_resource_name:
-          type: string
-          description: Action Resource Name
-        description:
-          type: string
-          description: Description of the action
-      type: object
-    ResourceRecommendationITSMEvent:
-      properties:
-        service:
-          type: string
-          description: Name of the integrated ITSM service where the event was raised (e.g. ServiceNow, Jira)
-          example: Anomaly_Detector
-          enum:
-          - Anomaly_Detector
-          - AppDynamics
-          - App_Insights
-          - ArrowSphere
-          - Azure_Devops
-          - Azure_Security_Graph
-          - Azure_Sentinel
-          - Corestack
-          - DockerHub
-          - ElasticSearch
-          - Freshservice
-          - GitHub
-          - JIRA_DataCenter
-          - JIRA_ServiceDesk
-          - JIRA_ServiceManagement
-          - Jenkins
-          - Logstash
-          - Microsoft_Teams
-          - Nagios
-          - Newrelic
-          - Prometheus
-          - Qualys
-          - RedHat_Satellite
-          - ServiceNow
-          - TCL_ITSM
-          - Tenable_Nessus
-          - ZOHO_ServiceDesk
-          - Zabbix
-          x-cs-enum-type: IntegratedToolName
-        service_account_id:
-          type: string
-          description: Service account ID associated with the ITSM integration
-          x-cs-type: ObjectId
-        event_type:
-          type: string
-          description: Type of ITSM event raised for the remediation (e.g. incident creation)
-        status:
-          type: string
-          description: Status of the ITSM event raised for the remediation (e.g. success, failure)
-          example: success
-          enum:
-          - success
-          - failed
-          x-cs-enum-type: ITSMEventStatus
-        incident_id:
-          type: string
-          description: Incident number created in the integrated ITSM tool for the resource
-      type: object
-    ExecuteActionRecommendationResponse:
-      required:
-      - data
-      - message
-      - status
-      properties:
-        status:
-          type: string
-          description: Status of pre-execute
-        message:
-          type: string
-          description: pre-execute
-        data:
-          type: object
-          description: Data for pre-execute
-      type: object
-    ExecuteResolveActionRecommendationsRequest:
+    ResolveRecommendationsRequest:
       required:
       - action_name
+      - apply_for_all
       - resources
       properties:
         action_name:
@@ -1586,160 +1795,15 @@ components:
           description: Action Name to resolve the recommendation
         resources:
           type: array
-          description: Specify the Resource IDs. It will be fetched from list recommendation api
+          description: Resource ID
           items:
             type: string
-      type: object
-    RecommendationClassificationFilter:
-      allOf:
-      - $ref: '#/components/schemas/RecommendationFilterBase'
-      - properties:
-          policy_classifications:
-            type: array
-            description: List of Policy Classifications
-            items:
-              type: string
-              description: Classification of the policy
-              example: Access
-              enum:
-              - Access
-              - Cost
-              - Data
-              - Network
-              - Operation
-              - Performance
-              - Resource
-              - Security
-              x-cs-enum-type: PolicyClassification
-          policy_sub_classifications:
-            type: array
-            description: List of Policy Sub Classifications
-            items:
-              type: string
-              description: Sub-Classification of the policy
-              example: Access
-              enum:
-              - Access
-              - Anomaly
-              - Application
-              - Application_Integration
-              - Availability
-              - Backup
-              - Billing
-              - Budget
-              - Config
-              - Data
-              - Databases
-              - Encryption
-              - End Point Protection
-              - Governance
-              - High
-              - Host
-              - Identity
-              - Idle
-              - Logging
-              - Monitoring
-              - Naming Standards
-              - Network
-              - Operation
-              - Optimized
-              - Orphaned
-              - Performance
-              - SNS
-              - Security
-              - Standards
-              - Storage
-              - Tags
-              - Underutilized
-              - Utilization
-              - medium
-              x-cs-enum-type: PolicySubClassification
-        type: object
-    CostSavingResourceDetails:
-      properties:
-        currency:
-          type: string
-          description: currency of the cost. Example 'currency':'USD'
-          example: AED
-          enum:
-          - AED
-          - ALL
-          - ARS
-          - AUD
-          - BAM
-          - BDT
-          - BGN
-          - BHD
-          - BRL
-          - CAD
-          - CHF
-          - CLP
-          - CNY
-          - COP
-          - CRC
-          - CZK
-          - DKK
-          - EGP
-          - EUR
-          - GBP
-          - HKD
-          - HRK
-          - HUF
-          - IDR
-          - ILS
-          - INR
-          - ISK
-          - JPY
-          - KES
-          - KRW
-          - KWD
-          - KZT
-          - MOP
-          - MVR
-          - MXN
-          - MYR
-          - NOK
-          - NZD
-          - OMR
-          - PEN
-          - PHP
-          - PKR
-          - PLN
-          - QAR
-          - RON
-          - RSD
-          - RUB
-          - SAR
-          - SEK
-          - SGD
-          - THB
-          - TRY
-          - TWD
-          - USD
-          - VND
-          - ZAR
-          x-cs-enum-type: Currency
-        saving_per_day:
-          type: number
-          description: Cost saving per day by resource
-        saving_per_month:
-          type: number
-          description: Cost saving per day by resource
-        saving_per_year:
-          type: number
-          description: Cost saving per year by resource
-        updated_at:
-          type: string
-          format: date-time
-          description: Recently Updated time
-      type: object
-    ResourceCountByCategory:
-      required:
-      - open
-      properties:
-        open:
-          type: integer
-          description: Resource count that are open
+        apply_for_all:
+          type: boolean
+          description: Apply for all the resources.Allowed Values true or false
+        args:
+          type: object
+          description: arguments to resolve action
       type: object
     RecommendationExclusionRuleRequest:
       allOf:
@@ -1751,81 +1815,40 @@ components:
             description: Policy classification with sub-classifications.
             $ref: '#/components/schemas/PolicyClassificationWithSubClassifications'
         type: object
-    RecommendationExclusionRuleFilters:
-      allOf:
-      - $ref: '#/components/schemas/RecommendationClassificationFilter'
-      - properties:
-          search:
-            type: string
-            description: Search based on name, classification, sub_classification
-        type: object
-    RecommendationExclusionRulesSortCriteria:
-      required:
-      - column
+    ListRecommendationByAccountRequest:
       properties:
-        column:
+        service_account_id:
           type: string
-          example: name
-          enum:
-          - name
-          - created_at
-          x-cs-enum-type: RecommendationExclusionRulesSortColumn
-        ascending:
-          type: boolean
+          x-cs-type: ObjectId
+        policy_id:
+          type: string
+          x-cs-type: ObjectId
       type: object
-    ResourceRecommendationsSortCriteria:
+    ResourceCountByCategory:
       required:
-      - column
+      - open
       properties:
-        column:
-          type: string
-          example: resource_id
-          enum:
-          - resource_id
-          - resource_name
-          - resource_type
-          - resource_category
-          - resource
-          x-cs-enum-type: ResourceRecommendationsSortColumn
-        ascending:
-          type: boolean
+        open:
+          type: integer
+          description: Resource count that are open
       type: object
-    ResourceRemediationActionDetails:
-      properties:
-        action_name:
-          type: string
-          description: Name of the remediation action triggered for the resource
-        job_id:
-          type: string
-          description: Unique ID of the remediation job triggered for the resource
-        auto_triggered:
-          type: boolean
-          description: Indicates whether the remediation was triggered automatically (true) or manually by a user (false)
-        status_reason:
-          type: string
-          description: Reason explaining the current status of the remediation action
-      type: object
-    ResolveDefRecommendationsRequest:
+    ListRecommendationByAccountResponse:
       required:
-      - action_name
-      - resources
+      - page_count
+      - recommendations
+      - total_count
       properties:
-        action_name:
-          type: string
-          description: Action Name to resolve the recommendation
-        resources:
+        page_count:
+          type: integer
+          description: Page count
+        total_count:
+          type: integer
+          description: Total count
+        recommendations:
           type: array
-          description: Specify the Resource IDs. It will be fetched from list recommendation api
+          description: Recommendation Details
           items:
-            type: string
-      type: object
-    RecommendationDetailsBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/RecommendationDetails'
+            $ref: '#/components/schemas/RecommendationByAccount'
       type: object
     ExecuteResolveRecommendationsRequest:
       required:
@@ -1844,6 +1867,22 @@ components:
         apply_for_all:
           type: boolean
           description: Apply for all the resources.Allowed Values true or false
+      type: object
+    ExecuteRecommendationRespModel:
+      required:
+      - data
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: Status of that HTTP call
+        message:
+          type: string
+          description: Message of HTTP call
+        data:
+          type: object
+          description: response data
       type: object
     QueryOperator:
       required:
@@ -2330,269 +2369,78 @@ components:
             format: date-time
             description: Recommendation exclusion rule updated time
         type: object
-    KeyValuePair:
-      properties:
-        key:
-          type: string
-          description: Key of the pair
-        value:
-          type: string
-          description: Value of the pair
-      type: object
-    ListResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    ListPolicyRecommendationsResponse:
-      required:
-      - actions
-      - classification
-      - cloud_account_id
-      - cloud_account_name
-      - created_at
-      - description
-      - impact
-      - name
-      - page_count
-      - policy_description
-      - policy_id
-      - policy_name
-      - resource_counts
-      - resources
-      - service_name
-      - status
-      - sub_classification
-      - tenant_name
-      - total_count
-      properties:
-        policy_id:
-          type: array
-          description: Policy ID
-          items:
-            type: string
-        policy_name:
-          type: string
-          description: Policy Name
-        policy_description:
-          type: string
-          description: Policy Description
-        name:
-          type: string
-          description: Name of the policy recommendation
-        status:
-          type: string
-          description: Status
-        impact:
-          type: string
-          description: Impact
-        classification:
-          type: string
-          description: Oscar Classification
-        sub_classification:
-          type: string
-          description: Sub classification of the above classification
-        cloud_account_id:
-          type: string
-          description: Cloud Account ID
-        cloud_account_name:
-          type: string
-          description: Cloud Account Name
-        service_name:
-          type: string
-          description: Cloud Service Name
-        tenant_name:
-          type: string
-          description: Tenant Name
-        created_at:
-          type: string
-          description: Time of creation
-        resource_counts:
-          description: Count of the resource that are open
-          $ref: '#/components/schemas/ResourceCount'
-        description:
-          type: string
-          description: Description of the policy
-        actions:
-          type: array
-          description: Action to be taken for that policy recommendation
-          items:
-            $ref: '#/components/schemas/ActionDetails'
-        total_count:
-          type: integer
-          description: Total count
-        page_count:
-          type: integer
-          description: Page count
-        resources:
-          type: array
-          description: Resources Details
-          items:
-            type: object
-      type: object
-    ListRecommendationFilters:
+    RecommendationClassificationFilter:
       allOf:
       - $ref: '#/components/schemas/RecommendationFilterBase'
       - properties:
           policy_classifications:
-            description: Policy classification with sub-classifications.
-            $ref: '#/components/schemas/PolicyClassificationWithSubClassifications'
-          policy_ids:
             type: array
-            description: List of policy ids to get the recommendations.
+            description: List of Policy Classifications
             items:
               type: string
-          resource_ids:
-            type: array
-            description: List of resource ids to get the recommendations.
-            items:
-              type: string
-          resource_types:
-            type: array
-            description: List of resource types to get the recommendations.
-            items:
-              type: string
-          resources:
-            type: array
-            description: List of resources to get the recommendations.
-            items:
-              type: string
-          service_names:
-            type: array
-            description: List of cloud service name
-            items:
-              type: string
-              description: Cloud Provider to select
-              example: AWS
+              description: Classification of the policy
+              example: Access
               enum:
-              - AWS
-              - Azure
-              - AzureStack
-              - Azure_CSP
-              - Azure_CSP-Direct
-              - Azure_EA
-              - Azure_MCA
-              - Cloudstack
-              - GCP
-              - MS_VMM
-              - OCI
-              - Openstack
-              - PrivateCloud
-              - Rackspace
-              - VMware
-              - VMware_VCD
-              - vCenter
-              x-cs-enum-type: CloudServiceName
-          sources:
+              - Access
+              - Cost
+              - Data
+              - Network
+              - Operation
+              - Performance
+              - Resource
+              - Security
+              x-cs-enum-type: PolicyClassification
+          policy_sub_classifications:
             type: array
-            description: List of recommendation source to filter the recommendations.
+            description: List of Policy Sub Classifications
             items:
               type: string
-              description: Recommendation source
-              example: AWS-compute-optimizer
+              description: Sub-Classification of the policy
+              example: Access
               enum:
-              - AWS-compute-optimizer
-              - AWS-ec2-compute-optimizer
-              - AWS-lambda-compute-optimizer
-              - AWS_advisor
-              - Corestack-Profiler
-              - Custom
-              - GCP_advisor
-              - OCI_advisor
-              - activity_log
-              - azure_advisor
-              - policy
-              - security_threats
-              x-cs-enum-type: RecommendationSource
-          statuses:
-            type: array
-            description: List of recommendation status to filter the recommendations.
-            items:
-              type: string
-              description: Status of the policy resource recommendation
-              example: error
-              enum:
-              - error
-              - in_progress
-              - open
-              - resolved
-              - skipped
-              - system_skipped
-              x-cs-enum-type: PolicyResourceRecommendationStatus
+              - Access
+              - Anomaly
+              - Application
+              - Application_Integration
+              - Availability
+              - Backup
+              - Billing
+              - Budget
+              - Config
+              - Data
+              - Databases
+              - Encryption
+              - End Point Protection
+              - Governance
+              - High
+              - Host
+              - Identity
+              - Idle
+              - Logging
+              - Monitoring
+              - Naming Standards
+              - Network
+              - Operation
+              - Optimized
+              - Orphaned
+              - Performance
+              - SNS
+              - Security
+              - Standards
+              - Storage
+              - Tags
+              - Underutilized
+              - Utilization
+              - medium
+              x-cs-enum-type: PolicySubClassification
         type: object
-    RecommendationByAccount:
-      required:
-      - classification
-      - cloud_account_id
-      - cloud_account_name
-      - created_at
-      - id
-      - impact
-      - name
-      - policy_id
-      - policy_name
-      - resource_counts
-      - service_name
-      - source
-      - status
-      - sub_classification
-      - tenant_name
+    RecommendationDetailsBatchResponse:
       properties:
-        id:
-          type: string
-          description: Recommendation ID
-        policy_id:
-          type: string
-          description: Policy ID
-        policy_name:
-          type: string
-          description: Policy Name
-        name:
-          type: string
-          description: Name of the policy recommendation
-        status:
-          type: string
-          description: Status
-        impact:
-          type: string
-          description: Impact
-        classification:
-          type: string
-          description: Oscar Classification
-        sub_classification:
-          type: string
-          description: Sub classification of the above classification
-        cloud_account_id:
-          type: string
-          description: Cloud Account ID
-        cloud_account_name:
-          type: string
-          description: Cloud Account Name
-        service_name:
-          type: string
-          description: Cloud Service Name
-        tenant_name:
-          type: string
-          description: Tenant Name
-        tenant_id:
-          type: string
-          description: Tenant ID
-          x-cs-type: ObjectId
-        created_at:
-          type: string
-          description: Time of creation
-        source:
-          type: string
-          description: Source
-        resource_counts:
-          description: Count of the resource that are open
-          $ref: '#/components/schemas/ResourceCountByAccount'
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/RecommendationDetails'
       type: object
     ResourceRecommendationsBatchResponse:
       properties:
@@ -2679,23 +2527,175 @@ components:
           items:
             $ref: '#/components/schemas/KeyValuePair'
       type: object
-    BatchRequest:
+    RecommendationExclusionRuleBase:
+      required:
+      - name
+      - resource_scope
+      - scope
       properties:
-        ids:
+        name:
+          type: string
+          description: Recommendation Exclusion Rule Name
+        activation_date:
+          type: string
+          format: date-time
+          description: Rule Activation date
+        description:
+          type: string
+          description: Rule Description
+        expiry_date:
+          type: string
+          format: date-time
+          description: Rule expiry date
+        is_enabled:
+          type: boolean
+          description: Rule status
+        scope:
+          type: string
+          description: Rule Scope
+          example: account
+          enum:
+          - account
+          - tenant
+          x-cs-enum-type: RecommendationExclusionRuleScope
+        resource_scope:
+          description: Filter for the rule.
+          $ref: '#/components/schemas/RecommendationResourceScopeBase'
+      type: object
+    ExecuteResolveActionRecommendationsRequest:
+      required:
+      - action_name
+      - resources
+      properties:
+        action_name:
+          type: string
+          description: Action Name to resolve the recommendation
+        resources:
           type: array
-          description: Identifiers to fetch
+          description: Specify the Resource IDs. It will be fetched from list recommendation api
           items:
             type: string
       type: object
-    ListRecommendationRequest:
+    RecommendationDetails:
       properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/ListRecommendationFilters'
+        name:
+          type: string
+          description: Name of the recommendation
+        tenant_id:
+          type: string
+          description: Recommendation tenant ID
+          x-cs-type: ObjectId
+        service_account_id:
+          type: string
+          description: Recommendation service account ID
+          x-cs-type: ObjectId
+        policy_ids:
+          type: array
+          description: List of policy IDs for which the recommendation is generated
+          items:
+            type: string
+        policy_classification:
+          type: string
+          description: Policy Classification
+          example: Access
+          enum:
+          - Access
+          - Cost
+          - Data
+          - Network
+          - Operation
+          - Performance
+          - Resource
+          - Security
+          x-cs-enum-type: PolicyClassification
+        policy_sub_classification:
+          type: string
+          description: Policy Sub Classification
+          example: Access
+          enum:
+          - Access
+          - Anomaly
+          - Application
+          - Application_Integration
+          - Availability
+          - Backup
+          - Billing
+          - Budget
+          - Config
+          - Data
+          - Databases
+          - Encryption
+          - End Point Protection
+          - Governance
+          - High
+          - Host
+          - Identity
+          - Idle
+          - Logging
+          - Monitoring
+          - Naming Standards
+          - Network
+          - Operation
+          - Optimized
+          - Orphaned
+          - Performance
+          - SNS
+          - Security
+          - Standards
+          - Storage
+          - Tags
+          - Underutilized
+          - Utilization
+          - medium
+          x-cs-enum-type: PolicySubClassification
+        recommendation_source:
+          type: string
+          description: Source of the recommendation
+          example: AWS-compute-optimizer
+          enum:
+          - AWS-compute-optimizer
+          - AWS-ec2-compute-optimizer
+          - AWS-lambda-compute-optimizer
+          - AWS_advisor
+          - Corestack-Profiler
+          - Custom
+          - GCP_advisor
+          - OCI_advisor
+          - activity_log
+          - azure_advisor
+          - policy
+          - security_threats
+          x-cs-enum-type: RecommendationSource
+        impact:
+          type: string
+          description: Impact of the recommendation
+          example: critical
+          enum:
+          - critical
+          - high
+          - informational
+          - low
+          - medium
+          - uncategorized
+          x-cs-enum-type: PolicyResourceRecommendationImpact
+        status:
+          type: string
+          description: Status of the recommendation
+          example: error
+          enum:
+          - error
+          - in_progress
+          - open
+          - resolved
+          - skipped
+          - system_skipped
+          x-cs-enum-type: PolicyResourceRecommendationStatus
       type: object
+    RecommendationExclusionRuleResponse:
+      allOf:
+      - $ref: '#/components/schemas/RecommendationExclusionRule'
+      - properties: {}
+        type: object
   securitySchemes:
     auth_token:
       type: apiKey

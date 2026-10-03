@@ -377,21 +377,35 @@ paths:
       - Access
 components:
   schemas:
-    ServiceAccountsModel:
+    SummaryModel:
       required:
-      - cloud_account_id
-      - cloud_account_name
-      - tenant_id
+      - category
+      - count
       properties:
-        cloud_account_id:
+        count:
           type: string
-          description: ID of the cloud account
-        tenant_id:
+          description: Violations count for each violation category, i.e. Utilization/Standards
+        category:
           type: string
-          description: ID of the tenant
-        cloud_account_name:
+          description: Category of violations i.e Utilization/Standards
+      type: object
+    ViewViolationResponse:
+      required:
+      - details
+      - page_count
+      - total_count
+      properties:
+        total_count:
+          type: integer
+          description: Total violations count
+        page_count:
           type: string
-          description: Name of the cloud account
+          description: Count of number of pages
+        details:
+          type: array
+          description: Details of violation
+          items:
+            $ref: '#/components/schemas/ViewViolationModel'
       type: object
     DetailsRequest:
       required:
@@ -418,6 +432,26 @@ components:
         search:
           type: string
           description: Search by account_name wise
+      type: object
+    SummaryCountResponse:
+      required:
+      - violations
+      properties:
+        violations:
+          description: Contains the summary of violations shared under Utilization/Standards for AWS/Azure
+          $ref: '#/components/schemas/ViolationCategoryModel'
+      type: object
+    AccessSummaryDashboard:
+      required:
+      - service_name
+      - violation
+      properties:
+        service_name:
+          type: string
+          description: Name of the Service
+        violation:
+          type: object
+          description: Contains the summary of violations
       type: object
     GuardrailModel:
       required:
@@ -455,17 +489,21 @@ components:
           type: string
           description: Error response message.
       type: object
-    AccessSummaryDashboard:
+    ServiceAccountsModel:
       required:
-      - service_name
-      - violation
+      - cloud_account_id
+      - cloud_account_name
+      - tenant_id
       properties:
-        service_name:
+        cloud_account_id:
           type: string
-          description: Name of the Service
-        violation:
-          type: object
-          description: Contains the summary of violations
+          description: ID of the cloud account
+        tenant_id:
+          type: string
+          description: ID of the tenant
+        cloud_account_name:
+          type: string
+          description: Name of the cloud account
       type: object
     VisibilityFilterResponse:
       required:
@@ -488,74 +526,6 @@ components:
           description: Tenants to filter violations based on tenant
           items:
             $ref: '#/components/schemas/ProjectsModel'
-      type: object
-    ViewViolationResponse:
-      required:
-      - details
-      - page_count
-      - total_count
-      properties:
-        total_count:
-          type: integer
-          description: Total violations count
-        page_count:
-          type: string
-          description: Count of number of pages
-        details:
-          type: array
-          description: Details of violation
-          items:
-            $ref: '#/components/schemas/ViewViolationModel'
-      type: object
-    DetailsResponse:
-      required:
-      - details
-      - page_count
-      - total_count
-      properties:
-        total_count:
-          type: integer
-          description: Total violations count
-        page_count:
-          type: string
-          description: Page count for the violations
-        details:
-          type: array
-          description: Details of the violation
-          items:
-            type: object
-      type: object
-    ProjectsModel:
-      required:
-      - tenant_id
-      - tenant_name
-      properties:
-        tenant_name:
-          type: string
-          description: Name of the tenant
-        tenant_id:
-          type: string
-          description: ID of the tenant
-      type: object
-    SummaryCountResponse:
-      required:
-      - violations
-      properties:
-        violations:
-          description: Contains the summary of violations shared under Utilization/Standards for AWS/Azure
-          $ref: '#/components/schemas/ViolationCategoryModel'
-      type: object
-    SummaryModel:
-      required:
-      - category
-      - count
-      properties:
-        count:
-          type: string
-          description: Violations count for each violation category, i.e. Utilization/Standards
-        category:
-          type: string
-          description: Category of violations i.e Utilization/Standards
       type: object
     ViewViolationModel:
       required:
@@ -596,6 +566,36 @@ components:
         severity:
           type: string
           description: Severity of the violation
+      type: object
+    ProjectsModel:
+      required:
+      - tenant_id
+      - tenant_name
+      properties:
+        tenant_name:
+          type: string
+          description: Name of the tenant
+        tenant_id:
+          type: string
+          description: ID of the tenant
+      type: object
+    DetailsResponse:
+      required:
+      - details
+      - page_count
+      - total_count
+      properties:
+        total_count:
+          type: integer
+          description: Total violations count
+        page_count:
+          type: string
+          description: Page count for the violations
+        details:
+          type: array
+          description: Details of the violation
+          items:
+            type: object
       type: object
   securitySchemes:
     auth_token:

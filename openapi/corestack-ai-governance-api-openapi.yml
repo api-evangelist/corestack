@@ -61,33 +61,6 @@ paths:
         required: true
 components:
   schemas:
-    MetricListRequest:
-      required:
-      - end_date
-      - is_cost_metric
-      - start_date
-      properties:
-        is_cost_metric:
-          type: boolean
-          description: Indicates if this is a cost metric request (true) or usage metric request (false)
-        service_account_ids:
-          type: array
-          description: Service Account Ids to Filter
-          items:
-            type: string
-            x-cs-type: ObjectId
-        filters:
-          description: Query operator for filtering
-          $ref: '#/components/schemas/QueryOperator'
-        start_date:
-          type: string
-          format: date-time
-          description: Start date for metrics
-        end_date:
-          type: string
-          format: date-time
-          description: End date for metrics
-      type: object
     ModelError:
       required:
       - message
@@ -136,14 +109,6 @@ components:
         unit:
           type: string
           description: unit of measures
-      type: object
-    ResponseForAggregatedMetricsList:
-      properties:
-        metrics:
-          type: array
-          description: List of cost metrics
-          items:
-            $ref: '#/components/schemas/AggregatedMetricsResponse'
       type: object
     QueryOperator:
       required:
@@ -605,6 +570,41 @@ components:
         subtype_name: WorkloadQueryWorkloadType
       - subtype_model: WorkloadQueryWorkloadId
         subtype_name: WorkloadQueryWorkloadId
+    MetricListRequest:
+      required:
+      - end_date
+      - is_cost_metric
+      - start_date
+      properties:
+        is_cost_metric:
+          type: boolean
+          description: Indicates if this is a cost metric request (true) or usage metric request (false)
+        service_account_ids:
+          type: array
+          description: Service Account Ids to Filter
+          items:
+            type: string
+            x-cs-type: ObjectId
+        filters:
+          description: Query operator for filtering
+          $ref: '#/components/schemas/QueryOperator'
+        start_date:
+          type: string
+          format: date-time
+          description: Start date for metrics
+        end_date:
+          type: string
+          format: date-time
+          description: End date for metrics
+      type: object
+    ResponseForAggregatedMetricsList:
+      properties:
+        metrics:
+          type: array
+          description: List of cost metrics
+          items:
+            $ref: '#/components/schemas/AggregatedMetricsResponse'
+      type: object
   securitySchemes:
     auth_token:
       type: apiKey

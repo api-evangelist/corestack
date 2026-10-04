@@ -202,6 +202,83 @@ paths:
       - AwsSsm Automation
 components:
   schemas:
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    AwsSsmStepFailureDetail:
+      properties:
+        stage:
+          type: string
+          description: Stage of the execution when the failure occurred
+        type:
+          type: string
+          description: type of the failure
+        details:
+          type: object
+          additionalProperties:
+            type: string
+      type: object
+    AwsSsmExecuteAutomationDocumentRequest:
+      allOf:
+      - $ref: '#/components/schemas/AwsSsmBaseExecuteDocumentRequest'
+      - properties:
+          client_token:
+            type: string
+            description: Client auth token.
+          mode:
+            type: string
+            description: Execution mode of the document.
+          target_parameter_name:
+            type: string
+            description: The name of the parameter used as the target resource for the rate-controlled execution.
+          targets:
+            type: array
+            description: An array of search criteria that targets managed nodes using a Key,Value combination.
+            items:
+              $ref: '#/components/schemas/AwsSsmCommandDocumentTarget'
+          target_maps:
+            type: object
+            description: A key-value mapping of document parameters to target resources.
+            additionalProperties:
+              type: array
+              items:
+                type: string
+          target_locations:
+            type: array
+            description: A location is a combination of AWS Regions and/or AWS accounts.
+            items:
+              $ref: '#/components/schemas/AwsSsmExecuteAutomationTargetLocation'
+          tags:
+            type: array
+            description: List of tag key/value pairs
+            items:
+              $ref: '#/components/schemas/KeyValuePair'
+        type: object
+    AwsSsmDocumentAlarmConfiguration:
+      properties:
+        ignore_poll_alarm_failure:
+          type: boolean
+          description: The automation or command continues to run, either the Alarm status is OK or INSUFFICIENT_DATA.
+        alarms:
+          type: array
+          description: List of Alarms.
+          items:
+            $ref: '#/components/schemas/AwsSsmCommandDocumentAlarm'
+      type: object
     AwsSsmBaseExecuteDocumentRequest:
       required:
       - cloud_account_id
@@ -252,42 +329,6 @@ components:
           type: string
           description: Service Now tracking id
       type: object
-    AwsSsmExecuteAutomationDocumentRequest:
-      allOf:
-      - $ref: '#/components/schemas/AwsSsmBaseExecuteDocumentRequest'
-      - properties:
-          client_token:
-            type: string
-            description: Client auth token.
-          mode:
-            type: string
-            description: Execution mode of the document.
-          target_parameter_name:
-            type: string
-            description: The name of the parameter used as the target resource for the rate-controlled execution.
-          targets:
-            type: array
-            description: An array of search criteria that targets managed nodes using a Key,Value combination.
-            items:
-              $ref: '#/components/schemas/AwsSsmCommandDocumentTarget'
-          target_maps:
-            type: object
-            description: A key-value mapping of document parameters to target resources.
-            additionalProperties:
-              type: array
-              items:
-                type: string
-          target_locations:
-            type: array
-            description: A location is a combination of AWS Regions and/or AWS accounts.
-            items:
-              $ref: '#/components/schemas/AwsSsmExecuteAutomationTargetLocation'
-          tags:
-            type: array
-            description: List of tag key/value pairs
-            items:
-              $ref: '#/components/schemas/KeyValuePair'
-        type: object
     ListResponse:
       properties:
         results:
@@ -298,25 +339,6 @@ components:
         next_list_context:
           description: List context
           $ref: '#/components/schemas/ListContext'
-      type: object
-    AwsSsmDocumentAlarmConfiguration:
-      properties:
-        ignore_poll_alarm_failure:
-          type: boolean
-          description: The automation or command continues to run, either the Alarm status is OK or INSUFFICIENT_DATA.
-        alarms:
-          type: array
-          description: List of Alarms.
-          items:
-            $ref: '#/components/schemas/AwsSsmCommandDocumentAlarm'
-      type: object
-    AwsSsmExecutionStepBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/AwsSsmStepExecution'
       type: object
     RecordIdentity:
       properties:
@@ -330,6 +352,38 @@ components:
         table:
           type: string
           description: Context of the tracked item
+      type: object
+    AwsSsmExecuteAutomationTargetLocation:
+      properties:
+        accounts:
+          type: array
+          description: The AWS accounts targeted by the current Automation execution.
+          items:
+            type: string
+        execution_role_name:
+          type: string
+          description: The Automation execution role used by the currently running Automation.
+        regions:
+          type: array
+          description: The AWS Regions targeted by the current Automation execution.
+          items:
+            type: string
+        target_alarm_configuration:
+          description: Details of the cloud watch alarm.
+          $ref: '#/components/schemas/AwsSsmDocumentAlarmConfiguration'
+        target_location_max_concurrency:
+          type: string
+          description: The maximum number of AWS Regions and AWS accounts allowed to run the Automation concurrently.
+        target_location_max_errors:
+          type: string
+          description: The maximum number of errors allowed before the system stops queueing additional Automation executions for the currently running Automation.
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
       type: object
     AwsSsmStepExecution:
       properties:
@@ -410,53 +464,19 @@ components:
           description: Information about the Automation failure
           $ref: '#/components/schemas/AwsSsmStepFailureDetail'
       type: object
-    AwsSsmExecuteAutomationTargetLocation:
+    AwsSsmExecutionStepBatchResponse:
       properties:
-        accounts:
-          type: array
-          description: The AWS accounts targeted by the current Automation execution.
-          items:
-            type: string
-        execution_role_name:
-          type: string
-          description: The Automation execution role used by the currently running Automation.
-        regions:
-          type: array
-          description: The AWS Regions targeted by the current Automation execution.
-          items:
-            type: string
-        target_alarm_configuration:
-          description: Details of the cloud watch alarm.
-          $ref: '#/components/schemas/AwsSsmDocumentAlarmConfiguration'
-        target_location_max_concurrency:
-          type: string
-          description: The maximum number of AWS Regions and AWS accounts allowed to run the Automation concurrently.
-        target_location_max_errors:
-          type: string
-          description: The maximum number of errors allowed before the system stops queueing additional Automation executions for the currently running Automation.
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AwsSsmStepExecution'
       type: object
-    ModelError:
-      required:
-      - message
+    AwsSsmCommandDocumentAlarm:
       properties:
-        message:
+        name:
           type: string
-          description: Error response message.
-      type: object
-    KeyValuePair:
-      properties:
-        key:
-          type: string
-          description: Key of the pair
-        value:
-          type: string
-          description: Value of the pair
-      type: object
-    AwsSsmExecuteDocumentResponse:
-      properties:
-        execution_id:
-          type: string
-          description: Automation Execution Id
+          description: The name of CloudWatch alarm.
       type: object
     AwsSsmCommandDocumentTarget:
       properties:
@@ -469,31 +489,11 @@ components:
           items:
             type: string
       type: object
-    AwsSsmCommandDocumentAlarm:
+    AwsSsmExecuteDocumentResponse:
       properties:
-        name:
+        execution_id:
           type: string
-          description: The name of CloudWatch alarm.
-      type: object
-    AwsSsmStepFailureDetail:
-      properties:
-        stage:
-          type: string
-          description: Stage of the execution when the failure occurred
-        type:
-          type: string
-          description: type of the failure
-        details:
-          type: object
-          additionalProperties:
-            type: string
-      type: object
-    RecordIdentityBatchRequest:
-      properties:
-        ids:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
+          description: Automation Execution Id
       type: object
     ListContext:
       properties:

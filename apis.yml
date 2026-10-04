@@ -1915,8 +1915,6 @@ apis:
   humanURL: https://docs.corestack.io/docs/mcp-tool-guide
   baseURL: https://cloud.corestack.io/mcp
   tags:
-  - Audit Logs
-  tags_raw:
   - Audit Log
   properties:
   - type: OpenAPI

@@ -230,6 +230,22 @@ components:
           - Invocation
           x-cs-enum-type: AwsSsmCommandNotificationTypes
       type: object
+    AwsSsmCommandInstanceExecutionBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AwsSsmCommandInstanceExecutionDetail'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
     AwsSsmBaseExecuteDocumentRequest:
       required:
       - cloud_account_id
@@ -280,15 +296,6 @@ components:
           type: string
           description: Service Now tracking id
       type: object
-    AwsSsmCommandDocumentCloudWatchOutputConfig:
-      properties:
-        cloud_watch_log_group_name:
-          type: string
-          description: The name of the CloudWatch Logs log group where you want to send command output.
-        cloud_watch_output_enabled:
-          type: boolean
-          description: Enables Systems Manager to send command output to CloudWatch Logs.
-      type: object
     AwsSsmDocumentAlarmConfiguration:
       properties:
         ignore_poll_alarm_failure:
@@ -299,6 +306,82 @@ components:
           description: List of Alarms.
           items:
             $ref: '#/components/schemas/AwsSsmCommandDocumentAlarm'
+      type: object
+    AwsSsmExecuteCommandDocumentRequest:
+      allOf:
+      - $ref: '#/components/schemas/AwsSsmBaseExecuteDocumentRequest'
+      - properties:
+          instance_ids:
+            type: array
+            description: The IDs of the managed nodes where the command should run.
+            items:
+              type: string
+          targets:
+            type: array
+            description: An array of search criteria that targets managed nodes using a Key,Value combination.
+            items:
+              $ref: '#/components/schemas/AwsSsmCommandDocumentTarget'
+          timeout_seconds:
+            type: integer
+            description: If this time is reached and the command has not already started running, it wont run.
+          comment:
+            type: string
+            description: User-specified information about the command.
+          output_s3_bucket_name:
+            type: string
+            description: The name of the S3 bucket where command execution responses should be stored.
+          output_s3_key_prefix:
+            type: string
+            description: The directory structure within the S3 bucket where the responses should be stored.
+          service_role_arn:
+            type: string
+            description: The ARN of the AWS IAM service role to use to publish Amazon SNS notifications for Run Command commands.
+          notification_config:
+            description: Configurations for sending notifications.
+            $ref: '#/components/schemas/AwsSsmNotificationConfig'
+          cloud_watch_output_config:
+            description: Enables AWS Systems Manager to send Run Command output to Amazon CloudWatch Logs.
+            $ref: '#/components/schemas/AwsSsmCommandDocumentCloudWatchOutputConfig'
+        type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    AwsSsmCommandDocumentCloudWatchOutputConfig:
+      properties:
+        cloud_watch_log_group_name:
+          type: string
+          description: The name of the CloudWatch Logs log group where you want to send command output.
+        cloud_watch_output_enabled:
+          type: boolean
+          description: Enables Systems Manager to send command output to CloudWatch Logs.
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
       type: object
     AwsSsmCommandPlugin:
       properties:
@@ -350,29 +433,28 @@ components:
           type: string
           description: standard url of the error content
       type: object
-    RecordIdentity:
+    AwsSsmCommandDocumentAlarm:
       properties:
-        sysId:
+        name:
           type: string
-          description: Unique Identifier of the tracked item
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Last update of the tracked item
-        table:
-          type: string
-          description: Context of the tracked item
+          description: The name of CloudWatch alarm.
       type: object
-    ListResponse:
+    AwsSsmCommandDocumentTarget:
       properties:
-        results:
+        key:
+          type: string
+          description: 'Supported keys: InstanceIds/tag/resource-groups'
+        values:
           type: array
-          description: List of result identifiers
+          description: 'Supported values: <instance-id-1>,<instance-id-2>/<my-tag-value-1>,<my-tag-value-2>/<resource-type-1>,<resource-type-2>'
           items:
             type: string
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
+      type: object
+    AwsSsmExecuteDocumentResponse:
+      properties:
+        execution_id:
+          type: string
+          description: Automation Execution Id
       type: object
     ListContext:
       properties:
@@ -386,88 +468,6 @@ components:
           type: integer
           description: Total number of results
       type: object
-    AwsSsmCommandInstanceExecutionBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/AwsSsmCommandInstanceExecutionDetail'
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    AwsSsmExecuteDocumentResponse:
-      properties:
-        execution_id:
-          type: string
-          description: Automation Execution Id
-      type: object
-    AwsSsmCommandDocumentTarget:
-      properties:
-        key:
-          type: string
-          description: 'Supported keys: InstanceIds/tag/resource-groups'
-        values:
-          type: array
-          description: 'Supported values: <instance-id-1>,<instance-id-2>/<my-tag-value-1>,<my-tag-value-2>/<resource-type-1>,<resource-type-2>'
-          items:
-            type: string
-      type: object
-    AwsSsmCommandDocumentAlarm:
-      properties:
-        name:
-          type: string
-          description: The name of CloudWatch alarm.
-      type: object
-    RecordIdentityBatchRequest:
-      properties:
-        ids:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
-      type: object
-    AwsSsmExecuteCommandDocumentRequest:
-      allOf:
-      - $ref: '#/components/schemas/AwsSsmBaseExecuteDocumentRequest'
-      - properties:
-          instance_ids:
-            type: array
-            description: The IDs of the managed nodes where the command should run.
-            items:
-              type: string
-          targets:
-            type: array
-            description: An array of search criteria that targets managed nodes using a Key,Value combination.
-            items:
-              $ref: '#/components/schemas/AwsSsmCommandDocumentTarget'
-          timeout_seconds:
-            type: integer
-            description: If this time is reached and the command has not already started running, it wont run.
-          comment:
-            type: string
-            description: User-specified information about the command.
-          output_s3_bucket_name:
-            type: string
-            description: The name of the S3 bucket where command execution responses should be stored.
-          output_s3_key_prefix:
-            type: string
-            description: The directory structure within the S3 bucket where the responses should be stored.
-          service_role_arn:
-            type: string
-            description: The ARN of the AWS IAM service role to use to publish Amazon SNS notifications for Run Command commands.
-          notification_config:
-            description: Configurations for sending notifications.
-            $ref: '#/components/schemas/AwsSsmNotificationConfig'
-          cloud_watch_output_config:
-            description: Enables AWS Systems Manager to send Run Command output to Amazon CloudWatch Logs.
-            $ref: '#/components/schemas/AwsSsmCommandDocumentCloudWatchOutputConfig'
-        type: object
     AwsSsmCommandInstanceExecutionDetail:
       properties:
         sysId:

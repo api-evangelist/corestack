@@ -61,6 +61,25 @@ paths:
       - Pro Active Scanner Configurations
 components:
   schemas:
+    ScannerListResponseDetails:
+      allOf:
+      - $ref: '#/components/schemas/ScannerRuleBase'
+      - properties:
+          is_rule_override:
+            type: boolean
+            description: Boolean to check whether the input has been override in this github account.
+          is_rule_available:
+            type: boolean
+            description: Boolean to check whether the rule is available in this github account.
+          values:
+            type: array
+            description: inputs with which the rules are getting scanned.
+            items:
+              type: string
+          applicable_service:
+            type: string
+            description: resource types which are scanned against the resource configurations.
+        type: object
     ScannerRuleBase:
       properties:
         name:
@@ -84,33 +103,6 @@ components:
           type: string
           description: attribute name for which the values are going to be stored.
       type: object
-    ScannerListResponseDetails:
-      allOf:
-      - $ref: '#/components/schemas/ScannerRuleBase'
-      - properties:
-          is_rule_override:
-            type: boolean
-            description: Boolean to check whether the input has been override in this github account.
-          is_rule_available:
-            type: boolean
-            description: Boolean to check whether the rule is available in this github account.
-          values:
-            type: array
-            description: inputs with which the rules are getting scanned.
-            items:
-              type: string
-          applicable_service:
-            type: string
-            description: resource types which are scanned against the resource configurations.
-        type: object
-    ScannerRuleList:
-      properties:
-        rules:
-          type: array
-          description: The list of scanner rules.
-          items:
-            $ref: '#/components/schemas/ScannerListResponseDetails'
-      type: object
     ModelError:
       required:
       - message
@@ -118,6 +110,14 @@ components:
         message:
           type: string
           description: Error response message.
+      type: object
+    ScannerRuleList:
+      properties:
+        rules:
+          type: array
+          description: The list of scanner rules.
+          items:
+            $ref: '#/components/schemas/ScannerListResponseDetails'
       type: object
   securitySchemes:
     auth_token:

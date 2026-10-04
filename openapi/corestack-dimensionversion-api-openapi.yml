@@ -274,198 +274,6 @@ components:
           items:
             type: string
       type: object
-    GroupingRuleCostAnomalyConfiguration:
-      required:
-      - notification
-      - threshold
-      properties:
-        threshold:
-          description: Cost Anomaly Threshold for Grouping Rule
-          $ref: '#/components/schemas/GroupingRuleCostAnomalyThreshold'
-        notification:
-          description: Cost Anomaly Notification Configuration for Grouping Rule
-          $ref: '#/components/schemas/GroupingRuleCostAnomalyNotification'
-      type: object
-    GroupingRuleCostAnomalyThreshold:
-      required:
-      - impact
-      - op
-      properties:
-        impact:
-          description: Cost impact conditions to trigger anomaly detection for this dimension
-          $ref: '#/components/schemas/GroupingRuleCostAnomalyImpact'
-        minimum_cost_spend:
-          type: number
-          description: Minimum cost spend to trigger anomaly detection for this Grouping Rule
-          default: 0.0
-        op:
-          type: string
-          description: Operator to combine the threshold conditions
-          example: AND
-          enum:
-          - AND
-          - OR
-          x-cs-enum-type: CostAnomalyThresholdOperator
-      type: object
-    DimensionDefinitionVersionBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/DimensionDefinitionVersion'
-      type: object
-    AccessGrantedRolesAndUserGroups:
-      allOf:
-      - $ref: '#/components/schemas/AccessGrantedUserGroups'
-      - properties:
-          roles:
-            type: array
-            description: Roles explicitly denied access by tenant
-            items:
-              $ref: '#/components/schemas/AccessGrantedRoles'
-        type: object
-    AccessGrantedRoles:
-      required:
-      - tenant_id
-      properties:
-        tenant_id:
-          type: string
-          description: Tenant ID explicitly denied access
-          x-cs-type: ObjectId
-        role_ids:
-          type: array
-          description: Role IDs under this tenant explicitly denied access
-          items:
-            type: string
-            x-cs-type: ObjectId
-      type: object
-    GroupingRuleCostAnomalyNotification:
-      required:
-      - daily_summary_email_enabled
-      - notifications_enabled
-      - notify_on_detection
-      properties:
-        notifications_enabled:
-          type: boolean
-          description: Is Notifications Enabled for Grouping Rule
-        daily_summary_email_enabled:
-          type: boolean
-          description: Is Daily Summary Notification Enabled for Grouping Rule
-        notify_on_detection:
-          type: boolean
-          description: Is Notify On Detection Enabled for Grouping Rule
-        notify_on_detection_emails:
-          type: array
-          description: Emails to notify immediately on anomaly detection
-          default: []
-          items:
-            type: string
-        daily_summary_emails:
-          type: array
-          description: Emails to send daily summary notification
-          default: []
-          items:
-            type: string
-        notify_on_detection_teams_webhooks:
-          type: array
-          description: Microsoft Teams webhook URLs to notify on anomaly detection
-          default: []
-          items:
-            type: string
-        notify_on_detection_webhooks:
-          type: array
-          description: Webhook URLs (Slack or generic) to notify on anomaly detection
-          default: []
-          items:
-            type: string
-        daily_summary_teams_webhooks:
-          type: array
-          description: Microsoft Teams webhook URLs for daily summary notification
-          default: []
-          items:
-            type: string
-        daily_summary_webhooks:
-          type: array
-          description: Webhook URLs (Slack or generic) for daily summary notification
-          default: []
-          items:
-            type: string
-      type: object
-    GroupingRuleCostAnomalyImpact:
-      required:
-      - op
-      properties:
-        minimum_cost_impact:
-          type: number
-          description: Minimum cost impact to trigger anomaly detection for this dimension
-          default: 0.0
-        minimum_cost_impact_percentage:
-          type: number
-          description: Minimum cost impact to trigger anomaly detection for this dimension
-          default: 0.0
-        op:
-          type: string
-          description: Operator to combine the cost impact conditions
-          example: OR
-          enum:
-          - OR
-          x-cs-enum-type: CostAnomalyDimensionImpactOperator
-      type: object
-    DimensionGroupingRule:
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: Name of the Grouping Rule
-        description:
-          type: string
-          description: Grouping Rule Description
-        grouping_rule_id:
-          type: string
-          description: ID of the Dimension grouping (system generated)
-        rule_type:
-          type: string
-          description: Type of Grouping Rule
-          example: System
-          enum:
-          - System
-          - UserDefined
-          x-cs-enum-type: GroupingRuleType
-        attributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/AttributeValueBase'
-        filters:
-          description: Conditions applied to the grouping
-          $ref: '#/components/schemas/QueryOperator'
-        platform_filters:
-          description: Conditions applied to the grouping
-          $ref: '#/components/schemas/QueryOperator'
-        access_granted_identities:
-          description: Identities allowed to access this grouping rule
-          $ref: '#/components/schemas/AccessGrantedRolesAndUserGroups'
-        dependent_grouping_rule:
-          type: array
-          description: Other Dimension Groupings associated with the grouping rule
-          items:
-            $ref: '#/components/schemas/DependentDimension'
-        cost_anomaly_configuration:
-          description: Cost Anomaly configuration for this grouping rule
-          $ref: '#/components/schemas/GroupingRuleCostAnomalyConfiguration'
-        priority:
-          type: integer
-          description: Priority of the Grouping Rule for evaluation order
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
     QueryOperator:
       required:
       - __type
@@ -964,23 +772,135 @@ components:
           description: Enable Unallocated Cost grouping rule for this Dimension Version
           default: false
       type: object
-    DependentDimension:
+    DimensionGroupingRule:
       required:
-      - dimension_id
-      - grouping_rule_ids
+      - name
       properties:
-        dimension_id:
+        name:
           type: string
-          description: Id of the Dependent Dimension
-        grouping_rule_ids:
+          description: Name of the Grouping Rule
+        description:
+          type: string
+          description: Grouping Rule Description
+        grouping_rule_id:
+          type: string
+          description: ID of the Dimension grouping (system generated)
+        rule_type:
+          type: string
+          description: Type of Grouping Rule
+          example: System
+          enum:
+          - System
+          - UserDefined
+          x-cs-enum-type: GroupingRuleType
+        attributes:
           type: array
-          description: Ids of the Dependent Dimension Grouping rules
           items:
-            type: string
+            $ref: '#/components/schemas/AttributeValueBase'
+        filters:
+          description: Conditions applied to the grouping
+          $ref: '#/components/schemas/QueryOperator'
+        platform_filters:
+          description: Conditions applied to the grouping
+          $ref: '#/components/schemas/QueryOperator'
+        access_granted_identities:
+          description: Identities allowed to access this grouping rule
+          $ref: '#/components/schemas/AccessGrantedRolesAndUserGroups'
+        dependent_grouping_rule:
+          type: array
+          description: Other Dimension Groupings associated with the grouping rule
+          items:
+            $ref: '#/components/schemas/DependentDimension'
+        cost_anomaly_configuration:
+          description: Cost Anomaly configuration for this grouping rule
+          $ref: '#/components/schemas/GroupingRuleCostAnomalyConfiguration'
         priority:
           type: integer
-          description: Priority of the Dependent Dimension Grouping Rule for evaluation order
-          default: 0
+          description: Priority of the Grouping Rule for evaluation order
+      type: object
+    AccessGrantedUserGroups:
+      properties:
+        user_groups:
+          type: array
+          description: User groups explicitly denied access
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    BaseDefinitionVersion:
+      properties:
+        sysId:
+          type: string
+          description: Identifier of the version
+        createdOn:
+          type: string
+          format: date-time
+          description: Version created on
+        updatedOn:
+          type: string
+          format: date-time
+          description: Version  updated on
+        version:
+          type: integer
+          default: Sequence number of the version
+        definition:
+          description: Reference to the definition
+          $ref: '#/components/schemas/RecordIdentity'
+        predecessor:
+          description: Reference to the previous version
+          $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    GroupingRuleCostAnomalyNotification:
+      required:
+      - daily_summary_email_enabled
+      - notifications_enabled
+      - notify_on_detection
+      properties:
+        notifications_enabled:
+          type: boolean
+          description: Is Notifications Enabled for Grouping Rule
+        daily_summary_email_enabled:
+          type: boolean
+          description: Is Daily Summary Notification Enabled for Grouping Rule
+        notify_on_detection:
+          type: boolean
+          description: Is Notify On Detection Enabled for Grouping Rule
+        notify_on_detection_emails:
+          type: array
+          description: Emails to notify immediately on anomaly detection
+          default: []
+          items:
+            type: string
+        daily_summary_emails:
+          type: array
+          description: Emails to send daily summary notification
+          default: []
+          items:
+            type: string
+        notify_on_detection_teams_webhooks:
+          type: array
+          description: Microsoft Teams webhook URLs to notify on anomaly detection
+          default: []
+          items:
+            type: string
+        notify_on_detection_webhooks:
+          type: array
+          description: Webhook URLs (Slack or generic) to notify on anomaly detection
+          default: []
+          items:
+            type: string
+        daily_summary_teams_webhooks:
+          type: array
+          description: Microsoft Teams webhook URLs for daily summary notification
+          default: []
+          items:
+            type: string
+        daily_summary_webhooks:
+          type: array
+          description: Webhook URLs (Slack or generic) for daily summary notification
+          default: []
+          items:
+            type: string
       type: object
     RecordIdentity:
       properties:
@@ -995,22 +915,33 @@ components:
           type: string
           description: Context of the tracked item
       type: object
-    DimensionDefinitionVersion:
-      allOf:
-      - $ref: '#/components/schemas/BaseDefinitionVersion'
-      - properties:
-          details:
-            description: Details of the version
-            $ref: '#/components/schemas/DimensionDefinitionConfiguration'
-        type: object
-    AccessGrantedUserGroups:
+    DimensionDefinitionVersionBatchResponse:
       properties:
-        user_groups:
-          type: array
-          description: User groups explicitly denied access
-          items:
-            type: string
-            x-cs-type: ObjectId
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/DimensionDefinitionVersion'
+      type: object
+    GroupingRuleCostAnomalyImpact:
+      required:
+      - op
+      properties:
+        minimum_cost_impact:
+          type: number
+          description: Minimum cost impact to trigger anomaly detection for this dimension
+          default: 0.0
+        minimum_cost_impact_percentage:
+          type: number
+          description: Minimum cost impact to trigger anomaly detection for this dimension
+          default: 0.0
+        op:
+          type: string
+          description: Operator to combine the cost impact conditions
+          example: OR
+          enum:
+          - OR
+          x-cs-enum-type: CostAnomalyDimensionImpactOperator
       type: object
     AttributeDefinitionBase:
       required:
@@ -1035,28 +966,87 @@ components:
         subtype_name: AttributeDefinitionForNumber
       - subtype_model: AttributeDefinitionForDateTime
         subtype_name: AttributeDefinitionForDateTime
-    BaseDefinitionVersion:
+    DimensionDefinitionVersion:
+      allOf:
+      - $ref: '#/components/schemas/BaseDefinitionVersion'
+      - properties:
+          details:
+            description: Details of the version
+            $ref: '#/components/schemas/DimensionDefinitionConfiguration'
+        type: object
+    AccessGrantedRoles:
+      required:
+      - tenant_id
       properties:
-        sysId:
+        tenant_id:
           type: string
-          description: Identifier of the version
-        createdOn:
+          description: Tenant ID explicitly denied access
+          x-cs-type: ObjectId
+        role_ids:
+          type: array
+          description: Role IDs under this tenant explicitly denied access
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    GroupingRuleCostAnomalyConfiguration:
+      required:
+      - notification
+      - threshold
+      properties:
+        threshold:
+          description: Cost Anomaly Threshold for Grouping Rule
+          $ref: '#/components/schemas/GroupingRuleCostAnomalyThreshold'
+        notification:
+          description: Cost Anomaly Notification Configuration for Grouping Rule
+          $ref: '#/components/schemas/GroupingRuleCostAnomalyNotification'
+      type: object
+    GroupingRuleCostAnomalyThreshold:
+      required:
+      - impact
+      - op
+      properties:
+        impact:
+          description: Cost impact conditions to trigger anomaly detection for this dimension
+          $ref: '#/components/schemas/GroupingRuleCostAnomalyImpact'
+        minimum_cost_spend:
+          type: number
+          description: Minimum cost spend to trigger anomaly detection for this Grouping Rule
+          default: 0.0
+        op:
           type: string
-          format: date-time
-          description: Version created on
-        updatedOn:
+          description: Operator to combine the threshold conditions
+          example: AND
+          enum:
+          - AND
+          - OR
+          x-cs-enum-type: CostAnomalyThresholdOperator
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
           type: string
-          format: date-time
-          description: Version  updated on
-        version:
+          description: Error response message.
+      type: object
+    DependentDimension:
+      required:
+      - dimension_id
+      - grouping_rule_ids
+      properties:
+        dimension_id:
+          type: string
+          description: Id of the Dependent Dimension
+        grouping_rule_ids:
+          type: array
+          description: Ids of the Dependent Dimension Grouping rules
+          items:
+            type: string
+        priority:
           type: integer
-          default: Sequence number of the version
-        definition:
-          description: Reference to the definition
-          $ref: '#/components/schemas/RecordIdentity'
-        predecessor:
-          description: Reference to the previous version
-          $ref: '#/components/schemas/RecordIdentity'
+          description: Priority of the Dependent Dimension Grouping Rule for evaluation order
+          default: 0
       type: object
     AttributeValueBase:
       required:
@@ -1078,6 +1068,16 @@ components:
         subtype_name: AttributeValueForNumber
       - subtype_model: AttributeValueForDateTime
         subtype_name: AttributeValueForDateTime
+    AccessGrantedRolesAndUserGroups:
+      allOf:
+      - $ref: '#/components/schemas/AccessGrantedUserGroups'
+      - properties:
+          roles:
+            type: array
+            description: Roles explicitly denied access by tenant
+            items:
+              $ref: '#/components/schemas/AccessGrantedRoles'
+        type: object
   securitySchemes:
     auth_token:
       type: apiKey

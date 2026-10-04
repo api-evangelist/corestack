@@ -121,24 +121,6 @@ paths:
         required: true
 components:
   schemas:
-    BillingCommitmentRequest:
-      required:
-      - service_account_ids
-      properties:
-        service_account_ids:
-          type: array
-          items:
-            type: string
-            description: List of Service account ids
-            x-cs-type: ObjectId
-      type: object
-    BillingCommitmentDetail:
-      properties:
-        billing_commitments:
-          type: array
-          items:
-            $ref: '#/components/schemas/BillingCommitmentDefinition'
-      type: object
     BillingCommitmentBase:
       properties:
         remaining_commitment_amount:
@@ -207,31 +189,6 @@ components:
           - ZAR
           x-cs-enum-type: Currency
       type: object
-    BillingCommitmentEventsRequest:
-      required:
-      - service_account_id
-      properties:
-        service_account_id:
-          type: string
-          description: Service Account IDs
-          x-cs-type: ObjectId
-        start_date:
-          type: string
-          format: date
-          description: Start Date of Billing commitment
-        end_date:
-          type: string
-          format: date
-          description: End Date of Billing commitment
-      type: object
-    BillingCommitmentBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/BillingCommitmentDetail'
-      type: object
     ModelError:
       required:
       - message
@@ -239,6 +196,13 @@ components:
         message:
           type: string
           description: Error response message.
+      type: object
+    BillingCommitmentDetail:
+      properties:
+        billing_commitments:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingCommitmentDefinition'
       type: object
     BillingCommitmentEvent:
       allOf:
@@ -261,6 +225,42 @@ components:
             format: date-time
             description: Event Transaction Date
         type: object
+    BillingCommitmentBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/BillingCommitmentDetail'
+      type: object
+    BillingCommitmentRequest:
+      required:
+      - service_account_ids
+      properties:
+        service_account_ids:
+          type: array
+          items:
+            type: string
+            description: List of Service account ids
+            x-cs-type: ObjectId
+      type: object
+    BillingCommitmentEventsRequest:
+      required:
+      - service_account_id
+      properties:
+        service_account_id:
+          type: string
+          description: Service Account IDs
+          x-cs-type: ObjectId
+        start_date:
+          type: string
+          format: date
+          description: Start Date of Billing commitment
+        end_date:
+          type: string
+          format: date
+          description: End Date of Billing commitment
+      type: object
     BillingCommitmentDefinition:
       allOf:
       - $ref: '#/components/schemas/BillingCommitmentBase'

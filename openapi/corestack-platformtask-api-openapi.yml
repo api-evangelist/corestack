@@ -182,80 +182,6 @@ paths:
         required: true
 components:
   schemas:
-    PlatformTaskProperties:
-      properties:
-        days:
-          type: integer
-          description: Number of days for backfill
-          default: 30
-      type: object
-    PlatformTaskResponse:
-      properties:
-        service_account_id:
-          type: string
-          description: Service Account ID
-        assigned_tasks:
-          type: array
-          description: Assigned tasks
-          items:
-            $ref: '#/components/schemas/PlatformAssignedTasks'
-      type: object
-    PlatformTaskRequest:
-      required:
-      - service_account_id
-      - task
-      properties:
-        service_account_id:
-          type: string
-          description: Service Account ID
-        task:
-          type: string
-          description: Platform related background tasks
-          example: backfill
-          enum:
-          - backfill
-          - push_logs
-          - restart
-          x-cs-enum-type: PlatformTasks
-        properties:
-          description: Task specific properties (number of days for backfill)
-          $ref: '#/components/schemas/PlatformTaskProperties'
-      type: object
-    PlatformLogsResponse:
-      properties:
-        message:
-          type: string
-          description: Additional information about the log submission
-      type: object
-    PlatformTaskUpdateRequest:
-      required:
-      - status
-      - task
-      - task_id
-      properties:
-        task_id:
-          type: string
-          description: Unique ID of the task to be updated
-        task:
-          type: string
-          description: Task to be updated
-          example: backfill
-          enum:
-          - backfill
-          - push_logs
-          - restart
-          x-cs-enum-type: PlatformTasks
-        status:
-          type: string
-          description: Updated status of the task
-          example: new
-          enum:
-          - new
-          - in_progress
-          - completed
-          - failed
-          x-cs-enum-type: PlatformTaskStatus
-      type: object
     ModelError:
       required:
       - message
@@ -264,13 +190,12 @@ components:
           type: string
           description: Error response message.
       type: object
-    PlatformLogsRequest:
+    PlatformTaskProperties:
       properties:
-        logs_list:
-          type: array
-          description: List of log entries
-          items:
-            $ref: '#/components/schemas/PlatformLogs'
+        days:
+          type: integer
+          description: Number of days for backfill
+          default: 30
       type: object
     PlatformAssignedTasks:
       properties:
@@ -323,6 +248,81 @@ components:
         node:
           type: string
           description: Node name
+      type: object
+    PlatformTaskResponse:
+      properties:
+        service_account_id:
+          type: string
+          description: Service Account ID
+        assigned_tasks:
+          type: array
+          description: Assigned tasks
+          items:
+            $ref: '#/components/schemas/PlatformAssignedTasks'
+      type: object
+    PlatformTaskRequest:
+      required:
+      - service_account_id
+      - task
+      properties:
+        service_account_id:
+          type: string
+          description: Service Account ID
+        task:
+          type: string
+          description: Platform related background tasks
+          example: backfill
+          enum:
+          - backfill
+          - push_logs
+          - restart
+          x-cs-enum-type: PlatformTasks
+        properties:
+          description: Task specific properties (number of days for backfill)
+          $ref: '#/components/schemas/PlatformTaskProperties'
+      type: object
+    PlatformLogsResponse:
+      properties:
+        message:
+          type: string
+          description: Additional information about the log submission
+      type: object
+    PlatformLogsRequest:
+      properties:
+        logs_list:
+          type: array
+          description: List of log entries
+          items:
+            $ref: '#/components/schemas/PlatformLogs'
+      type: object
+    PlatformTaskUpdateRequest:
+      required:
+      - status
+      - task
+      - task_id
+      properties:
+        task_id:
+          type: string
+          description: Unique ID of the task to be updated
+        task:
+          type: string
+          description: Task to be updated
+          example: backfill
+          enum:
+          - backfill
+          - push_logs
+          - restart
+          x-cs-enum-type: PlatformTasks
+        status:
+          type: string
+          description: Updated status of the task
+          example: new
+          enum:
+          - new
+          - in_progress
+          - completed
+          - failed
+          x-cs-enum-type: PlatformTaskStatus
       type: object
   securitySchemes:
     auth_token:

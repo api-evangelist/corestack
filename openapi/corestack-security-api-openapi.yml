@@ -1752,47 +1752,38 @@ paths:
         required: true
 components:
   schemas:
-    SecurityDashboardVulnerabilityAccountDetails:
-      required:
-      - cloud_account_id
-      - service_account_name
-      - tenant_id
+    SecurityDashboardVulnerabilityMonth:
       properties:
-        tenant_id:
+        month:
           type: string
-          description: Tenant value
-        cloud_account_id:
-          type: string
-          description: Cloud Account value
-        service_account_name:
-          type: string
-          description: Service Account Name
-        cloud_provider:
-          type: string
-          description: Visibility for the Cloud Provider
-          example: AWS
-          enum:
-          - AWS
-          - Azure
-          - AzureStack
-          - Azure_CSP
-          - Azure_CSP-Direct
-          - Azure_EA
-          - Azure_MCA
-          - Cloudstack
-          - GCP
-          - MS_VMM
-          - OCI
-          - Openstack
-          - PrivateCloud
-          - Rackspace
-          - VMware
-          - VMware_VCD
-          - vCenter
-          x-cs-enum-type: CloudServiceName
+          description: Vulnerability Month
         count_by_severity:
           description: Vulnerability Severity Values
           $ref: '#/components/schemas/SecurityDashboardSeverity'
+      type: object
+    SecurityPostureTenantResponse:
+      required:
+      - page_count
+      - tenants
+      - total_count
+      properties:
+        page_count:
+          type: integer
+          description: Total number of page count
+        tenants:
+          type: object
+          description: Tenant wise count details
+        total_count:
+          type: integer
+          description: Number of Tenants
+      type: object
+    SecurityDashboardThreatsSummaryAccountResponse:
+      properties:
+        summary_by_accounts:
+          type: array
+          description: Visibility of the Threats by Account
+          items:
+            $ref: '#/components/schemas/SecurityDashboardThreatsAccountDetails'
       type: object
     VulnerabilityResponse:
       allOf:
@@ -1807,113 +1798,20 @@ components:
             description: Reference identifier to master vulnerability source.
             x-cs-type: ObjectId
         type: object
-    InfraThreatsTrendSummary:
+    SecurityDashboardViolationByResourceCategoryCount:
       properties:
-        date:
-          type: string
-          format: date
-          description: Date of the time period
-        severity:
-          type: string
-          description: Severity of the threat
-          example: Critical
-          enum:
-          - Critical
-          - High
-          - Info
-          - Low
-          - Medium
-          - None
-          - Unknown
-          x-cs-enum-type: Severity
-        count:
-          type: integer
-          description: Count of threats for the given date and severity
-      type: object
-    SecurityDashboardThreatsAccountDetails:
-      properties:
-        tenant_id:
-          type: string
-          description: Tenant value
         cloud_account_id:
           type: string
-          description: Cloud Account value
-        service_account_name:
+          description: Cloud Account ID
+        resource_category:
           type: string
-          description: Service Account Name
-        cloud_provider:
-          type: string
-          description: Visibility for the Cloud Provider
-          example: AWS
-          enum:
-          - AWS
-          - Azure
-          - AzureStack
-          - Azure_CSP
-          - Azure_CSP-Direct
-          - Azure_EA
-          - Azure_MCA
-          - Cloudstack
-          - GCP
-          - MS_VMM
-          - OCI
-          - Openstack
-          - PrivateCloud
-          - Rackspace
-          - VMware
-          - VMware_VCD
-          - vCenter
-          x-cs-enum-type: CloudServiceName
-        count_by_severity:
-          description: Threats Severity Values
-          $ref: '#/components/schemas/SecurityDashboardSeverity'
-      type: object
-    InfraVulnerabilitiesTrendSummaryRequest:
-      allOf:
-      - $ref: '#/components/schemas/InfraIssuesTimeRangeFilter'
-      - properties:
-          group_by:
-            type: array
-            description: Fields to group the infrastructure vulnerability results
-            items:
-              type: string
-              description: Field to group the infrastructure vulnerability results
-              example: severity
-              enum:
-              - severity
-              x-cs-enum-type: InfraVulnerabilitiesTrendGroupBy
-          filters:
-            description: Filters applied to the issues trend data.
-            $ref: '#/components/schemas/SecurityInfraIssuesDashboardFilters'
-        type: object
-    ObjectIdBatchRequest:
-      properties:
-        ids:
-          type: array
-          items:
-            type: string
-            x-cs-type: ObjectId
-      type: object
-    SecurityDashboardViolationsByResourceCategoryResponse:
-      properties:
-        summary_by_provider_category:
-          type: array
-          description: Visibility of the Config Violation by CloudProvider
-          items:
-            $ref: '#/components/schemas/SecurityDashboardViolationByResourceCategoryCount'
-      type: object
-    SecurityDashboardRequest:
-      properties:
-        filter:
-          $ref: '#/components/schemas/SecurityDashboardAccountFilters'
-      type: object
-    SecurityDashboardThreatSummaryMonthResponse:
-      properties:
-        summary_by_month:
-          type: array
-          description: Visibility of the Threats by Month
-          items:
-            $ref: '#/components/schemas/SecurityDashboardThreatsMonth'
+          description: Name of Resource Category
+        guardrail_violation_count:
+          type: integer
+          description: Violation Total Count by Resource Category
+        resource_count:
+          type: integer
+          description: Total Resource Count
       type: object
     InfraMisConfigurationsTrendSummaryRequest:
       allOf:
@@ -1933,892 +1831,13 @@ components:
             description: Filters applied to the issues trend data.
             $ref: '#/components/schemas/SecurityInfraIssuesDashboardFilters'
         type: object
-    SecurityDashboardThreatsMonth:
-      properties:
-        month:
-          type: string
-          format: date
-          description: Threats Month
-        count_by_severity:
-          description: Threats Severity Values
-          $ref: '#/components/schemas/SecurityDashboardSeverity'
-      type: object
-    InfraThreatsTrendListRequestFilters:
-      allOf:
-      - $ref: '#/components/schemas/InfraIssuesTimeRangeFilter'
-      - properties:
-          filters:
-            description: Filters applied to the issues trend data.
-            $ref: '#/components/schemas/SecurityInfraIssuesDashboardFilters'
-          search:
-            type: string
-            description: Search text to filter the infrastructure threats based on resource name, resource id, service name, etc.
-        type: object
-    SecurityInfraIssuesDashboardFilters:
-      required:
-      - tenant_id
-      properties:
-        tenant_id:
-          type: string
-          description: Tenant ID to filter the issues. This can be fetched from the List Tenants API call.
-          x-cs-type: ObjectId
-        query:
-          description: Query based on Cloud Providers, Cloud Account Ids, Severities, ResourceCategories, ResourceTypes, Resources
-          $ref: '#/components/schemas/QueryOperator'
-      type: object
-    SecurityDashboardViolationsByRegionResponse:
+    SecurityDashboardThreatsByRegionResponse:
       properties:
         summary_by_cloudprovider:
           type: array
-          description: Visibility of the Config Violation by CloudProvider
+          description: Visibility of the threats by CloudProvider
           items:
-            $ref: '#/components/schemas/SecurityDashboardViolationByRegionCount'
-      type: object
-    SecurityDashboardAccountFilters:
-      properties:
-        tenants:
-          type: array
-          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
-          items:
-            type: string
-        clouds:
-          type: array
-          description: Define the Cloud Providers to include.
-          items:
-            type: string
-            description: Cloud Provider to select
-            example: AWS
-            enum:
-            - AWS
-            - Azure
-            - AzureStack
-            - Azure_CSP
-            - Azure_CSP-Direct
-            - Azure_EA
-            - Azure_MCA
-            - Cloudstack
-            - GCP
-            - MS_VMM
-            - OCI
-            - Openstack
-            - PrivateCloud
-            - Rackspace
-            - VMware
-            - VMware_VCD
-            - vCenter
-            x-cs-enum-type: CloudServiceName
-        cloud_accounts:
-          type: array
-          description: Specify the Cloud Account IDs.
-          items:
-            type: string
-      type: object
-    InfraThreatsTrendListFiltersSortCriteria:
-      required:
-      - column
-      properties:
-        column:
-          type: string
-          example: resource
-          enum:
-          - resource
-          - severity
-          - service_name
-          - resource_id
-          - status
-          - resource_name
-          x-cs-enum-type: InfraThreatsTrendListFiltersSortColumn
-        ascending:
-          type: boolean
-      type: object
-    ThreatVulnerabilityBaseResponse:
-      properties:
-        service_account_id:
-          type: string
-          description: ID of the service account to which the threat/vulnerability belongs to.
-          x-cs-type: ObjectId
-        cloud_provider:
-          type: string
-          description: Cloud Provider of the service account
-          example: AWS
-          enum:
-          - AWS
-          - Azure
-          - AzureStack
-          - Azure_CSP
-          - Azure_CSP-Direct
-          - Azure_EA
-          - Azure_MCA
-          - Cloudstack
-          - GCP
-          - MS_VMM
-          - OCI
-          - Openstack
-          - PrivateCloud
-          - Rackspace
-          - VMware
-          - VMware_VCD
-          - vCenter
-          x-cs-enum-type: CloudServiceName
-        tenant_id:
-          type: string
-          description: Tenant ID where the service account belongs to
-          x-cs-type: ObjectId
-        resource_id:
-          type: string
-          description: ID of the resource where the threat/vulnerability is observed
-        resource_name:
-          type: string
-          description: Name of the resource where the threat/vulnerability is observed
-        resource_category:
-          type: string
-          description: Category of the resource to which the threat/vulnerability belongs to.
-        resource_type:
-          type: string
-          description: Type of the resource to which the threat/vulnerability belongs to.
-        resource:
-          type: string
-          description: Resource to which the threat/vulnerability belongs to.
-        region:
-          type: string
-          description: Region the impacted resource is located in.
-        location:
-          type: string
-          description: Location the impacted resource is located in.
-        resource_group:
-          type: string
-          description: Resource Group of the resource to which the threat/vulnerability belongs to.
-        severity:
-          type: string
-          description: Severity of the threat/vulnerability
-          example: Critical
-          enum:
-          - Critical
-          - High
-          - Info
-          - Low
-          - Medium
-          - None
-          - Unknown
-          x-cs-enum-type: Severity
-        status:
-          type: string
-          description: Status of the threats/vulnerabilities
-          example: active
-          enum:
-          - active
-          - closed
-          - inactive
-          - resolved
-          - skipped
-          - suppressed
-          x-cs-enum-type: ThreatVulnerabilityStatus
-        source:
-          type: string
-          description: Source of the threat/vulnerability
-        issue_type:
-          type: string
-          description: Issue Type of the threat/vulnerability
-        provider_issue_id:
-          type: string
-          description: Unique id for threat/vulnerability as provided by the cloud provider
-        title:
-          type: string
-          description: Title of the threat/vulnerability
-        created_at:
-          type: string
-          format: date-time
-          description: Date and time when the threat/vulnerability was created in corestack
-        updated_at:
-          type: string
-          format: date-time
-          description: Date and time when the threat/vulnerability was updated in corestack
-        description:
-          type: string
-          description: Description of the threat/vulnerability
-        detected_at:
-          type: string
-          format: date-time
-          description: Date and time when the threat/vulnerability was detected
-        recommendation:
-          type: string
-          description: Recommendation for the threat/vulnerability
-        remediation:
-          type: string
-          description: Recommended remediation for the threat/vulnerability
-        source_data:
-          type: object
-          description: Source data of the threat/vulnerability captured from the cloud.
-      type: object
-    InfraIssuesTimeRangeFilter:
-      required:
-      - granularity
-      - start_date
-      properties:
-        start_date:
-          type: string
-          format: date-time
-          description: Start date of the time period
-        end_date:
-          type: string
-          format: date-time
-          description: End date of the time period
-        granularity:
-          type: string
-          description: Granularity for aggregating issues trend data
-          example: day
-          enum:
-          - day
-          - month
-          x-cs-enum-type: InfraIssuesTrendGranularity
-      type: object
-    ThreatVulnerabilityFilters:
-      allOf:
-      - $ref: '#/components/schemas/SecurityInfraDashboardBaseFilters'
-      - properties:
-          search:
-            type: string
-            description: Search text to filter the threats/vulnerabilities based on Resource Name, Resource ID, Findings ID
-        type: object
-    ListContext:
-      properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
-      type: object
-    ComplianceServiceAccountSummary:
-      allOf:
-      - $ref: '#/components/schemas/ComplianceTenantSummary'
-      - properties:
-          service_account_id:
-            type: string
-            x-cs-type: ObjectId
-        type: object
-    ComplianceControls:
-      properties:
-        month:
-          type: string
-        total_controls:
-          type: integer
-          description: Total number of controls
-        automated_controls:
-          type: integer
-          description: Total number of automated controls
-        assessed_controls:
-          type: integer
-          description: Total number of assessed controls
-        success:
-          type: integer
-          description: Total number of compliance controls
-        violations:
-          type: integer
-          description: Total number of non-compliance controls
-        errors:
-          type: integer
-          description: Total number of controls with error
-      type: object
-    SecurityDashboardAccessViolationByTrend:
-      properties:
-        month:
-          type: string
-          format: date
-          description: Access Violation Month
-        count_by_severity:
-          description: Access Violations Severity Values
-          $ref: '#/components/schemas/SecurityDashboardSeverity'
-      type: object
-    ThreatResponse:
-      allOf:
-      - $ref: '#/components/schemas/ThreatVulnerabilityBaseResponse'
-      - properties:
-          intent:
-            type: array
-            description: List of threat intents, representing the potential goals or purposes behind the threat, such as "Persistence", "CredentialAccess", or "DefenseEvasion". These help categorize and understand the threat behavior.
-            items:
-              type: string
-          threat_id:
-            type: string
-            description: Unique identifier of the threat.
-            x-cs-type: ObjectId
-        type: object
-    InfraVulnerabilitiesTrendListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/InfraVulnerabilitiesTrendListFiltersSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/InfraVulnerabilitiesTrendListRequestFilters'
-      type: object
-    SecurityPostureResponse:
-      required:
-      - cloud_account
-      - page_count
-      - service
-      - total_count
-      properties:
-        service:
-          type: object
-          description: Service wise details of the security findings
-        cloud_account:
-          type: object
-          description: Cloud Account wise details of the security findings
-        total_count:
-          type: integer
-          description: Total count of cloud accounts
-        page_count:
-          type: integer
-          description: Total number of page count
-      type: object
-    InfraMisConfigurationsTrendSummary:
-      properties:
-        date:
-          type: string
-          format: date
-          description: Date of the time period
-        severity:
-          type: string
-          description: Severity of the misconfiguration
-          example: critical
-          enum:
-          - critical
-          - high
-          - medium
-          - low
-          - informational
-          x-cs-enum-type: MisconfigurationSeverity
-        count:
-          type: integer
-          description: Count of misconfigurations for the given date and severity
-      type: object
-    SecurityDashboardVulnerabilityRegionCount:
-      properties:
-        cloud_provider:
-          type: string
-          description: Visibility for the Cloud Provider
-          example: AWS
-          enum:
-          - AWS
-          - Azure
-          - AzureStack
-          - Azure_CSP
-          - Azure_CSP-Direct
-          - Azure_EA
-          - Azure_MCA
-          - Cloudstack
-          - GCP
-          - MS_VMM
-          - OCI
-          - Openstack
-          - PrivateCloud
-          - Rackspace
-          - VMware
-          - VMware_VCD
-          - vCenter
-          x-cs-enum-type: CloudServiceName
-        count_by_regions:
-          type: array
-          description: Vulnerability Count by region
-          items:
-            $ref: '#/components/schemas/SecurityDashboardVulnerabilityRegionValue'
-      type: object
-    SecurityInfraDashboardSummaryRequest:
-      allOf:
-      - $ref: '#/components/schemas/SecurityInfraDashboardBaseFilters'
-      - required:
-        - group_by
-        properties:
-          group_by:
-            type: array
-            items:
-              type: string
-              description: Group by field to aggregate the summary data.
-              example: Region
-              enum:
-              - Region
-              - Service_Account
-              - Resource_Category
-              - Resource_Type
-              - Severity
-              x-cs-enum-type: SecurityInfraDashboardSummaryGroupBy
-        type: object
-    SecurityDashboardViolationByRegionCount:
-      properties:
-        cloud_provider:
-          type: string
-          description: Visibility for the Cloud Provider
-          example: AWS
-          enum:
-          - AWS
-          - Azure
-          - AzureStack
-          - Azure_CSP
-          - Azure_CSP-Direct
-          - Azure_EA
-          - Azure_MCA
-          - Cloudstack
-          - GCP
-          - MS_VMM
-          - OCI
-          - Openstack
-          - PrivateCloud
-          - Rackspace
-          - VMware
-          - VMware_VCD
-          - vCenter
-          x-cs-enum-type: CloudServiceName
-        region:
-          type: string
-          description: Config Violation Count by region name
-        guardrail_violation_count:
-          type: integer
-          description: Violation Total Count by region
-      type: object
-    SecurityVulnerabilityResponse:
-      required:
-      - cloud_accounts
-      - count_summary
-      - findings_type
-      - resource_types
-      properties:
-        findings_type:
-          type: object
-          description: Visibility of the vulnerabilities by findings_type
-        resource_types:
-          type: object
-          description: Visibility of the vulnerabilities by resource_types
-        cloud_accounts:
-          type: object
-          description: Visibility of the vulnerabilities by cloud_accounts
-        count_summary:
-          type: object
-          description: Visibility of the vulnerabilities by count_summary
-      type: object
-    InfraMisConfiguration:
-      properties:
-        snapshot_date:
-          type: string
-          format: date-time
-          description: Snapshot date of the recommendation (YYYY-MM-DD format)
-        status:
-          type: string
-          description: Status of the policy resource recommendation
-          example: error
-          enum:
-          - error
-          - in_progress
-          - open
-          - resolved
-          - skipped
-          - system_skipped
-          x-cs-enum-type: PolicyResourceRecommendationStatus
-        count:
-          type: integer
-          description: Count value (0 for deleted, 1 for active)
-        policy_id:
-          type: string
-          description: Policy ID associated with the recommendation
-          x-cs-type: ObjectId
-        recommendation_definition_id:
-          type: string
-          description: Recommendation definition ID
-          x-cs-type: ObjectId
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the recommendation was created
-        service_account_id:
-          type: string
-          description: Cloud provider name
-          x-cs-type: ObjectId
-        resource_id:
-          type: string
-          description: Unique ID of the resource
-        resource:
-          type: string
-          description: Resource identifier
-        resource_name:
-          type: string
-          description: Name of the resource
-        region:
-          type: string
-          description: Region of the resource
-        resource_type:
-          type: string
-          description: Type of the resource
-        resource_category:
-          type: string
-          description: Category of the resource
-        resource_group:
-          type: string
-          description: Resource group of the resource
-        current_sku:
-          type: string
-          description: Current SKU (cost recommendations only)
-        recommended_sku:
-          type: string
-          description: Recommended SKU (cost recommendations only)
-        currency:
-          type: string
-          description: Currency code (cost recommendations only)
-          example: AED
-          enum:
-          - AED
-          - ALL
-          - ARS
-          - AUD
-          - BAM
-          - BDT
-          - BGN
-          - BHD
-          - BRL
-          - CAD
-          - CHF
-          - CLP
-          - CNY
-          - COP
-          - CRC
-          - CZK
-          - DKK
-          - EGP
-          - EUR
-          - GBP
-          - HKD
-          - HRK
-          - HUF
-          - IDR
-          - ILS
-          - INR
-          - ISK
-          - JPY
-          - KES
-          - KRW
-          - KWD
-          - KZT
-          - MOP
-          - MVR
-          - MXN
-          - MYR
-          - NOK
-          - NZD
-          - OMR
-          - PEN
-          - PHP
-          - PKR
-          - PLN
-          - QAR
-          - RON
-          - RSD
-          - RUB
-          - SAR
-          - SEK
-          - SGD
-          - THB
-          - TRY
-          - TWD
-          - USD
-          - VND
-          - ZAR
-          x-cs-enum-type: Currency
-        saving_per_day:
-          type: number
-          description: Estimated daily cost savings(cost recommendations only)
-        saving_per_month:
-          type: number
-          description: Estimated monthly cost saving(cost recommendations only)
-        saving_per_year:
-          type: number
-          description: Estimated yearly cost saving(cost recommendations only)
-      type: object
-    InfraMisConfigurationsTrendListFiltersSortCriteria:
-      required:
-      - column
-      properties:
-        column:
-          type: string
-          example: resource
-          enum:
-          - resource
-          - severity
-          - service_name
-          - resource_id
-          - resource_name
-          x-cs-enum-type: InfraMisConfigurationsTrendListFiltersSortColumn
-        ascending:
-          type: boolean
-      type: object
-    SecurityDashboardThreatsByResourceCategoryCount:
-      properties:
-        cloud_account_id:
-          type: string
-          description: Cloud Account Id
-        resource_category:
-          type: string
-          description: Name of the Resource Category
-        threat_count:
-          type: integer
-          description: Threats Total Count by resource category
-        resource_count:
-          type: integer
-          description: Total Count by Resource
-      type: object
-    SecurityDashboardVulnerabilitySummaryAccountResponse:
-      properties:
-        summary_by_accounts:
-          type: array
-          description: Visibility of the vulnerabilities by Account
-          items:
-            $ref: '#/components/schemas/SecurityDashboardVulnerabilityAccountDetails'
-      type: object
-    SecurityDashboardVulnerabilityRegionValue:
-      properties:
-        region:
-          type: string
-          description: Visibility of Region Name
-        vulnerabilityCount:
-          type: integer
-          description: Visibility of Vulnerability Count by region
-          default: 0
-      type: object
-    ListResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    SecurityDashboardViolationByResourceCategoryCount:
-      properties:
-        cloud_account_id:
-          type: string
-          description: Cloud Account ID
-        resource_category:
-          type: string
-          description: Name of Resource Category
-        guardrail_violation_count:
-          type: integer
-          description: Violation Total Count by Resource Category
-        resource_count:
-          type: integer
-          description: Total Resource Count
-      type: object
-    SecurityInfraDashboardSummaryDetails:
-      properties:
-        cloud_provider:
-          type: string
-          description: Cloud Provider of the service account
-          example: AWS
-          enum:
-          - AWS
-          - Azure
-          - AzureStack
-          - Azure_CSP
-          - Azure_CSP-Direct
-          - Azure_EA
-          - Azure_MCA
-          - Cloudstack
-          - GCP
-          - MS_VMM
-          - OCI
-          - Openstack
-          - PrivateCloud
-          - Rackspace
-          - VMware
-          - VMware_VCD
-          - vCenter
-          x-cs-enum-type: CloudServiceName
-        service_account_id:
-          type: string
-          description: ID of the service account to which the threat/vulnerability/misconfiguration belongs to.
-          x-cs-type: ObjectId
-        severity:
-          type: string
-          description: Severity values
-          example: Critical
-          enum:
-          - Critical
-          - High
-          - Info
-          - Low
-          - Medium
-          - None
-          - Unknown
-          x-cs-enum-type: Severity
-        region:
-          type: string
-          description: Region the impacted resource is located in.
-        resource_category:
-          type: string
-          description: Category of the resource to which the threat/vulnerability/misconfiguration belongs to.
-        resource_type:
-          type: string
-          description: Type of the resource to which the threat/vulnerability/misconfiguration belongs to.
-        resource_ids:
-          type: array
-          description: List of Resource ID(s) where the vulnerability/threat/misconfiguration is observed.
-          items:
-            type: string
-        ids:
-          type: array
-          description: List of Unique ID(s) for vulnerability/threat/misconfiguration depending on the context.
-          items:
-            type: string
-            x-cs-type: ObjectId
-      type: object
-    SecurityDashboardViolationsByMonthResponse:
-      properties:
-        summary_by_month:
-          type: array
-          description: Visibility of the Threats by Month
-          items:
-            $ref: '#/components/schemas/SecurityDashboardConfigViolationMonth'
-      type: object
-    SecurityDashboardViolationAccountDetails:
-      properties:
-        tenant_id:
-          type: string
-          description: Tenant value
-        cloud_account_id:
-          type: string
-          description: Cloud Account value
-        service_account_name:
-          type: string
-          description: Service Account Name
-        cloud_provider:
-          type: string
-          description: Visibility for the Cloud Provider
-          example: AWS
-          enum:
-          - AWS
-          - Azure
-          - AzureStack
-          - Azure_CSP
-          - Azure_CSP-Direct
-          - Azure_EA
-          - Azure_MCA
-          - Cloudstack
-          - GCP
-          - MS_VMM
-          - OCI
-          - Openstack
-          - PrivateCloud
-          - Rackspace
-          - VMware
-          - VMware_VCD
-          - vCenter
-          x-cs-enum-type: CloudServiceName
-        count_by_severity:
-          description: Severity Values
-          $ref: '#/components/schemas/SecurityDashboardSeverity'
-      type: object
-    InfraThreatsTrendListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/InfraThreatsTrendListFiltersSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/InfraThreatsTrendListRequestFilters'
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    SecurityDashboardVulnerabilitySummaryRegionResponse:
-      properties:
-        summary_by_cloudprovider:
-          type: array
-          description: Visibility of the vulnerabilities by Account
-          items:
-            $ref: '#/components/schemas/SecurityDashboardVulnerabilityRegionCount'
-      type: object
-    SecurityDashboardViolationsByAccountResponse:
-      properties:
-        summary_by_accounts:
-          type: array
-          description: Visibility of the Violations by Account
-          items:
-            $ref: '#/components/schemas/SecurityDashboardViolationAccountDetails'
-      type: object
-    SecurityPostureTenantResponse:
-      required:
-      - page_count
-      - tenants
-      - total_count
-      properties:
-        page_count:
-          type: integer
-          description: Total number of page count
-        tenants:
-          type: object
-          description: Tenant wise count details
-        total_count:
-          type: integer
-          description: Number of Tenants
-      type: object
-    InfraThreatsTrendSummaryRequest:
-      allOf:
-      - $ref: '#/components/schemas/InfraIssuesTimeRangeFilter'
-      - properties:
-          group_by:
-            type: array
-            description: Fields to group the infrastructure threat result
-            items:
-              type: string
-              description: Field to group the infrastructure threat results
-              example: severity
-              enum:
-              - severity
-              x-cs-enum-type: InfraThreatsTrendGroupBy
-          filters:
-            description: Filters applied to the issues trend data.
-            $ref: '#/components/schemas/SecurityInfraIssuesDashboardFilters'
-        type: object
-    SecurityVulnerabilitySummaryMonthResponse:
-      properties:
-        summary_by_month:
-          type: array
-          description: Visibility of the vulnerabilities by Month
-          items:
-            $ref: '#/components/schemas/SecurityDashboardVulnerabilityMonth'
-      type: object
-    SecurityInfraDashboardBaseFilters:
-      required:
-      - tenant_ids
-      properties:
-        tenant_ids:
-          type: array
-          description: List of Tenant IDs to filter the threats/vulnerabilities. This can be fetched from the List Tenants API call.
-          items:
-            type: string
-            x-cs-type: ObjectId
-        filters:
-          description: Query based on Cloud Providers, Cloud Account Ids, Statuses, Severities, ResourceCategories, ResourceTypes, Resources, Resource ID(s)
-          $ref: '#/components/schemas/QueryOperator'
+            $ref: '#/components/schemas/SecurityDashboardThreatsByRegionCount'
       type: object
     QueryOperator:
       required:
@@ -3280,6 +2299,316 @@ components:
         subtype_name: WorkloadQueryWorkloadType
       - subtype_model: WorkloadQueryWorkloadId
         subtype_name: WorkloadQueryWorkloadId
+    SecurityInfraIssuesDashboardFilters:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID to filter the issues. This can be fetched from the List Tenants API call.
+          x-cs-type: ObjectId
+        query:
+          description: Query based on Cloud Providers, Cloud Account Ids, Severities, ResourceCategories, ResourceTypes, Resources
+          $ref: '#/components/schemas/QueryOperator'
+      type: object
+    InfraMisConfigurationsTrendListRequestFilters:
+      allOf:
+      - $ref: '#/components/schemas/InfraIssuesTimeRangeFilter'
+      - properties:
+          filters:
+            description: Filters applied to the issues trend data.
+            $ref: '#/components/schemas/SecurityInfraIssuesDashboardFilters'
+          search:
+            type: string
+            description: Search text to filter the infrastructure misconfigurations based on resource name, resource id, service name, etc.
+        type: object
+    ThreatVulnerabilityBaseResponse:
+      properties:
+        service_account_id:
+          type: string
+          description: ID of the service account to which the threat/vulnerability belongs to.
+          x-cs-type: ObjectId
+        cloud_provider:
+          type: string
+          description: Cloud Provider of the service account
+          example: AWS
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          x-cs-enum-type: CloudServiceName
+        tenant_id:
+          type: string
+          description: Tenant ID where the service account belongs to
+          x-cs-type: ObjectId
+        resource_id:
+          type: string
+          description: ID of the resource where the threat/vulnerability is observed
+        resource_name:
+          type: string
+          description: Name of the resource where the threat/vulnerability is observed
+        resource_category:
+          type: string
+          description: Category of the resource to which the threat/vulnerability belongs to.
+        resource_type:
+          type: string
+          description: Type of the resource to which the threat/vulnerability belongs to.
+        resource:
+          type: string
+          description: Resource to which the threat/vulnerability belongs to.
+        region:
+          type: string
+          description: Region the impacted resource is located in.
+        location:
+          type: string
+          description: Location the impacted resource is located in.
+        resource_group:
+          type: string
+          description: Resource Group of the resource to which the threat/vulnerability belongs to.
+        severity:
+          type: string
+          description: Severity of the threat/vulnerability
+          example: Critical
+          enum:
+          - Critical
+          - High
+          - Info
+          - Low
+          - Medium
+          - None
+          - Unknown
+          x-cs-enum-type: Severity
+        status:
+          type: string
+          description: Status of the threats/vulnerabilities
+          example: active
+          enum:
+          - active
+          - closed
+          - inactive
+          - resolved
+          - skipped
+          - suppressed
+          x-cs-enum-type: ThreatVulnerabilityStatus
+        source:
+          type: string
+          description: Source of the threat/vulnerability
+        issue_type:
+          type: string
+          description: Issue Type of the threat/vulnerability
+        provider_issue_id:
+          type: string
+          description: Unique id for threat/vulnerability as provided by the cloud provider
+        title:
+          type: string
+          description: Title of the threat/vulnerability
+        created_at:
+          type: string
+          format: date-time
+          description: Date and time when the threat/vulnerability was created in corestack
+        updated_at:
+          type: string
+          format: date-time
+          description: Date and time when the threat/vulnerability was updated in corestack
+        description:
+          type: string
+          description: Description of the threat/vulnerability
+        detected_at:
+          type: string
+          format: date-time
+          description: Date and time when the threat/vulnerability was detected
+        recommendation:
+          type: string
+          description: Recommendation for the threat/vulnerability
+        remediation:
+          type: string
+          description: Recommended remediation for the threat/vulnerability
+        source_data:
+          type: object
+          description: Source data of the threat/vulnerability captured from the cloud.
+      type: object
+    SecurityVulnerabilityResponse:
+      required:
+      - cloud_accounts
+      - count_summary
+      - findings_type
+      - resource_types
+      properties:
+        findings_type:
+          type: object
+          description: Visibility of the vulnerabilities by findings_type
+        resource_types:
+          type: object
+          description: Visibility of the vulnerabilities by resource_types
+        cloud_accounts:
+          type: object
+          description: Visibility of the vulnerabilities by cloud_accounts
+        count_summary:
+          type: object
+          description: Visibility of the vulnerabilities by count_summary
+      type: object
+    SecurityDashboardVulnerabilityAccountDetails:
+      required:
+      - cloud_account_id
+      - service_account_name
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant value
+        cloud_account_id:
+          type: string
+          description: Cloud Account value
+        service_account_name:
+          type: string
+          description: Service Account Name
+        cloud_provider:
+          type: string
+          description: Visibility for the Cloud Provider
+          example: AWS
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          x-cs-enum-type: CloudServiceName
+        count_by_severity:
+          description: Vulnerability Severity Values
+          $ref: '#/components/schemas/SecurityDashboardSeverity'
+      type: object
+    SecurityDashboardVulnerabilityRegionCount:
+      properties:
+        cloud_provider:
+          type: string
+          description: Visibility for the Cloud Provider
+          example: AWS
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          x-cs-enum-type: CloudServiceName
+        count_by_regions:
+          type: array
+          description: Vulnerability Count by region
+          items:
+            $ref: '#/components/schemas/SecurityDashboardVulnerabilityRegionValue'
+      type: object
+    SecurityDashboardAccountFilters:
+      properties:
+        tenants:
+          type: array
+          description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+          items:
+            type: string
+        clouds:
+          type: array
+          description: Define the Cloud Providers to include.
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        cloud_accounts:
+          type: array
+          description: Specify the Cloud Account IDs.
+          items:
+            type: string
+      type: object
+    SecurityVulnerabilitySummaryMonthResponse:
+      properties:
+        summary_by_month:
+          type: array
+          description: Visibility of the vulnerabilities by Month
+          items:
+            $ref: '#/components/schemas/SecurityDashboardVulnerabilityMonth'
+      type: object
+    InfraThreatsTrendListFiltersSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: resource
+          enum:
+          - resource
+          - severity
+          - service_name
+          - resource_id
+          - status
+          - resource_name
+          x-cs-enum-type: InfraThreatsTrendListFiltersSortColumn
+        ascending:
+          type: boolean
+      type: object
+    SecurityDashboardVulnerabilityRegionValue:
+      properties:
+        region:
+          type: string
+          description: Visibility of Region Name
+        vulnerabilityCount:
+          type: integer
+          description: Visibility of Vulnerability Count by region
+          default: 0
+      type: object
     SecurityDashboardThreatsByRegionCount:
       properties:
         cloud_provider:
@@ -3312,89 +2641,6 @@ components:
           type: integer
           description: Threats Total Count by region
       type: object
-    ComplianceServiceAccountSummaryRequest:
-      properties:
-        filters:
-          description: Query based on Tenant IDs, Cloud Providers, Cloud Account Ids and Compliance URIs
-          $ref: '#/components/schemas/QueryOperator'
-      type: object
-    SecurityVisibilityResponse:
-      required:
-      - cloud_accounts
-      - count_summary
-      - findings_type
-      - intent
-      - resource_types
-      properties:
-        cloud_accounts:
-          type: object
-          description: Visibility of the findings by cloud_accounts
-        findings_type:
-          type: object
-          description: Visibility of the findings by findings_type
-        resource_types:
-          type: object
-          description: Visibility of the findings by resource_types
-        intent:
-          type: object
-          description: Visibility of the findings by intent
-        count_summary:
-          type: object
-          description: Visibility of the findings count_summary
-      type: object
-    SecurityDashboardThreatsByRegionResponse:
-      properties:
-        summary_by_cloudprovider:
-          type: array
-          description: Visibility of the threats by CloudProvider
-          items:
-            $ref: '#/components/schemas/SecurityDashboardThreatsByRegionCount'
-      type: object
-    ComplianceTenantSummaryRequest:
-      properties:
-        filters:
-          description: Query based on Tenant IDs, Cloud Providers, Cloud Account Ids, Compliance URIs and Duration
-          $ref: '#/components/schemas/QueryOperator'
-      type: object
-    ComplianceTenantSummary:
-      properties:
-        tenant_id:
-          type: string
-          x-cs-type: ObjectId
-        compliance_uri:
-          type: string
-        logo:
-          type: string
-          description: File name of the logo associated with the compliance standard.
-        control_status:
-          type: array
-          description: Compliance control status details
-          items:
-            $ref: '#/components/schemas/ComplianceControls'
-      type: object
-    InfraVulnerabilitiesTrendSummary:
-      properties:
-        date:
-          type: string
-          format: date
-          description: Date of the time period
-        severity:
-          type: string
-          description: Severity of the Vulnerability
-          example: Critical
-          enum:
-          - Critical
-          - High
-          - Info
-          - Low
-          - Medium
-          - None
-          - Unknown
-          x-cs-enum-type: Severity
-        count:
-          type: integer
-          description: Count of vulnerabilities for the given date and severity
-      type: object
     SecurityDashboardSeverity:
       properties:
         critical:
@@ -3426,22 +2672,240 @@ components:
           description: Unknown Total Count
           default: 0
       type: object
-    SecurityDashboardThreatsByResourceCategoryResponse:
+    InfraMisConfiguration:
       properties:
-        summary_by_provider_category:
-          type: array
-          description: Visibility of the threats by CloudProvider
-          items:
-            $ref: '#/components/schemas/SecurityDashboardThreatsByResourceCategoryCount'
+        snapshot_date:
+          type: string
+          format: date-time
+          description: Snapshot date of the recommendation (YYYY-MM-DD format)
+        status:
+          type: string
+          description: Status of the policy resource recommendation
+          example: error
+          enum:
+          - error
+          - in_progress
+          - open
+          - resolved
+          - skipped
+          - system_skipped
+          x-cs-enum-type: PolicyResourceRecommendationStatus
+        count:
+          type: integer
+          description: Count value (0 for deleted, 1 for active)
+        policy_id:
+          type: string
+          description: Policy ID associated with the recommendation
+          x-cs-type: ObjectId
+        recommendation_definition_id:
+          type: string
+          description: Recommendation definition ID
+          x-cs-type: ObjectId
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the recommendation was created
+        service_account_id:
+          type: string
+          description: Cloud provider name
+          x-cs-type: ObjectId
+        resource_id:
+          type: string
+          description: Unique ID of the resource
+        resource:
+          type: string
+          description: Resource identifier
+        resource_name:
+          type: string
+          description: Name of the resource
+        region:
+          type: string
+          description: Region of the resource
+        resource_type:
+          type: string
+          description: Type of the resource
+        resource_category:
+          type: string
+          description: Category of the resource
+        resource_group:
+          type: string
+          description: Resource group of the resource
+        current_sku:
+          type: string
+          description: Current SKU (cost recommendations only)
+        recommended_sku:
+          type: string
+          description: Recommended SKU (cost recommendations only)
+        currency:
+          type: string
+          description: Currency code (cost recommendations only)
+          example: AED
+          enum:
+          - AED
+          - ALL
+          - ARS
+          - AUD
+          - BAM
+          - BDT
+          - BGN
+          - BHD
+          - BRL
+          - CAD
+          - CHF
+          - CLP
+          - CNY
+          - COP
+          - CRC
+          - CZK
+          - DKK
+          - EGP
+          - EUR
+          - GBP
+          - HKD
+          - HRK
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - ISK
+          - JPY
+          - KES
+          - KRW
+          - KWD
+          - KZT
+          - MOP
+          - MVR
+          - MXN
+          - MYR
+          - NOK
+          - NZD
+          - OMR
+          - PEN
+          - PHP
+          - PKR
+          - PLN
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - SAR
+          - SEK
+          - SGD
+          - THB
+          - TRY
+          - TWD
+          - USD
+          - VND
+          - ZAR
+          x-cs-enum-type: Currency
+        saving_per_day:
+          type: number
+          description: Estimated daily cost savings(cost recommendations only)
+        saving_per_month:
+          type: number
+          description: Estimated monthly cost saving(cost recommendations only)
+        saving_per_year:
+          type: number
+          description: Estimated yearly cost saving(cost recommendations only)
       type: object
-    SecurityDashboardVulnerabilityMonth:
+    InfraThreatsTrendListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/InfraThreatsTrendListFiltersSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/InfraThreatsTrendListRequestFilters'
+      type: object
+    SecurityDashboardVulnerabilitySummaryRegionResponse:
+      properties:
+        summary_by_cloudprovider:
+          type: array
+          description: Visibility of the vulnerabilities by Account
+          items:
+            $ref: '#/components/schemas/SecurityDashboardVulnerabilityRegionCount'
+      type: object
+    SecurityDashboardViolationsByMonthResponse:
+      properties:
+        summary_by_month:
+          type: array
+          description: Visibility of the Threats by Month
+          items:
+            $ref: '#/components/schemas/SecurityDashboardConfigViolationMonth'
+      type: object
+    InfraThreatsTrendListRequestFilters:
+      allOf:
+      - $ref: '#/components/schemas/InfraIssuesTimeRangeFilter'
+      - properties:
+          filters:
+            description: Filters applied to the issues trend data.
+            $ref: '#/components/schemas/SecurityInfraIssuesDashboardFilters'
+          search:
+            type: string
+            description: Search text to filter the infrastructure threats based on resource name, resource id, service name, etc.
+        type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    ThreatVulnerabilityRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/ThreatVulnerabilitiesFiltersRequestSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/ThreatVulnerabilityFilters'
+      type: object
+    ComplianceTenantSummaryRequest:
+      properties:
+        filters:
+          description: Query based on Tenant IDs, Cloud Providers, Cloud Account Ids, Compliance URIs and Duration
+          $ref: '#/components/schemas/QueryOperator'
+      type: object
+    SecurityDashboardThreatsMonth:
       properties:
         month:
           type: string
-          description: Vulnerability Month
+          format: date
+          description: Threats Month
         count_by_severity:
-          description: Vulnerability Severity Values
+          description: Threats Severity Values
           $ref: '#/components/schemas/SecurityDashboardSeverity'
+      type: object
+    InfraMisConfigurationsTrendListFiltersSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: resource
+          enum:
+          - resource
+          - severity
+          - service_name
+          - resource_id
+          - resource_name
+          x-cs-enum-type: InfraMisConfigurationsTrendListFiltersSortColumn
+        ascending:
+          type: boolean
       type: object
     ThreatVulnerabilitiesFiltersRequestSortCriteria:
       required:
@@ -3462,6 +2926,199 @@ components:
         ascending:
           type: boolean
       type: object
+    SecurityDashboardVulnerabilitySummaryAccountResponse:
+      properties:
+        summary_by_accounts:
+          type: array
+          description: Visibility of the vulnerabilities by Account
+          items:
+            $ref: '#/components/schemas/SecurityDashboardVulnerabilityAccountDetails'
+      type: object
+    SecurityDashboardRequest:
+      properties:
+        filter:
+          $ref: '#/components/schemas/SecurityDashboardAccountFilters'
+      type: object
+    SecurityDashboardViolationByRegionCount:
+      properties:
+        cloud_provider:
+          type: string
+          description: Visibility for the Cloud Provider
+          example: AWS
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          x-cs-enum-type: CloudServiceName
+        region:
+          type: string
+          description: Config Violation Count by region name
+        guardrail_violation_count:
+          type: integer
+          description: Violation Total Count by region
+      type: object
+    InfraThreatsTrendSummaryRequest:
+      allOf:
+      - $ref: '#/components/schemas/InfraIssuesTimeRangeFilter'
+      - properties:
+          group_by:
+            type: array
+            description: Fields to group the infrastructure threat result
+            items:
+              type: string
+              description: Field to group the infrastructure threat results
+              example: severity
+              enum:
+              - severity
+              x-cs-enum-type: InfraThreatsTrendGroupBy
+          filters:
+            description: Filters applied to the issues trend data.
+            $ref: '#/components/schemas/SecurityInfraIssuesDashboardFilters'
+        type: object
+    SecurityDashboardConfigViolationMonth:
+      properties:
+        month:
+          type: string
+          format: date
+          description: Config Violation Month
+        count_by_severity:
+          description: Config Violations Severity Values
+          $ref: '#/components/schemas/SecurityDashboardSeverity'
+      type: object
+    ObjectIdBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    ComplianceTenantSummary:
+      properties:
+        tenant_id:
+          type: string
+          x-cs-type: ObjectId
+        compliance_uri:
+          type: string
+        logo:
+          type: string
+          description: File name of the logo associated with the compliance standard.
+        control_status:
+          type: array
+          description: Compliance control status details
+          items:
+            $ref: '#/components/schemas/ComplianceControls'
+      type: object
+    SecurityInfraDashboardSummaryDetails:
+      properties:
+        cloud_provider:
+          type: string
+          description: Cloud Provider of the service account
+          example: AWS
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          x-cs-enum-type: CloudServiceName
+        service_account_id:
+          type: string
+          description: ID of the service account to which the threat/vulnerability/misconfiguration belongs to.
+          x-cs-type: ObjectId
+        severity:
+          type: string
+          description: Severity values
+          example: Critical
+          enum:
+          - Critical
+          - High
+          - Info
+          - Low
+          - Medium
+          - None
+          - Unknown
+          x-cs-enum-type: Severity
+        region:
+          type: string
+          description: Region the impacted resource is located in.
+        resource_category:
+          type: string
+          description: Category of the resource to which the threat/vulnerability/misconfiguration belongs to.
+        resource_type:
+          type: string
+          description: Type of the resource to which the threat/vulnerability/misconfiguration belongs to.
+        resource_ids:
+          type: array
+          description: List of Resource ID(s) where the vulnerability/threat/misconfiguration is observed.
+          items:
+            type: string
+        ids:
+          type: array
+          description: List of Unique ID(s) for vulnerability/threat/misconfiguration depending on the context.
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    InfraVulnerabilitiesTrendSummary:
+      properties:
+        date:
+          type: string
+          format: date
+          description: Date of the time period
+        severity:
+          type: string
+          description: Severity of the Vulnerability
+          example: Critical
+          enum:
+          - Critical
+          - High
+          - Info
+          - Low
+          - Medium
+          - None
+          - Unknown
+          x-cs-enum-type: Severity
+        count:
+          type: integer
+          description: Count of vulnerabilities for the given date and severity
+      type: object
+    SecurityDashboardAccessViolationByTrend:
+      properties:
+        month:
+          type: string
+          format: date
+          description: Access Violation Month
+        count_by_severity:
+          description: Access Violations Severity Values
+          $ref: '#/components/schemas/SecurityDashboardSeverity'
+      type: object
     InfraMisConfigurationsTrendListRequest:
       properties:
         list_context:
@@ -3476,27 +3133,221 @@ components:
           description: Filters for the request
           $ref: '#/components/schemas/InfraMisConfigurationsTrendListRequestFilters'
       type: object
-    SecurityDashboardConfigViolationMonth:
+    SecurityPostureResponse:
+      required:
+      - cloud_account
+      - page_count
+      - service
+      - total_count
+      properties:
+        service:
+          type: object
+          description: Service wise details of the security findings
+        cloud_account:
+          type: object
+          description: Cloud Account wise details of the security findings
+        total_count:
+          type: integer
+          description: Total count of cloud accounts
+        page_count:
+          type: integer
+          description: Total number of page count
+      type: object
+    ComplianceServiceAccountSummaryRequest:
+      properties:
+        filters:
+          description: Query based on Tenant IDs, Cloud Providers, Cloud Account Ids and Compliance URIs
+          $ref: '#/components/schemas/QueryOperator'
+      type: object
+    SecurityInfraDashboardBaseFilters:
+      required:
+      - tenant_ids
+      properties:
+        tenant_ids:
+          type: array
+          description: List of Tenant IDs to filter the threats/vulnerabilities. This can be fetched from the List Tenants API call.
+          items:
+            type: string
+            x-cs-type: ObjectId
+        filters:
+          description: Query based on Cloud Providers, Cloud Account Ids, Statuses, Severities, ResourceCategories, ResourceTypes, Resources, Resource ID(s)
+          $ref: '#/components/schemas/QueryOperator'
+      type: object
+    InfraIssuesTimeRangeFilter:
+      required:
+      - granularity
+      - start_date
+      properties:
+        start_date:
+          type: string
+          format: date-time
+          description: Start date of the time period
+        end_date:
+          type: string
+          format: date-time
+          description: End date of the time period
+        granularity:
+          type: string
+          description: Granularity for aggregating issues trend data
+          example: day
+          enum:
+          - day
+          - month
+          x-cs-enum-type: InfraIssuesTrendGranularity
+      type: object
+    SecurityInfraDashboardSummaryRequest:
+      allOf:
+      - $ref: '#/components/schemas/SecurityInfraDashboardBaseFilters'
+      - required:
+        - group_by
+        properties:
+          group_by:
+            type: array
+            items:
+              type: string
+              description: Group by field to aggregate the summary data.
+              example: Region
+              enum:
+              - Region
+              - Service_Account
+              - Resource_Category
+              - Resource_Type
+              - Severity
+              x-cs-enum-type: SecurityInfraDashboardSummaryGroupBy
+        type: object
+    SecurityDashboardThreatsByResourceCategoryCount:
+      properties:
+        cloud_account_id:
+          type: string
+          description: Cloud Account Id
+        resource_category:
+          type: string
+          description: Name of the Resource Category
+        threat_count:
+          type: integer
+          description: Threats Total Count by resource category
+        resource_count:
+          type: integer
+          description: Total Count by Resource
+      type: object
+    ThreatResponse:
+      allOf:
+      - $ref: '#/components/schemas/ThreatVulnerabilityBaseResponse'
+      - properties:
+          intent:
+            type: array
+            description: List of threat intents, representing the potential goals or purposes behind the threat, such as "Persistence", "CredentialAccess", or "DefenseEvasion". These help categorize and understand the threat behavior.
+            items:
+              type: string
+          threat_id:
+            type: string
+            description: Unique identifier of the threat.
+            x-cs-type: ObjectId
+        type: object
+    SecurityDashboardViolationAccountDetails:
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant value
+        cloud_account_id:
+          type: string
+          description: Cloud Account value
+        service_account_name:
+          type: string
+          description: Service Account Name
+        cloud_provider:
+          type: string
+          description: Visibility for the Cloud Provider
+          example: AWS
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          x-cs-enum-type: CloudServiceName
+        count_by_severity:
+          description: Severity Values
+          $ref: '#/components/schemas/SecurityDashboardSeverity'
+      type: object
+    SecurityDashboardThreatSummaryMonthResponse:
+      properties:
+        summary_by_month:
+          type: array
+          description: Visibility of the Threats by Month
+          items:
+            $ref: '#/components/schemas/SecurityDashboardThreatsMonth'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    InfraMisconfigurationTrendResponse:
+      properties:
+        items:
+          type: array
+          description: List of infra misconfiguration trend recommendation items
+          items:
+            $ref: '#/components/schemas/InfraMisConfiguration'
+        next_list_context:
+          description: Pagination context for the next batch
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    SecurityDashboardViolationsByRegionResponse:
+      properties:
+        summary_by_cloudprovider:
+          type: array
+          description: Visibility of the Config Violation by CloudProvider
+          items:
+            $ref: '#/components/schemas/SecurityDashboardViolationByRegionCount'
+      type: object
+    SecurityDashboardViolationsByResourceCategoryResponse:
+      properties:
+        summary_by_provider_category:
+          type: array
+          description: Visibility of the Config Violation by CloudProvider
+          items:
+            $ref: '#/components/schemas/SecurityDashboardViolationByResourceCategoryCount'
+      type: object
+    ComplianceControls:
       properties:
         month:
           type: string
-          format: date
-          description: Config Violation Month
-        count_by_severity:
-          description: Config Violations Severity Values
-          $ref: '#/components/schemas/SecurityDashboardSeverity'
+        total_controls:
+          type: integer
+          description: Total number of controls
+        automated_controls:
+          type: integer
+          description: Total number of automated controls
+        assessed_controls:
+          type: integer
+          description: Total number of assessed controls
+        success:
+          type: integer
+          description: Total number of compliance controls
+        violations:
+          type: integer
+          description: Total number of non-compliance controls
+        errors:
+          type: integer
+          description: Total number of controls with error
       type: object
-    InfraMisConfigurationsTrendListRequestFilters:
-      allOf:
-      - $ref: '#/components/schemas/InfraIssuesTimeRangeFilter'
-      - properties:
-          filters:
-            description: Filters applied to the issues trend data.
-            $ref: '#/components/schemas/SecurityInfraIssuesDashboardFilters'
-          search:
-            type: string
-            description: Search text to filter the infrastructure misconfigurations based on resource name, resource id, service name, etc.
-        type: object
     InfraVulnerabilitiesTrendListFiltersSortCriteria:
       required:
       - column
@@ -3516,38 +3367,42 @@ components:
         ascending:
           type: boolean
       type: object
-    InfraMisconfigurationTrendResponse:
+    SecurityDashboardThreatsByResourceCategoryResponse:
       properties:
-        items:
+        summary_by_provider_category:
           type: array
-          description: List of infra misconfiguration trend recommendation items
+          description: Visibility of the threats by CloudProvider
           items:
-            $ref: '#/components/schemas/InfraMisConfiguration'
-        next_list_context:
-          description: Pagination context for the next batch
-          $ref: '#/components/schemas/ListContext'
+            $ref: '#/components/schemas/SecurityDashboardThreatsByResourceCategoryCount'
       type: object
-    ThreatVulnerabilityRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/ThreatVulnerabilitiesFiltersRequestSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/ThreatVulnerabilityFilters'
-      type: object
-    SecurityDashboardThreatsSummaryAccountResponse:
+    SecurityDashboardViolationsByAccountResponse:
       properties:
         summary_by_accounts:
           type: array
-          description: Visibility of the Threats by Account
+          description: Visibility of the Violations by Account
           items:
-            $ref: '#/components/schemas/SecurityDashboardThreatsAccountDetails'
+            $ref: '#/components/schemas/SecurityDashboardViolationAccountDetails'
+      type: object
+    InfraMisConfigurationsTrendSummary:
+      properties:
+        date:
+          type: string
+          format: date
+          description: Date of the time period
+        severity:
+          type: string
+          description: Severity of the misconfiguration
+          example: critical
+          enum:
+          - critical
+          - high
+          - medium
+          - low
+          - informational
+          x-cs-enum-type: MisconfigurationSeverity
+        count:
+          type: integer
+          description: Count of misconfigurations for the given date and severity
       type: object
     InfraVulnerabilitiesTrendListRequestFilters:
       allOf:
@@ -3560,6 +3415,151 @@ components:
             type: string
             description: Search text to filter the infrastructure vulnerabilities based on resource name, resource id, service name, etc.
         type: object
+    SecurityVisibilityResponse:
+      required:
+      - cloud_accounts
+      - count_summary
+      - findings_type
+      - intent
+      - resource_types
+      properties:
+        cloud_accounts:
+          type: object
+          description: Visibility of the findings by cloud_accounts
+        findings_type:
+          type: object
+          description: Visibility of the findings by findings_type
+        resource_types:
+          type: object
+          description: Visibility of the findings by resource_types
+        intent:
+          type: object
+          description: Visibility of the findings by intent
+        count_summary:
+          type: object
+          description: Visibility of the findings count_summary
+      type: object
+    ComplianceServiceAccountSummary:
+      allOf:
+      - $ref: '#/components/schemas/ComplianceTenantSummary'
+      - properties:
+          service_account_id:
+            type: string
+            x-cs-type: ObjectId
+        type: object
+    InfraVulnerabilitiesTrendListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/InfraVulnerabilitiesTrendListFiltersSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/InfraVulnerabilitiesTrendListRequestFilters'
+      type: object
+    ThreatVulnerabilityFilters:
+      allOf:
+      - $ref: '#/components/schemas/SecurityInfraDashboardBaseFilters'
+      - properties:
+          search:
+            type: string
+            description: Search text to filter the threats/vulnerabilities based on Resource Name, Resource ID, Findings ID
+        type: object
+    InfraVulnerabilitiesTrendSummaryRequest:
+      allOf:
+      - $ref: '#/components/schemas/InfraIssuesTimeRangeFilter'
+      - properties:
+          group_by:
+            type: array
+            description: Fields to group the infrastructure vulnerability results
+            items:
+              type: string
+              description: Field to group the infrastructure vulnerability results
+              example: severity
+              enum:
+              - severity
+              x-cs-enum-type: InfraVulnerabilitiesTrendGroupBy
+          filters:
+            description: Filters applied to the issues trend data.
+            $ref: '#/components/schemas/SecurityInfraIssuesDashboardFilters'
+        type: object
+    SecurityDashboardThreatsAccountDetails:
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant value
+        cloud_account_id:
+          type: string
+          description: Cloud Account value
+        service_account_name:
+          type: string
+          description: Service Account Name
+        cloud_provider:
+          type: string
+          description: Visibility for the Cloud Provider
+          example: AWS
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          x-cs-enum-type: CloudServiceName
+        count_by_severity:
+          description: Threats Severity Values
+          $ref: '#/components/schemas/SecurityDashboardSeverity'
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    InfraThreatsTrendSummary:
+      properties:
+        date:
+          type: string
+          format: date
+          description: Date of the time period
+        severity:
+          type: string
+          description: Severity of the threat
+          example: Critical
+          enum:
+          - Critical
+          - High
+          - Info
+          - Low
+          - Medium
+          - None
+          - Unknown
+          x-cs-enum-type: Severity
+        count:
+          type: integer
+          description: Count of threats for the given date and severity
+      type: object
   securitySchemes:
     auth_token:
       type: apiKey

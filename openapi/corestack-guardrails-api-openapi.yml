@@ -1524,404 +1524,13 @@ components:
           type: string
           description: Who has created the schedule
       type: object
-    PolicyJobBatchRequest:
+    UpdateScheduleResponse:
       required:
-      - policy_job_ids
+      - id
       properties:
-        policy_job_ids:
-          type: array
-          description: Unique IDs of Policy Jobs
-          items:
-            type: string
-      type: object
-    UpdatePolicyRequest:
-      required:
-      - category
-      - classification
-      - content
-      - name
-      - scope
-      - severity
-      - sub_classification
-      properties:
-        name:
+        id:
           type: string
-          description: policy name which is unique and does not allow space or special character
-        display_name:
-          type: string
-          description: Display name of policy which allow space this is to mostly show on the ui
-        description:
-          type: string
-          description: A brief explanation of the policy.
-        type:
-          type: array
-          description: Indicates the type of policy
-          items:
-            type: string
-        category:
-          type: string
-          description: The category will be either service or resource
-        content:
-          type: string
-          description: The policy content
-        is_system_policy:
-          type: boolean
-          description: Flag to identify system policies
-        metadata:
-          description: Metadata about policy
-          $ref: '#/components/schemas/PolicyMetadata'
-        engine_type:
-          type: string
-          description: Engine type of the policy
-          example: corestack_policy
-          enum:
-          - corestack_policy
-          - aws_organization_policy
-          - azure_policy
-          - aws_config
-          - gcp_organization_policy
-          - gcp_policy
-          - kubernetes_policy
-          - oracle_cloud_guard
-          x-cs-enum-type: PolicyEngineType
-        cloud:
-          type: array
-          description: Displays the cloud associated with the policy
-          items:
-            type: string
-            description: Cloud Provider to select
-            example: AWS
-            enum:
-            - AWS
-            - Azure
-            - AzureStack
-            - Azure_CSP
-            - Azure_CSP-Direct
-            - Azure_EA
-            - Azure_MCA
-            - Cloudstack
-            - GCP
-            - MS_VMM
-            - OCI
-            - Openstack
-            - PrivateCloud
-            - Rackspace
-            - VMware
-            - VMware_VCD
-            - vCenter
-            x-cs-enum-type: CloudServiceName
-        classification:
-          type: string
-          description: Policies are classified based on the basis of the activity they perform, for example provisioning, Account Management, Utilization, etc. This value is displayed in this field
-        sub_classification:
-          type: string
-          description: Sub classification for policy
-        scope:
-          type: string
-          description: 'The scope of the policy:
-
-            Account scope - All users under that account will have access to view and execute Only Account admins can update/delete the policies,
-
-            Tenant Scope - Users with access to the specific tenant will have access to policies who can describe or execute policies. Tenant admins can only update/delete.
-
-            Private Scope - User who created will only have access'
-          example: private
-          enum:
-          - private
-          - account
-          - tenant
-          x-cs-enum-type: AccountScope
-        content_type:
-          type: string
-          description: Policy content source
-          example: git
-          enum:
-          - git
-          - file
-          x-cs-enum-type: ContentType
-        content_password_or_key:
-          type: string
-          description: Password or private key to access of Git repo if repo is authenticated required if the content type is git
-        content_username:
-          type: string
-          description: Username of Git repo if repo is authenticated required if the content type is git
-        content_url:
-          type: string
-          description: Git project URL when the content type is git required if the content type is git
-        content_path:
-          type: string
-          description: Root path of the policy in git repo required if the content type is git
-        severity:
-          type: string
-          description: Severity of policy
-          example: high
-          enum:
-          - high
-          - low
-          - medium
-          x-cs-enum-type: PolicySeverity
-      type: object
-    DayDetails:
-      required:
-      - day
-      properties:
-        day:
-          type: string
-          description: 'At which day of that month the Template/Script/Policy is scheduled to run.Allowed values: 01-31'
-      type: object
-    RecommendationActionResponse:
-      required:
-      - action_resource_name
-      - action_type
-      - description
-      - name
-      - resource_level
-      - terms_and_conditions
-      properties:
-        name:
-          type: string
-          description: recommendation action name
-        terms_and_conditions:
-          type: string
-          description: Terms and conditions for performing the recommended action
-        resource_level:
-          type: string
-          description: if the action will be performed at the resource level
-        action_type:
-          type: string
-          description: Type of action will be always template
-        action_resource_name:
-          type: string
-          description: Name of template
-        description:
-          type: string
-          description: Description about the action in details
-      type: object
-    ParameterBase:
-      required:
-      - __type
-      properties:
-        description:
-          type: string
-          description: A brief explanation of the policy parameter
-        default_value:
-          type: string
-          description: Default value of the parameter, encoded as a JSON string
-        hide_parameter:
-          type: boolean
-          description: Hide/Show a parameter for visibility as part of deployment
-      discriminator:
-        propertyName: __type
-      type: object
-      x-cs-subtypes:
-      - subtype_model: ParameterStringType
-        subtype_name: ParameterStringType
-      - subtype_model: ParameterNumberType
-        subtype_name: ParameterNumberType
-      - subtype_model: ParameterBooleanType
-        subtype_name: ParameterBooleanType
-      - subtype_model: ParameterBaseWithSchema
-        subtype_name: ParameterBaseWithSchema
-      - subtype_model: ParameterArray
-        subtype_name: ParameterArray
-      - subtype_model: ParameterMap
-        subtype_name: ParameterMap
-      - subtype_model: ParameterObject
-        subtype_name: ParameterObject
-      - subtype_model: ParameterJsonBlob
-        subtype_name: ParameterJsonBlob
-    ValidationResult:
-      properties:
-        field:
-          type: string
-        reason:
-          type: string
-      type: object
-    ResourceRecommendationModel:
-      required:
-      - resource_id
-      - resource_name
-      - resource_recommendation_id
-      - resource_type
-      - resourcegroup_location
-      - status
-      properties:
-        resource_recommendation_id:
-          type: string
-          description: unique identifier for resource recommendation
-        resource_id:
-          type: string
-          description: ' Resource identifier id of resource recommendation'
-        resource_name:
-          type: string
-          description: Resource identifier name of resource recommendation
-        resource_type:
-          type: string
-          description: Type of resource
-        resourcegroup_location:
-          type: string
-          description: resource group location
-        status:
-          type: string
-          description: Status of resource recommendation
-      type: object
-    PolicyData:
-      required:
-      - policy_id
-      properties:
-        policy_id:
-          type: string
-          description: unique policy Id returned
-      type: object
-    PolicyServiceAccountDetails:
-      required:
-      - cloud_account_id
-      properties:
-        cloud:
-          type: string
-          description: 'The cloud name of the account for which the policywill be executed ex: AWS, Azure, GCP, OCI etc'
-        cloud_account_id:
-          type: string
-          description: Identifier of the cloud account on boarded in the on boarding section
-        region:
-          type: string
-          description: The region of the service account where it needs to be executed, if this is not provided the policy will execute for all the region
-        resourcegroup:
-          type: string
-          description: Resource group for which you need to execute the policy for, this is not a mandatory parameter to be passed
-      type: object
-    ValidationResults:
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationResult'
-      type: object
-    JobExecutionDetailsResponse:
-      required:
-      - arguments
-      - cloud_accounts
-      - created_at
-      - created_by
-      - engine
-      - execution_type
-      - job_id
-      - name
-      - policy_id
-      - policy_name
-      - status_reason
-      - tenant_name
-      - updated_at
-      - updated_by
-      properties:
-        job_id:
-          type: string
-          description: Job Id
-        name:
-          type: string
-          description: Name of the Job
-        status:
-          type: string
-          description: Status of policy job execution
-          example: COMPLETED
-          enum:
-          - COMPLETED
-          - FAILED
-          - IN_PROGRESS
-          x-cs-enum-type: PolicyJobStatus
-        status_reason:
-          type: string
-          description: Reason for the job status
-        engine:
-          type: string
-          description: Policy engine used for job execution
-        arguments:
-          type: string
-          description: arguments provided for job execution
-        cloud_accounts:
-          type: string
-          description: Cloud account used for job execution
-        execution_type:
-          type: string
-          description: Policy execution type can be on demand or scheduled
-        created_by:
-          type: string
-          description: Policy Job created by
-        created_at:
-          type: string
-          description: Policy Job create time in UTC
-        updated_by:
-          type: string
-          description: Policy Job updated by
-        updated_at:
-          type: string
-          description: Policy Job update time in UTC
-        tenant_name:
-          type: string
-          description: tenant name where job was created
-        tenant_id:
-          type: string
-          description: Tenant ID
-          x-cs-type: ObjectId
-        policy_id:
-          type: string
-          description: Policy id of the Policy executed
-        policy_name:
-          type: string
-          description: Policy id of the Policy executed
-        output:
-          type: array
-          description: Job output details
-          items:
-            $ref: '#/components/schemas/JobExecutionOutputDetails'
-      type: object
-    ResourceViewDetails:
-      required:
-      - resource_details
-      properties:
-        resource_details:
-          type: array
-          description: Template/Scripts/Policies Details that is scheduled to run
-          items:
-            $ref: '#/components/schemas/ResourceDetails'
-      type: object
-    ExecuteRecommendationRequest:
-      required:
-      - action_name
-      - resources
-      properties:
-        action_name:
-          type: string
-          description: 'action to perform to resolve violations, the name can be obtained from the view recommendation api.  Example: action_name : skip or unskip'
-        resources:
-          type: array
-          description: resource resource_recommendation_id list for which the recommendation will be executed, this value can be obtained from the view recommendation api
-          items:
-            type: string
-        args:
-          type: object
-          description: arguments to execute recommendation if any. The values are dynamic in nature can change from recommendation to recommendation
-      type: object
-    PolicyParameterConfiguration:
-      properties:
-        parameters_configuration:
-          type: array
-          items:
-            $ref: '#/components/schemas/NamedParameter'
-      type: object
-    PolicyExecuteRequest:
-      required:
-      - args
-      - cloud_accounts
-      properties:
-        args:
-          type: object
-          description: arguments to execute policy for example values can be in the below format {'listOfAllowedSKUs':['Basic_A0']} or {'requiredRetentionDays':'365','effect':'AuditIfNotExists'} etc.The values are dynamic in nature can change from policy to policy.The arguments required can be changed in the policy content in the view policy api
-        cloud_accounts:
-          type: array
-          description: cloud account details to execute the policy
-          items:
-            $ref: '#/components/schemas/PolicyServiceAccountDetails'
+          description: Schedule ID
       type: object
     PolicyMetadata:
       properties:
@@ -1929,27 +1538,16 @@ components:
           type: string
           description: Metadata about policy
       type: object
-    PolicyDescriptionRequest:
-      properties:
-        policy_uris:
-          type: array
-          description: Unique URI for policy
-          items:
-            type: string
-      type: object
-    PolicyRecommendationViewResponse:
+    PolicyRecommendation:
       required:
-      - actions
       - classification
       - cloud
       - cloud_account_id
       - created_at
-      - description
       - impact
       - policy_id
       - recommendation_id
       - recommendation_name
-      - resources
       - status
       - tenant_name
       properties:
@@ -1982,56 +1580,108 @@ components:
         tenant_name:
           type: string
           description: 'tenant for which the recommendation exits '
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
         created_at:
           type: string
           description: UTC time at which the recommendation was created
+      type: object
+    UpdateScheduleRequest:
+      required:
+      - attributes
+      - name
+      - recurrence
+      - resource
+      - schedule
+      properties:
+        name:
+          type: string
+          description: Schedule Name to be create
         description:
           type: string
-          description: Description about the recommendation in details
-        actions:
-          type: array
-          description: List of actions which can be performed to resolve the policy violations
-          items:
-            $ref: '#/components/schemas/RecommendationActionResponse'
-        resources:
-          type: array
-          description: List of resources on which the recommendations can be performed
-          items:
-            $ref: '#/components/schemas/ResourceRecommendationModel'
-      type: object
-    DateAndTimeDetails:
-      required:
-      - dayofmonth
-      - month
-      - time
-      - weekday
-      - year
-      properties:
-        month:
+          description: Description of the schedule
+        recurrence:
           type: string
-          description: 'Month when the Template/Script/Policy is scheduled to run. Allowed values: 01-12'
-        time:
-          description: Time when the Template/Script/Policy is scheduled to run.
-          $ref: '#/components/schemas/TimeDetails'
-        dayofmonth:
-          description: 'At which day of that month the Template/Script/Policy is scheduled to run.Note - weekday and dayofmonth are alternate.Allowed values: 01-31'
-          $ref: '#/components/schemas/DayDetails'
-        weekday:
-          description: 'At which day of that week the Template/Script/Policy is scheduled to run.Note - weekday and dayofmonth are alternate.Allowed values: 01-07'
-          $ref: '#/components/schemas/DayDetails'
-        year:
-          type: string
-          description: Year when the Template/Script/Policy is scheduled to run. Example:'year':'2022'
-      type: object
-    AttributeDetails:
-      required:
-      - service_accounts
-      properties:
-        service_accounts:
+          description: Recurrence of the schedule
+          example: Once
+          enum:
+          - Once
+          - Minutes
+          - Hours
+          - Daily
+          - Weekly
+          - Monthly
+          - Annually
+          x-cs-enum-type: ScheduleRecurrence
+        schedule:
+          description: Schedule date and time details
+          $ref: '#/components/schemas/DateAndTimeDetails'
+        resource:
           type: array
-          description: Service account id is unique can be obtained from the list cloud
+          description: Template/Script/Policy Id.can be retrieved using the List Policy Schedules
           items:
-            $ref: '#/components/schemas/CloudAccountDetails'
+            type: string
+        attributes:
+          description: Attribute Details
+          $ref: '#/components/schemas/AttributeDetails'
+        args:
+          type: object
+          description: Input Parameters for the Template/Script/Policy
+      type: object
+    JobExecutionOutputDetails:
+      properties:
+        resource_id:
+          type: string
+          description: Resource Id
+        resource_name:
+          type: string
+          description: Resource Name
+        category:
+          type: string
+          description: Resource Category
+        resource_type:
+          type: string
+          description: Resource Type
+        resource:
+          type: string
+          description: Resource
+        location:
+          type: string
+          description: Location
+        evidence:
+          type: string
+          description: Evidence
+      type: object
+    PolicyNamedParameterValidationRequest:
+      required:
+      - params
+      - policy_uri
+      properties:
+        policy_uri:
+          type: string
+          description: Unique URI for policy
+        params:
+          type: string
+          description: Policy execution parameters, encoded as a JSON string
+      type: object
+    ValidationResults:
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationResult'
+      type: object
+    PolicyListResponse:
+      required:
+      - policies
+      properties:
+        policies:
+          type: array
+          description: Policy Metadata Info.
+          items:
+            $ref: '#/components/schemas/PolicyDataList'
       type: object
     TimeDetails:
       required:
@@ -2049,23 +1699,155 @@ components:
           type: string
           description: 'The Template/Script/Policy is scheduled at which hour. Allowed values: 01-23'
       type: object
+    PolicyRequest:
+      allOf:
+      - $ref: '#/components/schemas/PolicyDescriptionRequest'
+      - properties:
+          policy_ids:
+            type: array
+            description: List of policy IDs to fetch policy details
+            items:
+              type: string
+              x-cs-type: ObjectId
+        type: object
+    PolicyData:
+      required:
+      - policy_id
+      properties:
+        policy_id:
+          type: string
+          description: unique policy Id returned
+      type: object
     CreateScheduleResponse:
       properties:
         schedule_id:
           type: string
           description: Schedule ID
       type: object
-    PolicyNamedParameterValidationRequest:
-      required:
-      - params
-      - policy_uri
+    ValidationResult:
       properties:
-        policy_uri:
+        field:
           type: string
-          description: Unique URI for policy
-        params:
+        reason:
           type: string
-          description: Policy execution parameters, encoded as a JSON string
+      type: object
+    DayDetails:
+      required:
+      - day
+      properties:
+        day:
+          type: string
+          description: 'At which day of that month the Template/Script/Policy is scheduled to run.Allowed values: 01-31'
+      type: object
+    ResourceRecommendationModel:
+      required:
+      - resource_id
+      - resource_name
+      - resource_recommendation_id
+      - resource_type
+      - resourcegroup_location
+      - status
+      properties:
+        resource_recommendation_id:
+          type: string
+          description: unique identifier for resource recommendation
+        resource_id:
+          type: string
+          description: ' Resource identifier id of resource recommendation'
+        resource_name:
+          type: string
+          description: Resource identifier name of resource recommendation
+        resource_type:
+          type: string
+          description: Type of resource
+        resourcegroup_location:
+          type: string
+          description: resource group location
+        status:
+          type: string
+          description: Status of resource recommendation
+      type: object
+    PolicyListRequest:
+      properties:
+        name:
+          type: string
+          description: Name of the policy
+        display_name:
+          type: string
+          description: Display name of the policy
+        scope:
+          type: string
+          description: Scope of the policy.
+        policy_uris:
+          type: array
+          items:
+            type: string
+            description: Policy uri.
+        services:
+          type: array
+          items:
+            type: string
+            description: Displays the service associated with the policy
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_EA
+            - Azure_MCA
+            - GCP
+            - OCI
+            - Openstack
+            - OpenstackPublic
+            x-cs-enum-type: PolicyServiceName
+        category:
+          type: string
+          description: Category of the policy.
+        status:
+          type: string
+          description: Status of the policy.
+        policy_type:
+          type: string
+          description: Type of the policy.
+        engine_type:
+          type: string
+          description: Engine type of the policy.
+        classification:
+          type: string
+          description: Classification of the policy.
+          example: Access
+          enum:
+          - Access
+          - Cost
+          - Data
+          - Network
+          - Operation
+          - Performance
+          - Resource
+          - Security
+          x-cs-enum-type: PolicyClassification
+        sub_classification:
+          type: string
+          description: Sub-classification of the policy.
+        resource_type:
+          type: string
+          description: Resource type of the policy.
+        service_resource:
+          type: string
+          description: Service resource of the policy.
+        remediation_supported:
+          type: boolean
+          description: When true, returns only policies that support remediation(s).
+      type: object
+    ResourceViewDetails:
+      required:
+      - resource_details
+      properties:
+        resource_details:
+          type: array
+          description: Template/Scripts/Policies Details that is scheduled to run
+          items:
+            $ref: '#/components/schemas/ResourceDetails'
       type: object
     PolicyViewResponse:
       required:
@@ -2166,307 +1948,6 @@ components:
           type: string
           description: Unique URI for policy
       type: object
-    PolicyRecommendationListResponse:
-      required:
-      - recommendations
-      properties:
-        recommendations:
-          description: Policy recommendation Info list
-          $ref: '#/components/schemas/PolicyRecommendation'
-      type: object
-    PolicyDescription:
-      properties:
-        uri:
-          type: string
-          description: Unique URI for policy
-        policy_id:
-          type: string
-          description: Policy Id is unique identifier of a policy
-        name:
-          type: string
-          description: Policy name is unique identifier of a policy
-        display_name:
-          type: string
-          description: Display name of the policy
-        description:
-          type: string
-          description: A brief explanation of the policy
-        parameters:
-          type: array
-          items:
-            $ref: '#/components/schemas/NamedParameter'
-        created_at:
-          type: string
-          format: date-time
-        services:
-          type: array
-          items:
-            type: string
-            description: Displays the service associated with the policy
-            example: AWS
-            enum:
-            - AWS
-            - Azure
-            - AzureStack
-            - Azure_EA
-            - Azure_MCA
-            - GCP
-            - OCI
-            - Openstack
-            - OpenstackPublic
-            x-cs-enum-type: PolicyServiceName
-        engine_type:
-          type: string
-          description: Engine type of the policy
-          example: corestack_policy
-          enum:
-          - corestack_policy
-          - aws_organization_policy
-          - azure_policy
-          - aws_config
-          - gcp_organization_policy
-          - gcp_policy
-          - kubernetes_policy
-          - oracle_cloud_guard
-          x-cs-enum-type: PolicyEngineType
-        scope:
-          type: string
-          description: Scope of the policy
-          example: global
-          enum:
-          - global
-          - account
-          - tenant
-          - user_private
-          x-cs-enum-type: PolicyScope
-        tenant_id:
-          type: string
-          description: ID of the tenant within the CoreStack account
-        account_id:
-          type: string
-          description: Id of the CoreStack account under which this tenant resides.
-        classification:
-          type: string
-          description: 'Policies are classified based on the basis of the activity they perform. For example: Provisioning, Account Management, Utilization, etc.'
-        sub_classification:
-          type: string
-          description: Sub classification for policy
-        resource_category:
-          type: string
-          description: Category of resource
-        resource_type:
-          type: string
-          description: Type of resource
-        service_resources:
-          type: array
-          description: Service resources of policy
-          items:
-            type: string
-        severity:
-          type: string
-          description: Severity of policy
-          example: critical
-          enum:
-          - critical
-          - high
-          - info
-          - low
-          - medium
-          - none
-          - unknown
-          x-cs-enum-type: PolicySeverityRisk
-        recommendation_description:
-          type: string
-          description: Recommendation description of the policy
-        recommendation_actions:
-          type: array
-          description: Recommendation actions of the policy
-          items:
-            $ref: '#/components/schemas/PolicyRecommendationActions'
-        equivalent_policies:
-          type: array
-          description: Equivalent policy names
-          items:
-            type: string
-      type: object
-    UpdateScheduleRequest:
-      required:
-      - attributes
-      - name
-      - recurrence
-      - resource
-      - schedule
-      properties:
-        name:
-          type: string
-          description: Schedule Name to be create
-        description:
-          type: string
-          description: Description of the schedule
-        recurrence:
-          type: string
-          description: Recurrence of the schedule
-          example: Once
-          enum:
-          - Once
-          - Minutes
-          - Hours
-          - Daily
-          - Weekly
-          - Monthly
-          - Annually
-          x-cs-enum-type: ScheduleRecurrence
-        schedule:
-          description: Schedule date and time details
-          $ref: '#/components/schemas/DateAndTimeDetails'
-        resource:
-          type: array
-          description: Template/Script/Policy Id.can be retrieved using the List Policy Schedules
-          items:
-            type: string
-        attributes:
-          description: Attribute Details
-          $ref: '#/components/schemas/AttributeDetails'
-        args:
-          type: object
-          description: Input Parameters for the Template/Script/Policy
-      type: object
-    ExecutionLogDetails:
-      required:
-      - name
-      - run_time
-      - status
-      properties:
-        status:
-          type: string
-          description: Status of the Execution Log
-        run_time:
-          type: string
-          description: Run Time Execution of the schedule
-        name:
-          type: string
-          description: Job Name of the schedule execution log
-      type: object
-    AccountPolicyConfigurationBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/PolicyParameterConfiguration'
-      type: object
-    PolicyListRequest:
-      properties:
-        name:
-          type: string
-          description: Name of the policy
-        display_name:
-          type: string
-          description: Display name of the policy
-        scope:
-          type: string
-          description: Scope of the policy.
-        policy_uris:
-          type: array
-          items:
-            type: string
-            description: Policy uri.
-        services:
-          type: array
-          items:
-            type: string
-            description: Displays the service associated with the policy
-            example: AWS
-            enum:
-            - AWS
-            - Azure
-            - AzureStack
-            - Azure_EA
-            - Azure_MCA
-            - GCP
-            - OCI
-            - Openstack
-            - OpenstackPublic
-            x-cs-enum-type: PolicyServiceName
-        category:
-          type: string
-          description: Category of the policy.
-        status:
-          type: string
-          description: Status of the policy.
-        policy_type:
-          type: string
-          description: Type of the policy.
-        engine_type:
-          type: string
-          description: Engine type of the policy.
-        classification:
-          type: string
-          description: Classification of the policy.
-          example: Access
-          enum:
-          - Access
-          - Cost
-          - Data
-          - Network
-          - Operation
-          - Performance
-          - Resource
-          - Security
-          x-cs-enum-type: PolicyClassification
-        sub_classification:
-          type: string
-          description: Sub-classification of the policy.
-        resource_type:
-          type: string
-          description: Resource type of the policy.
-        service_resource:
-          type: string
-          description: Service resource of the policy.
-        remediation_supported:
-          type: boolean
-          description: When true, returns only policies that support remediation(s).
-      type: object
-    PolicyExecuteResponse:
-      required:
-      - job_id
-      properties:
-        job_id:
-          type: string
-          description: Job identifier of the executed policy
-      type: object
-    JobExecutionOutputDetails:
-      properties:
-        resource_id:
-          type: string
-          description: Resource Id
-        resource_name:
-          type: string
-          description: Resource Name
-        category:
-          type: string
-          description: Resource Category
-        resource_type:
-          type: string
-          description: Resource Type
-        resource:
-          type: string
-          description: Resource
-        location:
-          type: string
-          description: Location
-        evidence:
-          type: string
-          description: Evidence
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
     PolicyDataList:
       required:
       - content_type
@@ -2560,20 +2041,143 @@ components:
           type: string
           description: Parameters associated with the policy as JSON string.
       type: object
-    PolicyRecommendationActions:
+    ListScheduleResponse:
+      required:
+      - page_count
+      - schedules
+      - total_count
       properties:
+        page_count:
+          type: integer
+          description: Page count
+        total_count:
+          type: integer
+          description: Total count
+        schedules:
+          type: array
+          description: Schedule Details
+          items:
+            $ref: '#/components/schemas/ScheduleData'
+      type: object
+    AccountPolicyConfigurationBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/PolicyParameterConfiguration'
+      type: object
+    DateAndTimeDetails:
+      required:
+      - dayofmonth
+      - month
+      - time
+      - weekday
+      - year
+      properties:
+        month:
+          type: string
+          description: 'Month when the Template/Script/Policy is scheduled to run. Allowed values: 01-12'
+        time:
+          description: Time when the Template/Script/Policy is scheduled to run.
+          $ref: '#/components/schemas/TimeDetails'
+        dayofmonth:
+          description: 'At which day of that month the Template/Script/Policy is scheduled to run.Note - weekday and dayofmonth are alternate.Allowed values: 01-31'
+          $ref: '#/components/schemas/DayDetails'
+        weekday:
+          description: 'At which day of that week the Template/Script/Policy is scheduled to run.Note - weekday and dayofmonth are alternate.Allowed values: 01-07'
+          $ref: '#/components/schemas/DayDetails'
+        year:
+          type: string
+          description: Year when the Template/Script/Policy is scheduled to run. Example:'year':'2022'
+      type: object
+    PolicyJobBatchRequest:
+      required:
+      - policy_job_ids
+      properties:
+        policy_job_ids:
+          type: array
+          description: Unique IDs of Policy Jobs
+          items:
+            type: string
+      type: object
+    JobExecutionDetailsResponse:
+      required:
+      - arguments
+      - cloud_accounts
+      - created_at
+      - created_by
+      - engine
+      - execution_type
+      - job_id
+      - name
+      - policy_id
+      - policy_name
+      - status_reason
+      - tenant_name
+      - updated_at
+      - updated_by
+      properties:
+        job_id:
+          type: string
+          description: Job Id
         name:
           type: string
-          description: Name of the recommendation action
-        description:
+          description: Name of the Job
+        status:
           type: string
-          description: Description of the recommendation action
-        terms_and_conditions:
+          description: Status of policy job execution
+          example: COMPLETED
+          enum:
+          - COMPLETED
+          - FAILED
+          - IN_PROGRESS
+          x-cs-enum-type: PolicyJobStatus
+        status_reason:
           type: string
-          description: T&C of the recommendation action
-        preexecute_required:
-          type: boolean
-          description: Flag to check if pre-execute is required or not
+          description: Reason for the job status
+        engine:
+          type: string
+          description: Policy engine used for job execution
+        arguments:
+          type: string
+          description: arguments provided for job execution
+        cloud_accounts:
+          type: string
+          description: Cloud account used for job execution
+        execution_type:
+          type: string
+          description: Policy execution type can be on demand or scheduled
+        created_by:
+          type: string
+          description: Policy Job created by
+        created_at:
+          type: string
+          description: Policy Job create time in UTC
+        updated_by:
+          type: string
+          description: Policy Job updated by
+        updated_at:
+          type: string
+          description: Policy Job update time in UTC
+        tenant_name:
+          type: string
+          description: tenant name where job was created
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        policy_id:
+          type: string
+          description: Policy id of the Policy executed
+        policy_name:
+          type: string
+          description: Policy id of the Policy executed
+        output:
+          type: array
+          description: Job output details
+          items:
+            $ref: '#/components/schemas/JobExecutionOutputDetails'
       type: object
     CreatePolicyRequest:
       required:
@@ -2702,90 +2306,222 @@ components:
           - medium
           x-cs-enum-type: PolicySeverity
       type: object
-    NamedParameter:
-      required:
-      - is_required
-      - name
-      - schema
+    PolicyParameterConfiguration:
+      properties:
+        parameters_configuration:
+          type: array
+          items:
+            $ref: '#/components/schemas/NamedParameter'
+      type: object
+    PolicyRecommendationActions:
       properties:
         name:
           type: string
-          description: Name of the parameter
+          description: Name of the recommendation action
+        description:
+          type: string
+          description: Description of the recommendation action
+        terms_and_conditions:
+          type: string
+          description: T&C of the recommendation action
+        preexecute_required:
+          type: boolean
+          description: Flag to check if pre-execute is required or not
+      type: object
+    PolicyExecuteRequest:
+      required:
+      - args
+      - cloud_accounts
+      properties:
+        args:
+          type: object
+          description: arguments to execute policy for example values can be in the below format {'listOfAllowedSKUs':['Basic_A0']} or {'requiredRetentionDays':'365','effect':'AuditIfNotExists'} etc.The values are dynamic in nature can change from policy to policy.The arguments required can be changed in the policy content in the view policy api
+        cloud_accounts:
+          type: array
+          description: cloud account details to execute the policy
+          items:
+            $ref: '#/components/schemas/PolicyServiceAccountDetails'
+      type: object
+    PolicyDescription:
+      properties:
+        uri:
+          type: string
+          description: Unique URI for policy
+        policy_id:
+          type: string
+          description: Policy Id is unique identifier of a policy
+        name:
+          type: string
+          description: Policy name is unique identifier of a policy
         display_name:
           type: string
-          description: Display Name of the parameter
-        is_required:
-          type: boolean
-          description: Whether the parameter is required.
-        schema:
-          $ref: '#/components/schemas/ParameterBase'
-      type: object
-    PolicyListResponse:
-      required:
-      - policies
-      properties:
-        policies:
+          description: Display name of the policy
+        description:
+          type: string
+          description: A brief explanation of the policy
+        parameters:
           type: array
-          description: Policy Metadata Info.
           items:
-            $ref: '#/components/schemas/PolicyDataList'
-      type: object
-    CloudAccountDetails:
-      required:
-      - id
-      properties:
-        id:
+            $ref: '#/components/schemas/NamedParameter'
+        created_at:
           type: string
-          description: Cloud account id is unique can be obtained from the list cloud
-      type: object
-    UpdateScheduleResponse:
-      required:
-      - id
-      properties:
-        id:
-          type: string
-          description: Schedule ID
-      type: object
-    ListScheduleResponse:
-      required:
-      - page_count
-      - schedules
-      - total_count
-      properties:
-        page_count:
-          type: integer
-          description: Page count
-        total_count:
-          type: integer
-          description: Total count
-        schedules:
+          format: date-time
+        services:
           type: array
-          description: Schedule Details
           items:
-            $ref: '#/components/schemas/ScheduleData'
+            type: string
+            description: Displays the service associated with the policy
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_EA
+            - Azure_MCA
+            - GCP
+            - OCI
+            - Openstack
+            - OpenstackPublic
+            x-cs-enum-type: PolicyServiceName
+        engine_type:
+          type: string
+          description: Engine type of the policy
+          example: corestack_policy
+          enum:
+          - corestack_policy
+          - aws_organization_policy
+          - azure_policy
+          - aws_config
+          - gcp_organization_policy
+          - gcp_policy
+          - kubernetes_policy
+          - oracle_cloud_guard
+          x-cs-enum-type: PolicyEngineType
+        scope:
+          type: string
+          description: Scope of the policy
+          example: global
+          enum:
+          - global
+          - account
+          - tenant
+          - user_private
+          x-cs-enum-type: PolicyScope
+        tenant_id:
+          type: string
+          description: ID of the tenant within the CoreStack account
+        account_id:
+          type: string
+          description: Id of the CoreStack account under which this tenant resides.
+        classification:
+          type: string
+          description: 'Policies are classified based on the basis of the activity they perform. For example: Provisioning, Account Management, Utilization, etc.'
+        sub_classification:
+          type: string
+          description: Sub classification for policy
+        resource_category:
+          type: string
+          description: Category of resource
+        resource_type:
+          type: string
+          description: Type of resource
+        service_resources:
+          type: array
+          description: Service resources of policy
+          items:
+            type: string
+        severity:
+          type: string
+          description: Severity of policy
+          example: critical
+          enum:
+          - critical
+          - high
+          - info
+          - low
+          - medium
+          - none
+          - unknown
+          x-cs-enum-type: PolicySeverityRisk
+        recommendation_description:
+          type: string
+          description: Recommendation description of the policy
+        recommendation_actions:
+          type: array
+          description: Recommendation actions of the policy
+          items:
+            $ref: '#/components/schemas/PolicyRecommendationActions'
+        equivalent_policies:
+          type: array
+          description: Equivalent policy names
+          items:
+            type: string
       type: object
-    ResourceDetails:
+    AttributeDetails:
       required:
-      - id
-      - name
+      - service_accounts
       properties:
-        id:
-          type: string
-          description: ID of that Template/Script/Policy that is scheduled to run
-        name:
-          type: string
-          description: Name of the Template/Script/Policy that is scheduled to run
+        service_accounts:
+          type: array
+          description: Service account id is unique can be obtained from the list cloud
+          items:
+            $ref: '#/components/schemas/CloudAccountDetails'
       type: object
-    PolicyRecommendation:
+    PolicyServiceAccountDetails:
       required:
+      - cloud_account_id
+      properties:
+        cloud:
+          type: string
+          description: 'The cloud name of the account for which the policywill be executed ex: AWS, Azure, GCP, OCI etc'
+        cloud_account_id:
+          type: string
+          description: Identifier of the cloud account on boarded in the on boarding section
+        region:
+          type: string
+          description: The region of the service account where it needs to be executed, if this is not provided the policy will execute for all the region
+        resourcegroup:
+          type: string
+          description: Resource group for which you need to execute the policy for, this is not a mandatory parameter to be passed
+      type: object
+    PolicyRecommendationListResponse:
+      required:
+      - recommendations
+      properties:
+        recommendations:
+          description: Policy recommendation Info list
+          $ref: '#/components/schemas/PolicyRecommendation'
+      type: object
+    ExecuteRecommendationRequest:
+      required:
+      - action_name
+      - resources
+      properties:
+        action_name:
+          type: string
+          description: 'action to perform to resolve violations, the name can be obtained from the view recommendation api.  Example: action_name : skip or unskip'
+        resources:
+          type: array
+          description: resource resource_recommendation_id list for which the recommendation will be executed, this value can be obtained from the view recommendation api
+          items:
+            type: string
+        args:
+          type: object
+          description: arguments to execute recommendation if any. The values are dynamic in nature can change from recommendation to recommendation
+      type: object
+    PolicyRecommendationViewResponse:
+      required:
+      - actions
       - classification
       - cloud
       - cloud_account_id
       - created_at
+      - description
       - impact
       - policy_id
       - recommendation_id
       - recommendation_name
+      - resources
       - status
       - tenant_name
       properties:
@@ -2818,14 +2554,72 @@ components:
         tenant_name:
           type: string
           description: 'tenant for which the recommendation exits '
-        tenant_id:
-          type: string
-          description: Tenant ID
-          x-cs-type: ObjectId
         created_at:
           type: string
           description: UTC time at which the recommendation was created
+        description:
+          type: string
+          description: Description about the recommendation in details
+        actions:
+          type: array
+          description: List of actions which can be performed to resolve the policy violations
+          items:
+            $ref: '#/components/schemas/RecommendationActionResponse'
+        resources:
+          type: array
+          description: List of resources on which the recommendations can be performed
+          items:
+            $ref: '#/components/schemas/ResourceRecommendationModel'
       type: object
+    PolicyDescriptionRequest:
+      properties:
+        policy_uris:
+          type: array
+          description: Unique URI for policy
+          items:
+            type: string
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    ParameterBase:
+      required:
+      - __type
+      properties:
+        description:
+          type: string
+          description: A brief explanation of the policy parameter
+        default_value:
+          type: string
+          description: Default value of the parameter, encoded as a JSON string
+        hide_parameter:
+          type: boolean
+          description: Hide/Show a parameter for visibility as part of deployment
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ParameterStringType
+        subtype_name: ParameterStringType
+      - subtype_model: ParameterNumberType
+        subtype_name: ParameterNumberType
+      - subtype_model: ParameterBooleanType
+        subtype_name: ParameterBooleanType
+      - subtype_model: ParameterBaseWithSchema
+        subtype_name: ParameterBaseWithSchema
+      - subtype_model: ParameterArray
+        subtype_name: ParameterArray
+      - subtype_model: ParameterMap
+        subtype_name: ParameterMap
+      - subtype_model: ParameterObject
+        subtype_name: ParameterObject
+      - subtype_model: ParameterJsonBlob
+        subtype_name: ParameterJsonBlob
     ViewScheduleResponse:
       required:
       - args
@@ -2900,17 +2694,223 @@ components:
           items:
             type: string
       type: object
-    PolicyRequest:
-      allOf:
-      - $ref: '#/components/schemas/PolicyDescriptionRequest'
-      - properties:
-          policy_ids:
-            type: array
-            description: List of policy IDs to fetch policy details
-            items:
-              type: string
-              x-cs-type: ObjectId
-        type: object
+    RecommendationActionResponse:
+      required:
+      - action_resource_name
+      - action_type
+      - description
+      - name
+      - resource_level
+      - terms_and_conditions
+      properties:
+        name:
+          type: string
+          description: recommendation action name
+        terms_and_conditions:
+          type: string
+          description: Terms and conditions for performing the recommended action
+        resource_level:
+          type: string
+          description: if the action will be performed at the resource level
+        action_type:
+          type: string
+          description: Type of action will be always template
+        action_resource_name:
+          type: string
+          description: Name of template
+        description:
+          type: string
+          description: Description about the action in details
+      type: object
+    PolicyExecuteResponse:
+      required:
+      - job_id
+      properties:
+        job_id:
+          type: string
+          description: Job identifier of the executed policy
+      type: object
+    NamedParameter:
+      required:
+      - is_required
+      - name
+      - schema
+      properties:
+        name:
+          type: string
+          description: Name of the parameter
+        display_name:
+          type: string
+          description: Display Name of the parameter
+        is_required:
+          type: boolean
+          description: Whether the parameter is required.
+        schema:
+          $ref: '#/components/schemas/ParameterBase'
+      type: object
+    CloudAccountDetails:
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: Cloud account id is unique can be obtained from the list cloud
+      type: object
+    UpdatePolicyRequest:
+      required:
+      - category
+      - classification
+      - content
+      - name
+      - scope
+      - severity
+      - sub_classification
+      properties:
+        name:
+          type: string
+          description: policy name which is unique and does not allow space or special character
+        display_name:
+          type: string
+          description: Display name of policy which allow space this is to mostly show on the ui
+        description:
+          type: string
+          description: A brief explanation of the policy.
+        type:
+          type: array
+          description: Indicates the type of policy
+          items:
+            type: string
+        category:
+          type: string
+          description: The category will be either service or resource
+        content:
+          type: string
+          description: The policy content
+        is_system_policy:
+          type: boolean
+          description: Flag to identify system policies
+        metadata:
+          description: Metadata about policy
+          $ref: '#/components/schemas/PolicyMetadata'
+        engine_type:
+          type: string
+          description: Engine type of the policy
+          example: corestack_policy
+          enum:
+          - corestack_policy
+          - aws_organization_policy
+          - azure_policy
+          - aws_config
+          - gcp_organization_policy
+          - gcp_policy
+          - kubernetes_policy
+          - oracle_cloud_guard
+          x-cs-enum-type: PolicyEngineType
+        cloud:
+          type: array
+          description: Displays the cloud associated with the policy
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        classification:
+          type: string
+          description: Policies are classified based on the basis of the activity they perform, for example provisioning, Account Management, Utilization, etc. This value is displayed in this field
+        sub_classification:
+          type: string
+          description: Sub classification for policy
+        scope:
+          type: string
+          description: 'The scope of the policy:
+
+            Account scope - All users under that account will have access to view and execute Only Account admins can update/delete the policies,
+
+            Tenant Scope - Users with access to the specific tenant will have access to policies who can describe or execute policies. Tenant admins can only update/delete.
+
+            Private Scope - User who created will only have access'
+          example: private
+          enum:
+          - private
+          - account
+          - tenant
+          x-cs-enum-type: AccountScope
+        content_type:
+          type: string
+          description: Policy content source
+          example: git
+          enum:
+          - git
+          - file
+          x-cs-enum-type: ContentType
+        content_password_or_key:
+          type: string
+          description: Password or private key to access of Git repo if repo is authenticated required if the content type is git
+        content_username:
+          type: string
+          description: Username of Git repo if repo is authenticated required if the content type is git
+        content_url:
+          type: string
+          description: Git project URL when the content type is git required if the content type is git
+        content_path:
+          type: string
+          description: Root path of the policy in git repo required if the content type is git
+        severity:
+          type: string
+          description: Severity of policy
+          example: high
+          enum:
+          - high
+          - low
+          - medium
+          x-cs-enum-type: PolicySeverity
+      type: object
+    ExecutionLogDetails:
+      required:
+      - name
+      - run_time
+      - status
+      properties:
+        status:
+          type: string
+          description: Status of the Execution Log
+        run_time:
+          type: string
+          description: Run Time Execution of the schedule
+        name:
+          type: string
+          description: Job Name of the schedule execution log
+      type: object
+    ResourceDetails:
+      required:
+      - id
+      - name
+      properties:
+        id:
+          type: string
+          description: ID of that Template/Script/Policy that is scheduled to run
+        name:
+          type: string
+          description: Name of the Template/Script/Policy that is scheduled to run
+      type: object
   securitySchemes:
     auth_token:
       type: apiKey

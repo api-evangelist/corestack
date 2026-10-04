@@ -284,42 +284,6 @@ paths:
         required: true
 components:
   schemas:
-    RecordIdentity:
-      properties:
-        sysId:
-          type: string
-          description: Unique Identifier of the tracked item
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Last update of the tracked item
-        table:
-          type: string
-          description: Context of the tracked item
-      type: object
-    BaseDefinitionVersion:
-      properties:
-        sysId:
-          type: string
-          description: Identifier of the version
-        createdOn:
-          type: string
-          format: date-time
-          description: Version created on
-        updatedOn:
-          type: string
-          format: date-time
-          description: Version  updated on
-        version:
-          type: integer
-          default: Sequence number of the version
-        definition:
-          description: Reference to the definition
-          $ref: '#/components/schemas/RecordIdentity'
-        predecessor:
-          description: Reference to the previous version
-          $ref: '#/components/schemas/RecordIdentity'
-      type: object
     KeyValuePair:
       properties:
         key:
@@ -328,25 +292,6 @@ components:
         value:
           type: string
           description: Value of the pair
-      type: object
-    WorkloadTierConfiguration:
-      properties:
-        name:
-          type: string
-          description: Name of the workload tier
-        description:
-          type: string
-          description: Description of the tier
-        owner:
-          type: string
-          description: Owner of the tier
-        cloud_account_id:
-          type: array
-          items:
-            type: string
-            description: Cloud Accounts from which to select resources
-        resource_filter:
-          $ref: '#/components/schemas/QueryOperator'
       type: object
     ModelError:
       required:
@@ -369,25 +314,29 @@ components:
           items:
             $ref: '#/components/schemas/KeyValuePair'
       type: object
-    WorkloadDefinitionVersion:
-      allOf:
-      - $ref: '#/components/schemas/BaseDefinitionVersion'
-      - properties:
-          details:
-            description: Details of the version
-            $ref: '#/components/schemas/WorkloadConfiguration'
-        type: object
     RawImport:
       properties:
         contentsAsJSON:
           type: string
       type: object
-    RecordIdentityBatchRequest:
+    WorkloadTierConfiguration:
       properties:
-        ids:
+        name:
+          type: string
+          description: Name of the workload tier
+        description:
+          type: string
+          description: Description of the tier
+        owner:
+          type: string
+          description: Owner of the tier
+        cloud_account_id:
           type: array
           items:
-            $ref: '#/components/schemas/RecordIdentity'
+            type: string
+            description: Cloud Accounts from which to select resources
+        resource_filter:
+          $ref: '#/components/schemas/QueryOperator'
       type: object
     QueryOperator:
       required:
@@ -849,6 +798,57 @@ components:
         subtype_name: WorkloadQueryWorkloadType
       - subtype_model: WorkloadQueryWorkloadId
         subtype_name: WorkloadQueryWorkloadId
+    BaseDefinitionVersion:
+      properties:
+        sysId:
+          type: string
+          description: Identifier of the version
+        createdOn:
+          type: string
+          format: date-time
+          description: Version created on
+        updatedOn:
+          type: string
+          format: date-time
+          description: Version  updated on
+        version:
+          type: integer
+          default: Sequence number of the version
+        definition:
+          description: Reference to the definition
+          $ref: '#/components/schemas/RecordIdentity'
+        predecessor:
+          description: Reference to the previous version
+          $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    WorkloadDefinitionVersion:
+      allOf:
+      - $ref: '#/components/schemas/BaseDefinitionVersion'
+      - properties:
+          details:
+            description: Details of the version
+            $ref: '#/components/schemas/WorkloadConfiguration'
+        type: object
   securitySchemes:
     auth_token:
       type: apiKey

@@ -245,41 +245,6 @@ components:
       - $ref: '#/components/schemas/SavedViewBase'
       - properties: {}
         type: object
-    SavedViewUpdateRequest:
-      allOf:
-      - $ref: '#/components/schemas/SavedViewBase'
-      - properties: {}
-        type: object
-    ViewState:
-      required:
-      - __type
-      properties: {}
-      discriminator:
-        propertyName: __type
-      type: object
-      x-cs-subtypes:
-      - subtype_model: DashboardViewState
-        subtype_name: DashboardViewState
-    SavedViewListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/SavedViewFilter'
-      type: object
-    SavedViewListResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            $ref: '#/components/schemas/SavedViewDetail'
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
     ModelError:
       required:
       - message
@@ -287,28 +252,6 @@ components:
         message:
           type: string
           description: Error response message.
-      type: object
-    SavedViewFilter:
-      properties:
-        dashboard_id:
-          type: string
-          description: Optional dashboard filter
-        module:
-          type: string
-          example: finops_dashboard
-          enum:
-          - finops_dashboard
-          - billing_inventory
-          - next_gen_reports
-          - cost_anomaly
-          x-cs-enum-type: SavedViewModule
-        visibility:
-          type: string
-          example: shared
-          enum:
-          - shared
-          - private
-          x-cs-enum-type: SavedViewVisibility
       type: object
     SavedViewBase:
       required:
@@ -347,6 +290,71 @@ components:
           description: Polymorphic view payload (DashboardViewState)
           $ref: '#/components/schemas/ViewState'
       type: object
+    SavedViewListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            $ref: '#/components/schemas/SavedViewDetail'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    SavedViewListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/SavedViewFilter'
+      type: object
+    SavedViewFilter:
+      properties:
+        dashboard_id:
+          type: string
+          description: Optional dashboard filter
+        module:
+          type: string
+          example: finops_dashboard
+          enum:
+          - finops_dashboard
+          - billing_inventory
+          - next_gen_reports
+          - cost_anomaly
+          x-cs-enum-type: SavedViewModule
+        visibility:
+          type: string
+          example: shared
+          enum:
+          - shared
+          - private
+          x-cs-enum-type: SavedViewVisibility
+      type: object
+    SavedViewUpdateRequest:
+      allOf:
+      - $ref: '#/components/schemas/SavedViewBase'
+      - properties: {}
+        type: object
+    ViewState:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: DashboardViewState
+        subtype_name: DashboardViewState
+    SavedViewDetail:
+      allOf:
+      - $ref: '#/components/schemas/SavedViewBase'
+      - properties:
+          id:
+            type: string
+            description: Unique identifier of the saved view
+        type: object
     ListContext:
       properties:
         batch_size:
@@ -359,14 +367,6 @@ components:
           type: integer
           description: Total number of results
       type: object
-    SavedViewDetail:
-      allOf:
-      - $ref: '#/components/schemas/SavedViewBase'
-      - properties:
-          id:
-            type: string
-            description: Unique identifier of the saved view
-        type: object
   securitySchemes:
     auth_token:
       type: apiKey

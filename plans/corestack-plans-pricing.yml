@@ -98,3 +98,46 @@ x-evidence:
   - url: https://aws.amazon.com/marketplace/pp/prodview-eenhk77mfzog4
     http_status: 200
     finding: Three pricing dimensions with 36-month contract prices in USD.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - hybrid
+  units: []
+  plans:
+  - name: CoreStack FinOps
+    access: other
+    model: hybrid
+    model_how: derived
+    units: []
+    periods: []
+  - name: CoreStack SecOps
+    access: other
+    model: hybrid
+    model_how: derived
+    units: []
+    periods: []
+  - name: CoreStack Governance
+    access: other
+    model: hybrid
+    model_how: derived
+    units: []
+    periods: []
+  - name: CoreStack Graphion Bronze
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: CoreStack Graphion Silver
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: CoreStack Graphion Gold
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []

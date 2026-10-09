@@ -515,3 +515,20 @@ deployment:
   probe: gated
   checked: '2026-08-12'
   source: catalog MCP census
+rfc9728:
+  endpoint: https://cloud.corestack.io/mcp
+  metadata_url: https://cloud.corestack.io/mcp/.well-known/oauth-protected-resource
+  discovered_via: WWW-Authenticate resource_metadata on an anonymous POST initialize
+  fetched: '2026-09-25'
+  http_status: 200
+  content_type: application/json
+  document:
+    resource: https://cloud.corestack.io/mcp
+    authorization_servers:
+    - https://cloud.corestack.io/mcp
+    scopes_supported:
+    - openid
+    - email
+    - profile
+    bearer_methods_supported:
+    - header

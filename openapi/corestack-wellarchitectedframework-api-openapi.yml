@@ -822,6 +822,62 @@ paths:
         required: true
 components:
   schemas:
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    WellArchitectedFrameworkCustomLens:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: WellArchitectedFrameworkCustomLensForAws
+        subtype_name: WellArchitectedFrameworkCustomLensForAws
+    WellArchitectedFrameworkPillarRequest:
+      properties:
+        pillars:
+          type: array
+          description: Pillars to process
+          items:
+            $ref: '#/components/schemas/WellArchitectedFrameworkPillar'
+      type: object
+    WellArchitectedFrameworkPillar:
+      properties:
+        framework_id:
+          type: string
+          description: Framework id for the Pillar
+        pillar_id:
+          type: string
+          description: Unique Id of the Pillar
+        hyperscaler_pillar_id:
+          type: string
+          description: Unique Id of pillar
+        pillar:
+          type: string
+          description: Name of Pillar for the Framework
+        description:
+          type: string
+          description: Description of the Pillar
+        icon:
+          type: string
+          description: Icon for the pillar
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
     WellArchitectedFrameworkQuestion:
       properties:
         created_on:
@@ -855,21 +911,28 @@ components:
           items:
             $ref: '#/components/schemas/RecordIdentity'
       type: object
-    ModelError:
-      required:
-      - message
+    WellArchitectedFrameworkBestPracticeRequest:
       properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    WellArchitectedFrameworkPillarRequest:
-      properties:
-        pillars:
+        best_practices:
           type: array
-          description: Pillars to process
+          description: Best Practices to process
           items:
-            $ref: '#/components/schemas/WellArchitectedFrameworkPillar'
+            $ref: '#/components/schemas/WellArchitectedFrameworkBestPractice'
+      type: object
+    WellArchitectedFrameworkQuestionRequest:
+      properties:
+        questions:
+          type: array
+          description: Questions to process
+          items:
+            $ref: '#/components/schemas/WellArchitectedFrameworkQuestion'
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
       type: object
     WellArchitectedFrameworkBestPractice:
       properties:
@@ -927,16 +990,6 @@ components:
           type: boolean
           description: Flag to indicate whether the best practice is None of the above
       type: object
-    WellArchitectedFrameworkCustomLens:
-      required:
-      - __type
-      properties: {}
-      discriminator:
-        propertyName: __type
-      type: object
-      x-cs-subtypes:
-      - subtype_model: WellArchitectedFrameworkCustomLensForAws
-        subtype_name: WellArchitectedFrameworkCustomLensForAws
     WellArchitectedFramework:
       properties:
         created_on:
@@ -1036,66 +1089,13 @@ components:
           - SeparateBP
           x-cs-enum-type: WellArchitectedFrameworkHandleNoneOfTheAbove
       type: object
-    WellArchitectedFrameworkPillar:
+    ModelError:
+      required:
+      - message
       properties:
-        framework_id:
+        message:
           type: string
-          description: Framework id for the Pillar
-        pillar_id:
-          type: string
-          description: Unique Id of the Pillar
-        hyperscaler_pillar_id:
-          type: string
-          description: Unique Id of pillar
-        pillar:
-          type: string
-          description: Name of Pillar for the Framework
-        description:
-          type: string
-          description: Description of the Pillar
-        icon:
-          type: string
-          description: Icon for the pillar
-        questions:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
-      type: object
-    WellArchitectedFrameworkQuestionRequest:
-      properties:
-        questions:
-          type: array
-          description: Questions to process
-          items:
-            $ref: '#/components/schemas/WellArchitectedFrameworkQuestion'
-      type: object
-    RecordIdentity:
-      properties:
-        sysId:
-          type: string
-          description: Unique Identifier of the tracked item
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Last update of the tracked item
-        table:
-          type: string
-          description: Context of the tracked item
-      type: object
-    WellArchitectedFrameworkBestPracticeRequest:
-      properties:
-        best_practices:
-          type: array
-          description: Best Practices to process
-          items:
-            $ref: '#/components/schemas/WellArchitectedFrameworkBestPractice'
-      type: object
-    RecordIdentityBatchRequest:
-      properties:
-        ids:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
+          description: Error response message.
       type: object
   securitySchemes:
     auth_token:

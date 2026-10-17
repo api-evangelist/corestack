@@ -185,78 +185,6 @@ paths:
         required: true
 components:
   schemas:
-    SavingsPlanRecommendationsData:
-      required:
-      - recommendations
-      properties:
-        recommendations:
-          type: array
-          description: Savings plan purchase recommendations.
-          items:
-            $ref: '#/components/schemas/SavingsPlanRecommendation'
-      type: object
-    SavingsPlanBase:
-      properties:
-        plan_id:
-          type: string
-          description: Savings plan ID
-        plan_name:
-          type: string
-          description: Savings plan name
-        plan_type:
-          type: string
-          description: Type of savings plan
-        service_account_id:
-          type: string
-          description: Associated service account ID
-          x-cs-type: ObjectId
-        utilization_percentage:
-          type: number
-          description: Overall utilization percentage
-      type: object
-    SavingsPlanUtilizationMetric:
-      properties:
-        usage_date:
-          type: string
-          format: date-time
-          description: Date of the utilization record
-        avg_utilization_percentage:
-          type: number
-          description: Average utilization percentage for the period
-        max_utilization_percentage:
-          type: number
-          description: Maximum utilization percentage for the period
-        min_utilization_percentage:
-          type: number
-          description: Minimum utilization percentage for the period
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    SavingsPlanDetailsData:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            $ref: '#/components/schemas/SavingsPlanItem'
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    SavingsPlanUtilizationData:
-      allOf:
-      - $ref: '#/components/schemas/SavingsPlanBase'
-      - properties:
-          utilization_metrics:
-            description: Paginated utilization time-series
-            $ref: '#/components/schemas/SavingsPlanUtilizationMetricsData'
-        type: object
     SavingsPlanUtilizationFilters:
       required:
       - plan_id
@@ -279,14 +207,57 @@ components:
           format: date-time
           description: Filter metrics on or before this date
       type: object
-    SavingsPlanDetailsFilters:
+    ListContext:
       properties:
-        service_account_ids:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    SavingsPlanDetailsData:
+      properties:
+        results:
           type: array
-          description: Service account IDs to filter
+          description: List of result identifiers
           items:
-            type: string
-            x-cs-type: ObjectId
+            $ref: '#/components/schemas/SavingsPlanItem'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    SavingsPlanBase:
+      properties:
+        plan_id:
+          type: string
+          description: Savings plan ID
+        plan_name:
+          type: string
+          description: Savings plan name
+        plan_type:
+          type: string
+          description: Type of savings plan
+        service_account_id:
+          type: string
+          description: Associated service account ID
+          x-cs-type: ObjectId
+        utilization_percentage:
+          type: number
+          description: Overall utilization percentage
+      type: object
+    SavingsPlanRecommendationsData:
+      required:
+      - recommendations
+      properties:
+        recommendations:
+          type: array
+          description: Savings plan purchase recommendations.
+          items:
+            $ref: '#/components/schemas/SavingsPlanRecommendation'
       type: object
     SavingsPlanRecommendation:
       properties:
@@ -346,46 +317,6 @@ components:
           type: string
           description: Instance family (AWS compute plans)
       type: object
-    SavingsPlanUtilizationRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/SavingsPlanUtilizationFilters'
-      type: object
-    SavingsPlanDetailsRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/SavingsPlanDetailsFilters'
-      type: object
-    SavingsPlanUtilizationMetricsData:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            $ref: '#/components/schemas/SavingsPlanUtilizationMetric'
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    SavingsPlanRecommendationsRequest:
-      required:
-      - tenant_ids
-      properties:
-        tenant_ids:
-          type: array
-          description: One or more tenant IDs to fetch savings plan recommendations across.
-          items:
-            type: string
-            x-cs-type: ObjectId
-      type: object
     SavingsPlanItem:
       allOf:
       - $ref: '#/components/schemas/SavingsPlanBase'
@@ -423,17 +354,86 @@ components:
             type: string
             description: Current provisioning/status of the plan
         type: object
-    ListContext:
+    SavingsPlanUtilizationMetricsData:
       properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            $ref: '#/components/schemas/SavingsPlanUtilizationMetric'
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    SavingsPlanDetailsRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/SavingsPlanDetailsFilters'
+      type: object
+    SavingsPlanDetailsFilters:
+      properties:
+        service_account_ids:
+          type: array
+          description: Service account IDs to filter
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    SavingsPlanUtilizationData:
+      allOf:
+      - $ref: '#/components/schemas/SavingsPlanBase'
+      - properties:
+          utilization_metrics:
+            description: Paginated utilization time-series
+            $ref: '#/components/schemas/SavingsPlanUtilizationMetricsData'
+        type: object
+    SavingsPlanRecommendationsRequest:
+      required:
+      - tenant_ids
+      properties:
+        tenant_ids:
+          type: array
+          description: One or more tenant IDs to fetch savings plan recommendations across.
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    SavingsPlanUtilizationMetric:
+      properties:
+        usage_date:
+          type: string
+          format: date-time
+          description: Date of the utilization record
+        avg_utilization_percentage:
+          type: number
+          description: Average utilization percentage for the period
+        max_utilization_percentage:
+          type: number
+          description: Maximum utilization percentage for the period
+        min_utilization_percentage:
+          type: number
+          description: Minimum utilization percentage for the period
+      type: object
+    SavingsPlanUtilizationRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/SavingsPlanUtilizationFilters'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
       type: object
   securitySchemes:
     auth_token:

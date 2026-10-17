@@ -55,6 +55,15 @@ paths:
         required: true
 components:
   schemas:
+    JiraServiceManagementProjectFields:
+      properties:
+        key:
+          type: string
+          description: Key associated with the field
+        name:
+          type: string
+          description: Name of the field
+      type: object
     JiraServiceManagementListProjectFieldsResponse:
       properties:
         fields:
@@ -87,15 +96,6 @@ components:
           - ChangeManagement
           - IncidentManagement
           x-cs-enum-type: JiraServiceManagementIssueType
-      type: object
-    JiraServiceManagementProjectFields:
-      properties:
-        key:
-          type: string
-          description: Key associated with the field
-        name:
-          type: string
-          description: Name of the field
       type: object
   securitySchemes:
     auth_token:

@@ -61,13 +61,75 @@ paths:
         required: true
 components:
   schemas:
-    ModelError:
-      required:
-      - message
+    ProductCategoryWiseUsage:
       properties:
-        message:
+        name:
           type: string
-          description: Error response message.
+          description: Product category of the usage
+        cost:
+          type: number
+          description: Cost of the resource in the usage
+      type: object
+    InventoryWiseUsage:
+      properties:
+        service_name:
+          type: string
+          description: Name of the service
+        tenant_name:
+          type: string
+          description: Name of the tenant
+        service_accounts:
+          type: array
+          items:
+            type: string
+            description: List of cloud accounts
+        total_count:
+          type: integer
+          description: Total count of the inventory usage
+        top_consumption:
+          type: array
+          description: List of top consumption usage data
+          items:
+            $ref: '#/components/schemas/TopConsumptionUsage'
+      type: object
+    CloudAccountWiseUsage:
+      properties:
+        service_account_name:
+          type: string
+          description: Name of the cloud account
+        service_account_id:
+          type: string
+          description: Linked account ID for the cloud account
+        actual_cost:
+          type: number
+          description: Actual cost incurred for the cloud account
+        forecast_cost:
+          type: number
+          description: Projected cost for the cloud account
+        service_name:
+          type: string
+          description: Name of the service of the cloud account
+        account_type:
+          type: string
+          description: Type of the account
+        product_category_wise:
+          type: array
+          description: List of category-wise usage data
+          items:
+            $ref: '#/components/schemas/ProductCategoryWiseUsage'
+      type: object
+    CloudWiseUsageResponse:
+      properties:
+        cost_details:
+          type: array
+          description: List of service name-wise usage data
+          items:
+            $ref: '#/components/schemas/ServiceNameWiseUsage'
+        inventory_details:
+          type: array
+          description: List of inventory-wise usage data
+          items:
+            $ref: '#/components/schemas/InventoryWiseUsage'
       type: object
     TopConsumptionUsage:
       properties:
@@ -139,75 +201,13 @@ components:
           items:
             $ref: '#/components/schemas/CloudAccountWiseUsage'
       type: object
-    ProductCategoryWiseUsage:
+    ModelError:
+      required:
+      - message
       properties:
-        name:
+        message:
           type: string
-          description: Product category of the usage
-        cost:
-          type: number
-          description: Cost of the resource in the usage
-      type: object
-    InventoryWiseUsage:
-      properties:
-        service_name:
-          type: string
-          description: Name of the service
-        tenant_name:
-          type: string
-          description: Name of the tenant
-        service_accounts:
-          type: array
-          items:
-            type: string
-            description: List of cloud accounts
-        total_count:
-          type: integer
-          description: Total count of the inventory usage
-        top_consumption:
-          type: array
-          description: List of top consumption usage data
-          items:
-            $ref: '#/components/schemas/TopConsumptionUsage'
-      type: object
-    CloudAccountWiseUsage:
-      properties:
-        service_account_name:
-          type: string
-          description: Name of the cloud account
-        service_account_id:
-          type: string
-          description: Linked account ID for the cloud account
-        actual_cost:
-          type: number
-          description: Actual cost incurred for the cloud account
-        forecast_cost:
-          type: number
-          description: Projected cost for the cloud account
-        service_name:
-          type: string
-          description: Name of the service of the cloud account
-        account_type:
-          type: string
-          description: Type of the account
-        product_category_wise:
-          type: array
-          description: List of category-wise usage data
-          items:
-            $ref: '#/components/schemas/ProductCategoryWiseUsage'
-      type: object
-    CloudWiseUsageResponse:
-      properties:
-        cost_details:
-          type: array
-          description: List of service name-wise usage data
-          items:
-            $ref: '#/components/schemas/ServiceNameWiseUsage'
-        inventory_details:
-          type: array
-          description: List of inventory-wise usage data
-          items:
-            $ref: '#/components/schemas/InventoryWiseUsage'
+          description: Error response message.
       type: object
   securitySchemes:
     auth_token:

@@ -211,41 +211,6 @@ paths:
         required: true
 components:
   schemas:
-    AzureDevOpsBuildLog:
-      properties:
-        log_id:
-          type: integer
-          description: Build Log Id
-        created_on:
-          type: string
-          format: date-time
-          description: Build Log created datetime
-        last_changed_on:
-          type: string
-          format: date-time
-          description: Build Log latest update datetime
-        log_lines:
-          type: array
-          description: List of raw log lines
-          items:
-            type: string
-      type: object
-    AzureDevOpsPipelineListProjectsResponse:
-      properties:
-        projects:
-          type: array
-          description: List of project name
-          items:
-            $ref: '#/components/schemas/AzureDevOpsProject'
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
     AzureDevOpsBuildWorkItem:
       properties:
         url:
@@ -260,13 +225,30 @@ components:
           type: string
           description: Azure DevOps WorkItem Type Icon URL
       type: object
-    AzureDevOpsListBuildResponse:
+    AzureDevOpsProject:
       properties:
-        builds:
-          type: array
-          description: List of project name
-          items:
-            $ref: '#/components/schemas/AzureDevOpsBuild'
+        project_name:
+          type: string
+          description: Azure DevOps Project Name
+        project_id:
+          type: string
+          description: Azure DevOps Project ID
+      type: object
+    AzureDevOpsBuildWorkItemsRequest:
+      required:
+      - build_id
+      - project_id
+      - service_account_id
+      properties:
+        service_account_id:
+          type: string
+          description: Service Account ID
+        project_id:
+          type: string
+          description: Azure Devops Project ID
+        build_id:
+          type: integer
+          description: Azure Devops Build ID
       type: object
     AzureDevOpsPipelineListProjectsRequest:
       required:
@@ -275,6 +257,18 @@ components:
         service_account_id:
           type: string
           description: Service Account ID
+      type: object
+    AzureDevOpsListPipelinesRequest:
+      required:
+      - project_id
+      - service_account_id
+      properties:
+        service_account_id:
+          type: string
+          description: Service Account ID
+        project_id:
+          type: string
+          description: Azure Devops Project ID
       type: object
     AzureDevOpsBuild:
       properties:
@@ -319,50 +313,13 @@ components:
           type: string
           description: Version of the repo under Build
       type: object
-    AzureDevOpsListPipelinesRequest:
-      required:
-      - project_id
-      - service_account_id
+    AzureDevOpsPipelineListProjectsResponse:
       properties:
-        service_account_id:
-          type: string
-          description: Service Account ID
-        project_id:
-          type: string
-          description: Azure Devops Project ID
-      type: object
-    AzureDevOpsProject:
-      properties:
-        project_name:
-          type: string
-          description: Azure DevOps Project Name
-        project_id:
-          type: string
-          description: Azure DevOps Project ID
-      type: object
-    AzureDevOpsBuildWorkItemsRequest:
-      required:
-      - build_id
-      - project_id
-      - service_account_id
-      properties:
-        service_account_id:
-          type: string
-          description: Service Account ID
-        project_id:
-          type: string
-          description: Azure Devops Project ID
-        build_id:
-          type: integer
-          description: Azure Devops Build ID
-      type: object
-    AzureDevOpsListPipelinesResponse:
-      properties:
-        pipelines:
+        projects:
           type: array
           description: List of project name
           items:
-            $ref: '#/components/schemas/AzureDevOpsPipeline'
+            $ref: '#/components/schemas/AzureDevOpsProject'
       type: object
     AzureDevOpsListBuildLogsRequests:
       required:
@@ -379,6 +336,39 @@ components:
         build_id:
           type: integer
           description: Azure Devops Build ID
+      type: object
+    AzureDevOpsListBuildResponse:
+      properties:
+        builds:
+          type: array
+          description: List of project name
+          items:
+            $ref: '#/components/schemas/AzureDevOpsBuild'
+      type: object
+    AzureDevOpsListBuildLogsResponse:
+      properties:
+        logs:
+          type: array
+          description: List of AzureDevOpsBuildLog
+          items:
+            $ref: '#/components/schemas/AzureDevOpsBuildLog'
+      type: object
+    AzureDevOpsBuildWorkItemsResponse:
+      properties:
+        workitems:
+          type: array
+          description: List of workitems associated with build
+          items:
+            $ref: '#/components/schemas/AzureDevOpsBuildWorkItem'
+      type: object
+    AzureDevOpsPipeline:
+      properties:
+        pipeline_id:
+          type: integer
+          description: Azure DevOps Pipeline ID
+        pipeline_name:
+          type: string
+          description: Azure DevOps Pipeline Name
       type: object
     AzureDevOpsListBuildRequests:
       required:
@@ -423,30 +413,40 @@ components:
           type: string
           description: filter the build response with the provided search keyword
       type: object
-    AzureDevOpsBuildWorkItemsResponse:
+    AzureDevOpsListPipelinesResponse:
       properties:
-        workitems:
+        pipelines:
           type: array
-          description: List of workitems associated with build
+          description: List of project name
           items:
-            $ref: '#/components/schemas/AzureDevOpsBuildWorkItem'
+            $ref: '#/components/schemas/AzureDevOpsPipeline'
       type: object
-    AzureDevOpsPipeline:
+    AzureDevOpsBuildLog:
       properties:
-        pipeline_id:
+        log_id:
           type: integer
-          description: Azure DevOps Pipeline ID
-        pipeline_name:
+          description: Build Log Id
+        created_on:
           type: string
-          description: Azure DevOps Pipeline Name
-      type: object
-    AzureDevOpsListBuildLogsResponse:
-      properties:
-        logs:
+          format: date-time
+          description: Build Log created datetime
+        last_changed_on:
+          type: string
+          format: date-time
+          description: Build Log latest update datetime
+        log_lines:
           type: array
-          description: List of AzureDevOpsBuildLog
+          description: List of raw log lines
           items:
-            $ref: '#/components/schemas/AzureDevOpsBuildLog'
+            type: string
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
       type: object
   securitySchemes:
     auth_token:

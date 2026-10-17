@@ -348,6 +348,65 @@ paths:
         required: true
 components:
   schemas:
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    SchedulingDayDetails:
+      required:
+      - day
+      properties:
+        day:
+          type: string
+          description: 'At which day of that month or week the given category is scheduled to run.Allowed values: 1-31, for month and 0-7 or SUN-SAT for week. Both 0 and 7 represent Sunday.'
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    ScheduleFilter:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        category:
+          type: string
+          description: Category of the schedule
+          example: ComplianceStandard
+          enum:
+          - ComplianceStandard
+          - Policy
+          - PolicyRemediation
+          - Reports
+          - Script
+          - Template
+          x-cs-enum-type: ScheduleCategory
+        is_active:
+          type: boolean
+          description: Flag to represent whether the schedule is active or not.
+        query:
+          $ref: '#/components/schemas/QueryOperator'
+      type: object
     ScheduleSetNextExecutionRequest:
       required:
       - next_run
@@ -357,40 +416,35 @@ components:
           format: date-time
           description: When the next run of schedule to be triggered
       type: object
-    ScheduleExecutionNotificationWebHookForStandardType:
-      allOf:
-      - $ref: '#/components/schemas/ScheduleExecutionNotificationWebhook'
-      - properties: {}
-        type: object
-      x-cs-type-name: ScheduleExecutionNotificationWebHookForStandardType
-    ModelError:
+    ScheduleExecutionNotificationWebhook:
       required:
-      - message
+      - __type
       properties:
-        message:
+        webhook_id:
           type: string
-          description: Error response message.
+          description: Webhook ID to trigger notification
+      discriminator:
+        propertyName: __type
       type: object
-    SchedulingDetails:
+      x-cs-type-name: ScheduleExecutionNotificationWebhook
+      x-cs-subtypes:
+      - subtype_model: ScheduleExecutionNotificationWebHookForStandardType
+        subtype_name: ScheduleExecutionNotificationWebHookForStandardType
+    SchedulingTimeDetails:
       required:
-      - month
-      - time
+      - hour
+      - minute
+      - seconds
       properties:
-        month:
+        seconds:
           type: string
-          description: 'Month when the given category is scheduled to run. Allowed values: 1-12 or JAN-DEC'
-        time:
-          description: Time when the given category is scheduled to run.
-          $ref: '#/components/schemas/SchedulingTimeDetails'
-        dayofmonth:
-          description: 'At which day of that month the given category is scheduled to run. Note: If both weekday and dayofmonth are specified, dayofmonth takes precedence.'
-          $ref: '#/components/schemas/SchedulingDayDetails'
-        weekday:
-          description: 'At which day of that week the given category is scheduled to run. Note: If both weekday and dayofmonth are specified, dayofmonth takes precedence.'
-          $ref: '#/components/schemas/SchedulingDayDetails'
-        year:
+          description: 'Scheduled at which second, allowed values: 0-59'
+        minute:
           type: string
-          description: Year when the given category is scheduled to run. Example:'2024-2099'
+          description: 'Scheduled at which minute, allowed values: 0-59'
+        hour:
+          type: string
+          description: 'Scheduled at which hour, allowed values: 0-23'
       type: object
     ScheduleDetails:
       required:
@@ -501,22 +555,6 @@ components:
         background_job:
           description: Identity of the background job used for processing schedule. null if the job has completed
           $ref: '#/components/schemas/RecordIdentity'
-      type: object
-    SchedulingTimeDetails:
-      required:
-      - hour
-      - minute
-      - seconds
-      properties:
-        seconds:
-          type: string
-          description: 'Scheduled at which second, allowed values: 0-59'
-        minute:
-          type: string
-          description: 'Scheduled at which minute, allowed values: 0-59'
-        hour:
-          type: string
-          description: 'Scheduled at which hour, allowed values: 0-23'
       type: object
     ScheduleListRequest:
       properties:
@@ -992,53 +1030,6 @@ components:
         subtype_name: WorkloadQueryWorkloadType
       - subtype_model: WorkloadQueryWorkloadId
         subtype_name: WorkloadQueryWorkloadId
-    RecordIdentity:
-      properties:
-        sysId:
-          type: string
-          description: Unique Identifier of the tracked item
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Last update of the tracked item
-        table:
-          type: string
-          description: Context of the tracked item
-      type: object
-    ScheduleExecutionNotificationConfiguration:
-      properties:
-        email_recipients:
-          type: array
-          description: List of Email IDs
-          items:
-            type: string
-        webhooks:
-          type: array
-          description: Webhooks to trigger notifications
-          items:
-            $ref: '#/components/schemas/ScheduleExecutionNotificationWebHookForStandardType'
-      type: object
-    RecordIdentityBatchRequest:
-      properties:
-        ids:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
-      type: object
-    ScheduleExecutionNotificationWebhook:
-      required:
-      - __type
-      properties:
-        webhook_id:
-          type: string
-          description: Webhook ID to trigger notification
-      discriminator:
-        propertyName: __type
-      type: object
-      x-cs-type-name: ScheduleExecutionNotificationWebhook
-      x-cs-subtypes:
-      - subtype_model: ScheduleExecutionNotificationWebHookForStandardType
-        subtype_name: ScheduleExecutionNotificationWebHookForStandardType
     ScheduleListSortCriteria:
       required:
       - column
@@ -1055,39 +1046,60 @@ components:
         ascending:
           type: boolean
       type: object
-    ScheduleFilter:
+    ScheduleExecutionNotificationWebHookForStandardType:
+      allOf:
+      - $ref: '#/components/schemas/ScheduleExecutionNotificationWebhook'
+      - properties: {}
+        type: object
+      x-cs-type-name: ScheduleExecutionNotificationWebHookForStandardType
+    SchedulingDetails:
       required:
-      - tenant_id
+      - month
+      - time
       properties:
-        tenant_id:
+        month:
           type: string
-          description: Tenant ID
-          x-cs-type: ObjectId
-        category:
+          description: 'Month when the given category is scheduled to run. Allowed values: 1-12 or JAN-DEC'
+        time:
+          description: Time when the given category is scheduled to run.
+          $ref: '#/components/schemas/SchedulingTimeDetails'
+        dayofmonth:
+          description: 'At which day of that month the given category is scheduled to run. Note: If both weekday and dayofmonth are specified, dayofmonth takes precedence.'
+          $ref: '#/components/schemas/SchedulingDayDetails'
+        weekday:
+          description: 'At which day of that week the given category is scheduled to run. Note: If both weekday and dayofmonth are specified, dayofmonth takes precedence.'
+          $ref: '#/components/schemas/SchedulingDayDetails'
+        year:
           type: string
-          description: Category of the schedule
-          example: ComplianceStandard
-          enum:
-          - ComplianceStandard
-          - Policy
-          - PolicyRemediation
-          - Reports
-          - Script
-          - Template
-          x-cs-enum-type: ScheduleCategory
-        is_active:
-          type: boolean
-          description: Flag to represent whether the schedule is active or not.
-        query:
-          $ref: '#/components/schemas/QueryOperator'
+          description: Year when the given category is scheduled to run. Example:'2024-2099'
       type: object
-    SchedulingDayDetails:
-      required:
-      - day
+    RecordIdentityBatchRequest:
       properties:
-        day:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
+      type: object
+    ScheduleExecutionNotificationConfiguration:
+      properties:
+        email_recipients:
+          type: array
+          description: List of Email IDs
+          items:
+            type: string
+        webhooks:
+          type: array
+          description: Webhooks to trigger notifications
+          items:
+            $ref: '#/components/schemas/ScheduleExecutionNotificationWebHookForStandardType'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
           type: string
-          description: 'At which day of that month or week the given category is scheduled to run.Allowed values: 1-31, for month and 0-7 or SUN-SAT for week. Both 0 and 7 represent Sunday.'
+          description: Error response message.
       type: object
     ScheduleExecutionParameterBase:
       required:
@@ -1125,18 +1137,6 @@ components:
         subtype_name: ScheduleExecutionParameterForAssessmentAgentAgenticFeed
       - subtype_model: ScheduleExecutionParameterForScript
         subtype_name: ScheduleExecutionParameterForScript
-    ListContext:
-      properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
-      type: object
     ScheduleListResponse:
       properties:
         results:

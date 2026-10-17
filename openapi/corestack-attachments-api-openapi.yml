@@ -281,14 +281,6 @@ paths:
       - Attachments
 components:
   schemas:
-    BatchRequest:
-      properties:
-        ids:
-          type: array
-          description: Identifiers to fetch
-          items:
-            type: string
-      type: object
     ModelError:
       required:
       - message
@@ -296,6 +288,11 @@ components:
         message:
           type: string
           description: Error response message.
+      type: object
+    InputStream:
+      properties:
+        bytes:
+          type: object
       type: object
     Attachment:
       required:
@@ -328,10 +325,13 @@ components:
           type: string
           description: Original file name of the attachment
       type: object
-    InputStream:
+    BatchRequest:
       properties:
-        bytes:
-          type: object
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
       type: object
   securitySchemes:
     auth_token:

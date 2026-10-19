@@ -182,64 +182,6 @@ paths:
         required: true
 components:
   schemas:
-    PlatformTaskProperties:
-      properties:
-        days:
-          type: integer
-          description: Number of days for backfill
-          default: 30
-      type: object
-    PlatformLogsResponse:
-      properties:
-        message:
-          type: string
-          description: Additional information about the log submission
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    PlatformLogsRequest:
-      properties:
-        logs_list:
-          type: array
-          description: List of log entries
-          items:
-            $ref: '#/components/schemas/PlatformLogs'
-      type: object
-    PlatformAssignedTasks:
-      properties:
-        task_id:
-          type: string
-          description: Unique ID of the assigned task
-        assigned_task:
-          type: string
-          description: Assigned task
-          example: backfill
-          enum:
-          - backfill
-          - push_logs
-          - restart
-          x-cs-enum-type: PlatformTasks
-        properties:
-          description: Task specific properties (number of days for backfill)
-          $ref: '#/components/schemas/PlatformTaskProperties'
-      type: object
-    PlatformTaskResponse:
-      properties:
-        service_account_id:
-          type: string
-          description: Service Account ID
-        assigned_tasks:
-          type: array
-          description: Assigned tasks
-          items:
-            $ref: '#/components/schemas/PlatformAssignedTasks'
-      type: object
     PlatformLogs:
       properties:
         log_type:
@@ -274,6 +216,51 @@ components:
           type: string
           description: Node name
       type: object
+    PlatformTaskResponse:
+      properties:
+        service_account_id:
+          type: string
+          description: Service Account ID
+        assigned_tasks:
+          type: array
+          description: Assigned tasks
+          items:
+            $ref: '#/components/schemas/PlatformAssignedTasks'
+      type: object
+    PlatformTaskRequest:
+      required:
+      - service_account_id
+      - task
+      properties:
+        service_account_id:
+          type: string
+          description: Service Account ID
+        task:
+          type: string
+          description: Platform related background tasks
+          example: backfill
+          enum:
+          - backfill
+          - push_logs
+          - restart
+          x-cs-enum-type: PlatformTasks
+        properties:
+          description: Task specific properties (number of days for backfill)
+          $ref: '#/components/schemas/PlatformTaskProperties'
+      type: object
+    PlatformTaskProperties:
+      properties:
+        days:
+          type: integer
+          description: Number of days for backfill
+          default: 30
+      type: object
+    PlatformLogsResponse:
+      properties:
+        message:
+          type: string
+          description: Additional information about the log submission
+      type: object
     PlatformTaskUpdateRequest:
       required:
       - status
@@ -303,17 +290,22 @@ components:
           - failed
           x-cs-enum-type: PlatformTaskStatus
       type: object
-    PlatformTaskRequest:
-      required:
-      - service_account_id
-      - task
+    PlatformLogsRequest:
       properties:
-        service_account_id:
+        logs_list:
+          type: array
+          description: List of log entries
+          items:
+            $ref: '#/components/schemas/PlatformLogs'
+      type: object
+    PlatformAssignedTasks:
+      properties:
+        task_id:
           type: string
-          description: Service Account ID
-        task:
+          description: Unique ID of the assigned task
+        assigned_task:
           type: string
-          description: Platform related background tasks
+          description: Assigned task
           example: backfill
           enum:
           - backfill
@@ -323,6 +315,14 @@ components:
         properties:
           description: Task specific properties (number of days for backfill)
           $ref: '#/components/schemas/PlatformTaskProperties'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
       type: object
   securitySchemes:
     auth_token:

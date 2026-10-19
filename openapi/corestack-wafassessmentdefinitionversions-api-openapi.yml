@@ -343,6 +343,34 @@ paths:
         required: true
 components:
   schemas:
+    WellArchitectedFrameworkAssessmentSync:
+      properties:
+        AWS:
+          $ref: '#/components/schemas/WellArchitectedFrameworkAssessmentAwsSyncFields'
+      type: object
+    BaseDefinitionVersion:
+      properties:
+        sysId:
+          type: string
+          description: Identifier of the version
+        createdOn:
+          type: string
+          format: date-time
+          description: Version created on
+        updatedOn:
+          type: string
+          format: date-time
+          description: Version  updated on
+        version:
+          type: integer
+          default: Sequence number of the version
+        definition:
+          description: Reference to the definition
+          $ref: '#/components/schemas/RecordIdentity'
+        predecessor:
+          description: Reference to the previous version
+          $ref: '#/components/schemas/RecordIdentity'
+      type: object
     RecordIdentity:
       properties:
         sysId:
@@ -355,11 +383,6 @@ components:
         table:
           type: string
           description: Context of the tracked item
-      type: object
-    WellArchitectedFrameworkAssessmentSync:
-      properties:
-        AWS:
-          $ref: '#/components/schemas/WellArchitectedFrameworkAssessmentAwsSyncFields'
       type: object
     WellArchitectedFrameworkAssessmentAwsSyncFields:
       properties:
@@ -390,41 +413,6 @@ components:
             - Rejected
             x-cs-enum-type: VersionState
         type: object
-    BaseDefinitionVersion:
-      properties:
-        sysId:
-          type: string
-          description: Identifier of the version
-        createdOn:
-          type: string
-          format: date-time
-          description: Version created on
-        updatedOn:
-          type: string
-          format: date-time
-          description: Version  updated on
-        version:
-          type: integer
-          default: Sequence number of the version
-        definition:
-          description: Reference to the definition
-          $ref: '#/components/schemas/RecordIdentity'
-        predecessor:
-          description: Reference to the previous version
-          $ref: '#/components/schemas/RecordIdentity'
-      type: object
-    RawImport:
-      properties:
-        contentsAsJSON:
-          type: string
-      type: object
-    RecordIdentityBatchRequest:
-      properties:
-        ids:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
-      type: object
     WellArchitectedFrameworkAssessmentConfiguration:
       properties:
         workload_id:
@@ -438,6 +426,11 @@ components:
         sync_with_hyperscaler:
           $ref: '#/components/schemas/WellArchitectedFrameworkAssessmentSync'
       type: object
+    RawImport:
+      properties:
+        contentsAsJSON:
+          type: string
+      type: object
     ModelError:
       required:
       - message
@@ -445,6 +438,13 @@ components:
         message:
           type: string
           description: Error response message.
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
       type: object
   securitySchemes:
     auth_token:

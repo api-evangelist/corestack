@@ -910,28 +910,6 @@ apis:
     url: errors/corestack-problem-types.yml
   - type: DataModel
     url: data-model/corestack-data-model.yml
-- aid: corestack:corestack-identity-api
-  name: CoreStack Identity API
-  description: User, Tenants & Roles Management
-  humanURL: https://docs.corestack.io/reference
-  baseURL: https://api.corestack.io/
-  tags:
-  - Identity
-  properties:
-  - type: OpenAPI
-    url: openapi/corestack-identity-api-openapi.yml
-  - type: Documentation
-    url: https://docs.corestack.io/docs/corestack-api-modules
-  - type: APIReference
-    url: https://docs.corestack.io/reference
-  - type: Authentication
-    url: authentication/corestack-authentication.yml
-  - type: Conventions
-    url: conventions/corestack-conventions.yml
-  - type: ErrorCatalog
-    url: errors/corestack-problem-types.yml
-  - type: DataModel
-    url: data-model/corestack-data-model.yml
 - aid: corestack:corestack-jira-service-management-api
   name: CoreStack Jira Service Management API
   description: Jira Service Management
@@ -1887,6 +1865,226 @@ apis:
     url: errors/corestack-problem-types.yml
   - type: DataModel
     url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-ai-agents-observability-api
+  name: CoreStack AI Agents Observability API
+  description: AI Agents observability APIs (AgentCore agent discovery and span/trace collection)
+  humanURL: https://docs.corestack.io/docs/mcp-tool-guide
+  baseURL: https://cloud.corestack.io/mcp
+  tags:
+  - AI Agents Observability
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-ai-agents-observability-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-lock-configuration-api
+  name: CoreStack Lock Configuration API
+  description: Manage Locks
+  humanURL: https://docs.corestack.io/docs/mcp-tool-guide
+  baseURL: https://cloud.corestack.io/mcp
+  tags:
+  - Lock Configuration
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-lock-configuration-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-policy-v2-api
+  name: CoreStack Policy V2 API
+  description: Manage policies and policy job details
+  humanURL: https://docs.corestack.io/docs/mcp-tool-guide
+  baseURL: https://cloud.corestack.io/mcp
+  tags:
+  - Policy V2
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-policy-v2-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-roles-api
+  name: CoreStack Roles API
+  description: Roles Management
+  humanURL: https://docs.corestack.io/docs/mcp-tool-guide
+  baseURL: https://cloud.corestack.io/mcp
+  tags:
+  - Roles
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-roles-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-templates-api
+  name: CoreStack Templates API
+  description: Manage templates
+  humanURL: https://docs.corestack.io/docs/mcp-tool-guide
+  baseURL: https://cloud.corestack.io/mcp
+  tags:
+  - Templates
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-templates-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-tenants-api
+  name: CoreStack Tenants API
+  description: Tenant Management
+  humanURL: https://docs.corestack.io/docs/mcp-tool-guide
+  baseURL: https://cloud.corestack.io/mcp
+  tags:
+  - Tenants
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-tenants-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-userdelegation-api
+  name: CoreStack User Delegation API
+  description: User Delegation Rules and Reports
+  humanURL: https://docs.corestack.io/docs/mcp-tool-guide
+  baseURL: https://cloud.corestack.io/mcp
+  tags:
+  - UserDelegation
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-userdelegation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-users-api
+  name: CoreStack Users API
+  description: User Management - CRUD, listing and search
+  humanURL: https://docs.corestack.io/docs/mcp-tool-guide
+  baseURL: https://cloud.corestack.io/mcp
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-users-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-usersauth-api
+  name: CoreStack Users Auth API
+  description: User Authentication - passwords, keys, verification and activation
+  humanURL: https://docs.corestack.io/docs/mcp-tool-guide
+  baseURL: https://cloud.corestack.io/mcp
+  tags:
+  - UsersAuth
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-usersauth-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
+- aid: corestack:corestack-usersprofile-api
+  name: CoreStack Users Profile API
+  description: User Profile and Notifications
+  humanURL: https://docs.corestack.io/docs/mcp-tool-guide
+  baseURL: https://cloud.corestack.io/mcp
+  tags:
+  - UsersProfile
+  properties:
+  - type: OpenAPI
+    url: openapi/corestack-usersprofile-api-openapi.yml
+  - type: Documentation
+    url: https://docs.corestack.io/docs/corestack-api-modules
+  - type: APIReference
+    url: https://docs.corestack.io/reference
+  - type: Authentication
+    url: authentication/corestack-authentication.yml
+  - type: Conventions
+    url: conventions/corestack-conventions.yml
+  - type: ErrorCatalog
+    url: errors/corestack-problem-types.yml
+  - type: DataModel
+    url: data-model/corestack-data-model.yml
 - aid: corestack:corestack-ai-governance-api
   name: CoreStack AI Governance API
   description: Manage AI Governance Metrics
@@ -1915,8 +2113,6 @@ apis:
   humanURL: https://docs.corestack.io/docs/mcp-tool-guide
   baseURL: https://cloud.corestack.io/mcp
   tags:
-  - Audit Logs
-  tags_raw:
   - Audit Log
   properties:
   - type: OpenAPI

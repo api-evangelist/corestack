@@ -579,44 +579,6 @@ paths:
         required: true
 components:
   schemas:
-    TagPostureResourceBase:
-      allOf:
-      - $ref: '#/components/schemas/TagPostureBase'
-      - properties:
-          resource_id:
-            type: string
-            description: Identifier of the resource
-          cloud_resource_id:
-            type: string
-            description: Cloud resource id
-          resource_name:
-            type: string
-            description: Name of the resource
-          resource_category:
-            type: string
-            description: Category of the resource
-          resource_component:
-            type: string
-            description: Component of the resource
-          resource_type:
-            type: string
-            description: Type of the resource
-          resource_region:
-            type: string
-            description: Location of the resource
-          resource_filter:
-            type: string
-            description: Resource_group/Zone/Region for the resource
-        type: object
-      x-cs-type-name: TagPostureResourceBase
-    TagPostureResourceSummaryBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/TagPostureResourceSummary'
-      type: object
     TagPostureWorkloadCloudSummary:
       properties:
         workload_id:
@@ -627,6 +589,318 @@ components:
           description: Workload Cloud Tag Posture Summary
           items:
             $ref: '#/components/schemas/TagPostureCloudAccountSummary'
+      type: object
+    TagPostureSnapshotListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/TagPostureSnapshotSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/TagPostureSnapshotFilters'
+      type: object
+    TagPostureCloudAccountSummaryBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/TagPostureCloudAccountSummary'
+      type: object
+    TagPostureSnapshotCreateRequest:
+      properties:
+        cloud_account_ids:
+          type: array
+          description: List of cloud account ids to include in the snapshot
+          items:
+            type: string
+      type: object
+    TagPostureResourceBatchRequest:
+      properties:
+        baseline_id:
+          type: string
+          description: Baseline to fetch summary for (all if missing)
+        resource_ids:
+          type: array
+          description: List of resource ids to fetch Tag Posture Details
+          items:
+            type: string
+      type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    TagPostureSnapshot:
+      properties:
+        snapshot_id:
+          type: string
+        account_id:
+          type: string
+          description: Id of the account associated with the snapshot
+        created_at:
+          type: string
+          format: date-time
+          description: When the snapshot was created
+        updated_at:
+          type: string
+          format: date-time
+          description: When the snapshot was updated
+        created_by:
+          type: string
+          description: User ID of user who created the snapshot
+        status:
+          type: string
+          description: Status of the snapshot
+          example: Running
+          enum:
+          - Running
+          - Failed
+          - Success
+          x-cs-enum-type: TagPostureSnapshotStatus
+        reason:
+          type: string
+          description: Reason for triggering the snapshot
+          example: Manual
+          enum:
+          - Manual
+          - Automatic
+          x-cs-enum-type: TagPostureSnapshotReason
+        progress:
+          description: Progress of the generation
+          $ref: '#/components/schemas/TagPostureSnapshotProgress'
+      type: object
+    TagPostureResourceBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/TagPostureResource'
+      type: object
+    TagPostureSummaryListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/TagPostureSummarySortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/TagPostureContext'
+      type: object
+    TagPostureResourceSummary:
+      allOf:
+      - $ref: '#/components/schemas/TagPostureResourceBase'
+      - properties:
+          supports_remediation:
+            type: boolean
+            description: Whether or not the resource supports remediation
+          resource_coverage:
+            description: Resource coverage of the posture
+            $ref: '#/components/schemas/TagPostureResourceCoverage'
+          is_billable:
+            type: array
+            description: Whether to only return billable/non billable resources)
+            items:
+              type: boolean
+        type: object
+      x-cs-type-name: TagPostureResourceSummary
+    TagPostureBase:
+      required:
+      - __type
+      properties:
+        account_id:
+          type: string
+          description: Id of the CoreStack Account under which this tenant resides
+        tenant_id:
+          type: string
+          description: Id of the CoreStack Tenant for the posture
+        cloud:
+          type: string
+          description: Cloud Provider being summarized
+          example: AWS
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          x-cs-enum-type: CloudServiceName
+        cloud_account_id:
+          type: string
+          description: Cloud Account id for the posture
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: TagPostureCloudAccountSummary
+        subtype_name: TagPostureCloudAccountSummary
+      - subtype_model: TagPostureResourceBase
+        subtype_name: TagPostureResourceBase
+      - subtype_model: TagPostureResourceSummary
+        subtype_name: TagPostureResourceSummary
+      - subtype_model: TagPostureResource
+        subtype_name: TagPostureResource
+    TagPostureWorkloadCloudSummaryResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/TagPostureWorkloadCloudSummary'
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    TagPostureResourceCoverage:
+      properties:
+        resource_count:
+          type: integer
+          description: Total number of resources
+        valid_resource_count:
+          type: integer
+          description: Number of resources with 100% coverage
+        tag_counts:
+          description: Count of tags for all resources
+          $ref: '#/components/schemas/TagPostureSummaryCount'
+        missing_tag_keys:
+          type: array
+          description: List of missing tag keys
+          items:
+            type: string
+        invalid_tag_values:
+          type: object
+          description: Map of invalid tag values
+          additionalProperties:
+            type: string
+      type: object
+    TagPostureResource:
+      allOf:
+      - $ref: '#/components/schemas/TagPostureResourceBase'
+      - properties:
+          resource_tags:
+            type: array
+            description: List of tags for the resource
+            items:
+              $ref: '#/components/schemas/TagPostureTagDetails'
+        type: object
+      x-cs-type-name: TagPostureResource
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    TagPostureTagCoverage:
+      properties:
+        tag:
+          type: string
+          description: Tag key
+        resource_counts:
+          description: Counts of resources for this tag
+          $ref: '#/components/schemas/TagPostureSummaryCount'
+      type: object
+    TagPostureSnapshotSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          - Status
+          - Reason
+          x-cs-enum-type: TagPostureSnapshotSortColumn
+        ascending:
+          type: boolean
+      type: object
+    TagPostureResourceSummaryBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/TagPostureResourceSummary'
+      type: object
+    TagPostureTagDetails:
+      properties:
+        tag:
+          type: string
+          description: Tag key
+        value:
+          type: string
+          description: Value of tag
+        is_valid:
+          type: boolean
+          description: Whether the tag is valid
+        auto_suggest:
+          type: array
+          description: Possible values for the key
+          items:
+            type: string
+      type: object
+    TagPostureSnapshotFilters:
+      properties:
+        status:
+          type: array
+          description: List of status to filter. (All if missing)
+          items:
+            type: string
+            description: Status of the snapshot
+            example: Running
+            enum:
+            - Running
+            - Failed
+            - Success
+            x-cs-enum-type: TagPostureSnapshotStatus
+      type: object
+    TagPostureSnapshotProgress:
+      properties:
+        total_cloud_accounts:
+          type: integer
+          description: Total number of cloud accounts in the snapshot
+        processed_cloud_accounts:
+          type: integer
+          description: Number of cloud accounts that have been processed already
       type: object
     TagPostureContext:
       properties:
@@ -673,16 +947,82 @@ components:
           type: string
           description: Tag key to filter resources by, used to evaluate governance coverage for a specific tag like 'owner' or 'environment'.
       type: object
-    TagPostureResourceBatchRequest:
+    TagPostureSummarySortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: Cloud
+          enum:
+          - Cloud
+          - CloudAccountName
+          - CloudResourceId
+          - InvalidTags
+          - MissingTags
+          - ResourceCategory
+          - ResourceComponent
+          - ResourceCoverage
+          - ResourceName
+          - ResourceRegion
+          - ResourceType
+          - ResourceFilter
+          - TagCoverage
+          x-cs-enum-type: TagPostureSummarySortColumn
+        ascending:
+          type: boolean
+      type: object
+    TagPostureSummaryCount:
+      properties:
+        valid_count:
+          type: integer
+          description: Number of valid
+        invalid_count:
+          type: integer
+          description: Number of invalid
+        missing_keys_count:
+          type: integer
+          description: Number of missing
+        auto_suggested_count:
+          type: integer
+          description: Number of suggestions
+      type: object
+    TagPostureResourceBase:
+      allOf:
+      - $ref: '#/components/schemas/TagPostureBase'
+      - properties:
+          resource_id:
+            type: string
+            description: Identifier of the resource
+          cloud_resource_id:
+            type: string
+            description: Cloud resource id
+          resource_name:
+            type: string
+            description: Name of the resource
+          resource_category:
+            type: string
+            description: Category of the resource
+          resource_component:
+            type: string
+            description: Component of the resource
+          resource_type:
+            type: string
+            description: Type of the resource
+          resource_region:
+            type: string
+            description: Location of the resource
+          resource_filter:
+            type: string
+            description: Resource_group/Zone/Region for the resource
+        type: object
+      x-cs-type-name: TagPostureResourceBase
+    TagBaselineReference:
       properties:
         baseline_id:
           type: string
-          description: Baseline to fetch summary for (all if missing)
-        resource_ids:
-          type: array
-          description: List of resource ids to fetch Tag Posture Details
-          items:
-            type: string
+        baseline_version_id:
+          type: string
       type: object
     AccountFilters:
       properties:
@@ -746,162 +1086,6 @@ components:
           items:
             type: string
       type: object
-    TagPostureTagCoverage:
-      properties:
-        tag:
-          type: string
-          description: Tag key
-        resource_counts:
-          description: Counts of resources for this tag
-          $ref: '#/components/schemas/TagPostureSummaryCount'
-      type: object
-    TagPostureTagDetails:
-      properties:
-        tag:
-          type: string
-          description: Tag key
-        value:
-          type: string
-          description: Value of tag
-        is_valid:
-          type: boolean
-          description: Whether the tag is valid
-        auto_suggest:
-          type: array
-          description: Possible values for the key
-          items:
-            type: string
-      type: object
-    TagPostureBase:
-      required:
-      - __type
-      properties:
-        account_id:
-          type: string
-          description: Id of the CoreStack Account under which this tenant resides
-        tenant_id:
-          type: string
-          description: Id of the CoreStack Tenant for the posture
-        cloud:
-          type: string
-          description: Cloud Provider being summarized
-          example: AWS
-          enum:
-          - AWS
-          - Azure
-          - AzureStack
-          - Azure_CSP
-          - Azure_CSP-Direct
-          - Azure_EA
-          - Azure_MCA
-          - Cloudstack
-          - GCP
-          - MS_VMM
-          - OCI
-          - Openstack
-          - PrivateCloud
-          - Rackspace
-          - VMware
-          - VMware_VCD
-          - vCenter
-          x-cs-enum-type: CloudServiceName
-        cloud_account_id:
-          type: string
-          description: Cloud Account id for the posture
-      discriminator:
-        propertyName: __type
-      type: object
-      x-cs-subtypes:
-      - subtype_model: TagPostureCloudAccountSummary
-        subtype_name: TagPostureCloudAccountSummary
-      - subtype_model: TagPostureResourceBase
-        subtype_name: TagPostureResourceBase
-      - subtype_model: TagPostureResourceSummary
-        subtype_name: TagPostureResourceSummary
-      - subtype_model: TagPostureResource
-        subtype_name: TagPostureResource
-    ListContext:
-      properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
-      type: object
-    TagPostureSnapshotProgress:
-      properties:
-        total_cloud_accounts:
-          type: integer
-          description: Total number of cloud accounts in the snapshot
-        processed_cloud_accounts:
-          type: integer
-          description: Number of cloud accounts that have been processed already
-      type: object
-    TagPostureSnapshot:
-      properties:
-        snapshot_id:
-          type: string
-        account_id:
-          type: string
-          description: Id of the account associated with the snapshot
-        created_at:
-          type: string
-          format: date-time
-          description: When the snapshot was created
-        updated_at:
-          type: string
-          format: date-time
-          description: When the snapshot was updated
-        created_by:
-          type: string
-          description: User ID of user who created the snapshot
-        status:
-          type: string
-          description: Status of the snapshot
-          example: Running
-          enum:
-          - Running
-          - Failed
-          - Success
-          x-cs-enum-type: TagPostureSnapshotStatus
-        reason:
-          type: string
-          description: Reason for triggering the snapshot
-          example: Manual
-          enum:
-          - Manual
-          - Automatic
-          x-cs-enum-type: TagPostureSnapshotReason
-        progress:
-          description: Progress of the generation
-          $ref: '#/components/schemas/TagPostureSnapshotProgress'
-      type: object
-    TagPostureResourceCoverage:
-      properties:
-        resource_count:
-          type: integer
-          description: Total number of resources
-        valid_resource_count:
-          type: integer
-          description: Number of resources with 100% coverage
-        tag_counts:
-          description: Count of tags for all resources
-          $ref: '#/components/schemas/TagPostureSummaryCount'
-        missing_tag_keys:
-          type: array
-          description: List of missing tag keys
-          items:
-            type: string
-        invalid_tag_values:
-          type: object
-          description: Map of invalid tag values
-          additionalProperties:
-            type: string
-      type: object
     TagPostureCloudAccountSummary:
       allOf:
       - $ref: '#/components/schemas/TagPostureBase'
@@ -931,17 +1115,6 @@ components:
             description: Whether tag remediation is allowed for this account
         type: object
       x-cs-type-name: TagPostureCloudAccountSummary
-    TagPostureResource:
-      allOf:
-      - $ref: '#/components/schemas/TagPostureResourceBase'
-      - properties:
-          resource_tags:
-            type: array
-            description: List of tags for the resource
-            items:
-              $ref: '#/components/schemas/TagPostureTagDetails'
-        type: object
-      x-cs-type-name: TagPostureResource
     TagPostureSnapshotBatchResponse:
       properties:
         results:
@@ -949,179 +1122,6 @@ components:
           description: Map from identifier to response model
           additionalProperties:
             $ref: '#/components/schemas/TagPostureSnapshot'
-      type: object
-    TagPostureSummarySortCriteria:
-      required:
-      - column
-      properties:
-        column:
-          type: string
-          example: Cloud
-          enum:
-          - Cloud
-          - CloudAccountName
-          - CloudResourceId
-          - InvalidTags
-          - MissingTags
-          - ResourceCategory
-          - ResourceComponent
-          - ResourceCoverage
-          - ResourceName
-          - ResourceRegion
-          - ResourceType
-          - ResourceFilter
-          - TagCoverage
-          x-cs-enum-type: TagPostureSummarySortColumn
-        ascending:
-          type: boolean
-      type: object
-    ListResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    TagPostureResourceBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/TagPostureResource'
-      type: object
-    TagPostureSummaryListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/TagPostureSummarySortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/TagPostureContext'
-      type: object
-    TagPostureSnapshotListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/TagPostureSnapshotSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/TagPostureSnapshotFilters'
-      type: object
-    TagBaselineReference:
-      properties:
-        baseline_id:
-          type: string
-        baseline_version_id:
-          type: string
-      type: object
-    TagPostureResourceSummary:
-      allOf:
-      - $ref: '#/components/schemas/TagPostureResourceBase'
-      - properties:
-          supports_remediation:
-            type: boolean
-            description: Whether or not the resource supports remediation
-          resource_coverage:
-            description: Resource coverage of the posture
-            $ref: '#/components/schemas/TagPostureResourceCoverage'
-          is_billable:
-            type: array
-            description: Whether to only return billable/non billable resources)
-            items:
-              type: boolean
-        type: object
-      x-cs-type-name: TagPostureResourceSummary
-    TagPostureSummaryCount:
-      properties:
-        valid_count:
-          type: integer
-          description: Number of valid
-        invalid_count:
-          type: integer
-          description: Number of invalid
-        missing_keys_count:
-          type: integer
-          description: Number of missing
-        auto_suggested_count:
-          type: integer
-          description: Number of suggestions
-      type: object
-    TagPostureCloudAccountSummaryBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/TagPostureCloudAccountSummary'
-      type: object
-    TagPostureSnapshotSortCriteria:
-      required:
-      - column
-      properties:
-        column:
-          type: string
-          example: CreatedAt
-          enum:
-          - CreatedAt
-          - Status
-          - Reason
-          x-cs-enum-type: TagPostureSnapshotSortColumn
-        ascending:
-          type: boolean
-      type: object
-    TagPostureWorkloadCloudSummaryResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/TagPostureWorkloadCloudSummary'
-      type: object
-    TagPostureSnapshotFilters:
-      properties:
-        status:
-          type: array
-          description: List of status to filter. (All if missing)
-          items:
-            type: string
-            description: Status of the snapshot
-            example: Running
-            enum:
-            - Running
-            - Failed
-            - Success
-            x-cs-enum-type: TagPostureSnapshotStatus
-      type: object
-    TagPostureSnapshotCreateRequest:
-      properties:
-        cloud_account_ids:
-          type: array
-          description: List of cloud account ids to include in the snapshot
-          items:
-            type: string
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
       type: object
     BatchRequest:
       properties:

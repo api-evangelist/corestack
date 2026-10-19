@@ -1,0 +1,1556 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Tenants API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Tenant Management
+servers:
+- url: /
+tags:
+- name: Tenants
+  description: Tenant Management
+paths:
+  /tenants:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTenantResponse'
+      summary: List Tenant
+      description: 'Deprecated: Use /v2/tenants instead. There can be multiple tenants within a CoreStack account. List all tenants the user is mapped under a CoreStack account. If there are 3 tenants and user performing this operation has access to only 2 tenants then only those 2 tenants will be returned.'
+      operationId: listTenant@@@2
+      security:
+      - auth_token: []
+      deprecated: true
+      tags:
+      - Tenants
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantCreateResponse'
+      summary: Create Tenant
+      description: 'Deprecated: Use /v2/tenants instead. Creates a new tenant under a CoreStack account. There can be multiple tenants within a CoreStack account.'
+      operationId: createTenant@@@2
+      security:
+      - auth_token: []
+      deprecated: true
+      tags:
+      - Tenants
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTenantRequest'
+        required: true
+  /tenants/{tenant_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Tenant
+      description: 'Deprecated: Use /v2/tenants instead. Delete a tenant by its Id. Cannot undo this action, so be cautious when performing this operation. Use updateTenant to make the tenant as suspended if required.'
+      operationId: deleteTenant@@@2
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Id of the tenant to be deleted.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      deprecated: true
+      tags:
+      - Tenants
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTenantResponse'
+      summary: Get Tenant
+      description: 'Deprecated: Use /v2/tenants instead. Retrieve a tenant by its Id. If you''re unsure of the tenant_id, use listTenant operation to list all tenants under a CoreStack account and fetch the needed tenant_id.'
+      operationId: getTenant@@@2
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      deprecated: true
+      tags:
+      - Tenants
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantUpdateResponse'
+      summary: Update Tenant
+      description: 'Deprecated: Use /v2/tenants instead. Update a tenant''s status, description & metadata using its id. No operation can be performed when a tenant is made suspended.'
+      operationId: updateTenant@@@2
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Id of the CoreStack account under which the tenant to be updated.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      deprecated: true
+      tags:
+      - Tenants
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantRequest'
+        required: true
+  /tenants/{tenant_id}/name_change_history:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Name change history retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NameChangeHistoryResponse'
+      summary: Get Tenant Name Change History
+      description: 'Deprecated: Use /v2/tenants instead. Retrieve the name change history for a tenant.'
+      operationId: getTenantNameChangeHistory@@@2
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Id of the tenant to retrieve name change history for.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      deprecated: true
+      tags:
+      - Tenants
+  /tenants/{tenant_id}/users:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserTenantResponseList'
+      summary: List Users by Tenant
+      description: List all users within a tenant.
+      operationId: ListTenantUser
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Tenants
+  /v1/master_accounts/{master_account_id}/tenants:
+    parameters:
+    - name: master_account_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MasterAccountTenantSummary'
+      summary: Tenant List by Master Account
+      operationId: TenantListByMasterAccount
+      security:
+      - auth_token: []
+      tags:
+      - Tenants
+  /v2/tenants/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantBatchResponse'
+      description: There can be multiple tenants within a CoreStack account. List all tenants the user is mapped under a CoreStack account. If there are 3 tenants and user performing this operation has access to only 2 tenants then only those 2 tenants will be returned.
+      operationId: batchTenant
+      security:
+      - auth_token: []
+      tags:
+      - Tenants
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectIdBatchRequest'
+        required: true
+      summary: Batch tenant
+      x-summary-source: derived
+  /v2/tenants/configuration_management/options:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigurationManagementOptionsResponse'
+      summary: List Configuration Management Options
+      description: List available configuration management options for inventory and policy.
+      operationId: ConfigurationManagementOptions
+      security:
+      - auth_token: []
+      tags:
+      - Tenants
+  /v2/tenants/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantCreateResponse'
+      summary: Create Tenant
+      description: Creates a new tenant under a CoreStack account. There can be multiple tenants within a CoreStack account.
+      operationId: createTenant
+      security:
+      - auth_token: []
+      tags:
+      - Tenants
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTenantRequest'
+        required: true
+  /v2/tenants/email_notifications/options:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmailNotificationCategory'
+      summary: Default Email Notification Options
+      description: Fetch Default Email Notification Options
+      operationId: GetDefaultEmailNotificationOptions
+      security:
+      - auth_token: []
+      tags:
+      - Tenants
+  /v2/tenants/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+      summary: List Tenant
+      description: There can be multiple tenants within a CoreStack account. List all tenants the user is mapped under a CoreStack account. If there are 3 tenants and user performing this operation has access to only 2 tenants then only those 2 tenants will be returned.
+      operationId: listTenant
+      security:
+      - auth_token: []
+      tags:
+      - Tenants
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantListRequest'
+        required: true
+  /v2/tenants/{tenant_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Removed
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Tenant
+      description: Delete a tenant by its Id. Cannot undo this action, so be cautious when performing this operation. Use updateTenant to make the tenant as suspended if required.
+      operationId: deleteTenant
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Id of the tenant to be deleted.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Tenants
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTenantResponse'
+      summary: Get Tenant
+      description: Retrieve a tenant by its Id. If you're unsure of the tenant_id, use listTenant operation to list all tenants under a CoreStack account and fetch the needed tenant_id.
+      operationId: getTenant
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Tenants
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantUpdateResponse'
+      summary: Update Tenant
+      description: Update a tenant's status, description & metadata using its id. No operation can be performed when a tenant is made suspended.
+      operationId: updateTenant
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Id of the CoreStack account under which the tenant to be updated.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Tenants
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTenantRequest'
+        required: true
+  /v2/tenants/{tenant_id}/name_change_history:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Name change history retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NameChangeHistoryResponse'
+      summary: Get Tenant Name Change History
+      description: Retrieve the name change history for a tenant.
+      operationId: getTenantNameChangeHistory
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Id of the tenant to retrieve name change history for.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Tenants
+  /v2/tenants/{tenant_id}/users/{user_id}/assign_tenant_admin_role:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantAdminRoleAssignmentResponse'
+      summary: Assign Tenant Admin Role
+      description: Update the user role
+      operationId: TenantAdminRoleAssignment
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Id of the tenant to assign tenant admin role.
+        schema:
+          type: string
+      - name: user_id
+        in: path
+        required: true
+        description: Id of the user to assign tenant admin role.
+        schema:
+          type: string
+      - description: Role assignment action
+        in: query
+        required: true
+        name: action
+        schema:
+          type: string
+          enum:
+          - add
+          - remove
+      security:
+      - auth_token: []
+      tags:
+      - Tenants
+components:
+  schemas:
+    TenantDetails:
+      required:
+      - account_id
+      - created_at
+      - description
+      - is_default
+      - name
+      - status
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Id of the tenant. This will be used for performing tenant level operations such as createPolicy, createScript, onboardCloudAccount and so on.
+        name:
+          type: string
+          description: Unique name of the tenant provided as input while creating.
+        description:
+          type: string
+          description: Description of the tenant.
+        account_id:
+          type: string
+          description: Id of the CoreStack account under which this tenant resides.
+        is_default:
+          type: boolean
+          description: Is the master tenant
+        fiscal_year_configuration:
+          description: Fiscal Year settings
+          $ref: '#/components/schemas/FiscalYearConfiguration'
+        cost_anomaly_settings:
+          $ref: '#/components/schemas/CostAnomalyConfiguration'
+        cost_processing_settings:
+          $ref: '#/components/schemas/CostProcessingSettings'
+        azure_hybrid_benefits_enabled:
+          type: boolean
+          description: azure hybrid benefits enabled under finOps
+        disk_utilization_settings:
+          description: enables disk utilization configuration for specified service accounts
+          $ref: '#/components/schemas/DiskUtilizationSetting'
+        dimension_settings:
+          type: array
+          items:
+            $ref: '#/components/schemas/DimensionTenantSettings'
+        status:
+          type: string
+          description: Indicates the status of the Tenant
+          example: active
+          enum:
+          - active
+          - suspended
+          x-cs-enum-type: TenantStatus
+        created_at:
+          type: string
+          description: Created DateTime in UTC of the tenant.
+        activity_queue_notifications:
+          $ref: '#/components/schemas/ActivityQueueNotificationDetails'
+        email_notify:
+          description: Email notification configuration
+          $ref: '#/components/schemas/EmailNotifyConfiguration'
+        configuration_management:
+          $ref: '#/components/schemas/TenantConfigurationManagementOptions'
+      type: object
+    CostAnomalySetting:
+      properties:
+        category:
+          type: string
+          description: Cost anomaly settings category.
+          example: all
+          enum:
+          - all
+          - product_category
+          - resource_category
+          x-cs-enum-type: CostAnomalySettingCategory
+        category_values:
+          type: array
+          description: List of categories.
+          items:
+            type: string
+        minimum_cost_spend:
+          type: integer
+          description: Minimum Cost Spend
+          default: 0
+        minimum_cost_impact:
+          type: integer
+          description: Minimum Cost Impact
+          default: 0
+        minimum_cost_impact_percentage:
+          type: integer
+          description: Minimum Cost Anomaly Impact Percentage
+          default: 0
+        cost_impact_spend_operator:
+          type: string
+          description: Cost Impact and Spend condition
+          default: and
+          example: and
+          enum:
+          - and
+          - or
+          x-cs-enum-type: CostImpactSpendOperator
+      type: object
+    ObjectIdBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    TenantCreateResponse:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Id of the newly created tenant. This will be used for performing tenant level operations such as createPolicy, createScript, onboardCloudAccount and so on.
+      type: object
+    TenantAdminRoleAssignmentResponse:
+      required:
+      - user_id
+      properties:
+        user_id:
+          type: string
+          description: ID of the updated User
+        status:
+          type: string
+          description: Status of user
+          example: active
+          enum:
+          - active
+          - suspended
+          - deleted
+          - pending_activation
+          - verified
+          - rejected
+          x-cs-enum-type: UserStatus
+      type: object
+    MasterAccountTenantSummary:
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: Tenant id
+        name:
+          type: string
+          description: Name of Tenant
+        status:
+          type: string
+          description: Indicates the status of the Tenant
+          example: active
+          enum:
+          - active
+          - suspended
+          x-cs-enum-type: TenantStatus
+        is_default:
+          type: boolean
+          description: Is this a default tenant
+      type: object
+    DimensionTenantSettings:
+      required:
+      - product
+      properties:
+        product:
+          type: string
+          description: Name of the product
+          example: AppSecOps
+          enum:
+          - AppSecOps
+          - Assessments
+          - CloudOps
+          - FinOps
+          - FinOps_Plus
+          - Product_Admin
+          - SecOps
+          - Self Service
+          - StackOps
+          x-cs-enum-type: ProductEnum
+        mandate_dimension_selection:
+          type: boolean
+          description: Mandate Dimension Selection
+      type: object
+    CostProcessingSettings:
+      properties:
+        max_tag_value_count:
+          type: integer
+          description: Maximum number of unique values per tag to process for cost allocation tags
+        number_of_months_to_backfill:
+          type: integer
+          description: Back filling value for cost processing (in months)
+        is_dedicated_capacity_account:
+          type: boolean
+          description: Whether this account's cost-sync jobs run on dedicated capacity, isolated from the general processing backlog
+      type: object
+    ActivityQueueNotifications:
+      properties:
+        enabled:
+          type: boolean
+          description: Activity Queue Notifications enabled
+        integrated_tool_account:
+          $ref: '#/components/schemas/IntegratedToolAccount'
+      type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    DiskUtilizationSetting:
+      properties:
+        settings:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiskUtilizationWorkspaceConfiguration'
+      type: object
+    TenantUpdateResponse:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Id of the updated tenant. This Id will be used for performing tenant level operations such as createPolicy, createScript, onboardCloudAccount and so on.
+      type: object
+    EmailReportEntry:
+      properties:
+        email_address:
+          type: array
+          description: Email addresses for this report
+          items:
+            type: string
+        enabled:
+          type: boolean
+          description: Whether this report is enabled
+      type: object
+    ActivityQueueNotificationsForSecurityThreats:
+      allOf:
+      - $ref: '#/components/schemas/ActivityQueueNotifications'
+      - required:
+        - severities
+        properties:
+          severities:
+            type: array
+            description: Severity findings for security threats.
+            items:
+              type: string
+              description: Severity values
+              example: Critical
+              enum:
+              - Critical
+              - High
+              - Info
+              - Low
+              - Medium
+              - None
+              - Unknown
+              x-cs-enum-type: Severity
+          ticketing_enabled_from:
+            type: string
+            format: date-time
+            description: UTC timestamp this category was last enabled for ITSM ticketing. Threats first seen before this time are not ticketed for that initial occurrence, but are ticketed if they recur afterwards. Empty when never enabled.
+        type: object
+    UserTenantDetails:
+      required:
+      - email
+      - roles
+      - status
+      - user_id
+      - username
+      properties:
+        user_id:
+          type: string
+          description: ID of the User. This is an auto generated and unique in the CoreStack system
+        username:
+          type: string
+          description: Username is unique in the CoreStack system. User can use this to login to CoreStack portal in addition to email
+        status:
+          type: string
+          description: Current Status of the user - active or inactive. Inactive user cannot login or use AccessKeys
+        email:
+          type: string
+          description: Email of the User. This is unique in the CoreStack system
+        roles:
+          type: array
+          description: List of role assignments for the user. The same user can be assigned with different roles in a tenant
+          items:
+            type: string
+      type: object
+    ConfigurationManagementOption:
+      required:
+      - value
+      properties:
+        value:
+          type: string
+          description: Value identifier for the option
+      type: object
+    InventoryConfigurationManagement:
+      required:
+      - change_tracking_reference
+      properties:
+        change_tracking_reference:
+          type: boolean
+          description: Value identifier for the option
+      type: object
+    EmailNotifyConfiguration:
+      properties:
+        cloudops_automation_jobs:
+          description: CloudOps automation job notification settings
+          $ref: '#/components/schemas/CloudOpsAutomationJobs'
+        cloud_account_configuration:
+          description: Cloud account notification settings
+          $ref: '#/components/schemas/CloudAccountConfiguration'
+        email_report_configuration:
+          description: Email report configuration settings
+          $ref: '#/components/schemas/EmailReportConfiguration'
+      type: object
+    TenantBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/TenantDetails'
+      type: object
+    TenantFilters:
+      properties:
+        search:
+          type: string
+          description: Text query to search by name and description
+        status:
+          type: string
+          description: Indicates the status of the Tenant
+          example: active
+          enum:
+          - active
+          - suspended
+          x-cs-enum-type: TenantStatus
+      type: object
+    EmailNotificationType:
+      properties:
+        label:
+          type: string
+          description: Display label for the notification type
+        name:
+          type: string
+          description: Unique identifier for the notification type
+        default:
+          type: boolean
+          description: Whether this notification is enabled by default
+        description:
+          type: string
+          description: Human-readable description of the notification type
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    UserTenantResponseList:
+      required:
+      - total_count
+      - users
+      properties:
+        total_count:
+          type: integer
+          description: Number of users in CoreStack account.
+        users:
+          type: array
+          description: List all users within a CoreStack account.
+          items:
+            $ref: '#/components/schemas/UserTenantDetails'
+      type: object
+    ConfigurationManagementOptionsResponse:
+      required:
+      - inventory
+      - policy
+      properties:
+        inventory:
+          type: array
+          description: Inventory configuration management options
+          items:
+            $ref: '#/components/schemas/ConfigurationManagementOption'
+        policy:
+          type: array
+          description: Policy configuration management options
+          items:
+            $ref: '#/components/schemas/ConfigurationManagementOption'
+      type: object
+    ActivityQueueNotificationDetails:
+      properties:
+        activity:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+        alerts:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+        policies:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+        scripts:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+        templates:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+        security_alerts:
+          $ref: '#/components/schemas/ActivityQueueNotificationsForSecurityThreats'
+        inventory_update:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+        automation_failure:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+        budget_alerts:
+          $ref: '#/components/schemas/ActivityQueueNotifications'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    NameChangeHistoryEntry:
+      required:
+      - new_name
+      - previous_name
+      - updated_at
+      - updated_by
+      properties:
+        previous_name:
+          type: string
+          description: Previous tenant name before the rename.
+        new_name:
+          type: string
+          description: New tenant name after the rename.
+        updated_by:
+          type: string
+          description: User who performed the rename.
+        updated_at:
+          type: string
+          format: date-time
+          description: DateTime in UTC when the rename was performed.
+      type: object
+    ListTenantResponse:
+      required:
+      - tenants
+      properties:
+        tenants:
+          type: array
+          description: Tenants List.
+          items:
+            $ref: '#/components/schemas/TenantDetails'
+      type: object
+    EmailReportConfiguration:
+      properties:
+        common_email:
+          type: boolean
+          description: Use common email for all reports
+        email_address:
+          type: array
+          description: Common email addresses for reports
+          items:
+            type: string
+        daily_cost_summary_report:
+          description: Daily cost summary report settings
+          $ref: '#/components/schemas/EmailReportEntry'
+        daily_governance_report:
+          description: Daily governance report settings
+          $ref: '#/components/schemas/EmailReportEntry'
+        daily_inventory_monitoring_report:
+          description: Daily inventory monitoring report settings
+          $ref: '#/components/schemas/EmailReportEntry'
+        monthly_cost_summary_report:
+          description: Monthly cost summary report settings
+          $ref: '#/components/schemas/EmailReportEntry'
+        daily_cloud_impact_report:
+          description: Daily cloud impact report settings
+          $ref: '#/components/schemas/EmailReportEntry'
+      type: object
+    FiscalYearConfiguration:
+      properties:
+        start:
+          type: string
+          description: Start Date for Financial Year in DD-MMM format
+        end:
+          type: string
+          description: End Date for Financial Year in DD-MMM format
+      type: object
+    CreateTenantRequest:
+      required:
+      - account_id
+      - name
+      properties:
+        name:
+          type: string
+          description: 'Name of the new tenant to be created. Tenant Name must be globally unique within CoreStack. If the same tenant name is used in another account, creation wil fail. Tenant Name must start with alphabet and can contain 2-50 characters. Special characters '' " # ? / \ are not allowed.'
+        description:
+          type: string
+          description: Description of the new tenant to be created.
+        metadata:
+          type: object
+          description: metadata is a freeform JSON. It allows to store custom keys and values. It will be useful for storing information about an external applications that will refer to CoreStack tenant.
+        account_id:
+          type: string
+          description: Id of the CoreStack account under which the new tenant to be created.
+        activity_queue_notifications:
+          $ref: '#/components/schemas/ActivityQueueNotificationDetails'
+        email_notify:
+          description: Email notification configuration
+          $ref: '#/components/schemas/EmailNotifyConfiguration'
+        configuration_management:
+          $ref: '#/components/schemas/TenantConfigurationManagementOptions'
+      type: object
+    CostAnomalyConfiguration:
+      properties:
+        threshold_configuration:
+          description: threshold configuration.
+          $ref: '#/components/schemas/CostAnomalySetting'
+        notifications:
+          type: array
+          description: Notification configuration.
+          items:
+            $ref: '#/components/schemas/ConfigurationForCostAnomalyNotification'
+        billing_source:
+          type: string
+          description: Base billing metric where the aggregation query will be executed.
+          default: raw_cost
+          example: raw_cost
+          enum:
+          - raw_cost
+          - raw_effective_cost
+          - customer_true_cost
+          x-cs-enum-type: CostAnomalyBillingMetrics
+      type: object
+    CloudOpsAutomationJobs:
+      properties:
+        scheduled_failures:
+          type: boolean
+          description: Notify on scheduled job failures
+        on_demand_failures:
+          type: boolean
+          description: Notify on on-demand job failures
+      type: object
+    TenantConfigurationManagementOptions:
+      properties:
+        inventory:
+          description: Inventory configuration management options
+          $ref: '#/components/schemas/InventoryConfigurationManagement'
+        policy:
+          description: Policy configuration management options
+          $ref: '#/components/schemas/PolicyConfigurationManagement'
+      type: object
+    DiskUtilizationWorkspaceConfiguration:
+      properties:
+        workspace_ids:
+          type: array
+          description: Log Analytics Workspace Ids
+          items:
+            type: string
+        service_account_id:
+          type: string
+          description: Service Account Id
+          x-cs-type: ObjectId
+      type: object
+    ConfigurationForNotifications:
+      properties:
+        enabled:
+          type: boolean
+          description: Whether Notifications Are Enabled
+        emails:
+          type: array
+          description: Emails
+          items:
+            type: string
+        webhooks:
+          type: array
+          description: Webhooks
+          items:
+            type: string
+        microsoft_teams_webhooks:
+          type: array
+          description: Microsoft Teams Webhooks
+          items:
+            type: string
+      type: object
+    CloudAccountConfiguration:
+      properties:
+        account_access_issue:
+          type: boolean
+          description: Notify on account access issues
+        azure_credentials_expiry:
+          type: boolean
+          description: Notify on Azure credentials expiry
+        email_address:
+          type: array
+          description: Email addresses for cloud account notifications
+          items:
+            type: string
+      type: object
+    GetTenantResponse:
+      allOf:
+      - $ref: '#/components/schemas/TenantDetails'
+      - required:
+        - account_name
+        - created_by
+        - metadata
+        - updated_at
+        - updated_by
+        properties:
+          metadata:
+            type: object
+            description: metadata is a freeform JSON. It allows to store custom keys and values. It will be useful for storing information about an external applications that will refer to CoreStack tenant
+          created_by:
+            type: string
+            description: Name of the user created this tenant.
+          updated_by:
+            type: string
+            description: Name of the user last updated this tenant.
+          updated_at:
+            type: string
+            description: DateTime in UTC when the tenant was last updated.
+          account_name:
+            type: string
+            description: Name of the CoreStack account under which this tenant resides.
+          activity_queue_notifications:
+            $ref: '#/components/schemas/ActivityQueueNotificationDetails'
+          email_notify:
+            description: Email notification configuration
+            $ref: '#/components/schemas/EmailNotifyConfiguration'
+          configuration_management:
+            $ref: '#/components/schemas/TenantConfigurationManagementOptions'
+        type: object
+    IntegratedToolAccount:
+      properties:
+        id:
+          type: string
+          description: Tool Account ID
+          x-cs-type: ObjectId
+      type: object
+    TenantListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/TenantDetailsSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/TenantFilters'
+      type: object
+    NameChangeHistoryResponse:
+      required:
+      - name_change_history
+      properties:
+        name_change_history:
+          type: array
+          description: List of tenant name changes in reverse chronological order.
+          items:
+            $ref: '#/components/schemas/NameChangeHistoryEntry'
+      type: object
+    UpdateTenantRequest:
+      properties:
+        name:
+          type: string
+          description: 'New name for the tenant. Tenant Name must be unique within the account. Must be 3-100 characters. Special characters '' " # ? / \ are not allowed.'
+        description:
+          type: string
+          description: Description of the the tenant.
+        metadata:
+          type: object
+          description: metadata is freeform JSON. It allows to store custom keys and values. It will be useful for storing information about an external applications that will refer to CoreStack tenant.
+        account_id:
+          type: string
+          description: Id of the CoreStack account under which the tenant to be updated.
+        fiscal_year_configuration:
+          description: Fiscal Year settings
+          $ref: '#/components/schemas/FiscalYearConfiguration'
+        cost_anomaly_settings:
+          $ref: '#/components/schemas/CostAnomalyConfiguration'
+        cost_processing_settings:
+          $ref: '#/components/schemas/CostProcessingSettings'
+        azure_hybrid_benefits_enabled:
+          type: boolean
+          description: azure hybrid benefits enabled under finOps
+        disk_utilization_settings:
+          description: enables disk utilization configuration for specified service accounts
+          $ref: '#/components/schemas/DiskUtilizationSetting'
+        dimension_settings:
+          type: array
+          description: Dimension Settings for this Tenant
+          items:
+            $ref: '#/components/schemas/DimensionTenantSettings'
+        status:
+          type: string
+          description: Indicates the status of the Tenant
+          example: active
+          enum:
+          - active
+          - suspended
+          x-cs-enum-type: TenantStatus
+        activity_queue_notifications:
+          $ref: '#/components/schemas/ActivityQueueNotificationDetails'
+        email_notify:
+          description: Email notification configuration
+          $ref: '#/components/schemas/EmailNotifyConfiguration'
+        configuration_management:
+          $ref: '#/components/schemas/TenantConfigurationManagementOptions'
+      type: object
+    TenantDetailsSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          x-cs-enum-type: TenantDetailsSortColumn
+        ascending:
+          type: boolean
+      type: object
+    ConfigurationForCostAnomalyNotification:
+      allOf:
+      - $ref: '#/components/schemas/ConfigurationForNotifications'
+      - properties:
+          enable_realtime_notification:
+            type: boolean
+            description: Specifies whether realtime notification enabled or not.
+          enable_daily_summary_notification:
+            type: boolean
+            description: Specifies whether daily summary notification enabled or not.
+        type: object
+    PolicyConfigurationManagement:
+      required:
+      - itsm_change_management
+      properties:
+        itsm_change_management:
+          type: boolean
+          description: Value identifier for the option
+      type: object
+    EmailNotificationCategory:
+      properties:
+        label:
+          type: string
+          description: Display label for the category
+        name:
+          type: string
+          description: Unique identifier for the category
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailNotificationType'
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

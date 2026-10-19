@@ -97,14 +97,14 @@ paths:
       - Zoho Incident
 components:
   schemas:
-    ZohoServiceDeskUser:
+    ZohoServiceDeskSite:
       properties:
-        user_id:
+        key:
           type: string
-          description: Id of the user
-        user_name:
+          description: Key for ZOHO ServiceDesk Site
+        name:
           type: string
-          description: Name for user
+          description: Name for ZOHO ServiceDesk Site
       type: object
     ModelError:
       required:
@@ -114,14 +114,14 @@ components:
           type: string
           description: Error response message.
       type: object
-    ZohoServiceDeskSite:
+    ZohoServiceDeskUser:
       properties:
-        key:
+        user_id:
           type: string
-          description: Key for ZOHO ServiceDesk Site
-        name:
+          description: Id of the user
+        user_name:
           type: string
-          description: Name for ZOHO ServiceDesk Site
+          description: Name for user
       type: object
   securitySchemes:
     auth_token:

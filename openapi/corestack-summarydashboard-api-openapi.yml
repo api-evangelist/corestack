@@ -61,6 +61,19 @@ paths:
         required: true
 components:
   schemas:
+    CloudWiseUsageResponse:
+      properties:
+        cost_details:
+          type: array
+          description: List of service name-wise usage data
+          items:
+            $ref: '#/components/schemas/ServiceNameWiseUsage'
+        inventory_details:
+          type: array
+          description: List of inventory-wise usage data
+          items:
+            $ref: '#/components/schemas/InventoryWiseUsage'
+      type: object
     ProductCategoryWiseUsage:
       properties:
         name:
@@ -69,28 +82,6 @@ components:
         cost:
           type: number
           description: Cost of the resource in the usage
-      type: object
-    InventoryWiseUsage:
-      properties:
-        service_name:
-          type: string
-          description: Name of the service
-        tenant_name:
-          type: string
-          description: Name of the tenant
-        service_accounts:
-          type: array
-          items:
-            type: string
-            description: List of cloud accounts
-        total_count:
-          type: integer
-          description: Total count of the inventory usage
-        top_consumption:
-          type: array
-          description: List of top consumption usage data
-          items:
-            $ref: '#/components/schemas/TopConsumptionUsage'
       type: object
     CloudAccountWiseUsage:
       properties:
@@ -117,34 +108,6 @@ components:
           description: List of category-wise usage data
           items:
             $ref: '#/components/schemas/ProductCategoryWiseUsage'
-      type: object
-    CloudWiseUsageResponse:
-      properties:
-        cost_details:
-          type: array
-          description: List of service name-wise usage data
-          items:
-            $ref: '#/components/schemas/ServiceNameWiseUsage'
-        inventory_details:
-          type: array
-          description: List of inventory-wise usage data
-          items:
-            $ref: '#/components/schemas/InventoryWiseUsage'
-      type: object
-    TopConsumptionUsage:
-      properties:
-        category:
-          type: string
-          description: Category of the top consumption usage
-        component:
-          type: string
-          description: Component associated with the top consumption usage
-        resource:
-          type: string
-          description: Resource associated with the top consumption usage
-        count:
-          type: integer
-          description: Count of the top consumption usage
       type: object
     CloudWiseUsageRequest:
       required:
@@ -208,6 +171,43 @@ components:
         message:
           type: string
           description: Error response message.
+      type: object
+    TopConsumptionUsage:
+      properties:
+        category:
+          type: string
+          description: Category of the top consumption usage
+        component:
+          type: string
+          description: Component associated with the top consumption usage
+        resource:
+          type: string
+          description: Resource associated with the top consumption usage
+        count:
+          type: integer
+          description: Count of the top consumption usage
+      type: object
+    InventoryWiseUsage:
+      properties:
+        service_name:
+          type: string
+          description: Name of the service
+        tenant_name:
+          type: string
+          description: Name of the tenant
+        service_accounts:
+          type: array
+          items:
+            type: string
+            description: List of cloud accounts
+        total_count:
+          type: integer
+          description: Total count of the inventory usage
+        top_consumption:
+          type: array
+          description: List of top consumption usage data
+          items:
+            $ref: '#/components/schemas/TopConsumptionUsage'
       type: object
   securitySchemes:
     auth_token:

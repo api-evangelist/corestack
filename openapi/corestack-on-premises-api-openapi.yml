@@ -56,18 +56,27 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ResourceUtilizationMetric:
+    TimeSeriesPoint:
       properties:
-        unit:
+        timestamp:
           type: string
-          description: Unit of the metric
-        metric_name:
-          type: string
-          description: Name of the metric
-        timeseries:
-          type: array
-          items:
-            $ref: '#/components/schemas/TimeSeriesPoint'
+          format: date-time
+          description: Timestamp in ISO format
+        average:
+          type: number
+          description: Average value
+        total:
+          type: number
+          description: Total value
+        minimum:
+          type: number
+          description: Minimum value
+        maximum:
+          type: number
+          description: Maximum value
+        count:
+          type: integer
+          description: Count
       type: object
     UtilizationResourceAggregationResponse:
       properties:
@@ -91,28 +100,6 @@ components:
           description: List of utilization metrics and their supported aggregation configurations
           items:
             $ref: '#/components/schemas/ResourceUtilizationMetric'
-      type: object
-    TimeSeriesPoint:
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-          description: Timestamp in ISO format
-        average:
-          type: number
-          description: Average value
-        total:
-          type: number
-          description: Total value
-        minimum:
-          type: number
-          description: Minimum value
-        maximum:
-          type: number
-          description: Maximum value
-        count:
-          type: integer
-          description: Count
       type: object
     OnPremisesMonitoringRequest:
       required:
@@ -150,6 +137,19 @@ components:
         message:
           type: string
           description: Error response message.
+      type: object
+    ResourceUtilizationMetric:
+      properties:
+        unit:
+          type: string
+          description: Unit of the metric
+        metric_name:
+          type: string
+          description: Name of the metric
+        timeseries:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeSeriesPoint'
       type: object
   securitySchemes:
     auth_token:

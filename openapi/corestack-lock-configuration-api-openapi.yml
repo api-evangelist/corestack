@@ -1,0 +1,629 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Lock Configuration API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage Locks
+servers:
+- url: /
+tags:
+- name: Lock Configuration
+  description: Manage Locks
+paths:
+  /v2/lock_configurations/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LockConfigBatchResponse'
+      summary: Batch Lock Configurations
+      description: Retrieve the Lock configuration for the specified ids
+      operationId: BatchLockConfigurations
+      security:
+      - auth_token: []
+      tags:
+      - Lock Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectIdBatchRequest'
+        required: true
+  /v2/lock_configurations/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Create a new Lock Configuration
+      description: Creates a new Lock Configuration
+      operationId: CreateLockConfiguration
+      security:
+      - auth_token: []
+      tags:
+      - Lock Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LockConfigDetails'
+        required: true
+  /v2/lock_configurations/item/{lock_configuration_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete Lock Configuration
+      description: Delete the lock configuration
+      operationId: DeleteLockConfiguration
+      parameters:
+      - name: lock_configuration_id
+        in: path
+        required: true
+        description: Specify the lock configuration  ID to delete, ID which can be obtained from the list lock configuration API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Lock Configuration
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LockConfigDetails'
+      summary: Get Lock Configuration
+      description: Retrieve the current details of the lock
+      operationId: GetLockConfiguration
+      parameters:
+      - name: lock_configuration_id
+        in: path
+        required: true
+        description: Specify lock ID to read, ID which can be obtained from the list lock configuration API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Lock Configuration
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '412':
+          description: Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResults'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LockConfigDetails'
+      summary: Update Lock Configuration
+      description: Update the details of the lock configuration
+      operationId: UpdateLockConfiguration
+      parameters:
+      - name: lock_configuration_id
+        in: path
+        required: true
+        description: Specify the lock ID to update, ID which can be obtained from the list lock configuration API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Lock Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LockConfigDetails'
+        required: true
+  /v2/lock_configurations/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LockConfigListResponse'
+      summary: List Lock Configurations
+      description: Retrieve the ids of locks matching the filtering criteria
+      operationId: ListLockConfiguration
+      security:
+      - auth_token: []
+      tags:
+      - Lock Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LockConfigListRequest'
+        required: true
+  /v2/lock_configurations/resources:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      summary: List Account Resources for Lock Configuration
+      description: Retrieve the lock-allowed resources for a service account
+      operationId: ListLockConfigurationResources
+      security:
+      - auth_token: []
+      tags:
+      - Lock Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LockConfigResourcesRequest'
+        required: true
+  /v2/lock_configurations/tags:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      summary: List Account Tags for Lock Configuration
+      description: Retrieve the tag keys available for a service account
+      operationId: ListLockConfigurationTags
+      security:
+      - auth_token: []
+      tags:
+      - Lock Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LockConfigTagsRequest'
+        required: true
+components:
+  schemas:
+    LockConfigDetails:
+      required:
+      - lock_scope
+      - lock_type
+      - scope_details
+      - status
+      properties:
+        id:
+          type: string
+          description: Id of the Lock Configuration
+          x-cs-type: ObjectId
+        lock_scope:
+          type: string
+          description: Scope of Lock
+          example: service_account
+          enum:
+          - service_account
+          - tenant
+          x-cs-enum-type: LockScope
+        scope_details:
+          description: Lock Config Scope Details
+          $ref: '#/components/schemas/LockConfigScopeDetailsBase'
+        service_name:
+          type: string
+          description: Cloud Provider to select
+          example: AWS
+          enum:
+          - AWS
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_EA
+          - Azure_MCA
+          - Cloudstack
+          - GCP
+          - MS_VMM
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Rackspace
+          - VMware
+          - VMware_VCD
+          - vCenter
+          x-cs-enum-type: CloudServiceName
+        lock_type:
+          type: string
+          description: Type of Lock
+          example: ReadOnly
+          enum:
+          - ReadOnly
+          - CanNotDelete
+          x-cs-enum-type: LockType
+        status:
+          type: string
+          description: Status of Lock
+          example: active
+          enum:
+          - active
+          - inactive
+          x-cs-enum-type: LockStatus
+        tenant_ids:
+          type: array
+          description: IDS of the tenants
+          items:
+            type: string
+            x-cs-type: ObjectId
+        created_at:
+          type: string
+          format: date-time
+          description: Created at
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated at
+        created_by:
+          type: string
+          description: Created by
+        updated_by:
+          type: string
+          description: Updated by
+      type: object
+    ValidationResult:
+      properties:
+        field:
+          type: string
+        reason:
+          type: string
+      type: object
+    LockConfigTagsRequest:
+      required:
+      - service_account_id
+      properties:
+        service_account_id:
+          type: string
+          description: Service Account ID
+          x-cs-type: ObjectId
+      type: object
+    LockConfigListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/LockConfigDetailsSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/LockConfigFilter'
+      type: object
+    ObjectIdBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    LockConfigFilter:
+      required:
+      - lock_scope
+      properties:
+        lock_scope:
+          type: string
+          description: Scope of Lock
+          example: service_account
+          enum:
+          - service_account
+          - tenant
+          x-cs-enum-type: LockScope
+        lock_types:
+          type: array
+          items:
+            type: string
+            description: Type of Lock
+            example: ReadOnly
+            enum:
+            - ReadOnly
+            - CanNotDelete
+            x-cs-enum-type: LockType
+        service_names:
+          type: array
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        statuses:
+          type: array
+          items:
+            type: string
+            description: Status of Lock
+            example: active
+            enum:
+            - active
+            - inactive
+            x-cs-enum-type: LockStatus
+        search:
+          type: string
+          description: Search string
+      type: object
+    ValidationResults:
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationResult'
+      type: object
+    LockConfigResourcesRequest:
+      required:
+      - service_account_id
+      properties:
+        service_account_id:
+          type: string
+          description: Service Account ID
+          x-cs-type: ObjectId
+      type: object
+    LockConfigScopeDetailsBase:
+      required:
+      - type
+      properties: {}
+      discriminator:
+        propertyName: type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: LockConfigScopeDetailsForTenant
+        subtype_name: LockConfigScopeDetailsForTenant
+      - subtype_model: LockConfigScopeDetailsBaseForServiceAccount
+        subtype_name: LockConfigDetailsBaseForServiceAccount
+      - subtype_model: LockConfigScopeDetailsForAwsServiceAccount
+        subtype_name: LockConfigScopeDetailsForAwsServiceAccount
+      - subtype_model: LockConfigScopeDetailsForAzureServiceAccount
+        subtype_name: LockConfigScopeDetailsForAzureServiceAccount
+      - subtype_model: LockConfigScopeDetailsForGcpServiceAccount
+        subtype_name: LockConfigScopeDetailsForGcpServiceAccount
+    LockConfigBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/LockConfigDetails'
+      type: object
+    LockConfigListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+            x-cs-type: ObjectId
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    LockConfigDetailsSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          - LastSyncAt
+          x-cs-enum-type: LockConfigDetailsSortColumn
+        ascending:
+          type: boolean
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

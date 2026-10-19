@@ -61,14 +61,6 @@ paths:
       - Pro Active Scanner Configurations
 components:
   schemas:
-    ScannerRuleList:
-      properties:
-        rules:
-          type: array
-          description: The list of scanner rules.
-          items:
-            $ref: '#/components/schemas/ScannerListResponseDetails'
-      type: object
     ScannerListResponseDetails:
       allOf:
       - $ref: '#/components/schemas/ScannerRuleBase'
@@ -118,6 +110,14 @@ components:
         attribute_name:
           type: string
           description: attribute name for which the values are going to be stored.
+      type: object
+    ScannerRuleList:
+      properties:
+        rules:
+          type: array
+          description: The list of scanner rules.
+          items:
+            $ref: '#/components/schemas/ScannerListResponseDetails'
       type: object
   securitySchemes:
     auth_token:

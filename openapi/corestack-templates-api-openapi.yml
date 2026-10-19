@@ -1,0 +1,2897 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Templates API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Manage templates
+servers:
+- url: /
+tags:
+- name: Templates
+  description: Manage templates
+paths:
+  /v2/operation/automation/templates/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Template'
+      summary: Template List Batch
+      description: Batch the templates
+      operationId: BatchTemplate
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateBatchRequest'
+        required: true
+  /v2/operation/automation/templates/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+      summary: Create a new template with the specified engine type, scope, classification and…
+      description: Create a new template
+      operationId: V2CreateTemplate
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTemplateV2Request'
+        required: true
+  /v2/operation/automation/templates/item/{template_id}:
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete the template
+      description: 'Delete a template
+
+        Template ID can be obtained from the List Templates API.'
+      operationId: V2DeleteTemplate
+      parameters:
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template ID to delete. Can be obtained from the List Templates API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+      summary: Get the template details
+      description: 'Retrieve template details for the template ID
+
+        Template ID can be obtained from the List Templates API.'
+      operationId: V2GetTemplate
+      parameters:
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template ID. Can be obtained from the List Templates API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+      summary: Update the template details
+      description: 'Update an existing template
+
+        Template ID can be obtained from the List Templates API.'
+      operationId: V2UpdateTemplate
+      parameters:
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template ID to update. Can be obtained from the List Templates API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTemplateV2Request'
+        required: true
+  /v2/operation/automation/templates/item/{template_id}/commit:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateCommitResponse'
+      summary: Push resolved parameter values for a git-sourced template back into its linked…
+      description: Push resolved parameter values for a git-sourced template back into its linked git repo. Requires content_type='git'.
+      operationId: V2CommitTemplate
+      parameters:
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the git-based template ID. Can be obtained from the List Templates API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateCommitRequest'
+        required: true
+  /v2/operation/automation/templates/item/{template_id}/execute:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateV2ExecuteResponse'
+      summary: Execute the template against specified cloud accounts
+      description: Execute a template against specified cloud accounts. Returns a job ID to track execution status.
+      operationId: V2ExecuteTemplate
+      parameters:
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template ID to execute. Can be obtained from the List Templates API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateV2ExecuteRequest'
+        required: true
+  /v2/operation/automation/templates/item/{template_id}/get_params:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateV2GetParamsResponse'
+      summary: Retrieve the parameter schema (and any live-resolved values) needed to execute…
+      description: Retrieve the parameters required to execute this template. If cloud accounts are supplied, parameter values sourced from live cloud lookups are resolved too.
+      operationId: V2GetTemplateParams
+      parameters:
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template ID. Can be obtained from the List Templates API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateV2GetParamsRequest'
+        required: true
+  /v2/operation/automation/templates/item/{template_id}/plan:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplatePlanResponse'
+      summary: Generate a plan preview of what executing the template would change
+      description: 'Generate a Terraform plan preview for the template without applying it. Terraform-only.
+
+        Terraform-only.'
+      operationId: V2PlanTemplate
+      parameters:
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template ID. Can be obtained from the List Templates API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplatePlanRequest'
+        required: true
+  /v2/operation/automation/templates/item/{template_id}/scan:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateScanTriggerResponse'
+      summary: Trigger a scan of the template content (CloudFormation, ARM, Terraform)
+      description: 'Trigger a security/best-practices scan of the template content. Supports CloudFormation, ARM and Terraform. Returns a scan ID to poll for results.
+
+        Returns a scan ID to poll via the Scan poll API.'
+      operationId: V2ScanTemplate
+      parameters:
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template ID to scan. Can be obtained from the List Templates API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateScanRequest'
+        required: true
+  /v2/operation/automation/templates/item/{template_id}/scan/item/{scan_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateScanResultResponse'
+      summary: Poll for the result of a previously-triggered template scan
+      description: Poll for the result of a previously-triggered template scan.
+      operationId: V2GetTemplateScanResult
+      parameters:
+      - name: template_id
+        in: path
+        required: true
+        description: Template ID the scan was triggered for.
+        schema:
+          type: string
+      - name: scan_id
+        in: path
+        required: true
+        description: Scan ID returned by the Scan trigger API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+  /v2/operation/automation/templates/jobs/archive:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Archive template jobs
+      description: 'Archive one or more template jobs by their IDs. Maximum batch size is 1000.
+
+        Maximum batch size is 1000.'
+      operationId: V2ArchiveTemplateJobs
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateJobArchiveRequest'
+        required: true
+  /v2/operation/automation/templates/jobs/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateJobBatchResponse'
+      summary: Retrieve template job details for the specified job IDs
+      description: 'Retrieve template job details for the specified IDs. Maximum batch size is 1000.
+
+        Maximum batch size is 1000.'
+      operationId: V2BatchTemplateJobs
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateJobBatchRequest'
+        required: true
+  /v2/operation/automation/templates/jobs/item/{job_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateJobItemResponse'
+      summary: Get the template job details
+      description: 'Retrieve details of a single template job by its ID.
+
+        Job ID can be obtained from the List Template Jobs API.'
+      operationId: V2GetTemplateJob
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        description: Template job ID. Can be obtained from the List Template Jobs API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+  /v2/operation/automation/templates/jobs/item/{job_id}/rerun:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateV2ExecuteResponse'
+      summary: Rerun the template job
+      description: 'Re-execute a template job. Returns a job ID to track the new execution.
+
+        Job ID can be obtained from the List Template Jobs API.'
+      operationId: V2RerunTemplateJob
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        description: Template job ID to rerun. Can be obtained from the List Template Jobs API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateJobRerunRequest'
+        required: true
+  /v2/operation/automation/templates/jobs/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateJobV2ListResponse'
+      summary: List of template jobs with filtering, pagination and sorting support
+      description: List template jobs matching the filtering criteria with pagination and sorting support
+      operationId: V2ListTemplateJobs
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateJobListRequest'
+        required: true
+  /v2/operation/automation/templates/jobs/unarchive:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Unarchive template jobs
+      description: 'Unarchive one or more template jobs by their IDs. Maximum batch size is 1000.
+
+        Maximum batch size is 1000.'
+      operationId: V2UnarchiveTemplateJobs
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateJobArchiveRequest'
+        required: true
+  /v2/operation/automation/templates/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+      summary: Template List
+      description: List the Templates
+      operationId: ListTemplatesV2
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutomationTemplateListRequest'
+        required: true
+  /v2/operation/automation/{tenant_id}/templates/{template_id}/parameter_schema:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateGetParameterSchemaResponse'
+      summary: Get Template Parameter Schema
+      description: Get the list of input and output parameters schema available in a template.
+      operationId: GetTemplateParameterSchema
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template id to get parameters, template id can be obtained from the list template api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+  /v2/operation/automation/{tenant_id}/templates/{template_id}/validate_parameters:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResults'
+      summary: Validate parameters for a given template
+      description: Validate a set of parameters for a given template
+      operationId: ValidateTemplateParameters
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - name: template_id
+        in: path
+        required: true
+        description: Specify the template id to validate template execution parameters, template id can be obtained from the list template api
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateParameterValidationRequest'
+        required: true
+components:
+  schemas:
+    TemplateMetadata:
+      properties:
+        tags:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+        operation_level:
+          type: string
+          description: Operational complexity/impact level (L1/L2/L3)
+          example: L1
+          enum:
+          - L1
+          - L2
+          - L3
+          x-cs-enum-type: TemplateOperationLevel
+        operation_time:
+          type: integer
+          description: Estimated operation duration. Read together with operation_level - both must be set for either to take effect
+      type: object
+    ValidationResult:
+      properties:
+        field:
+          type: string
+        reason:
+          type: string
+      type: object
+    TemplateJobListFilter:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        query:
+          description: Filter by statuses, execution_types, engine_types (the job's execution engine, stored internally as `type`), template_ids, service_account_ids, from_date, to_date, archived
+          $ref: '#/components/schemas/QueryOperator'
+        search:
+          type: string
+          description: Free-text search across job name, created_by, status, engine_type, execution_type and service account name; also matches jobs whose linked template name matches
+      type: object
+    TemplateJobV2ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+            x-cs-type: ObjectId
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    TemplateJobBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/TemplateJobItemResponse'
+      type: object
+    TemplateGetParameterSchemaResponse:
+      properties:
+        input_parameters:
+          type: array
+          description: List of input parameters.
+          items:
+            $ref: '#/components/schemas/NamedParameter'
+        output_parameters:
+          type: array
+          description: List of output parameters.
+          items:
+            $ref: '#/components/schemas/NamedParameter'
+      type: object
+    AutomationTemplateListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/AutomationTemplateSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AutomationTemplateFilters'
+      type: object
+    CreateTemplateV2Request:
+      allOf:
+      - $ref: '#/components/schemas/TemplateV2Base'
+      - required:
+        - tenant_id
+        properties:
+          tenant_id:
+            type: string
+            description: Tenant ID
+            x-cs-type: ObjectId
+        type: object
+    TemplateJobListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/TemplateJobListSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/TemplateJobListFilter'
+      type: object
+    TemplateBatchRequest:
+      required:
+      - ids
+      properties:
+        ids:
+          type: array
+          description: Template IDs to fetch full details for
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    TemplateDependency:
+      required:
+      - content_files
+      - name
+      - type
+      properties:
+        name:
+          type: string
+          description: Referenced module's name, e.g. 'networking'
+        type:
+          type: string
+          description: Dependency type
+          example: module
+          enum:
+          - module
+          x-cs-enum-type: TemplateDependencyType
+        content_files:
+          description: The referenced module's own files (same shape as content_files)
+          $ref: '#/components/schemas/TemplateContentFiles'
+      type: object
+    TemplateV2GetParamsRequest:
+      properties:
+        service_accounts:
+          type: array
+          description: Service accounts to resolve live parameter values against. Optional.
+          items:
+            $ref: '#/components/schemas/TemplateServiceAccount'
+      type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    ParameterBase:
+      required:
+      - __type
+      properties:
+        description:
+          type: string
+          description: A brief explanation of the policy parameter
+        default_value:
+          type: string
+          description: Default value of the parameter, encoded as a JSON string. This is the schema's own authored default - it does not change per execution
+        actual_value:
+          type: string
+          description: 'The value to actually use for this execution, encoded as a JSON string. Distinct from default_value: this is what the caller supplies (or what gets live-resolved, e.g. via a selected cloud account) for one specific run, and never overwrites the schema''s own default'
+        hide_parameter:
+          type: boolean
+          description: Hide/Show a parameter for visibility as part of deployment
+        source:
+          type: string
+          description: Live-lookup reference used to populate this parameter's allowed values, for example 'vpc.list_vpc'. Present when the values come from a cloud resource listing instead of a fixed list, so the caller can resolve the current values itself
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ParameterStringType
+        subtype_name: ParameterStringType
+      - subtype_model: ParameterNumberType
+        subtype_name: ParameterNumberType
+      - subtype_model: ParameterBooleanType
+        subtype_name: ParameterBooleanType
+      - subtype_model: ParameterBaseWithSchema
+        subtype_name: ParameterBaseWithSchema
+      - subtype_model: ParameterArray
+        subtype_name: ParameterArray
+      - subtype_model: ParameterMap
+        subtype_name: ParameterMap
+      - subtype_model: ParameterObject
+        subtype_name: ParameterObject
+      - subtype_model: ParameterJsonBlob
+        subtype_name: ParameterJsonBlob
+    TemplateTypesByEngineType:
+      properties:
+        terraform:
+          type: array
+          description: Types selected under the terraform engine
+          items:
+            type: string
+            description: Template type valid under the 'terraform' engine
+            example: Cloud
+            enum:
+            - Cloud
+            x-cs-enum-type: TerraformTemplateType
+        cfn:
+          type: array
+          description: Types selected under the cfn engine
+          items:
+            type: string
+            description: Template type valid under the 'cfn' engine
+            example: Cloud
+            enum:
+            - Cloud
+            x-cs-enum-type: CfnTemplateType
+        arm:
+          type: array
+          description: Types selected under the arm engine
+          items:
+            type: string
+            description: Template type valid under the 'arm' engine
+            example: Cloud
+            enum:
+            - Cloud
+            x-cs-enum-type: ArmTemplateType
+        dm:
+          type: array
+          description: Types selected under the dm engine
+          items:
+            type: string
+            description: Template type valid under the 'dm' engine
+            example: Cloud
+            enum:
+            - Cloud
+            x-cs-enum-type: DmTemplateType
+        mistral:
+          type: array
+          description: Types selected under the mistral engine
+          items:
+            type: string
+            description: Template type valid under the 'mistral' engine
+            example: Cloud
+            enum:
+            - Cloud
+            - Container
+            - Continuous Integration
+            - DevOps
+            - ITSM
+            - Log Management
+            - Monitoring
+            - Orchestration
+            - Source Code Management
+            - Vulnerability Assessment
+            x-cs-enum-type: MistralTemplateType
+      type: object
+    TemplateJobRerunRequest:
+      allOf:
+      - $ref: '#/components/schemas/TemplateExecutionRequestBase'
+      - properties: {}
+        type: object
+    TemplateCommitResponse:
+      properties:
+        commit_id:
+          type: string
+          description: Git commit reference for the pushed change
+      type: object
+    AutomationTemplateFilters:
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID
+          x-cs-type: ObjectId
+        from_date:
+          type: string
+          format: date-time
+          description: Filter from date
+        to_date:
+          type: string
+          format: date-time
+          description: Filter to date
+        scope:
+          type: string
+          description: Scope of the template.
+          example: Custom Templates
+          enum:
+          - Custom Templates
+          - Marketplace
+          x-cs-enum-type: AutomationTemplateScope
+        template_name:
+          type: string
+          description: Name of the template
+        search:
+          type: string
+          description: Free-text search across template name, classification, engine_type, template_type and provider
+        include_system_templates:
+          type: boolean
+          description: Include the Sys_ templates behind the inventory resource actions, excluded by default
+        query:
+          $ref: '#/components/schemas/QueryOperator'
+      type: object
+    Template:
+      allOf:
+      - $ref: '#/components/schemas/TemplateV2Base'
+      - required:
+        - template_id
+        properties:
+          template_id:
+            type: string
+            description: Unique identifier of the template
+            x-cs-type: ObjectId
+          tenant_id:
+            type: string
+            description: Tenant ID
+            x-cs-type: ObjectId
+          status:
+            type: string
+            description: Whether the template is active or inactive
+            example: active
+            enum:
+            - active
+            - inactive
+            x-cs-enum-type: TemplateStatus
+          is_temp:
+            type: boolean
+            description: Whether this is a temporary/draft template (used by Template Builder)
+          content:
+            type: string
+            description: Materialized template body - resolved from git/file/url at read time
+          created_by:
+            type: string
+            description: User who created the template
+          updated_by:
+            type: string
+            description: User who last updated the template
+          created_at:
+            type: string
+            format: date-time
+            description: Template creation time in UTC
+          updated_at:
+            type: string
+            format: date-time
+            description: Template last update time in UTC
+          params:
+            type: array
+            description: Parameter schema (name, type, whether required, default value). Parsed once at create/update and persisted when content_type='file'; not populated for content_type='git'/'url', where the schema is resolved live via Get Params instead. Read-only - not accepted on create/update
+            items:
+              $ref: '#/components/schemas/NamedParameter'
+          parameter_groups:
+            type: array
+            description: Groups used to organize 'params' into UI form sections. Same persistence rule as 'params'. Read-only - not accepted on create/update
+            items:
+              $ref: '#/components/schemas/TemplateParameterGroup'
+        type: object
+    TemplateServiceAccount:
+      required:
+      - cloud
+      - service_account_id
+      properties:
+        cloud:
+          type: string
+          description: Cloud or integrated tool this account belongs to, for example AWS, Azure, GCP, ServiceNow
+          example: AWS
+          enum:
+          - AWS
+          - Anomaly_Detector
+          - AppDynamics
+          - App_Insights
+          - ArrowSphere
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_Devops
+          - Azure_EA
+          - Azure_MCA
+          - Azure_Security_Graph
+          - Azure_Sentinel
+          - Cloudstack
+          - Corestack
+          - DockerHub
+          - ElasticSearch
+          - Freshservice
+          - GCP
+          - GitHub
+          - JIRA_DataCenter
+          - JIRA_ServiceDesk
+          - JIRA_ServiceManagement
+          - Jenkins
+          - Logstash
+          - MS_VMM
+          - Microsoft_Teams
+          - Nagios
+          - Newrelic
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Prometheus
+          - Qualys
+          - Rackspace
+          - RedHat_Satellite
+          - ServiceNow
+          - TCL_ITSM
+          - Tenable_Nessus
+          - VMware
+          - VMware_VCD
+          - ZOHO_ServiceDesk
+          - Zabbix
+          - vCenter
+          x-cs-enum-type: ProviderName
+        service_account_id:
+          type: string
+          description: Cloud/service account ID to run against
+          x-cs-type: ObjectId
+        region:
+          type: string
+          description: Region to run in. Mandatory for AWS
+        zones:
+          type: string
+          description: Zone to run in. Mandatory for GCP
+        resourcegroup:
+          type: string
+          description: Resource group to run in. Mandatory for Azure
+        location:
+          type: string
+          description: Location to run in. Mandatory for Azure
+      type: object
+    AutomationTemplateSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          - UpdatedAt
+          - Name
+          x-cs-enum-type: AutomationTemplateSortColumn
+        ascending:
+          type: boolean
+      type: object
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
+      type: object
+    UpdateTemplateV2Request:
+      allOf:
+      - $ref: '#/components/schemas/TemplateV2Base'
+      - properties: {}
+        type: object
+    TemplateJobBatchRequest:
+      required:
+      - job_ids
+      properties:
+        job_ids:
+          type: array
+          description: Template job IDs to fetch full details for
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    NamedParameter:
+      required:
+      - is_required
+      - name
+      - schema
+      properties:
+        name:
+          type: string
+          description: Name of the parameter
+        display_name:
+          type: string
+          description: Display Name of the parameter
+        is_required:
+          type: boolean
+          description: Whether the parameter is required.
+        schema:
+          $ref: '#/components/schemas/ParameterBase'
+      type: object
+    TemplateV2Base:
+      required:
+      - classification
+      - content_type
+      - engine_type
+      - name
+      - provider
+      - scope
+      - sub_classifications
+      - template_type
+      properties:
+        name:
+          type: string
+          description: Template name, unique, no special characters or spaces
+        description:
+          type: string
+          description: Usage of the template
+        engine_type:
+          type: string
+          description: Terraform, CFN, ARM, Heat, Mistral, Oracle, or GCP DM
+          example: cfn
+          enum:
+          - cfn
+          - arm
+          - terraform
+          - mistral
+          - dm
+          x-cs-enum-type: TemplateEngineType
+        scope:
+          type: string
+          description: 'The scope of the template:
+
+            Global Scope - All users will have access to view and execute CoreStack Marketplace templates; will not have access to update/delete them,
+
+            Account scope - All users under that account will have access to view and execute Only Account admins can update/delete the templates,
+
+            Tenant Scope - Users with access to the specific tenant will have access to templates who can describe or execute templates. Tenant admins can only update/delete.
+
+            Private Scope - User who created will only have access'
+          example: global
+          enum:
+          - global
+          - private
+          - account
+          - tenant
+          x-cs-enum-type: AccountScope
+        classification:
+          type: array
+          description: Template classification(s), e.g. Deployment, Provisioning
+          items:
+            type: string
+            description: Template classification
+            example: Deployment
+            enum:
+            - Deployment
+            - Operations
+            - Provisioning
+            x-cs-enum-type: TemplateClassification
+        sub_classifications:
+          description: Sub-classifications keyed by classification; each classification only permits its own sub-classifications
+          $ref: '#/components/schemas/TemplateClassificationWithSubClassifications'
+        template_type:
+          description: 'Type of the template, keyed by engine - populate only the field matching ''engine_type'', e.g. {"terraform": ["Cloud"]}'
+          $ref: '#/components/schemas/TemplateTypesByEngineType'
+        provider:
+          type: array
+          description: Cloud service(s) or integrated tool(s) this template targets, e.g. AWS, AzureRM, ServiceNow
+          items:
+            type: string
+            description: Cloud provider or integrated tool account service to select
+            example: AWS
+            enum:
+            - AWS
+            - Anomaly_Detector
+            - AppDynamics
+            - App_Insights
+            - ArrowSphere
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_Devops
+            - Azure_EA
+            - Azure_MCA
+            - Azure_Security_Graph
+            - Azure_Sentinel
+            - Cloudstack
+            - Corestack
+            - DockerHub
+            - ElasticSearch
+            - Freshservice
+            - GCP
+            - GitHub
+            - JIRA_DataCenter
+            - JIRA_ServiceDesk
+            - JIRA_ServiceManagement
+            - Jenkins
+            - Logstash
+            - MS_VMM
+            - Microsoft_Teams
+            - Nagios
+            - Newrelic
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Prometheus
+            - Qualys
+            - Rackspace
+            - RedHat_Satellite
+            - ServiceNow
+            - TCL_ITSM
+            - Tenable_Nessus
+            - VMware
+            - VMware_VCD
+            - ZOHO_ServiceDesk
+            - Zabbix
+            - vCenter
+            x-cs-enum-type: ProviderName
+        resource_types:
+          type: array
+          description: Resource types this template operates on, grouped by cloud service
+          items:
+            $ref: '#/components/schemas/TemplateResourceType'
+        content_type:
+          type: string
+          description: 'Content source: file, url, or git. ''git'' is only valid when engine_type=''terraform'''
+          example: file
+          enum:
+          - file
+          - url
+          - git
+          x-cs-enum-type: TemplateContentType
+        content_files:
+          description: Content files. Required when content_type='file'
+          $ref: '#/components/schemas/TemplateContentFiles'
+        git_content:
+          description: Source details for content_type='url' or 'git'
+          $ref: '#/components/schemas/TemplateGitContent'
+        dependencies:
+          type: array
+          description: Referenced Terraform sub-modules, each with its own content files
+          items:
+            $ref: '#/components/schemas/TemplateDependency'
+        blueprint_support:
+          type: boolean
+          description: Make this template usable inside blueprints. Cannot be combined with content_type='git'
+        metadata:
+          description: tags, operation_level, and operation_time stored together
+          $ref: '#/components/schemas/TemplateMetadata'
+      type: object
+    TemplateJobArchiveRequest:
+      required:
+      - job_ids
+      properties:
+        job_ids:
+          type: array
+          description: Template job IDs to archive/unarchive
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    TemplateScanSummary:
+      properties:
+        total:
+          type: integer
+          description: Total number of checks evaluated
+        passed:
+          type: integer
+          description: Number of checks that passed
+        failed:
+          type: integer
+          description: Number of checks that failed
+        parsing_errors:
+          type: integer
+          description: Number of checks that could not be evaluated due to parsing errors
+        skipped:
+          type: integer
+          description: Number of checks skipped
+      type: object
+    TemplateJobV2Resource:
+      properties:
+        resource_id:
+          type: string
+          description: Unique resource ID
+        resource_name:
+          type: string
+          description: Name of the resource
+        resource_type:
+          type: string
+          description: Type of the resource created
+        status:
+          type: string
+          description: Status of the resource
+          example: CANCELED
+          enum:
+          - CANCELED
+          - COMPLETED
+          - CREATE_FAILED
+          - CREATE_IN_PROGRESS
+          - DELETED
+          - DELETE_FAILED
+          - DELETE_IN_PROGRESS
+          - FAILED
+          - IN_PROGRESS
+          - SNAPSHOT_COMPLETED
+          - SNAPSHOT_FAILED
+          - SNAPSHOT_IN_PROGRESS
+          - UPDATED
+          - UPDATE_FAILED
+          - UPDATE_IN_PROGRESS
+          x-cs-enum-type: TemplateJobStatus
+        status_reason:
+          type: string
+          description: Reason for failure, if any
+        start_date:
+          type: string
+          format: date-time
+          description: Resource operation start time
+        end_date:
+          type: string
+          format: date-time
+          description: Resource operation end time
+      type: object
+    TemplateV2ExecuteRequest:
+      allOf:
+      - $ref: '#/components/schemas/TemplateExecutionRequestBase'
+      - properties:
+          incident_reference:
+            description: Incident reference, if this execution is tied to an ITSM incident
+            $ref: '#/components/schemas/TemplateIncidentReference'
+          plan_reference_id:
+            type: string
+            description: ID of a Terraform plan that a prior Plan call generated. When set, Execute applies that exact plan instead of re-planning at execution time; omit it to plan and apply fresh. Terraform templates only.
+        type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    TemplateContentFiles:
+      properties:
+        content:
+          description: Main template file, e.g. main.tf
+          $ref: '#/components/schemas/TemplateContentFilePiece'
+        variable:
+          description: Variables file, e.g. variables.tf
+          $ref: '#/components/schemas/TemplateContentFilePiece'
+        output:
+          description: Outputs file, e.g. output.tf
+          $ref: '#/components/schemas/TemplateContentFilePiece'
+        files:
+          type: array
+          description: Additional files, if any
+          items:
+            $ref: '#/components/schemas/TemplateContentFilePiece'
+      type: object
+    QueryOperator:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: QueryOperatorTrue
+        subtype_name: QueryOperatorTrue
+      - subtype_model: QueryOperatorFalse
+        subtype_name: QueryOperatorFalse
+      - subtype_model: QueryOperatorBinary
+        subtype_name: QueryOperatorBinary
+      - subtype_model: QueryOperatorBinaryLogic
+        subtype_name: QueryOperatorBinaryLogic
+      - subtype_model: QueryOperatorNary
+        subtype_name: QueryOperatorNary
+      - subtype_model: QueryOperatorNaryLogic
+        subtype_name: QueryOperatorNaryLogic
+      - subtype_model: QueryOperatorComparator
+        subtype_name: QueryOperatorComparator
+      - subtype_model: QueryOperatorComparatorLogic
+        subtype_name: QueryOperatorComparatorLogic
+      - subtype_model: QueryOperatorUnary
+        subtype_name: QueryOperatorUnary
+      - subtype_model: QueryOperatorUnaryNot
+        subtype_name: QueryOperatorUnaryNot
+      - subtype_model: QueryOperatorBinaryForGraph
+        subtype_name: QueryOperatorBinaryForGraph
+      - subtype_model: QueryOperatorBinaryLogicForGraph
+        subtype_name: QueryOperatorBinaryLogicForGraph
+      - subtype_model: QueryOperatorNaryForGraph
+        subtype_name: QueryOperatorNaryForGraph
+      - subtype_model: QueryOperatorNaryLogicForGraph
+        subtype_name: QueryOperatorNaryLogicForGraph
+      - subtype_model: QueryOperatorUnaryForGraph
+        subtype_name: QueryOperatorUnaryForGraph
+      - subtype_model: QueryOperatorUnaryNotForGraph
+        subtype_name: QueryOperatorUnaryNotForGraph
+      - subtype_model: ServiceAccountQueryOperator
+        subtype_name: ServiceAccountQueryOperator
+      - subtype_model: TenantQueryOperator
+        subtype_name: TenantQueryOperator
+      - subtype_model: DescendantServiceAccountQueryOperator
+        subtype_name: DescendantServiceAccountQueryOperator
+      - subtype_model: DescendantServiceAccountInTenantQueryOperator
+        subtype_name: DescendantServiceAccountInTenantQueryOperator
+      - subtype_model: TenantTagKeyQueryOperator
+        subtype_name: TenantTagKeyQueryOperator
+      - subtype_model: TenantTagKeyValueQueryOperator
+        subtype_name: TenantTagKeyValueQueryOperator
+      - subtype_model: LocationQueryOperator
+        subtype_name: LocationQueryOperator
+      - subtype_model: AvailabilityZoneQueryOperator
+        subtype_name: AvailabilityZoneQueryOperator
+      - subtype_model: BillingSourceQueryOperator
+        subtype_name: BillingSourceQueryOperator
+      - subtype_model: CurrencyQueryOperator
+        subtype_name: CurrencyQueryOperator
+      - subtype_model: ProductCategoryQueryOperator
+        subtype_name: ProductCategoryQueryOperator
+      - subtype_model: ProductFamilyQueryOperator
+        subtype_name: ProductFamilyQueryOperator
+      - subtype_model: ProductServiceCodeQueryOperator
+        subtype_name: ProductServiceCodeQueryOperator
+      - subtype_model: ProductSkuQueryOperator
+        subtype_name: ProductSkuQueryOperator
+      - subtype_model: PublisherQueryOperator
+        subtype_name: PublisherQueryOperator
+      - subtype_model: ResourceCategoryQueryOperator
+        subtype_name: ResourceCategoryQueryOperator
+      - subtype_model: ResourceIdQueryOperator
+        subtype_name: ResourceIdQueryOperator
+      - subtype_model: ResourceGroupQueryOperator
+        subtype_name: ResourceGroupQueryOperator
+      - subtype_model: ResourceNameQueryOperator
+        subtype_name: ResourceNameQueryOperator
+      - subtype_model: ResourceOperationQueryOperator
+        subtype_name: ResourceOperationQueryOperator
+      - subtype_model: ResourceQueryExtraPresence
+        subtype_name: ResourceQueryExtraPresence
+      - subtype_model: ResourceQueryExtraKey
+        subtype_name: ResourceQueryExtraKey
+      - subtype_model: ScopeContainsTenantQueryOperator
+        subtype_name: ScopeContainsTenantQueryOperator
+      - subtype_model: ScopeContainsServiceAccountQueryOperator
+        subtype_name: ScopeContainsServiceAccountQueryOperator
+      - subtype_model: ScopeIsQueryOperator
+        subtype_name: ScopeIsQueryOperator
+      - subtype_model: ServiceCategoryQueryOperator
+        subtype_name: ServiceCategoryQueryOperator
+      - subtype_model: ServiceTypeQueryOperator
+        subtype_name: ServiceTypeQueryOperator
+      - subtype_model: CompartmentNameQueryOperator
+        subtype_name: CompartmentNameQueryOperator
+      - subtype_model: CompartmentPathQueryOperator
+        subtype_name: CompartmentPathQueryOperator
+      - subtype_model: ResourceQueryExtraKeyValue
+        subtype_name: ResourceQueryExtraKeyValue
+      - subtype_model: ResourceTypeQueryOperator
+        subtype_name: ResourceTypeQueryOperator
+      - subtype_model: PodIdRegexQueryOperator
+        subtype_name: PodIdRegexQueryOperator
+      - subtype_model: PodNameRegexQueryOperator
+        subtype_name: PodNameRegexQueryOperator
+      - subtype_model: ContainerIdRegexQueryOperator
+        subtype_name: ContainerIdRegexQueryOperator
+      - subtype_model: PodNamesQueryOperator
+        subtype_name: PodNamesQueryOperator
+      - subtype_model: PodIdsQueryOperator
+        subtype_name: PodIdsQueryOperator
+      - subtype_model: UtilizationTypeQueryOperator
+        subtype_name: UtilizationTypeQueryOperator
+      - subtype_model: ResourceIdRegexQueryOperator
+        subtype_name: ResourceIdRegexQueryOperator
+      - subtype_model: ResourceNameRegexQueryOperator
+        subtype_name: ResourceNameRegexQueryOperator
+      - subtype_model: ExtrasValueRegexQueryOperator
+        subtype_name: ExtrasValueRegexQueryOperator
+      - subtype_model: TagKeyValueRegexQueryOperator
+        subtype_name: TagKeyValueRegexQueryOperator
+      - subtype_model: ResourceQueryTagKeyKind
+        subtype_name: ResourceQueryTagKeyKind
+      - subtype_model: ResourceQueryTagKeyValuesKind
+        subtype_name: ResourceQueryTagKeyValuesKind
+      - subtype_model: TagKeyStringValueRegexQueryOperator
+        subtype_name: TagKeyStringValueRegexQueryOperator
+      - subtype_model: TagKindStringKeyRegexQueryOperator
+        subtype_name: TagKindStringKeyRegexQueryOperator
+      - subtype_model: ServiceAccountNameRegexQueryOperator
+        subtype_name: ServiceAccountNameRegexQueryOperator
+      - subtype_model: TenantNameRegexQueryOperator
+        subtype_name: TenantNameRegexQueryOperator
+      - subtype_model: PlatFormAccountQueryOperator
+        subtype_name: PlatFormAccountQueryOperator
+      - subtype_model: ServiceNowCmdbQuerySyncLogResourceId
+        subtype_name: ServiceNowCmdbQuerySyncLogResourceId
+      - subtype_model: ServiceNowCmdbQuerySyncLogResourceType
+        subtype_name: ServiceNowCmdbQuerySyncLogResourceType
+      - subtype_model: ServiceNowCmdbQuerySyncLogAction
+        subtype_name: ServiceNowCmdbQuerySyncLogAction
+      - subtype_model: ServiceNowCmdbQuerySyncLogStatus
+        subtype_name: ServiceNowCmdbQuerySyncLogStatus
+      - subtype_model: ServiceNowCmdbQuerySyncLogService
+        subtype_name: ServiceNowCmdbQuerySyncLogService
+      - subtype_model: ServiceAccountNativeDetailsQueryOperator
+        subtype_name: ServiceAccountNativeDetailsQueryOperator
+      - subtype_model: ServiceAccountStatusQueryOperator
+        subtype_name: ServiceAccountStatusQueryOperator
+      - subtype_model: ServiceAccountTagKeyQueryOperator
+        subtype_name: ServiceAccountTagKeyQueryOperator
+      - subtype_model: ServiceAccountTagKeyRegexQueryOperator
+        subtype_name: ServiceAccountTagKeyRegexQueryOperator
+      - subtype_model: ServiceAccountTagKeyValueQueryOperator
+        subtype_name: ServiceAccountTagKeyValueQueryOperator
+      - subtype_model: DimensionSourceQueryOperator
+        subtype_name: DimensionSourceQueryOperator
+      - subtype_model: DimensionQueryOperator
+        subtype_name: DimensionQueryOperator
+      - subtype_model: BillingLineItemTypeQueryOperator
+        subtype_name: BillingLineItemTypeQueryOperator
+      - subtype_model: BillingEntityQueryOperator
+        subtype_name: BillingEntityQueryOperator
+      - subtype_model: LineItemDescriptionQueryOperator
+        subtype_name: LineItemDescriptionQueryOperator
+      - subtype_model: LineItemDescriptionRegexQueryOperator
+        subtype_name: LineItemDescriptionRegexQueryOperator
+      - subtype_model: MeterSubCategoryQueryOperator
+        subtype_name: MeterSubCategoryQueryOperator
+      - subtype_model: PricingCategoryQueryOperator
+        subtype_name: PricingCategoryQueryOperator
+      - subtype_model: PricingPurchaseOptionQueryOperator
+        subtype_name: PricingPurchaseOptionQueryOperator
+      - subtype_model: TagKeyRegexQueryOperator
+        subtype_name: TagKeyRegexQueryOperator
+      - subtype_model: BillingLineItemTypeRegexQueryOperator
+        subtype_name: BillingLineItemTypeRegexQueryOperator
+      - subtype_model: ResourceGroupRegexQueryOperator
+        subtype_name: ResourceGroupRegexQueryOperator
+      - subtype_model: ResourceCategoryRegexQueryOperator
+        subtype_name: ResourceCategoryRegexQueryOperator
+      - subtype_model: ProductCategoryRegexQueryOperator
+        subtype_name: ProductCategoryRegexQueryOperator
+      - subtype_model: BillingEntityRegexQueryOperator
+        subtype_name: BillingEntityRegexQueryOperator
+      - subtype_model: ResourceOperationRegexQueryOperator
+        subtype_name: ResourceOperationRegexQueryOperator
+      - subtype_model: ResourceQueryFieldPresence
+        subtype_name: ResourceQueryFieldPresence
+      - subtype_model: WorkFlowIdQueryOperator
+        subtype_name: WorkFlowIdQueryOperator
+      - subtype_model: RecommendationSubClassificationQueryOperator
+        subtype_name: RecommendationSubClassificationQueryOperator
+      - subtype_model: PolicyClassificationQueryOperator
+        subtype_name: PolicyClassificationQueryOperator
+      - subtype_model: PolicySubClassificationQueryOperator
+        subtype_name: PolicySubClassificationQueryOperator
+      - subtype_model: PolicyEngineTypeQueryOperator
+        subtype_name: PolicyEngineTypeQueryOperator
+      - subtype_model: PolicySeverityQueryOperator
+        subtype_name: PolicySeverityQueryOperator
+      - subtype_model: PolicyStatusQueryOperator
+        subtype_name: PolicyStatusQueryOperator
+      - subtype_model: PolicyScopeQueryOperator
+        subtype_name: PolicyScopeQueryOperator
+      - subtype_model: PolicyServiceQueryOperator
+        subtype_name: PolicyServiceQueryOperator
+      - subtype_model: PolicyParameterQueryOperator
+        subtype_name: PolicyParameterQueryOperator
+      - subtype_model: IsSystemPolicyQueryOperator
+        subtype_name: IsSystemPolicyQueryOperator
+      - subtype_model: PolicyParameterConfiguredQueryOperator
+        subtype_name: PolicyParameterConfiguredQueryOperator
+      - subtype_model: PolicyRemediationActionEnabledQueryOperator
+        subtype_name: PolicyRemediationActionEnabledQueryOperator
+      - subtype_model: PolicyCategoryQueryOperator
+        subtype_name: PolicyCategoryQueryOperator
+      - subtype_model: PolicyJobCreatedAtQueryOperator
+        subtype_name: PolicyJobCreatedAtQueryOperator
+      - subtype_model: PolicyJobStatusQueryOperator
+        subtype_name: PolicyJobStatusQueryOperator
+      - subtype_model: PolicyJobExecutionTypeQueryOperator
+        subtype_name: PolicyJobExecutionTypeQueryOperator
+      - subtype_model: PolicyJobExecutionGroupQueryOperator
+        subtype_name: PolicyJobExecutionGroupQueryOperator
+      - subtype_model: PolicyJobEngineTypeQueryOperator
+        subtype_name: PolicyJobEngineTypeQueryOperator
+      - subtype_model: PolicyJobIsArchivedQueryOperator
+        subtype_name: PolicyJobIsArchivedQueryOperator
+      - subtype_model: PolicyJobPolicyIdQueryOperator
+        subtype_name: PolicyJobPolicyIdQueryOperator
+      - subtype_model: PolicyJobCloudProviderQueryOperator
+        subtype_name: PolicyJobCloudProviderQueryOperator
+      - subtype_model: PolicyJobViolatedQueryOperator
+        subtype_name: PolicyJobViolatedQueryOperator
+      - subtype_model: AIAgentAttributesQueryOperator
+        subtype_name: AIAgentAttributesQueryOperator
+      - subtype_model: ModelNameQueryOperator
+        subtype_name: ModelNameQueryOperator
+      - subtype_model: PromptAnalyticsLabelKeyValueQueryOperator
+        subtype_name: PromptAnalyticsLabelKeyValueQueryOperator
+      - subtype_model: ApplicableHealthMetricsQueryOperator
+        subtype_name: ApplicableHealthMetricsQueryOperator
+      - subtype_model: EpssScoreRangeQueryOperator
+        subtype_name: EpssScoreRangeQueryOperator
+      - subtype_model: CvssMetricScoreRangeQueryOperator
+        subtype_name: CvssMetricScoreRangeQueryOperator
+      - subtype_model: GraphionScoreRangeQueryOperator
+        subtype_name: GraphionScoreRangeQueryOperator
+      - subtype_model: AppSecopsApplicationIdQueryOperator
+        subtype_name: AppSecopsApplicationIdQueryOperator
+      - subtype_model: AppSecopsPortfolioIdQueryOperator
+        subtype_name: AppSecopsPortfolioIdQueryOperator
+      - subtype_model: AppSecopsProjectIdQueryOperator
+        subtype_name: AppSecopsProjectIdQueryOperator
+      - subtype_model: AppSecopsSbomComponentIdQueryOperator
+        subtype_name: AppSecopsSbomComponentIdQueryOperator
+      - subtype_model: AppSecopsSbomVersionIdQueryOperator
+        subtype_name: AppSecopsSbomVersionIdQueryOperator
+      - subtype_model: AppSecopsComponentProductQueryOperator
+        subtype_name: AppSecopsComponentProductQueryOperator
+      - subtype_model: AppSecopsSbomComponentTypeQueryOperator
+        subtype_name: AppSecopsSbomComponentTypeQueryOperator
+      - subtype_model: AppSecopsSbomVersionSubmittedByQueryOperator
+        subtype_name: AppSecopsSbomVersionSubmittedByQueryOperator
+      - subtype_model: AppSecopsSbomVersionSubmittedDateQueryOperator
+        subtype_name: AppSecopsSbomVersionSubmittedDateQueryOperator
+      - subtype_model: AppSecopsSbomVersionBuildIdQueryOperator
+        subtype_name: AppSecopsSbomVersionBuildIdQueryOperator
+      - subtype_model: AppSecopsSbomNameQueryOperator
+        subtype_name: AppSecopsSbomNameQueryOperator
+      - subtype_model: AppSecopsCveIdQueryOperator
+        subtype_name: AppSecopsCveIdQueryOperator
+      - subtype_model: AppSecopsEpssScoreQueryOperator
+        subtype_name: AppSecopsEpssScoreQueryOperator
+      - subtype_model: AppSecopsCvssScoreQueryOperator
+        subtype_name: AppSecopsCvssScoreQueryOperator
+      - subtype_model: AppSecopsGraphionScoreQueryOperator
+        subtype_name: AppSecopsGraphionScoreQueryOperator
+      - subtype_model: SecopsVulnerabilitySeverityQueryOperator
+        subtype_name: SecopsVulnerabilitySeverityQueryOperator
+      - subtype_model: AppSecopsIsKnownExploitedVulnerabilityQueryOperator
+        subtype_name: AppSecopsIsKnownExploitedVulnerabilityQueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricAttackVectorV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricAttackVectorV31QueryOperator
+      - subtype_model: AppSecopsFixAvailableQueryOperator
+        subtype_name: AppSecopsFixAvailableQueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricAttackComplexityV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricAttackComplexityV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricPrivilegesRequiredV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricPrivilegesRequiredV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityMetricScopeV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityMetricScopeV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityExploitabilityUserInteractionV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityExploitabilityUserInteractionV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityImpactMetricConfidentialityImpactV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityImpactMetricConfidentialityImpactV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityImpactMetricIntegrityImpactV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityImpactMetricIntegrityImpactV31QueryOperator
+      - subtype_model: AppSecopsVulnerabilityImpactMetricAvailabilityImpactV31QueryOperator
+        subtype_name: AppSecopsVulnerabilityImpactMetricAvailabilityImpactV31QueryOperator
+      - subtype_model: AppSecopsContainerFindingsSBOMVersionIdsQueryOperator
+        subtype_name: AppSecopsContainerFindingsSBOMVersionIdsQueryOperator
+      - subtype_model: AppSecopsContainerFindingsCategoryQueryOperator
+        subtype_name: AppSecopsContainerFindingsCategoryQueryOperator
+      - subtype_model: AppSecopsContainerFindingsExecutionPhaseQueryOperator
+        subtype_name: AppSecopsContainerFindingsExecutionPhaseQueryOperator
+      - subtype_model: AppSecopsContainerFindingsSeverityQueryOperator
+        subtype_name: AppSecopsContainerFindingsSeverityQueryOperator
+      - subtype_model: AppSecopsContainerFindingsStatusQueryOperator
+        subtype_name: AppSecopsContainerFindingsStatusQueryOperator
+      - subtype_model: AssessmentRunReportDetailQuerySection
+        subtype_name: AssessmentRunReportDetailQuerySection
+      - subtype_model: AssessmentRunReportSummaryQuerySection
+        subtype_name: AssessmentRunReportSummaryQuerySection
+      - subtype_model: AssessmentQueryAssessmentName
+        subtype_name: AssessmentQueryAssessmentName
+      - subtype_model: AssessmentQueryAssessmentOwner
+        subtype_name: AssessmentQueryAssessmentOwner
+      - subtype_model: AssessmentQueryAssessmentApprover
+        subtype_name: AssessmentQueryAssessmentApprover
+      - subtype_model: AssessmentQueryWorkload
+        subtype_name: AssessmentQueryWorkload
+      - subtype_model: AssessmentQueryFramework
+        subtype_name: AssessmentQueryFramework
+      - subtype_model: AssessmentQueryPillar
+        subtype_name: AssessmentQueryPillar
+      - subtype_model: AssessmentViewQueryNature
+        subtype_name: AssessmentViewQueryNature
+      - subtype_model: AssessmentViewQueryQuestionRisk
+        subtype_name: AssessmentViewQueryQuestionRisk
+      - subtype_model: AssessmentViewQueryBestPracticeRisk
+        subtype_name: AssessmentViewQueryBestPracticeRisk
+      - subtype_model: AssessmentViewQueryQuestionStatus
+        subtype_name: AssessmentViewQueryQuestionStatus
+      - subtype_model: AssessmentViewQueryBestPracticeStatus
+        subtype_name: AssessmentViewQueryBestPracticeStatus
+      - subtype_model: AssessmentViewQueryOwner
+        subtype_name: AssessmentViewQueryOwner
+      - subtype_model: AssessmentViewQueryAssignedTo
+        subtype_name: AssessmentViewQueryAssignedTo
+      - subtype_model: AssessmentViewQueryComment
+        subtype_name: AssessmentViewQueryComment
+      - subtype_model: AssessmentReportQueryAssessmentName
+        subtype_name: AssessmentReportQueryAssessmentName
+      - subtype_model: AssessmentReportQueryFramework
+        subtype_name: AssessmentReportQueryFramework
+      - subtype_model: AssessmentReportQueryReportType
+        subtype_name: AssessmentReportQueryReportType
+      - subtype_model: AssessmentReportQueryWorkloadId
+        subtype_name: AssessmentReportQueryWorkloadId
+      - subtype_model: ScheduleQueryName
+        subtype_name: ScheduleQueryName
+      - subtype_model: ScheduleQueryResource
+        subtype_name: ScheduleQueryResource
+      - subtype_model: ScheduleQueryCreatedBy
+        subtype_name: ScheduleQueryCreatedBy
+      - subtype_model: ScheduleQueryEmailRecipients
+        subtype_name: ScheduleQueryEmailRecipients
+      - subtype_model: ScheduleQueryRecurrence
+        subtype_name: ScheduleQueryRecurrence
+      - subtype_model: ScheduleQueryPolicyId
+        subtype_name: ScheduleQueryPolicyId
+      - subtype_model: ScheduleQueryIsActive
+        subtype_name: ScheduleQueryIsActive
+      - subtype_model: ScheduleQueryReportType
+        subtype_name: ScheduleQueryReportType
+      - subtype_model: ScheduleQueryNextGenReportType
+        subtype_name: ScheduleQueryNextGenReportType
+      - subtype_model: ScheduleQueryAssessmentAgentReportType
+        subtype_name: ScheduleQueryAssessmentAgentReportType
+      - subtype_model: AutomationTemplateQueryEngineType
+        subtype_name: AutomationTemplateQueryEngineType
+      - subtype_model: AutomationTemplateQueryRepoType
+        subtype_name: AutomationTemplateQueryRepoType
+      - subtype_model: AutomationTemplateQueryService
+        subtype_name: AutomationTemplateQueryService
+      - subtype_model: AutomationTemplateQueryTenant
+        subtype_name: AutomationTemplateQueryTenant
+      - subtype_model: AwsSecurityHubFindingQueryLocation
+        subtype_name: AwsSecurityHubFindingQueryLocation
+      - subtype_model: AwsSecurityHubFindingQuerySeverity
+        subtype_name: AwsSecurityHubFindingQuerySeverity
+      - subtype_model: AwsSecurityHubFindingQueryProductName
+        subtype_name: AwsSecurityHubFindingQueryProductName
+      - subtype_model: AwsSecurityHubFindingQueryResource
+        subtype_name: AwsSecurityHubFindingQueryResource
+      - subtype_model: AwsSecurityHubFindingQueryCloudAccount
+        subtype_name: AwsSecurityHubFindingQueryCloudAccount
+      - subtype_model: AwsSecurityHubFindingQueryRecordState
+        subtype_name: AwsSecurityHubFindingQueryRecordState
+      - subtype_model: AwsSsmDocumentQueryCloudAccount
+        subtype_name: AwsSsmDocumentQueryCloudAccount
+      - subtype_model: AwsSsmDocumentQueryRegion
+        subtype_name: AwsSsmDocumentQueryRegion
+      - subtype_model: AwsSsmDocumentQueryOwner
+        subtype_name: AwsSsmDocumentQueryOwner
+      - subtype_model: AwsSsmDocumentQueryCategory
+        subtype_name: AwsSsmDocumentQueryCategory
+      - subtype_model: AwsSsmDocumentQueryStatus
+        subtype_name: AwsSsmDocumentQueryStatus
+      - subtype_model: AwsSsmDocumentQueryName
+        subtype_name: AwsSsmDocumentQueryName
+      - subtype_model: AwsSsmDocumentQueryExecutedBy
+        subtype_name: AwsSsmDocumentQueryExecutedBy
+      - subtype_model: ComplianceURIQueryOperator
+        subtype_name: ComplianceURIQueryOperator
+      - subtype_model: DurationInMonthsQueryOperator
+        subtype_name: DurationInMonthsQueryOperator
+      - subtype_model: UniqueIdQueryOperator
+        subtype_name: UniqueIdQueryOperator
+      - subtype_model: ThreatVulnerabilityStatusQueryOperator
+        subtype_name: ThreatVulnerabilityStatusQueryOperator
+      - subtype_model: ThreatVulnerabilitySeverityQueryOperator
+        subtype_name: ThreatVulnerabilitySeverityQueryOperator
+      - subtype_model: ThreatVulnerabilityIssueTypeQueryOperator
+        subtype_name: ThreatVulnerabilityIssueTypeQueryOperator
+      - subtype_model: ThreatIntentQueryOperator
+        subtype_name: ThreatIntentQueryOperator
+      - subtype_model: ThreatHasTicketQueryOperator
+        subtype_name: ThreatHasTicketQueryOperator
+      - subtype_model: VulnerabilityReferenceIdQueryOperator
+        subtype_name: VulnerabilityReferenceIdQueryOperator
+      - subtype_model: EventCreationTimeRangeQueryOperator
+        subtype_name: EventCreationTimeRangeQueryOperator
+      - subtype_model: InfraVulnerabilitySourceQueryOperator
+        subtype_name: InfraVulnerabilitySourceQueryOperator
+      - subtype_model: InfraVulnerabilityFindingsTypeQueryOperator
+        subtype_name: InfraVulnerabilityFindingsTypeQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorExploitAvailableQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorExploitAvailableQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorFixAvailableQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorFixAvailableQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorEcrImageRepositoryNameQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorEcrImageRepositoryNameQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorEcrImageHashQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorEcrImageHashQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorEcrImageArchitectureQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorEcrImageArchitectureQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorEcrImageTagsQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorEcrImageTagsQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorLambdaFunctionNameQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorLambdaFunctionNameQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorLambdaRuntimeQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorLambdaRuntimeQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorLambdaArchitectureQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorLambdaArchitectureQueryOperator
+      - subtype_model: ComplianceStandardScopeQueryOperator
+        subtype_name: ComplianceStandardScopeQueryOperator
+      - subtype_model: ComplianceControlFamilyQueryOperator
+        subtype_name: ComplianceControlFamilyQueryOperator
+      - subtype_model: ComplianceControlSubFamilyQueryOperator
+        subtype_name: ComplianceControlSubFamilyQueryOperator
+      - subtype_model: ComplianceControlNatureQueryOperator
+        subtype_name: ComplianceControlNatureQueryOperator
+      - subtype_model: ComplianceControlSeverityQueryOperator
+        subtype_name: ComplianceControlSeverityQueryOperator
+      - subtype_model: ComplianceStandardIDQueryOperator
+        subtype_name: ComplianceStandardIDQueryOperator
+      - subtype_model: ComplianceAssessmentHistoryStatusQueryOperator
+        subtype_name: ComplianceAssessmentHistoryStatusQueryOperator
+      - subtype_model: ComplianceAssessmentHistoryExecutionTypeQueryOperator
+        subtype_name: ComplianceAssessmentHistoryExecutionTypeQueryOperator
+      - subtype_model: ComplianceAssessmentDetailStatusQueryOperator
+        subtype_name: ComplianceAssessmentDetailStatusQueryOperator
+      - subtype_model: ComplianceControlPolicyUris
+        subtype_name: ComplianceControlPolicyUris
+      - subtype_model: CostAnomalyStatusQueryOperator
+        subtype_name: CostAnomalyStatusQueryOperator
+      - subtype_model: CurrencyExchangeConfigurationQuerySourceCurrency
+        subtype_name: CurrencyExchangeConfigurationQuerySourceCurrency
+      - subtype_model: CurrencyExchangeConfigurationQueryTargetCurrency
+        subtype_name: CurrencyExchangeConfigurationQueryTargetCurrency
+      - subtype_model: CurrencyExchangeConfigurationQueryScope
+        subtype_name: CurrencyExchangeConfigurationQueryScope
+      - subtype_model: MasterAccountBillingQueryMasterAccounts
+        subtype_name: MasterAccountBillingQueryMasterAccounts
+      - subtype_model: MasterAccountBillingQueryTenants
+        subtype_name: MasterAccountBillingQueryTenants
+      - subtype_model: MasterAccountBillingQueryUsers
+        subtype_name: MasterAccountBillingQueryUsers
+      - subtype_model: MasterAccountBillingQueryConversations
+        subtype_name: MasterAccountBillingQueryConversations
+      - subtype_model: MasterAccountBillingQueryTransactionType
+        subtype_name: MasterAccountBillingQueryTransactionType
+      - subtype_model: PolicyResourceRecommendationStatusQueryOperator
+        subtype_name: PolicyResourceRecommendationStatusQueryOperator
+      - subtype_model: PolicyResourceRecommendationPolicyIdsQueryOperator
+        subtype_name: PolicyResourceRecommendationPolicyIdsQueryOperator
+      - subtype_model: PolicyResourceRecommendationSeverityQueryOperator
+        subtype_name: PolicyResourceRecommendationSeverityQueryOperator
+      - subtype_model: PolicyRecommendationClassificationQueryOperator
+        subtype_name: PolicyRecommendationClassificationQueryOperator
+      - subtype_model: PolicyRecommendationSourceQueryOperator
+        subtype_name: PolicyRecommendationSourceQueryOperator
+      - subtype_model: MetricValuesOperator
+        subtype_name: MetricValuesOperator
+      - subtype_model: PatchReadinessStatusQueryOperator
+        subtype_name: PatchReadinessStatusQueryOperator
+      - subtype_model: InfraResourceTrendResourceChangeStatusQueryOperator
+        subtype_name: InfraResourceTrendResourceChangeStatusQueryOperator
+      - subtype_model: VmAgentsQueryOsTypes
+        subtype_name: VmAgentsQueryOsTypes
+      - subtype_model: VmAgentsQueryInstantState
+        subtype_name: VmAgentsQueryInstantState
+      - subtype_model: VmAgentsQueryQualysStatus
+        subtype_name: VmAgentsQueryQualysStatus
+      - subtype_model: VmAgentsQueryCrowdStrikeStatus
+        subtype_name: VmAgentsQueryCrowdStrikeStatus
+      - subtype_model: VmAgentsQuerySplunkStatus
+        subtype_name: VmAgentsQuerySplunkStatus
+      - subtype_model: StacksMarketplaceStackQueryArchived
+        subtype_name: StacksMarketplaceStackQueryArchived
+      - subtype_model: StacksMarketplaceStackQueryAutoApproved
+        subtype_name: StacksMarketplaceStackQueryAutoApproved
+      - subtype_model: StacksMarketplaceStackQueryOwner
+        subtype_name: StacksMarketplaceStackQueryOwner
+      - subtype_model: StacksMarketplaceStackQueryName
+        subtype_name: StacksMarketplaceStackQueryName
+      - subtype_model: StacksMarketplaceStackQueryProduct
+        subtype_name: StacksMarketplaceStackQueryProduct
+      - subtype_model: StacksMarketplaceDeploymentQueryName
+        subtype_name: StacksMarketplaceDeploymentQueryName
+      - subtype_model: StacksMarketplaceDeploymentQueryStack
+        subtype_name: StacksMarketplaceDeploymentQueryStack
+      - subtype_model: StacksMarketplaceDeploymentQueryAccount
+        subtype_name: StacksMarketplaceDeploymentQueryAccount
+      - subtype_model: StacksMarketplaceDeploymentQueryRegion
+        subtype_name: StacksMarketplaceDeploymentQueryRegion
+      - subtype_model: StacksMarketplaceStackDeploymentQueryExecutionStatus
+        subtype_name: StacksMarketplaceStackDeploymentQueryExecutionStatus
+      - subtype_model: AutomationTemplateQueryClassification
+        subtype_name: AutomationTemplateQueryClassification
+      - subtype_model: AutomationTemplateQuerySubClassification
+        subtype_name: AutomationTemplateQuerySubClassification
+      - subtype_model: AutomationTemplateQueryScope
+        subtype_name: AutomationTemplateQueryScope
+      - subtype_model: AutomationTemplateQueryTemplateType
+        subtype_name: AutomationTemplateQueryTemplateType
+      - subtype_model: AutomationTemplateQueryResourceType
+        subtype_name: AutomationTemplateQueryResourceType
+      - subtype_model: AutomationTemplateQueryProvider
+        subtype_name: AutomationTemplateQueryProvider
+      - subtype_model: AutomationTemplateQueryEngineTypes
+        subtype_name: AutomationTemplateQueryEngineTypes
+      - subtype_model: TemplateJobStatusQueryOperator
+        subtype_name: TemplateJobStatusQueryOperator
+      - subtype_model: TemplateJobExecutionTypeQueryOperator
+        subtype_name: TemplateJobExecutionTypeQueryOperator
+      - subtype_model: TemplateJobEngineTypeQueryOperator
+        subtype_name: TemplateJobEngineTypeQueryOperator
+      - subtype_model: TemplateJobTemplateIdQueryOperator
+        subtype_name: TemplateJobTemplateIdQueryOperator
+      - subtype_model: TemplateJobServiceAccountQueryOperator
+        subtype_name: TemplateJobServiceAccountQueryOperator
+      - subtype_model: TemplateJobFromDateQueryOperator
+        subtype_name: TemplateJobFromDateQueryOperator
+      - subtype_model: TemplateJobToDateQueryOperator
+        subtype_name: TemplateJobToDateQueryOperator
+      - subtype_model: TemplateJobArchivedQueryOperator
+        subtype_name: TemplateJobArchivedQueryOperator
+      - subtype_model: MetricNameQueryOperator
+        subtype_name: MetricNameQueryOperator
+      - subtype_model: ResourceQueryCategory
+        subtype_name: ResourceQueryCategory
+      - subtype_model: ResourceQueryLocation
+        subtype_name: ResourceQueryLocation
+      - subtype_model: ResourceQueryResource
+        subtype_name: ResourceQueryResource
+      - subtype_model: ResourceQueryResourceGroup
+        subtype_name: ResourceQueryResourceGroup
+      - subtype_model: ResourceQueryResourceName
+        subtype_name: ResourceQueryResourceName
+      - subtype_model: ResourceQueryResourceType
+        subtype_name: ResourceQueryResourceType
+      - subtype_model: ResourceQueryTagPresence
+        subtype_name: ResourceQueryTagPresence
+      - subtype_model: ResourceQueryTagKey
+        subtype_name: ResourceQueryTagKey
+      - subtype_model: ResourceQueryTagKeyValue
+        subtype_name: ResourceQueryTagKeyValue
+      - subtype_model: WorkloadQueryWorkloadName
+        subtype_name: WorkloadQueryWorkloadName
+      - subtype_model: WorkloadQueryWorkloadOwner
+        subtype_name: WorkloadQueryWorkloadOwner
+      - subtype_model: WorkloadQueryCloud
+        subtype_name: WorkloadQueryCloud
+      - subtype_model: WorkloadQueryCloudAccount
+        subtype_name: WorkloadQueryCloudAccount
+      - subtype_model: WorkloadQueryWorkloadType
+        subtype_name: WorkloadQueryWorkloadType
+      - subtype_model: WorkloadQueryWorkloadId
+        subtype_name: WorkloadQueryWorkloadId
+    TemplateParameterValidationRequest:
+      required:
+      - input_parameters
+      properties:
+        input_parameters:
+          type: string
+          description: Template execution parameters, encoded as a JSON string
+      type: object
+    TemplateScanCheckResult:
+      properties:
+        check_id:
+          type: string
+          description: Identifier of the check, prefixed with the engine, for example terraform#CKV_AWS_20
+        check_name:
+          type: string
+          description: Human-readable name of the check
+        status:
+          type: string
+          description: 'Outcome for this check: ''passed'', ''failed'', ''skipped'', or ''parsing_error'''
+          example: passed
+          enum:
+          - passed
+          - failed
+          - skipped
+          - parsing_error
+          x-cs-enum-type: TemplateScanCheckStatus
+        code_block:
+          type: string
+          description: The template code fragment the check evaluated
+        nature:
+          type: string
+          description: Whether the check is 'static' (content analysis) or 'dynamic' (account-aware)
+          example: static
+          enum:
+          - static
+          - dynamic
+          x-cs-enum-type: TemplateScanCheckNature
+        scope:
+          type: string
+          description: 'Scope the check applies to: ''global'' or ''account'''
+          example: global
+          enum:
+          - global
+          - account
+          x-cs-enum-type: TemplateScanCheckScope
+      type: object
+    ValidationResults:
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationResult'
+      type: object
+    TemplateGitContent:
+      required:
+      - content_url
+      properties:
+        content_url:
+          type: string
+          description: Git/URL location of the template content
+        content_username:
+          type: string
+          description: Username if the source is authenticated
+        content_password_or_key:
+          type: string
+          description: Password or private key if the source is authenticated
+          x-cs-type: SensitiveString
+        content_branch:
+          type: string
+          description: Git branch name. Git-only; empty for a plain URL fetch
+        absolute_path:
+          type: string
+          description: Sub-path within the git repo. Git-only
+        repo_type:
+          type: string
+          description: '''public'' or ''private'' (uses the credential fields above)'
+          example: public
+          enum:
+          - public
+          - private
+          x-cs-enum-type: TemplateRepoType
+      type: object
+    TemplateClassificationWithSubClassifications:
+      properties:
+        deployment:
+          type: array
+          description: Sub-classifications selected under Deployment
+          items:
+            type: string
+            description: Sub-classification valid under the 'Deployment' classification
+            example: Agents
+            enum:
+            - Agents
+            - Workloads
+            x-cs-enum-type: DeploymentSubClassification
+        operations:
+          type: array
+          description: Sub-classifications selected under Operations
+          items:
+            type: string
+            description: Sub-classification valid under the 'Operations' classification
+            example: Access
+            enum:
+            - Access
+            - Archival
+            - Backup
+            - Configuration
+            - Monitoring
+            - Scaling
+            - Termination
+            x-cs-enum-type: OperationsSubClassification
+        provisioning:
+          type: array
+          description: Sub-classifications selected under Provisioning
+          items:
+            type: string
+            description: Sub-classification valid under the 'Provisioning' classification
+            example: Resource
+            enum:
+            - Resource
+            - Workloads
+            x-cs-enum-type: ProvisioningSubClassification
+      type: object
+    TemplateParameterGroup:
+      properties:
+        label:
+          type: string
+          description: Group heading shown in the UI
+        description:
+          type: string
+          description: What this group of parameters covers
+        parameters:
+          type: array
+          description: Names of the parameters in this group, in display order. Each name matches a 'params' entry
+          items:
+            type: string
+      type: object
+    TemplateContentFilePiece:
+      properties:
+        name:
+          type: string
+          description: Filename, e.g. 'main.tf'
+        content:
+          type: string
+          description: Raw file content
+      type: object
+    TemplatePlanResponse:
+      properties:
+        content:
+          type: string
+          description: Human-readable output describing what the execution would change
+        plan_reference_id:
+          type: string
+          description: ID of the Terraform plan this call generated. Pass it back as plan_reference_id on Execute to apply exactly this plan instead of re-planning. Terraform templates only.
+      type: object
+    TemplateCommitRequest:
+      required:
+      - git_details
+      properties:
+        git_details:
+          $ref: '#/components/schemas/TemplateCommitGitDetails'
+        args:
+          type: array
+          description: Resolved parameter values to commit
+          items:
+            $ref: '#/components/schemas/NamedParameter'
+      type: object
+    TemplateV2GetParamsResponse:
+      properties:
+        params:
+          type: array
+          description: Parameters required to execute this template - name, type, whether required, and default value, if any
+          items:
+            $ref: '#/components/schemas/NamedParameter'
+        parameter_groups:
+          type: array
+          description: Groups used to organize parameters into UI form sections, each listing its own parameter names. Empty if this template doesn't declare groups
+          items:
+            $ref: '#/components/schemas/TemplateParameterGroup'
+        service_accounts:
+          type: array
+          description: Echoed back exactly as submitted in the request
+          items:
+            $ref: '#/components/schemas/TemplateServiceAccount'
+      type: object
+    TemplateScanResultResponse:
+      properties:
+        status:
+          type: string
+          description: 'Scan status: ''in_progress'' while running, ''error'' on failure, ''completed'' when finished'
+          example: in_progress
+          enum:
+          - in_progress
+          - completed
+          - error
+          x-cs-enum-type: TemplateScanStatus
+        status_message:
+          type: string
+          description: Error details. Present only when status=ERROR
+        total_resources:
+          type: array
+          description: All resource types found in the template content
+          items:
+            type: string
+        valid_resources:
+          type: array
+          description: Resource types with at least one applicable check
+          items:
+            type: string
+        valid_checks:
+          type: array
+          description: Check names applicable to this template's resources
+          items:
+            type: string
+        params:
+          type: array
+          description: The parameter values used for this scan
+          items:
+            $ref: '#/components/schemas/NamedParameter'
+        summary:
+          description: Pass/fail counts, present once the scan completes
+          $ref: '#/components/schemas/TemplateScanSummary'
+        results:
+          type: array
+          description: Individual check results, present once the scan completes
+          items:
+            $ref: '#/components/schemas/TemplateScanCheckResult'
+      type: object
+    TemplateIncidentReference:
+      properties:
+        integrated_tool_account_id:
+          type: string
+          description: Integrated tool account id
+          x-cs-type: ObjectId
+        incident_id:
+          type: string
+          description: Incident Id
+      type: object
+    TemplateExecutionRequestBase:
+      properties:
+        args:
+          type: string
+          description: 'Template parameter values for this execution, encoded as a JSON string, e.g. ''{"ClusterName": "prod", "AdditionalNodes": 3}''. Parameter names, types, and requiredness come from the template''s own stored schema (see Get Params) - not resent by the caller.'
+        service_accounts:
+          type: array
+          description: Service accounts to run against. Required.
+          items:
+            $ref: '#/components/schemas/TemplateServiceAccount'
+      type: object
+    TemplateResourceType:
+      required:
+      - cloud
+      - resource_types
+      properties:
+        cloud:
+          type: string
+          description: Cloud provider these resource types belong to, e.g. 'AWS'
+          example: AWS
+          enum:
+          - AWS
+          - Anomaly_Detector
+          - AppDynamics
+          - App_Insights
+          - ArrowSphere
+          - Azure
+          - AzureStack
+          - Azure_CSP
+          - Azure_CSP-Direct
+          - Azure_Devops
+          - Azure_EA
+          - Azure_MCA
+          - Azure_Security_Graph
+          - Azure_Sentinel
+          - Cloudstack
+          - Corestack
+          - DockerHub
+          - ElasticSearch
+          - Freshservice
+          - GCP
+          - GitHub
+          - JIRA_DataCenter
+          - JIRA_ServiceDesk
+          - JIRA_ServiceManagement
+          - Jenkins
+          - Logstash
+          - MS_VMM
+          - Microsoft_Teams
+          - Nagios
+          - Newrelic
+          - OCI
+          - Openstack
+          - PrivateCloud
+          - Prometheus
+          - Qualys
+          - Rackspace
+          - RedHat_Satellite
+          - ServiceNow
+          - TCL_ITSM
+          - Tenable_Nessus
+          - VMware
+          - VMware_VCD
+          - ZOHO_ServiceDesk
+          - Zabbix
+          - vCenter
+          x-cs-enum-type: ProviderName
+        resource_types:
+          type: array
+          description: Resource types for this service, e.g. ['EC2']
+          items:
+            type: string
+      type: object
+    TemplateScanTriggerResponse:
+      properties:
+        scan_id:
+          type: string
+          description: ID to poll for results. Absent if scanning was skipped - no checks exist for this template's engine type
+          x-cs-type: ObjectId
+      type: object
+    TemplatePlanRequest:
+      allOf:
+      - $ref: '#/components/schemas/TemplateExecutionRequestBase'
+      - properties: {}
+        type: object
+    TemplateV2ExecuteResponse:
+      required:
+      - job_id
+      properties:
+        job_id:
+          type: string
+          description: Unique ID of the created job
+          x-cs-type: ObjectId
+      type: object
+    TemplateCommitGitDetails:
+      required:
+      - commit_file_type
+      properties:
+        commit_file_type:
+          type: string
+          description: File type to commit - Terraform module wrapper or JSON variables file
+          example: .tf
+          enum:
+          - .tf
+          - .json
+          x-cs-enum-type: TemplateCommitFileType
+        file_state:
+          type: string
+          description: Create a new file, or update an existing one
+          example: new
+          enum:
+          - new
+          - existing
+          x-cs-enum-type: TemplateCommitFileState
+        file_path:
+          type: string
+          description: Path to the existing file to update. Required when file_state='existing'
+        release:
+          type: string
+          description: Git branch or tag the generated module source should reference
+        commit_message:
+          type: string
+          description: Commit message
+      type: object
+    TemplateJobListSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: name
+          enum:
+          - name
+          - status
+          - created_at
+          - updated_at
+          x-cs-enum-type: TemplateJobListSortColumn
+        ascending:
+          type: boolean
+      type: object
+    TemplateScanRequest:
+      properties:
+        params:
+          type: array
+          description: Parameter values to substitute into the template content before scanning
+          items:
+            $ref: '#/components/schemas/NamedParameter'
+        service_account:
+          description: Service account context needed for account-aware checks. Optional.
+          $ref: '#/components/schemas/TemplateServiceAccount'
+      type: object
+    TemplateJobItemResponse:
+      required:
+      - job_id
+      properties:
+        job_id:
+          type: string
+          description: Unique ID of the job
+          x-cs-type: ObjectId
+        name:
+          type: string
+          description: Name of the job
+        status:
+          type: string
+          description: Overall status of the job
+          example: CANCELED
+          enum:
+          - CANCELED
+          - COMPLETED
+          - CREATE_FAILED
+          - CREATE_IN_PROGRESS
+          - DELETED
+          - DELETE_FAILED
+          - DELETE_IN_PROGRESS
+          - FAILED
+          - IN_PROGRESS
+          - SNAPSHOT_COMPLETED
+          - SNAPSHOT_FAILED
+          - SNAPSHOT_IN_PROGRESS
+          - UPDATED
+          - UPDATE_FAILED
+          - UPDATE_IN_PROGRESS
+          x-cs-enum-type: TemplateJobStatus
+        status_reason:
+          type: string
+          description: Error message if failed
+        template_id:
+          type: string
+          description: ID of the template this job executed
+          x-cs-type: ObjectId
+        engine_type:
+          type: string
+          description: The job's execution engine
+          example: cfn
+          enum:
+          - cfn
+          - arm
+          - terraform
+          - mistral
+          - dm
+          x-cs-enum-type: TemplateEngineType
+        parent_job_id:
+          type: string
+          description: Parent job ID, if this job was spawned by another (batch fan-out or Terraform rerun)
+          x-cs-type: ObjectId
+        stack_id:
+          type: string
+          description: Underlying Terraform/Heat stack identifier
+        terraform_state:
+          type: string
+          description: Terraform state, if applicable
+        resources:
+          type: array
+          description: Resources created/affected by this job
+          items:
+            $ref: '#/components/schemas/TemplateJobV2Resource'
+        args:
+          type: array
+          description: Arguments used for this job. Sensitive values are masked.
+          items:
+            $ref: '#/components/schemas/NamedParameter'
+        execution_type:
+          type: string
+          description: How this job was triggered
+          example: on_demand
+          enum:
+          - on_demand
+          - scheduled
+          - event_driven
+          - system
+          x-cs-enum-type: TemplateExecutionType
+        service_accounts:
+          type: array
+          description: Service accounts used
+          items:
+            $ref: '#/components/schemas/TemplateServiceAccount'
+        output:
+          type: object
+          description: Job output
+        created_at:
+          type: string
+          format: date-time
+          description: Job creation time in UTC
+        completed_at:
+          type: string
+          format: date-time
+          description: Job completion time in UTC
+        workflow_task_id:
+          type: string
+          description: Linked ITSM workflow task ID, if any
+        job_actions:
+          type: array
+          description: Actions available for this job, e.g. 'rerun'
+          items:
+            type: string
+        created_by:
+          type: string
+          description: User who initiated the job
+        attachment_id:
+          type: string
+          description: Terraform job log ID, if available
+        schedule_id:
+          type: string
+          description: Linked schedule ID, if this job was triggered by a schedule
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

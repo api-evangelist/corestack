@@ -53,6 +53,596 @@ paths:
             schema:
               $ref: '#/components/schemas/AgentActionConfirmRequest'
         required: true
+  /v1/agent/artifacts/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtifactBatchResponse'
+      summary: Retrieve the artifact details for the specified ids
+      operationId: BatchArtifacts
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+        required: true
+  /v1/agent/artifacts/item/{artifact_id}:
+    parameters:
+    - description: Specify the artifact ID to read, ID which can be obtained from the list artifacts API.
+      name: artifact_id
+      in: path
+      required: true
+      schema:
+        type: string
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Delete a particular artifact
+      description: Delete the artifact.
+      operationId: DeleteArtifact
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Artifact'
+      summary: Get artifact details
+      description: Retrieve the current details of the artifact.
+      operationId: GetArtifact
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+  /v1/agent/artifacts/item/{artifact_id}/pin:
+    parameters:
+    - description: Specify the artifact ID to pin/unpin.
+      name: artifact_id
+      in: path
+      required: true
+      schema:
+        type: string
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Unpin an artifact
+      description: Unpin an artifact from the Insights dashboard.
+      operationId: UnpinArtifact
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Pin an artifact
+      description: Pin an artifact to the Insights dashboard for its agent.
+      operationId: PinArtifact
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+  /v1/agent/artifacts/item/{artifact_id}/share:
+    parameters:
+    - name: artifact_id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Share an artifact
+      description: Share an artifact with an in-tenant user or an external email address.
+      operationId: ShareArtifact
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArtifactShareRequest'
+        required: true
+  /v1/agent/artifacts/item/{artifact_id}/share-candidates:
+    parameters:
+    - name: artifact_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtifactShareCandidatesResponse'
+      summary: List share candidates for an artifact
+      description: List the users in the tenant who can be shared this artifact.
+      operationId: ArtifactShareCandidates
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+  /v1/agent/artifacts/item/{artifact_id}/share/{share_id}:
+    parameters:
+    - name: artifact_id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: share_id
+      in: path
+      required: true
+      schema:
+        type: string
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Revoke an artifact share
+      description: Revoke an artifact share.
+      operationId: RevokeArtifactShare
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+  /v1/agent/artifacts/item/{artifact_id}/shares:
+    parameters:
+    - name: artifact_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtifactSharesResponse'
+      summary: List shares for an artifact
+      description: List the active shares for an artifact.
+      operationId: ListArtifactShares
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+  /v1/agent/artifacts/item/{artifact_id}/subscribe:
+    parameters:
+    - name: artifact_id
+      in: path
+      required: true
+      schema:
+        type: string
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: boolean
+      summary: Unsubscribe from an artifact
+      description: Unsubscribe an artifact (drops the artifactschedule link only; the heatstack schedule itself is managed separately).
+      operationId: UnsubscribeArtifact
+      tags:
+      - AI Agent
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtifactSubscription'
+      summary: Get an artifact's subscription
+      description: Get the current subscription for an artifact, if any.
+      operationId: GetArtifactSubscription
+      tags:
+      - AI Agent
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Subscribe to an artifact
+      description: Link an artifact to a heatstack schedule that delivers it periodically.
+      operationId: SubscribeArtifact
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArtifactSubscribeRequest'
+        required: true
+  /v1/agent/artifacts/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtifactListResponse'
+      summary: List artifacts
+      description: Retrieve the ids of artifacts matching the filtering criteria
+      operationId: ListArtifacts
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArtifactListRequest'
+        required: true
+  /v1/agent/artifacts/pinned:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PinnedArtifactsResponse'
+      summary: List pinned artifacts for an agent
+      description: Retrieve the artifacts currently pinned to the Insights dashboard for an agent.
+      operationId: PinnedArtifacts
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PinnedArtifactsRequest'
+        required: true
+  /v1/agent/artifacts/save:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Save an artifact
+      description: Save an agent-generated HTML dashboard/report as an artifact.
+      operationId: SaveArtifact
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArtifactSaveRequest'
+        required: true
   /v1/agent/chat/batch:
     post:
       responses:
@@ -307,6 +897,47 @@ paths:
             schema:
               $ref: '#/components/schemas/AgentChatUpdateRequest'
         required: true
+  /v1/agent/chat/item/{chat_id}/share-candidates:
+    parameters:
+    - description: Specify the chat ID to read, ID which can be obtained from the list chats API.
+      name: chat_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentChatShareCandidates'
+      summary: Retrieve the users eligible to share the chat with
+      description: Retrieve the users eligible to share the chat with.
+      operationId: ListChatShareCandidates
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
   /v1/agent/chat/item/{chat_id}/suggestions:
     parameters:
     - name: chat_id
@@ -592,6 +1223,179 @@ paths:
             schema:
               $ref: '#/components/schemas/UserQueryRequest'
         required: true
+  /v1/agent/network-topology/generate:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Conversation ID for the topology stream
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Start network-topology generation for a workload and return the
+      description: 'Start network-topology generation for a workload. Returns a conversation_id; stream the result via GET /v1/agent/conversations/item/{conversation_id}/stream (the completion carries the network_topology form).
+
+        conversation_id to stream the result from.'
+      operationId: GenerateNetworkTopology
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateNetworkTopologyRequest'
+        required: true
+  /v1/agent/ontology-map/node:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OntologyNodeDetail'
+      summary: Get ontology map node detail
+      description: Retrieve the detail panel data for a specific ontology map node.
+      operationId: GetOntologyNodeDetail
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OntologyNodeDetailRequest'
+        required: true
+  /v1/agent/ontology-map/node/items:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OntologyEntityItem'
+      summary: Get ontology map node items
+      description: Return the paged entities within a bucket node, with per-entity-type projected fields.
+      operationId: GetOntologyNodeItems
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OntologyNodeItemsRequest'
+        required: true
+  /v1/agent/ontology-map/tree:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OntologyTreeNode'
+      summary: Get the ontology map tree
+      description: Compile a traversal spec and return the aggregated ontology map tree.
+      operationId: GetOntologyTree
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OntologyTreeViewRequest'
+        required: true
   /v1/agent/prompt/batch:
     post:
       responses:
@@ -833,6 +1637,53 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserQueryRequest'
+        required: true
+  /v1/agent/query/revision:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+                x-cs-type: ObjectId
+      summary: Revise a prior HTML answer or report in the chat from anchored user annotations
+      description: Revise a prior HTML answer or report in the chat from anchored user annotations; returns the new conversation id.
+      operationId: SubmitQueryRevision
+      security:
+      - auth_token: []
+      tags:
+      - AI Agent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentRevisionRequest'
         required: true
   /v1/agent/report/generate:
     post:
@@ -1243,40 +2094,66 @@ paths:
         required: true
 components:
   schemas:
-    AiAgentReport:
+    AgentRevisionRequest:
+      required:
+      - annotations
+      - chat_id
+      - query
+      - revision_of
       properties:
-        sys_id:
+        chat_id:
           type: string
-          description: Unique ID for the report
-        background_job:
-          description: Identity of the background job used to generate the report, null if the job has completed
-          $ref: '#/components/schemas/RecordIdentity'
-        attachment_id:
+          description: Chat the revision turn is appended to
+          x-cs-type: ObjectId
+        agent_id:
           type: string
-          description: ID of the attachment where the report contents are stored.
-      type: object
-    AgentResponse:
-      properties:
-        response:
+          description: Agent that produced the source turn
+          x-cs-type: ObjectId
+        tenant_id:
+          type: string
+          description: Tenant of the chat
+          x-cs-type: ObjectId
+        query:
+          type: string
+          description: Natural-language summary composed by the UI, shown in the chat bubble and used by the query guard and summarizer
+          maxLength: 4000
+        revision_of:
+          description: The prior turn block being revised
+          $ref: '#/components/schemas/RevisionTarget'
+        annotations:
           type: array
-          description: Response from the agent
+          description: Anchored edit instructions
+          minItems: 1
+          maxItems: 20
           items:
-            $ref: '#/components/schemas/BaseForAgentResponse'
-        status:
-          type: string
-          description: Status of the response
-          example: failed
-          enum:
-          - failed
-          - in_progress
-          - success
-          x-cs-enum-type: AgentResponseStatus
-      type: object
-    AgentChatDelete:
-      properties:
-        status:
+            $ref: '#/components/schemas/Annotation'
+        end_annotation_session:
           type: boolean
-          description: Indicates if the chat is deleted
+          description: True when sent with Send and end; informational only
+      type: object
+    PinnedArtifactsResponse:
+      properties:
+        artifacts:
+          type: array
+          description: Pinned artifacts for this agent
+          items:
+            $ref: '#/components/schemas/Artifact'
+      type: object
+    ChatConversationBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/ConversationDetails'
+      type: object
+    GenerateNetworkTopologyRequest:
+      required:
+      - workload_id
+      properties:
+        workload_id:
+          type: string
+          description: ID of the workload to generate the network topology for.
       type: object
     PromptFiltersRequest:
       required:
@@ -1298,350 +2175,20 @@ components:
           - custom
           x-cs-enum-type: AgentPromptTypes
       type: object
-    ReportConfiguration:
-      required:
-      - __type
-      properties:
-        export_format:
-          type: string
-          description: Specifies the format of the file being exported.
-          default: PDF
-          example: PDF
-          enum:
-          - PDF
-          - CSV
-          x-cs-enum-type: ExportFormat
-      discriminator:
-        propertyName: __type
-      type: object
-      x-cs-subtypes:
-      - subtype_model: ReportConfigurationForAiAgent
-        subtype_name: ReportConfigurationForAiAgent
-      - subtype_model: BaseReportConfigurationForAssessmentAgent
-        subtype_name: BaseReportConfigurationForAssessmentAgent
-      - subtype_model: ReportConfigurationForAssessment
-        subtype_name: ReportConfigurationForAssessment
-      - subtype_model: ReportConfigurationForWorkload
-        subtype_name: ReportConfigurationForWorkload
-      - subtype_model: ReportConfigurationForExecutiveDashboard
-        subtype_name: ReportConfigurationForExecutiveDashboard
-      - subtype_model: ConfigurationForNextGenReportBase
-        subtype_name: ConfigurationForNextGenReportBase
-      - subtype_model: ConfigurationForFinOpsConsolidatedReport
-        subtype_name: ConfigurationForFinOpsConsolidatedReport
-      - subtype_model: ConfigurationForAwsConsolidatedChargesReport
-        subtype_name: ConfigurationForAwsConsolidatedChargesReport
-      - subtype_model: ConfigurationForAzureConsolidatedChargesReport
-        subtype_name: ConfigurationForAzureConsolidatedChargesReport
-      - subtype_model: ConfigurationForGcpConsolidatedChargesReport
-        subtype_name: ConfigurationForGcpConsolidatedChargesReport
-      - subtype_model: ConfigurationForOciConsolidatedChargesReport
-        subtype_name: ConfigurationForOciConsolidatedChargesReport
-      - subtype_model: ConfigurationForDistributorConsolidatedReport
-        subtype_name: ConfigurationForDistributorConsolidatedReport
-      - subtype_model: ReportConfigurationForAssessmentRun
-        subtype_name: ReportConfigurationForAssessmentRun
-      - subtype_model: ReportConfigurationForAssessmentRunDetail
-        subtype_name: ReportConfigurationForAssessmentRunDetail
-      - subtype_model: ReportConfigurationForAssessmentRunSummary
-        subtype_name: ReportConfigurationForAssessmentRunSummary
-      - subtype_model: ReportConfigurationForAssessmentRunViolation
-        subtype_name: ReportConfigurationForAssessmentRunViolation
-    AiAgentReportCreateRequest:
-      properties:
-        configuration:
-          description: Report configuration to generate report
-          $ref: '#/components/schemas/ReportConfigurationForAiAgent'
-      type: object
-    AgentChatDeleteRequest:
-      properties:
-        chat_ids:
-          type: array
-          description: List of chat IDs to be deleted
-          items:
-            type: string
-            x-cs-type: ObjectId
-        tenant_id:
-          type: string
-          description: ID of the tenant
-          x-cs-type: ObjectId
-      type: object
-    ChatConversationRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/ChatConversationSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/ChatConversationFilter'
-      type: object
-    McpServerListResponse:
-      properties:
-        total_count:
-          type: integer
-          description: Total number of servers.
-        mcp_servers:
-          type: array
-          description: MCP Server list.
-          items:
-            $ref: '#/components/schemas/McpServerItem'
-      type: object
-    McpToolsResponse:
-      properties:
-        total_count:
-          type: integer
-          description: Total number of tools across all matching servers.
-        tools:
-          type: array
-          description: Flat list of MCP tools available for the given tenant and business agent.
-          items:
-            type: object
-      type: object
-    AgentChatDeleteResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/AgentChatDelete'
-      type: object
-    PromptFiltersResponse:
-      properties:
-        tags:
-          type: array
-          description: List of tag key/value pairs
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-      type: object
-    ListContext:
-      properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
-      type: object
-    AgentChatUpdateRequest:
-      properties:
-        name:
-          type: string
-          description: Name of the chat
-      type: object
-    McpServerListRequest:
-      required:
-      - tenant_id
-      properties:
-        tenant_id:
-          type: string
-          description: ID of the tenant
-          x-cs-type: ObjectId
-        is_enabled:
-          type: boolean
-          description: Filter by enabled/disabled status.
-      type: object
-    ChatConversationBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/ConversationDetails'
-      type: object
-    AgentFieldsBase:
-      properties:
-        sys_id:
-          type: string
-          description: Unique identifier for the document
-          x-cs-type: ObjectId
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the document was created
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the document was last updated
-      type: object
-    ChatConversationSortCriteria:
+    AgentChatSortCriteria:
       required:
       - column
       properties:
         column:
           type: string
-          example: CreatedAt
+          example: Name
           enum:
+          - Name
           - CreatedAt
           - UpdatedAt
-          x-cs-enum-type: ChatConversationSortColumn
+          x-cs-enum-type: AgentChatSortColumn
         ascending:
           type: boolean
-      type: object
-    PromptBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/Prompt'
-      type: object
-    PromptSortCriteria:
-      required:
-      - column
-      properties:
-        column:
-          type: string
-          example: CreatedAt
-          enum:
-          - CreatedAt
-          x-cs-enum-type: PromptSortColumn
-        ascending:
-          type: boolean
-      type: object
-    ConversationDetails:
-      allOf:
-      - $ref: '#/components/schemas/AgentFieldsBase'
-      - properties:
-          chat_id:
-            type: string
-            description: ID of the chat
-            x-cs-type: ObjectId
-          user_query:
-            type: string
-            description: User query
-          agent_response:
-            description: Response from the agent
-            $ref: '#/components/schemas/AgentResponse'
-          rating:
-            type: integer
-            description: Rating of the query
-          is_interrupted:
-            type: boolean
-            description: Indicates if the conversation was interrupted
-            default: false
-          is_action_response:
-            type: boolean
-            description: Indicates if the conversation was actionable
-            default: false
-        type: object
-    AgentTypeResponse:
-      properties:
-        agent_types:
-          type: array
-          description: List of agent types
-          items:
-            $ref: '#/components/schemas/AgentType'
-      type: object
-    AgentChatFilter:
-      required:
-      - agent_id
-      - tenant_id
-      properties:
-        agent_id:
-          type: string
-          description: ID of the agent type
-          x-cs-type: ObjectId
-        tenant_id:
-          type: string
-          description: ID of the tenant
-          x-cs-type: ObjectId
-        name:
-          type: string
-          description: Name of the chat
-      type: object
-    ValidationResult:
-      properties:
-        field:
-          type: string
-        reason:
-          type: string
-      type: object
-    RecordIdentity:
-      properties:
-        sysId:
-          type: string
-          description: Unique Identifier of the tracked item
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Last update of the tracked item
-        table:
-          type: string
-          description: Context of the tracked item
-      type: object
-    AgentListChatResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-            x-cs-type: ObjectId
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    PromptListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/PromptSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/PromptFilters'
-      type: object
-    AgentListChatRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/AgentChatSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/AgentChatFilter'
-      type: object
-    KeyValuePair:
-      properties:
-        key:
-          type: string
-          description: Key of the pair
-        value:
-          type: string
-          description: Value of the pair
-      type: object
-    BatchRequest:
-      properties:
-        ids:
-          type: array
-          description: Identifiers to fetch
-          items:
-            type: string
-      type: object
-    ChatConversationFilter:
-      required:
-      - chat_id
-      properties:
-        chat_id:
-          type: string
-          description: ID of the agent type
-          x-cs-type: ObjectId
       type: object
     AgentChat:
       allOf:
@@ -1661,82 +2208,349 @@ components:
             type: string
             description: ID of the tenant
             x-cs-type: ObjectId
+          owner_id:
+            type: string
+            description: ID of the user who owns the chat
+          shared_with:
+            type: array
+            description: IDs of the users the chat is shared with
+            items:
+              type: string
+          participants:
+            type: array
+            description: Owner and shared users of the chat, resolved to names and emails
+            items:
+              $ref: '#/components/schemas/AgentChatParticipant'
+          viewer_share_capability:
+            type: boolean
+            description: Whether the caller holds the share-chat capability (users/read via a DEFAULT role in this chat's tenant). This alone never authorizes sharing - only the chat's owner may share, enforced separately; for non-owners it only unlocks seeing the member roster. Computed per request; never stored.
           metadata:
             description: Metadata for the chat
             $ref: '#/components/schemas/ChatMetadata'
         type: object
-    ConversationFeedbackRequest:
+    ListContext:
       properties:
-        rating:
+        batch_size:
           type: integer
-          description: Rating of the query
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
       type: object
-    McpServerItem:
-      allOf:
-      - $ref: '#/components/schemas/McpServerRequest'
-      - properties:
-          sys_id:
+    AgentChatFilter:
+      required:
+      - agent_id
+      - tenant_id
+      properties:
+        agent_id:
+          type: string
+          description: ID of the agent type
+          x-cs-type: ObjectId
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+        name:
+          type: string
+          description: Name of the chat
+        scope:
+          type: string
+          description: Scope of chats to list
+          default: all
+          example: mine
+          enum:
+          - mine
+          - shared
+          - all
+          x-cs-enum-type: AgentChatScope
+      type: object
+    AgentChatDeleteResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AgentChatDelete'
+      type: object
+    ArtifactShareCandidatesResponse:
+      properties:
+        candidates:
+          type: array
+          description: Users in the tenant who have access to this artifact's agent
+          items:
+            $ref: '#/components/schemas/ArtifactShareCandidate'
+      type: object
+    ChatMetadata:
+      properties:
+        last_state:
+          type: string
+          description: Last state ID
+          x-cs-type: ObjectId
+        framework_name:
+          type: string
+          description: Name of the framework
+      type: object
+    ArtifactSubscribeRequest:
+      required:
+      - schedule_id
+      properties:
+        schedule_id:
+          type: string
+          description: ID of the heatstack schedule created for this artifact (see ScheduleExecutionParameterForAiAgentArtifact)
+          x-cs-type: ObjectId
+      type: object
+    OntologyTreeViewRequest:
+      required:
+      - include_types
+      - tenant_id
+      - view
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant to scope the tree to
+          x-cs-type: ObjectId
+        view:
+          type: string
+          description: Pivot view, e.g. 'cloud_account', 'region', or 'dimension'
+        include_types:
+          type: array
+          description: Ontology entity types to include as leaf buckets
+          items:
             type: string
-            description: Unique server ID for MCP
+      type: object
+    PromptListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/PromptSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/PromptFilters'
+      type: object
+    AgentChatParticipant:
+      properties:
+        user_id:
+          type: string
+          description: ID of the user
+        name:
+          type: string
+          description: Name of the user
+        email:
+          type: string
+          description: Email of the user
+        is_owner:
+          type: boolean
+          description: Indicates if the user is the owner of the chat
+          default: false
+      type: object
+    PromptSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          x-cs-enum-type: PromptSortColumn
+        ascending:
+          type: boolean
+      type: object
+    ArtifactSharesResponse:
+      properties:
+        shares:
+          type: array
+          description: Active shares for this artifact
+          items:
+            $ref: '#/components/schemas/ArtifactShare'
+      type: object
+    BatchRequest:
+      properties:
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
+      type: object
+    ArtifactListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
             x-cs-type: ObjectId
-          created_by:
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    PromptListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
             type: string
-            description: Name of the user who registered the server.
-          created_at:
-            type: string
-            description: Timestamp when the server was registered
-          updated_by:
-            type: string
-            description: Name of the user who last updated the server.
-          updated_at:
-            type: string
-            description: Timestamp when the server was last updated
-        type: object
-    AgentType:
-      allOf:
-      - $ref: '#/components/schemas/AgentFieldsBase'
-      - properties:
-          name:
-            type: string
-            description: AI agents available in the system
-            example: Assessment Agent
-            enum:
-            - Assessment Agent
-            - Graphion Agent
-            - Rate Optimization Agent
-            x-cs-enum-type: Agents
-          is_enabled:
-            type: boolean
-            description: Is the agent type enabled
-        type: object
-    Prompt:
-      allOf:
-      - $ref: '#/components/schemas/AgentFieldsBase'
-      - properties:
-          prompt:
-            type: string
-            description: Input given to the agent
-          tags:
-            type: array
-            description: List of tag key/value pairs
-            items:
-              $ref: '#/components/schemas/KeyValuePair'
-          agent_id:
-            type: string
-            description: ID of the agent
             x-cs-type: ObjectId
-          created_by:
-            type: string
-            description: Name of the user who created the prompt.
-          prompt_type:
-            type: string
-            description: Type of the prompt
-            example: default
-            enum:
-            - default
-            - custom
-            x-cs-enum-type: AgentPromptTypes
-        type: object
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    RecordIdentity:
+      properties:
+        sysId:
+          type: string
+          description: Unique Identifier of the tracked item
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update of the tracked item
+        table:
+          type: string
+          description: Context of the tracked item
+      type: object
+    McpServerSetEnabledRequest:
+      required:
+      - is_enabled
+      properties:
+        is_enabled:
+          type: boolean
+          description: Set to true to enable the server, false to disable.
+      type: object
+    OntologyNodeDetailRequest:
+      required:
+      - node_id
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant the node belongs to
+          x-cs-type: ObjectId
+        node_id:
+          type: string
+          description: Node identifier, as returned by the tree or node/items endpoint
+      type: object
+    PromptFiltersResponse:
+      properties:
+        tags:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+      type: object
+    ArtifactFilter:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+        agent_id:
+          type: string
+          description: ID of the agent
+          x-cs-type: ObjectId
+        title:
+          type: string
+          description: Title of the artifact (substring match)
+        query:
+          type: string
+          description: Full-text search over title/description/tags
+        shared_with_me:
+          type: boolean
+          description: List artifacts shared with the caller instead of the ones they own
+          default: false
+        source_chat_id:
+          type: string
+          description: Only artifacts created in this chat. Scopes the list to the open chat window, independent of who owns the artifacts.
+          x-cs-type: ObjectId
+        source_conversation_id:
+          type: string
+          description: Only artifacts created in this single conversation turn.
+          x-cs-type: ObjectId
+      type: object
+    McpToolsRequest:
+      required:
+      - business_agent
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+        business_agent:
+          type: string
+          description: Business agent name used to scope the tool list.
+          example: Bedrock Agent
+          enum:
+          - Bedrock Agent
+          - Anthropic Agent
+          - Assessment Agent
+          - FinOps Agent
+          - Graphion Agent
+          - Rate Optimization Agent
+          - Usage Optimization Agent
+          - AppSecOps Navigator Agent
+          x-cs-enum-type: Agents
+      type: object
+    AgentCreateChatRequest:
+      properties:
+        name:
+          type: string
+          description: Name of the chat
+        agent_id:
+          type: string
+          description: ID of the agent
+          x-cs-type: ObjectId
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+      type: object
+    ArtifactListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/ArtifactSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/ArtifactFilter'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    AgentListChatRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/AgentChatSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/AgentChatFilter'
+      type: object
     AgentActionConfirmRequest:
       required:
       - action_id
@@ -1761,6 +2575,132 @@ components:
           type: object
           description: User-submitted form data; required when status is 'confirm'
       type: object
+    ReportConfiguration:
+      required:
+      - __type
+      properties:
+        export_format:
+          type: string
+          description: Specifies the format of the file being exported.
+          default: PDF
+          example: PDF
+          enum:
+          - PDF
+          - CSV
+          x-cs-enum-type: ExportFormat
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ReportConfigurationForExecutiveDashboard
+        subtype_name: ReportConfigurationForExecutiveDashboard
+      - subtype_model: ReportConfigurationForAiAgent
+        subtype_name: ReportConfigurationForAiAgent
+      - subtype_model: BaseReportConfigurationForAssessmentAgent
+        subtype_name: BaseReportConfigurationForAssessmentAgent
+      - subtype_model: ReportConfigurationForAssessment
+        subtype_name: ReportConfigurationForAssessment
+      - subtype_model: ReportConfigurationForWorkload
+        subtype_name: ReportConfigurationForWorkload
+      - subtype_model: BaseReportConfigurationForAiAgentArtifact
+        subtype_name: BaseReportConfigurationForAiAgentArtifact
+      - subtype_model: ConfigurationForNextGenReportBase
+        subtype_name: ConfigurationForNextGenReportBase
+      - subtype_model: ConfigurationForFinOpsConsolidatedReport
+        subtype_name: ConfigurationForFinOpsConsolidatedReport
+      - subtype_model: ConfigurationForAwsConsolidatedChargesReport
+        subtype_name: ConfigurationForAwsConsolidatedChargesReport
+      - subtype_model: ConfigurationForAzureConsolidatedChargesReport
+        subtype_name: ConfigurationForAzureConsolidatedChargesReport
+      - subtype_model: ConfigurationForGcpConsolidatedChargesReport
+        subtype_name: ConfigurationForGcpConsolidatedChargesReport
+      - subtype_model: ConfigurationForOciConsolidatedChargesReport
+        subtype_name: ConfigurationForOciConsolidatedChargesReport
+      - subtype_model: ConfigurationForDistributorConsolidatedReport
+        subtype_name: ConfigurationForDistributorConsolidatedReport
+      - subtype_model: ReportConfigurationForAssessmentRun
+        subtype_name: ReportConfigurationForAssessmentRun
+      - subtype_model: ReportConfigurationForAssessmentRunDetail
+        subtype_name: ReportConfigurationForAssessmentRunDetail
+      - subtype_model: ReportConfigurationForAssessmentRunSummary
+        subtype_name: ReportConfigurationForAssessmentRunSummary
+      - subtype_model: ReportConfigurationForAssessmentRunViolation
+        subtype_name: ReportConfigurationForAssessmentRunViolation
+    AnnotationRange:
+      required:
+      - end_element_id
+      - end_offset
+      - start_element_id
+      - start_offset
+      properties:
+        start_element_id:
+          type: string
+          description: Id of the element containing the selection start
+          maxLength: 96
+        start_offset:
+          type: integer
+          description: Character offset of the selection start within that element's text
+          minimum: 0
+        end_element_id:
+          type: string
+          description: Id of the element containing the selection end
+          maxLength: 96
+        end_offset:
+          type: integer
+          description: Character offset of the selection end within that element's text
+          minimum: 0
+      type: object
+    AgentChatDeleteRequest:
+      properties:
+        chat_ids:
+          type: array
+          description: List of chat IDs to be deleted
+          items:
+            type: string
+            x-cs-type: ObjectId
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+      type: object
+    OntologyTreeNode:
+      properties:
+        id:
+          type: string
+          description: Stable node identifier
+        type:
+          type: string
+          description: Ontology type / node kind
+        label:
+          type: string
+          description: Display label
+        count:
+          type: integer
+          description: Item count for this node, if applicable
+        has_children:
+          type: boolean
+          description: Whether this node has child nodes
+        children:
+          type: array
+          description: Child nodes
+          items:
+            $ref: '#/components/schemas/OntologyTreeNode'
+      type: object
+    ArtifactSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: Title
+          enum:
+          - Title
+          - CreatedAt
+          - UpdatedAt
+          x-cs-enum-type: ArtifactSortColumn
+        ascending:
+          type: boolean
+      type: object
     AgentStreamingResponse:
       properties:
         type:
@@ -1770,17 +2710,201 @@ components:
           type: object
           description: Streaming data either progress data or response data
       type: object
-    UserQueryResponse:
+    OntologyNodeItemsRequest:
+      required:
+      - node_id
+      - tenant_id
       properties:
-        conversation_details:
-          description: Conversation details
-          $ref: '#/components/schemas/ConversationDetails'
-        suggested_prompts:
-          type: array
-          description: List of suggested prompt based on the query
-          items:
-            type: string
+        tenant_id:
+          type: string
+          description: Tenant the node belongs to
+          x-cs-type: ObjectId
+        node_id:
+          type: string
+          description: Bucket node identifier to page items for
+        offset:
+          type: integer
+          description: Pagination offset
+          default: 0
+        limit:
+          type: integer
+          description: Page size
+          default: 50
       type: object
+    ConversationFeedbackRequest:
+      properties:
+        rating:
+          type: integer
+          description: Rating of the query
+      type: object
+    AiAgentReport:
+      properties:
+        sys_id:
+          type: string
+          description: Unique ID for the report
+        background_job:
+          description: Identity of the background job used to generate the report, null if the job has completed
+          $ref: '#/components/schemas/RecordIdentity'
+        attachment_id:
+          type: string
+          description: ID of the attachment where the report contents are stored.
+      type: object
+    ArtifactBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/Artifact'
+      type: object
+    OntologyNodeDetail:
+      properties:
+        id:
+          type: string
+          description: Node identifier
+        type:
+          type: string
+          description: Node kind
+        summary:
+          type: object
+          description: Summary counts/fields for this node, shape varies by node type
+          additionalProperties:
+            type: object
+        properties:
+          type: object
+          description: Detailed properties for this node, shape varies by node type
+          additionalProperties:
+            type: object
+        relationships:
+          type: object
+          description: Parent/children linkage for this node
+          additionalProperties:
+            type: object
+      type: object
+    ChatConversationSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          - UpdatedAt
+          x-cs-enum-type: ChatConversationSortColumn
+        ascending:
+          type: boolean
+      type: object
+    PromptBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/Prompt'
+      type: object
+    RevisionTarget:
+      required:
+      - block_index
+      - conversation_id
+      properties:
+        conversation_id:
+          type: string
+          description: Turn whose HtmlPage or InsightPanel block is being revised; must belong to chat_id
+          x-cs-type: ObjectId
+        block_index:
+          type: integer
+          description: Index of the block inside that turn's persisted agent_response.response
+          minimum: 0
+        artifact_id:
+          type: string
+          description: Saved artifact the block was opened from, when the revision started from an artifact
+          x-cs-type: ObjectId
+      type: object
+    PinnedArtifactsRequest:
+      required:
+      - agent_id
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+        agent_id:
+          type: string
+          description: ID of the agent
+          x-cs-type: ObjectId
+      type: object
+    AgentFieldsBase:
+      properties:
+        sys_id:
+          type: string
+          description: Unique identifier for the document
+          x-cs-type: ObjectId
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the document was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the document was last updated
+      type: object
+    McpServerListRequest:
+      required:
+      - tenant_id
+      properties:
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+        is_enabled:
+          type: boolean
+          description: Filter by enabled/disabled status.
+      type: object
+    ValidationResults:
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationResult'
+      type: object
+    ChatConversationRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/ChatConversationSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/ChatConversationFilter'
+      type: object
+    BaseForAgentResponse:
+      required:
+      - __type
+      properties: {}
+      discriminator:
+        propertyName: __type
+      type: object
+      x-cs-subtypes:
+      - subtype_model: ResponseForAgentText
+        subtype_name: Text
+      - subtype_model: ResponseForAgentHtmlPage
+        subtype_name: HtmlPage
+      - subtype_model: ResponseForAgentTable
+        subtype_name: Table
+      - subtype_model: ResponseForAgentLimitation
+        subtype_name: Limitation
+      - subtype_model: ResponseForAgentChart
+        subtype_name: Chart
+      - subtype_model: ResponseForAgentInsightPanel
+        subtype_name: InsightPanel
+      - subtype_model: ResponseForAgentActionForm
+        subtype_name: ActionForm
     McpServerRequest:
       required:
       - business_agents
@@ -1842,11 +2966,16 @@ components:
           items:
             type: string
             description: AI agents available in the system
-            example: Assessment Agent
+            example: Bedrock Agent
             enum:
+            - Bedrock Agent
+            - Anthropic Agent
             - Assessment Agent
+            - FinOps Agent
             - Graphion Agent
             - Rate Optimization Agent
+            - Usage Optimization Agent
+            - AppSecOps Navigator Agent
             x-cs-enum-type: Agents
         timeout_ms:
           type: integer
@@ -1862,20 +2991,6 @@ components:
         priority:
           type: integer
           description: Tool selection priority — lower value means higher preference (e.g. 10 beats 100).
-      type: object
-    AgentCreateChatRequest:
-      properties:
-        name:
-          type: string
-          description: Name of the chat
-        agent_id:
-          type: string
-          description: ID of the agent
-          x-cs-type: ObjectId
-        tenant_id:
-          type: string
-          description: ID of the tenant
-          x-cs-type: ObjectId
       type: object
     UserQueryRequest:
       required:
@@ -1897,6 +3012,242 @@ components:
           type: string
           description: User query
       type: object
+    ChatConversationFilter:
+      required:
+      - chat_id
+      properties:
+        chat_id:
+          type: string
+          description: ID of the agent type
+          x-cs-type: ObjectId
+      type: object
+    ArtifactShare:
+      allOf:
+      - $ref: '#/components/schemas/AgentFieldsBase'
+      - properties:
+          tenant_id:
+            type: string
+            description: ID of the tenant
+            x-cs-type: ObjectId
+          artifact_id:
+            type: string
+            description: ID of the shared artifact
+            x-cs-type: ObjectId
+          created_by:
+            type: string
+            description: Name of the user who created the share.
+          share_type:
+            type: string
+            description: How the artifact was shared
+            example: user
+            enum:
+            - user
+            - email
+            x-cs-enum-type: ArtifactShareType
+          target_user_id:
+            type: string
+            description: ID of the in-tenant user this artifact was shared with, if share_type is 'user'
+            x-cs-type: ObjectId
+          target_email:
+            type: string
+            description: External email address this artifact was shared with, if share_type is 'email'
+          revoked:
+            type: boolean
+            description: Whether this share has been revoked
+            default: false
+        type: object
+    ArtifactShareRequest:
+      required:
+      - share_type
+      properties:
+        share_type:
+          type: string
+          description: How to share the artifact
+          example: user
+          enum:
+          - user
+          - email
+          x-cs-enum-type: ArtifactShareType
+        target_user_id:
+          type: string
+          description: ID of the in-tenant user to share with; required when share_type is 'user'
+          x-cs-type: ObjectId
+        target_email:
+          type: string
+          description: External email address to share with; required when share_type is 'email'
+      type: object
+    AgentChatBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/AgentChat'
+      type: object
+    ArtifactSubscription:
+      allOf:
+      - $ref: '#/components/schemas/AgentFieldsBase'
+      - properties:
+          tenant_id:
+            type: string
+            description: ID of the tenant
+            x-cs-type: ObjectId
+          artifact_id:
+            type: string
+            description: ID of the subscribed artifact
+            x-cs-type: ObjectId
+          agent_id:
+            type: string
+            description: ID of the artifact's agent
+            x-cs-type: ObjectId
+          created_by:
+            type: string
+            description: Name of the user who created the subscription.
+          schedule_id:
+            type: string
+            description: ID of the heatstack schedule delivering this artifact
+            x-cs-type: ObjectId
+        type: object
+    Artifact:
+      allOf:
+      - $ref: '#/components/schemas/AgentFieldsBase'
+      - properties:
+          tenant_id:
+            type: string
+            description: ID of the tenant
+            x-cs-type: ObjectId
+          created_by:
+            type: string
+            description: Username of the user who created the artifact (legacy identity, kept for artifacts saved before owner_id existed).
+          owner_id:
+            type: string
+            description: Stable Identity-service user id of the artifact's owner. Absent on artifacts saved before this field existed -- callers fall back to created_by for those.
+          agent_id:
+            type: string
+            description: ID of the agent the artifact was generated from
+            x-cs-type: ObjectId
+          source_chat_id:
+            type: string
+            description: ID of the chat the artifact was saved from
+            x-cs-type: ObjectId
+          source_conversation_id:
+            type: string
+            description: ID of the conversation turn the artifact was saved from
+            x-cs-type: ObjectId
+          title:
+            type: string
+            description: Title of the artifact
+          description:
+            type: string
+            description: Description of the artifact
+          kind:
+            type: string
+            description: Kind of artifact
+            example: dashboard
+            enum:
+            - dashboard
+            - report
+            x-cs-enum-type: ArtifactKind
+          html_content:
+            type: string
+            description: Rendered HTML content of the artifact
+          pdf_ref:
+            type: string
+            description: Reference to a generated PDF rendition, if any
+          source_prompt:
+            type: string
+            description: Original prompt used to generate the artifact, for deterministic regeneration
+          source_params:
+            type: object
+            description: Original execution parameters used to generate the artifact, for deterministic regeneration
+          tags:
+            type: array
+            description: Tags for search/organization
+            items:
+              type: string
+          is_pinned:
+            type: boolean
+            description: Indicates if the artifact is currently pinned to the Insights dashboard
+            default: false
+          version:
+            type: integer
+            description: Revision number, starting at 1. Incremented when the artifact is regenerated or edited; the title carries a matching _vN suffix from v2 onward.
+            default: 1
+        type: object
+    Annotation:
+      required:
+      - element_id
+      - instruction
+      - kind
+      properties:
+        kind:
+          type: string
+          description: What the annotation is anchored to
+          example: element
+          enum:
+          - element
+          - text-range
+          - table-cell
+          x-cs-enum-type: AnnotationKind
+        element_id:
+          type: string
+          description: Id of the annotated element, as assigned by the backend's deterministic id pass
+          maxLength: 96
+        tag:
+          type: string
+          description: Lower-case tag name of the annotated element
+          maxLength: 32
+        text:
+          type: string
+          description: Visible text of the element or the selected text, plain text, truncated by the client
+          maxLength: 500
+        heading:
+          type: string
+          description: Nearest preceding heading, so the agent can re-anchor when ids shift
+          maxLength: 300
+        instruction:
+          type: string
+          description: What the user wants changed at this anchor
+          minLength: 1
+          maxLength: 2000
+        range:
+          description: Selection boundaries; present only when kind is text-range
+          $ref: '#/components/schemas/AnnotationRange'
+        row_label:
+          type: string
+          description: First-cell text of the annotated row; present only when kind is table-cell
+          maxLength: 300
+        column_label:
+          type: string
+          description: Header text of the annotated column; present only when kind is table-cell
+          maxLength: 300
+      type: object
+    AgentChatUpdateRequest:
+      properties:
+        name:
+          type: string
+          description: Name of the chat
+        share_action:
+          type: string
+          description: Share the chat with, or unshare it from, the users in user_ids
+          example: share
+          enum:
+          - share
+          - unshare
+          x-cs-enum-type: AgentChatShareAction
+        user_ids:
+          type: array
+          description: IDs of the users to share the chat with or unshare it from; required when share_action is set
+          items:
+            type: string
+      type: object
+    ValidationResult:
+      properties:
+        field:
+          type: string
+        reason:
+          type: string
+      type: object
     PromptFilters:
       allOf:
       - $ref: '#/components/schemas/PromptFiltersRequest'
@@ -1910,17 +3261,7 @@ components:
             items:
               $ref: '#/components/schemas/KeyValuePair'
         type: object
-    ChatMetadata:
-      properties:
-        last_state:
-          type: string
-          description: Last state ID
-          x-cs-type: ObjectId
-        framework_name:
-          type: string
-          description: Name of the framework
-      type: object
-    ChatConversationListResponse:
+    AgentListChatResponse:
       properties:
         results:
           type: array
@@ -1931,25 +3272,196 @@ components:
         next_list_context:
           description: List context
           $ref: '#/components/schemas/ListContext'
+        viewer_share_capability:
+          type: boolean
+          description: Whether the caller holds the share-chat capability (users read-or-higher via a DEFAULT role) in the listed tenant. Drives tab/button availability; sharing itself additionally requires chat ownership.
       type: object
-    BaseForAgentResponse:
-      required:
-      - __type
-      properties: {}
-      discriminator:
-        propertyName: __type
+    ConversationDetails:
+      allOf:
+      - $ref: '#/components/schemas/AgentFieldsBase'
+      - properties:
+          chat_id:
+            type: string
+            description: ID of the chat
+            x-cs-type: ObjectId
+          user_query:
+            type: string
+            description: User query
+          agent_response:
+            description: Response from the agent
+            $ref: '#/components/schemas/AgentResponse'
+          raw_response:
+            description: Pre-hardening structured agent response
+            $ref: '#/components/schemas/AgentResponse'
+          rating:
+            type: integer
+            description: Rating of the query
+          is_interrupted:
+            type: boolean
+            description: Indicates if the conversation was interrupted
+            default: false
+          is_action_response:
+            type: boolean
+            description: Indicates if the conversation was actionable
+            default: false
+          author_id:
+            type: string
+            description: ID of the user who authored the conversation
+          author_name:
+            type: string
+            description: Name of the user who authored the conversation
+          revision_of:
+            description: Set when this turn revised a prior turn's block
+            $ref: '#/components/schemas/RevisionTarget'
+          annotations:
+            type: array
+            description: Annotations the user sent with this revision turn
+            items:
+              $ref: '#/components/schemas/Annotation'
+        type: object
+    AgentType:
+      allOf:
+      - $ref: '#/components/schemas/AgentFieldsBase'
+      - properties:
+          name:
+            type: string
+            description: AI agents available in the system
+            example: Bedrock Agent
+            enum:
+            - Bedrock Agent
+            - Anthropic Agent
+            - Assessment Agent
+            - FinOps Agent
+            - Graphion Agent
+            - Rate Optimization Agent
+            - Usage Optimization Agent
+            - AppSecOps Navigator Agent
+            x-cs-enum-type: Agents
+          is_enabled:
+            type: boolean
+            description: Is the agent type enabled
+        type: object
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
       type: object
-      x-cs-subtypes:
-      - subtype_model: ResponseForAgentText
-        subtype_name: Text
-      - subtype_model: ResponseForAgentTable
-        subtype_name: Table
-      - subtype_model: ResponseForAgentLimitation
-        subtype_name: Limitation
-      - subtype_model: ResponseForAgentChart
-        subtype_name: Chart
-      - subtype_model: ResponseForAgentActionForm
-        subtype_name: ActionForm
+    AgentTypeResponse:
+      properties:
+        agent_types:
+          type: array
+          description: List of agent types
+          items:
+            $ref: '#/components/schemas/AgentType'
+      type: object
+    AgentChatShareCandidates:
+      properties:
+        users:
+          type: array
+          description: Users eligible to share the chat with
+          items:
+            $ref: '#/components/schemas/AgentChatParticipant'
+      type: object
+    ReportConfigurationForAiAgent:
+      allOf:
+      - $ref: '#/components/schemas/ReportConfiguration'
+      - required:
+        - agent_id
+        properties:
+          agent_id:
+            type: string
+            description: Id of the Agent.
+            x-cs-type: ObjectId
+        type: object
+      x-cs-type-name: ReportConfigurationForAiAgent
+    Prompt:
+      allOf:
+      - $ref: '#/components/schemas/AgentFieldsBase'
+      - properties:
+          prompt:
+            type: string
+            description: Input given to the agent
+          tags:
+            type: array
+            description: List of tag key/value pairs
+            items:
+              $ref: '#/components/schemas/KeyValuePair'
+          agent_id:
+            type: string
+            description: ID of the agent
+            x-cs-type: ObjectId
+          created_by:
+            type: string
+            description: Name of the user who created the prompt.
+          prompt_type:
+            type: string
+            description: Type of the prompt
+            example: default
+            enum:
+            - default
+            - custom
+            x-cs-enum-type: AgentPromptTypes
+        type: object
+    OntologyEntityItem:
+      properties:
+        id:
+          type: string
+          description: Detail node identifier — submit verbatim as node_id on /node to fetch this entity's full detail
+        label:
+          type: string
+          description: Short display value for the list row; absent when the entity has no name-like property populated
+        properties:
+          type: object
+          description: Projected fields for this entity, shape varies by entity_type
+          additionalProperties:
+            type: object
+      type: object
+    ArtifactShareCandidate:
+      properties:
+        id:
+          type: string
+          description: ID of the candidate user
+        username:
+          type: string
+          description: Username of the candidate user
+        email:
+          type: string
+          description: Email of the candidate user
+      type: object
+    AgentPromptSuggestionResponse:
+      properties:
+        suggested_prompts:
+          type: array
+          description: List of suggested prompts
+          items:
+            type: string
+      type: object
+    McpToolsResponse:
+      properties:
+        total_count:
+          type: integer
+          description: Total number of tools across all matching servers.
+        tools:
+          type: array
+          description: Flat list of MCP tools available for the given tenant and business agent.
+          items:
+            type: object
+      type: object
+    McpServerListResponse:
+      properties:
+        total_count:
+          type: integer
+          description: Total number of servers.
+        mcp_servers:
+          type: array
+          description: MCP Server list.
+          items:
+            $ref: '#/components/schemas/McpServerItem'
+      type: object
     PromptSaveRequest:
       required:
       - prompt
@@ -1967,7 +3479,24 @@ components:
           items:
             $ref: '#/components/schemas/KeyValuePair'
       type: object
-    PromptListResponse:
+    AgentResponse:
+      properties:
+        response:
+          type: array
+          description: Response from the agent
+          items:
+            $ref: '#/components/schemas/BaseForAgentResponse'
+        status:
+          type: string
+          description: Status of the response
+          example: failed
+          enum:
+          - failed
+          - in_progress
+          - success
+          x-cs-enum-type: AgentResponseStatus
+      type: object
+    ChatConversationListResponse:
       properties:
         results:
           type: array
@@ -1979,90 +3508,97 @@ components:
           description: List context
           $ref: '#/components/schemas/ListContext'
       type: object
-    AgentPromptSuggestionResponse:
+    ArtifactSaveRequest:
+      required:
+      - agent_id
+      - html_content
+      - kind
+      - title
       properties:
+        title:
+          type: string
+          description: Title of the artifact
+        description:
+          type: string
+          description: Description of the artifact
+        agent_id:
+          type: string
+          description: ID of the agent the artifact was generated from
+          x-cs-type: ObjectId
+        source_chat_id:
+          type: string
+          description: ID of the chat the artifact was saved from
+          x-cs-type: ObjectId
+        source_conversation_id:
+          type: string
+          description: ID of the conversation turn the artifact was saved from
+          x-cs-type: ObjectId
+        kind:
+          type: string
+          description: Kind of artifact
+          example: dashboard
+          enum:
+          - dashboard
+          - report
+          x-cs-enum-type: ArtifactKind
+        html_content:
+          type: string
+          description: Rendered HTML content of the artifact
+        source_prompt:
+          type: string
+          description: Original prompt used to generate the artifact, for deterministic regeneration
+        source_params:
+          type: object
+          description: Original execution parameters used to generate the artifact, for deterministic regeneration
+        tags:
+          type: array
+          description: Tags for search/organization
+          items:
+            type: string
+      type: object
+    McpServerItem:
+      allOf:
+      - $ref: '#/components/schemas/McpServerRequest'
+      - properties:
+          sys_id:
+            type: string
+            description: Unique server ID for MCP
+            x-cs-type: ObjectId
+          created_by:
+            type: string
+            description: Name of the user who registered the server.
+          created_at:
+            type: string
+            description: Timestamp when the server was registered
+          updated_by:
+            type: string
+            description: Name of the user who last updated the server.
+          updated_at:
+            type: string
+            description: Timestamp when the server was last updated
+        type: object
+    AgentChatDelete:
+      properties:
+        status:
+          type: boolean
+          description: Indicates if the chat is deleted
+      type: object
+    AiAgentReportCreateRequest:
+      properties:
+        configuration:
+          description: Report configuration to generate report
+          $ref: '#/components/schemas/ReportConfigurationForAiAgent'
+      type: object
+    UserQueryResponse:
+      properties:
+        conversation_details:
+          description: Conversation details
+          $ref: '#/components/schemas/ConversationDetails'
         suggested_prompts:
           type: array
-          description: List of suggested prompts
+          description: List of suggested prompt based on the query
           items:
             type: string
-      type: object
-    ReportConfigurationForAiAgent:
-      allOf:
-      - $ref: '#/components/schemas/ReportConfiguration'
-      - required:
-        - agent_id
-        properties:
-          agent_id:
-            type: string
-            description: Id of the Agent.
-            x-cs-type: ObjectId
-        type: object
-      x-cs-type-name: ReportConfigurationForAiAgent
-    McpToolsRequest:
-      required:
-      - business_agent
-      - tenant_id
-      properties:
-        tenant_id:
-          type: string
-          description: ID of the tenant
-          x-cs-type: ObjectId
-        business_agent:
-          type: string
-          description: Business agent name used to scope the tool list.
-          example: Assessment Agent
-          enum:
-          - Assessment Agent
-          - Graphion Agent
-          - Rate Optimization Agent
-          x-cs-enum-type: Agents
-      type: object
-    AgentChatSortCriteria:
-      required:
-      - column
-      properties:
-        column:
-          type: string
-          example: Name
-          enum:
-          - Name
-          - CreatedAt
-          - UpdatedAt
-          x-cs-enum-type: AgentChatSortColumn
-        ascending:
-          type: boolean
-      type: object
-    AgentChatBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/AgentChat'
-      type: object
-    McpServerSetEnabledRequest:
-      required:
-      - is_enabled
-      properties:
-        is_enabled:
-          type: boolean
-          description: Set to true to enable the server, false to disable.
-      type: object
-    ModelError:
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Error response message.
-      type: object
-    ValidationResults:
-      properties:
-        entries:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationResult'
       type: object
   securitySchemes:
     auth_token:

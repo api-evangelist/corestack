@@ -195,161 +195,6 @@ paths:
         required: true
 components:
   schemas:
-    RecommendationsFilterBase:
-      required:
-      - end_date
-      - service_account_ids
-      - start_date
-      properties:
-        service_account_ids:
-          type: array
-          description: Service Account Ids to Filter
-          items:
-            type: string
-            x-cs-type: ObjectId
-        query:
-          description: Query expression to filter line items.
-          $ref: '#/components/schemas/QueryOperator'
-        start_date:
-          type: string
-          format: date-time
-          description: specify the start date.
-        end_date:
-          type: string
-          format: date-time
-          description: specify the end date.
-      type: object
-    ListResponse:
-      properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    ListContext:
-      properties:
-        batch_size:
-          type: integer
-          description: Max number of ids in the response
-        batch_offset:
-          type: integer
-          description: Offset of batches into the results. First batch is 0
-        total:
-          type: integer
-          description: Total number of results
-      type: object
-    RecommendationStatisticsResponse:
-      properties:
-        pre_identified_recommendations:
-          type: integer
-          description: Total number of pre-identified recommendations for the applied filter
-        pre_identified_savings_amount:
-          type: number
-          description: Potential savings amount for the pre-identified recommendations for the applied filter
-        potential_savings_amount:
-          type: number
-          description: Potential savings amount for the applied filter
-        realized_savings_amount:
-          type: number
-          description: Realized savings amount for the applied filter
-        total_recommendations:
-          type: integer
-          description: Total number of recommendations for the applied filter
-        realized_recommendations:
-          type: integer
-          description: Total number of realized recommendations for the applied filter
-        pending_for_approval:
-          type: integer
-          description: Number of pending approvals for the applied filter
-        approved_recommendations:
-          type: integer
-          description: Number of approved recommendations for the applied filter
-        rejected_recommendations:
-          type: integer
-          description: Number of rejected recommendations for the applied filter
-        approved_potential_savings_amount:
-          type: number
-          description: Potential savings amount for Approved workflow status
-        rejected_potential_savings_amount:
-          type: number
-          description: Potential savings amount for rejected workflow status
-        pending_approval_potential_savings_amount:
-          type: number
-          description: Potential savings amount for Pending Approval workflow status
-        pending_approval_realized_savings_amount:
-          type: number
-          description: Realized savings amount for Pending Approval workflow status
-      type: object
-    RealizedSavingDashboard:
-      properties:
-        resource_id:
-          type: string
-          description: Unique id for the resource.
-        service_account_id:
-          type: string
-          description: Id for the service account to which the recommendation belongs to.
-        resource_name:
-          type: string
-          description: Name for the Resource.
-        resource_filter:
-          type: string
-          description: Name for the resource filter
-        resource_location:
-          type: string
-          description: location for the resource
-        resource_category:
-          type: string
-          description: Category for the Resource.
-        resource_type:
-          type: string
-          description: Type for the Resource.
-        resource:
-          type: string
-          description: Low level hierarchy for the resource.
-        impact:
-          type: string
-          description: impact for the recommendation
-        current_sku:
-          type: string
-          description: Current sku for the resource.
-        recommended_sku:
-          type: string
-          description: Recommended sku for the resource.
-        recommendation_type:
-          type: string
-          description: Recommendation type for the resource.
-        savings_amount:
-          type: number
-          description: Savings amount for the resource.
-        workflow_history:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkFlowEventHistory'
-        recommendation_sys_id:
-          type: string
-          description: Unique Id for the Recommendation.
-        workflow_status:
-          type: string
-          description: over all status of the workflow.
-          example: Approved
-          enum:
-          - Approved
-          - Auto Approved
-          - Pending Approval
-          - Rejected
-          x-cs-enum-type: WorkFlowImpactStatus
-        workflow_id:
-          type: string
-          description: Sys Id of the workflow belongs to
-        tenant_id:
-          type: string
-          description: Sys Id of the tenant where the resource belongs to
-          x-cs-type: ObjectId
-      type: object
     QueryOperator:
       required:
       - __type
@@ -446,12 +291,46 @@ components:
         subtype_name: ServiceTypeQueryOperator
       - subtype_model: CompartmentNameQueryOperator
         subtype_name: CompartmentNameQueryOperator
+      - subtype_model: CompartmentPathQueryOperator
+        subtype_name: CompartmentPathQueryOperator
       - subtype_model: ResourceQueryExtraKeyValue
         subtype_name: ResourceQueryExtraKeyValue
-      - subtype_model: WorkFlowIdQueryOperator
-        subtype_name: WorkFlowIdQueryOperator
-      - subtype_model: RecommendationSubClassificationQueryOperator
-        subtype_name: RecommendationSubClassificationQueryOperator
+      - subtype_model: ResourceTypeQueryOperator
+        subtype_name: ResourceTypeQueryOperator
+      - subtype_model: PodIdRegexQueryOperator
+        subtype_name: PodIdRegexQueryOperator
+      - subtype_model: PodNameRegexQueryOperator
+        subtype_name: PodNameRegexQueryOperator
+      - subtype_model: ContainerIdRegexQueryOperator
+        subtype_name: ContainerIdRegexQueryOperator
+      - subtype_model: PodNamesQueryOperator
+        subtype_name: PodNamesQueryOperator
+      - subtype_model: PodIdsQueryOperator
+        subtype_name: PodIdsQueryOperator
+      - subtype_model: UtilizationTypeQueryOperator
+        subtype_name: UtilizationTypeQueryOperator
+      - subtype_model: ResourceIdRegexQueryOperator
+        subtype_name: ResourceIdRegexQueryOperator
+      - subtype_model: ResourceNameRegexQueryOperator
+        subtype_name: ResourceNameRegexQueryOperator
+      - subtype_model: ExtrasValueRegexQueryOperator
+        subtype_name: ExtrasValueRegexQueryOperator
+      - subtype_model: TagKeyValueRegexQueryOperator
+        subtype_name: TagKeyValueRegexQueryOperator
+      - subtype_model: ResourceQueryTagKeyKind
+        subtype_name: ResourceQueryTagKeyKind
+      - subtype_model: ResourceQueryTagKeyValuesKind
+        subtype_name: ResourceQueryTagKeyValuesKind
+      - subtype_model: TagKeyStringValueRegexQueryOperator
+        subtype_name: TagKeyStringValueRegexQueryOperator
+      - subtype_model: TagKindStringKeyRegexQueryOperator
+        subtype_name: TagKindStringKeyRegexQueryOperator
+      - subtype_model: ServiceAccountNameRegexQueryOperator
+        subtype_name: ServiceAccountNameRegexQueryOperator
+      - subtype_model: TenantNameRegexQueryOperator
+        subtype_name: TenantNameRegexQueryOperator
+      - subtype_model: PlatFormAccountQueryOperator
+        subtype_name: PlatFormAccountQueryOperator
       - subtype_model: ServiceNowCmdbQuerySyncLogResourceId
         subtype_name: ServiceNowCmdbQuerySyncLogResourceId
       - subtype_model: ServiceNowCmdbQuerySyncLogResourceType
@@ -472,6 +351,92 @@ components:
         subtype_name: ServiceAccountTagKeyRegexQueryOperator
       - subtype_model: ServiceAccountTagKeyValueQueryOperator
         subtype_name: ServiceAccountTagKeyValueQueryOperator
+      - subtype_model: DimensionSourceQueryOperator
+        subtype_name: DimensionSourceQueryOperator
+      - subtype_model: DimensionQueryOperator
+        subtype_name: DimensionQueryOperator
+      - subtype_model: BillingLineItemTypeQueryOperator
+        subtype_name: BillingLineItemTypeQueryOperator
+      - subtype_model: BillingEntityQueryOperator
+        subtype_name: BillingEntityQueryOperator
+      - subtype_model: LineItemDescriptionQueryOperator
+        subtype_name: LineItemDescriptionQueryOperator
+      - subtype_model: LineItemDescriptionRegexQueryOperator
+        subtype_name: LineItemDescriptionRegexQueryOperator
+      - subtype_model: MeterSubCategoryQueryOperator
+        subtype_name: MeterSubCategoryQueryOperator
+      - subtype_model: PricingCategoryQueryOperator
+        subtype_name: PricingCategoryQueryOperator
+      - subtype_model: PricingPurchaseOptionQueryOperator
+        subtype_name: PricingPurchaseOptionQueryOperator
+      - subtype_model: TagKeyRegexQueryOperator
+        subtype_name: TagKeyRegexQueryOperator
+      - subtype_model: BillingLineItemTypeRegexQueryOperator
+        subtype_name: BillingLineItemTypeRegexQueryOperator
+      - subtype_model: ResourceGroupRegexQueryOperator
+        subtype_name: ResourceGroupRegexQueryOperator
+      - subtype_model: ResourceCategoryRegexQueryOperator
+        subtype_name: ResourceCategoryRegexQueryOperator
+      - subtype_model: ProductCategoryRegexQueryOperator
+        subtype_name: ProductCategoryRegexQueryOperator
+      - subtype_model: BillingEntityRegexQueryOperator
+        subtype_name: BillingEntityRegexQueryOperator
+      - subtype_model: ResourceOperationRegexQueryOperator
+        subtype_name: ResourceOperationRegexQueryOperator
+      - subtype_model: ResourceQueryFieldPresence
+        subtype_name: ResourceQueryFieldPresence
+      - subtype_model: WorkFlowIdQueryOperator
+        subtype_name: WorkFlowIdQueryOperator
+      - subtype_model: RecommendationSubClassificationQueryOperator
+        subtype_name: RecommendationSubClassificationQueryOperator
+      - subtype_model: PolicyClassificationQueryOperator
+        subtype_name: PolicyClassificationQueryOperator
+      - subtype_model: PolicySubClassificationQueryOperator
+        subtype_name: PolicySubClassificationQueryOperator
+      - subtype_model: PolicyEngineTypeQueryOperator
+        subtype_name: PolicyEngineTypeQueryOperator
+      - subtype_model: PolicySeverityQueryOperator
+        subtype_name: PolicySeverityQueryOperator
+      - subtype_model: PolicyStatusQueryOperator
+        subtype_name: PolicyStatusQueryOperator
+      - subtype_model: PolicyScopeQueryOperator
+        subtype_name: PolicyScopeQueryOperator
+      - subtype_model: PolicyServiceQueryOperator
+        subtype_name: PolicyServiceQueryOperator
+      - subtype_model: PolicyParameterQueryOperator
+        subtype_name: PolicyParameterQueryOperator
+      - subtype_model: IsSystemPolicyQueryOperator
+        subtype_name: IsSystemPolicyQueryOperator
+      - subtype_model: PolicyParameterConfiguredQueryOperator
+        subtype_name: PolicyParameterConfiguredQueryOperator
+      - subtype_model: PolicyRemediationActionEnabledQueryOperator
+        subtype_name: PolicyRemediationActionEnabledQueryOperator
+      - subtype_model: PolicyCategoryQueryOperator
+        subtype_name: PolicyCategoryQueryOperator
+      - subtype_model: PolicyJobCreatedAtQueryOperator
+        subtype_name: PolicyJobCreatedAtQueryOperator
+      - subtype_model: PolicyJobStatusQueryOperator
+        subtype_name: PolicyJobStatusQueryOperator
+      - subtype_model: PolicyJobExecutionTypeQueryOperator
+        subtype_name: PolicyJobExecutionTypeQueryOperator
+      - subtype_model: PolicyJobExecutionGroupQueryOperator
+        subtype_name: PolicyJobExecutionGroupQueryOperator
+      - subtype_model: PolicyJobEngineTypeQueryOperator
+        subtype_name: PolicyJobEngineTypeQueryOperator
+      - subtype_model: PolicyJobIsArchivedQueryOperator
+        subtype_name: PolicyJobIsArchivedQueryOperator
+      - subtype_model: PolicyJobPolicyIdQueryOperator
+        subtype_name: PolicyJobPolicyIdQueryOperator
+      - subtype_model: PolicyJobCloudProviderQueryOperator
+        subtype_name: PolicyJobCloudProviderQueryOperator
+      - subtype_model: PolicyJobViolatedQueryOperator
+        subtype_name: PolicyJobViolatedQueryOperator
+      - subtype_model: AIAgentAttributesQueryOperator
+        subtype_name: AIAgentAttributesQueryOperator
+      - subtype_model: ModelNameQueryOperator
+        subtype_name: ModelNameQueryOperator
+      - subtype_model: PromptAnalyticsLabelKeyValueQueryOperator
+        subtype_name: PromptAnalyticsLabelKeyValueQueryOperator
       - subtype_model: ApplicableHealthMetricsQueryOperator
         subtype_name: ApplicableHealthMetricsQueryOperator
       - subtype_model: EpssScoreRangeQueryOperator
@@ -542,76 +507,6 @@ components:
         subtype_name: AppSecopsContainerFindingsSeverityQueryOperator
       - subtype_model: AppSecopsContainerFindingsStatusQueryOperator
         subtype_name: AppSecopsContainerFindingsStatusQueryOperator
-      - subtype_model: DimensionSourceQueryOperator
-        subtype_name: DimensionSourceQueryOperator
-      - subtype_model: DimensionQueryOperator
-        subtype_name: DimensionQueryOperator
-      - subtype_model: ResourceTypeQueryOperator
-        subtype_name: ResourceTypeQueryOperator
-      - subtype_model: PodIdRegexQueryOperator
-        subtype_name: PodIdRegexQueryOperator
-      - subtype_model: PodNameRegexQueryOperator
-        subtype_name: PodNameRegexQueryOperator
-      - subtype_model: ContainerIdRegexQueryOperator
-        subtype_name: ContainerIdRegexQueryOperator
-      - subtype_model: PodNamesQueryOperator
-        subtype_name: PodNamesQueryOperator
-      - subtype_model: PodIdsQueryOperator
-        subtype_name: PodIdsQueryOperator
-      - subtype_model: UtilizationTypeQueryOperator
-        subtype_name: UtilizationTypeQueryOperator
-      - subtype_model: ResourceIdRegexQueryOperator
-        subtype_name: ResourceIdRegexQueryOperator
-      - subtype_model: ResourceNameRegexQueryOperator
-        subtype_name: ResourceNameRegexQueryOperator
-      - subtype_model: ExtrasValueRegexQueryOperator
-        subtype_name: ExtrasValueRegexQueryOperator
-      - subtype_model: TagKeyValueRegexQueryOperator
-        subtype_name: TagKeyValueRegexQueryOperator
-      - subtype_model: ResourceQueryTagKeyKind
-        subtype_name: ResourceQueryTagKeyKind
-      - subtype_model: ResourceQueryTagKeyValuesKind
-        subtype_name: ResourceQueryTagKeyValuesKind
-      - subtype_model: TagKeyStringValueRegexQueryOperator
-        subtype_name: TagKeyStringValueRegexQueryOperator
-      - subtype_model: TagKindStringKeyRegexQueryOperator
-        subtype_name: TagKindStringKeyRegexQueryOperator
-      - subtype_model: ServiceAccountNameRegexQueryOperator
-        subtype_name: ServiceAccountNameRegexQueryOperator
-      - subtype_model: TenantNameRegexQueryOperator
-        subtype_name: TenantNameRegexQueryOperator
-      - subtype_model: PlatFormAccountQueryOperator
-        subtype_name: PlatFormAccountQueryOperator
-      - subtype_model: BillingLineItemTypeQueryOperator
-        subtype_name: BillingLineItemTypeQueryOperator
-      - subtype_model: BillingEntityQueryOperator
-        subtype_name: BillingEntityQueryOperator
-      - subtype_model: LineItemDescriptionQueryOperator
-        subtype_name: LineItemDescriptionQueryOperator
-      - subtype_model: LineItemDescriptionRegexQueryOperator
-        subtype_name: LineItemDescriptionRegexQueryOperator
-      - subtype_model: MeterSubCategoryQueryOperator
-        subtype_name: MeterSubCategoryQueryOperator
-      - subtype_model: PricingCategoryQueryOperator
-        subtype_name: PricingCategoryQueryOperator
-      - subtype_model: PricingPurchaseOptionQueryOperator
-        subtype_name: PricingPurchaseOptionQueryOperator
-      - subtype_model: TagKeyRegexQueryOperator
-        subtype_name: TagKeyRegexQueryOperator
-      - subtype_model: BillingLineItemTypeRegexQueryOperator
-        subtype_name: BillingLineItemTypeRegexQueryOperator
-      - subtype_model: ResourceGroupRegexQueryOperator
-        subtype_name: ResourceGroupRegexQueryOperator
-      - subtype_model: ResourceCategoryRegexQueryOperator
-        subtype_name: ResourceCategoryRegexQueryOperator
-      - subtype_model: ProductCategoryRegexQueryOperator
-        subtype_name: ProductCategoryRegexQueryOperator
-      - subtype_model: BillingEntityRegexQueryOperator
-        subtype_name: BillingEntityRegexQueryOperator
-      - subtype_model: ResourceOperationRegexQueryOperator
-        subtype_name: ResourceOperationRegexQueryOperator
-      - subtype_model: ResourceQueryFieldPresence
-        subtype_name: ResourceQueryFieldPresence
       - subtype_model: AssessmentRunReportDetailQuerySection
         subtype_name: AssessmentRunReportDetailQuerySection
       - subtype_model: AssessmentRunReportSummaryQuerySection
@@ -654,12 +549,18 @@ components:
         subtype_name: AssessmentReportQueryWorkloadId
       - subtype_model: ScheduleQueryName
         subtype_name: ScheduleQueryName
+      - subtype_model: ScheduleQueryResource
+        subtype_name: ScheduleQueryResource
       - subtype_model: ScheduleQueryCreatedBy
         subtype_name: ScheduleQueryCreatedBy
       - subtype_model: ScheduleQueryEmailRecipients
         subtype_name: ScheduleQueryEmailRecipients
       - subtype_model: ScheduleQueryRecurrence
         subtype_name: ScheduleQueryRecurrence
+      - subtype_model: ScheduleQueryPolicyId
+        subtype_name: ScheduleQueryPolicyId
+      - subtype_model: ScheduleQueryIsActive
+        subtype_name: ScheduleQueryIsActive
       - subtype_model: ScheduleQueryReportType
         subtype_name: ScheduleQueryReportType
       - subtype_model: ScheduleQueryNextGenReportType
@@ -714,8 +615,54 @@ components:
         subtype_name: ThreatVulnerabilityIssueTypeQueryOperator
       - subtype_model: ThreatIntentQueryOperator
         subtype_name: ThreatIntentQueryOperator
+      - subtype_model: ThreatHasTicketQueryOperator
+        subtype_name: ThreatHasTicketQueryOperator
       - subtype_model: VulnerabilityReferenceIdQueryOperator
         subtype_name: VulnerabilityReferenceIdQueryOperator
+      - subtype_model: EventCreationTimeRangeQueryOperator
+        subtype_name: EventCreationTimeRangeQueryOperator
+      - subtype_model: InfraVulnerabilitySourceQueryOperator
+        subtype_name: InfraVulnerabilitySourceQueryOperator
+      - subtype_model: InfraVulnerabilityFindingsTypeQueryOperator
+        subtype_name: InfraVulnerabilityFindingsTypeQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorExploitAvailableQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorExploitAvailableQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorFixAvailableQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorFixAvailableQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorEcrImageRepositoryNameQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorEcrImageRepositoryNameQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorEcrImageHashQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorEcrImageHashQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorEcrImageArchitectureQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorEcrImageArchitectureQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorEcrImageTagsQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorEcrImageTagsQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorLambdaFunctionNameQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorLambdaFunctionNameQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorLambdaRuntimeQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorLambdaRuntimeQueryOperator
+      - subtype_model: InfraVulnerabilityAWSInspectorLambdaArchitectureQueryOperator
+        subtype_name: InfraVulnerabilityAWSInspectorLambdaArchitectureQueryOperator
+      - subtype_model: ComplianceStandardScopeQueryOperator
+        subtype_name: ComplianceStandardScopeQueryOperator
+      - subtype_model: ComplianceControlFamilyQueryOperator
+        subtype_name: ComplianceControlFamilyQueryOperator
+      - subtype_model: ComplianceControlSubFamilyQueryOperator
+        subtype_name: ComplianceControlSubFamilyQueryOperator
+      - subtype_model: ComplianceControlNatureQueryOperator
+        subtype_name: ComplianceControlNatureQueryOperator
+      - subtype_model: ComplianceControlSeverityQueryOperator
+        subtype_name: ComplianceControlSeverityQueryOperator
+      - subtype_model: ComplianceStandardIDQueryOperator
+        subtype_name: ComplianceStandardIDQueryOperator
+      - subtype_model: ComplianceAssessmentHistoryStatusQueryOperator
+        subtype_name: ComplianceAssessmentHistoryStatusQueryOperator
+      - subtype_model: ComplianceAssessmentHistoryExecutionTypeQueryOperator
+        subtype_name: ComplianceAssessmentHistoryExecutionTypeQueryOperator
+      - subtype_model: ComplianceAssessmentDetailStatusQueryOperator
+        subtype_name: ComplianceAssessmentDetailStatusQueryOperator
+      - subtype_model: ComplianceControlPolicyUris
+        subtype_name: ComplianceControlPolicyUris
       - subtype_model: CostAnomalyStatusQueryOperator
         subtype_name: CostAnomalyStatusQueryOperator
       - subtype_model: CurrencyExchangeConfigurationQuerySourceCurrency
@@ -724,10 +671,6 @@ components:
         subtype_name: CurrencyExchangeConfigurationQueryTargetCurrency
       - subtype_model: CurrencyExchangeConfigurationQueryScope
         subtype_name: CurrencyExchangeConfigurationQueryScope
-      - subtype_model: MetricValuesOperator
-        subtype_name: MetricValuesOperator
-      - subtype_model: PatchReadinessStatusQueryOperator
-        subtype_name: PatchReadinessStatusQueryOperator
       - subtype_model: MasterAccountBillingQueryMasterAccounts
         subtype_name: MasterAccountBillingQueryMasterAccounts
       - subtype_model: MasterAccountBillingQueryTenants
@@ -746,6 +689,12 @@ components:
         subtype_name: PolicyResourceRecommendationSeverityQueryOperator
       - subtype_model: PolicyRecommendationClassificationQueryOperator
         subtype_name: PolicyRecommendationClassificationQueryOperator
+      - subtype_model: PolicyRecommendationSourceQueryOperator
+        subtype_name: PolicyRecommendationSourceQueryOperator
+      - subtype_model: MetricValuesOperator
+        subtype_name: MetricValuesOperator
+      - subtype_model: PatchReadinessStatusQueryOperator
+        subtype_name: PatchReadinessStatusQueryOperator
       - subtype_model: InfraResourceTrendResourceChangeStatusQueryOperator
         subtype_name: InfraResourceTrendResourceChangeStatusQueryOperator
       - subtype_model: VmAgentsQueryOsTypes
@@ -778,6 +727,36 @@ components:
         subtype_name: StacksMarketplaceDeploymentQueryRegion
       - subtype_model: StacksMarketplaceStackDeploymentQueryExecutionStatus
         subtype_name: StacksMarketplaceStackDeploymentQueryExecutionStatus
+      - subtype_model: AutomationTemplateQueryClassification
+        subtype_name: AutomationTemplateQueryClassification
+      - subtype_model: AutomationTemplateQuerySubClassification
+        subtype_name: AutomationTemplateQuerySubClassification
+      - subtype_model: AutomationTemplateQueryScope
+        subtype_name: AutomationTemplateQueryScope
+      - subtype_model: AutomationTemplateQueryTemplateType
+        subtype_name: AutomationTemplateQueryTemplateType
+      - subtype_model: AutomationTemplateQueryResourceType
+        subtype_name: AutomationTemplateQueryResourceType
+      - subtype_model: AutomationTemplateQueryProvider
+        subtype_name: AutomationTemplateQueryProvider
+      - subtype_model: AutomationTemplateQueryEngineTypes
+        subtype_name: AutomationTemplateQueryEngineTypes
+      - subtype_model: TemplateJobStatusQueryOperator
+        subtype_name: TemplateJobStatusQueryOperator
+      - subtype_model: TemplateJobExecutionTypeQueryOperator
+        subtype_name: TemplateJobExecutionTypeQueryOperator
+      - subtype_model: TemplateJobEngineTypeQueryOperator
+        subtype_name: TemplateJobEngineTypeQueryOperator
+      - subtype_model: TemplateJobTemplateIdQueryOperator
+        subtype_name: TemplateJobTemplateIdQueryOperator
+      - subtype_model: TemplateJobServiceAccountQueryOperator
+        subtype_name: TemplateJobServiceAccountQueryOperator
+      - subtype_model: TemplateJobFromDateQueryOperator
+        subtype_name: TemplateJobFromDateQueryOperator
+      - subtype_model: TemplateJobToDateQueryOperator
+        subtype_name: TemplateJobToDateQueryOperator
+      - subtype_model: TemplateJobArchivedQueryOperator
+        subtype_name: TemplateJobArchivedQueryOperator
       - subtype_model: MetricNameQueryOperator
         subtype_name: MetricNameQueryOperator
       - subtype_model: ResourceQueryCategory
@@ -837,6 +816,227 @@ components:
           type: string
           description: Failure Reason if any available for the step.
       type: object
+    RecommendationStatisticsRequest:
+      allOf:
+      - $ref: '#/components/schemas/RecommendationsFilterBase'
+      - properties:
+          workflow_sys_id:
+            type: string
+            description: workflow sys id for which the rules are required
+        type: object
+    RecommendationStatisticsResponse:
+      properties:
+        pre_identified_recommendations:
+          type: integer
+          description: Total number of pre-identified recommendations for the applied filter
+        pre_identified_savings_amount:
+          type: number
+          description: Potential savings amount for the pre-identified recommendations for the applied filter
+        potential_savings_amount:
+          type: number
+          description: Potential savings amount for the applied filter
+        realized_savings_amount:
+          type: number
+          description: Realized savings amount for the applied filter
+        total_recommendations:
+          type: integer
+          description: Total number of recommendations for the applied filter
+        realized_recommendations:
+          type: integer
+          description: Total number of realized recommendations for the applied filter
+        pending_for_approval:
+          type: integer
+          description: Number of pending approvals for the applied filter
+        approved_recommendations:
+          type: integer
+          description: Number of approved recommendations for the applied filter
+        rejected_recommendations:
+          type: integer
+          description: Number of rejected recommendations for the applied filter
+        approved_potential_savings_amount:
+          type: number
+          description: Potential savings amount for Approved workflow status
+        rejected_potential_savings_amount:
+          type: number
+          description: Potential savings amount for rejected workflow status
+        pending_approval_potential_savings_amount:
+          type: number
+          description: Potential savings amount for Pending Approval workflow status
+        pending_approval_realized_savings_amount:
+          type: number
+          description: Realized savings amount for Pending Approval workflow status
+      type: object
+    RecommendationsFilterBase:
+      required:
+      - end_date
+      - service_account_ids
+      - start_date
+      properties:
+        service_account_ids:
+          type: array
+          description: Service Account Ids to Filter
+          items:
+            type: string
+            x-cs-type: ObjectId
+        query:
+          description: Query expression to filter line items.
+          $ref: '#/components/schemas/QueryOperator'
+        start_date:
+          type: string
+          format: date-time
+          description: specify the start date.
+        end_date:
+          type: string
+          format: date-time
+          description: specify the end date.
+      type: object
+    RecommendationV2BatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/RealizedSavingDashboard'
+      type: object
+    RealizedSavingDashboard:
+      properties:
+        resource_id:
+          type: string
+          description: Unique id for the resource.
+        service_account_id:
+          type: string
+          description: Id for the service account to which the recommendation belongs to.
+        resource_name:
+          type: string
+          description: Name for the Resource.
+        resource_filter:
+          type: string
+          description: Name for the resource filter
+        resource_location:
+          type: string
+          description: location for the resource
+        resource_category:
+          type: string
+          description: Category for the Resource.
+        resource_type:
+          type: string
+          description: Type for the Resource.
+        resource:
+          type: string
+          description: Low level hierarchy for the resource.
+        impact:
+          type: string
+          description: impact for the recommendation
+        current_sku:
+          type: string
+          description: Current sku for the resource.
+        recommended_sku:
+          type: string
+          description: Recommended sku for the resource.
+        recommendation_name:
+          type: string
+          description: Name of the recommendation definition.
+        recommendation_description:
+          type: string
+          description: Description of the recommendation definition.
+        recommendation_type:
+          type: string
+          description: Recommendation type for the resource.
+        source:
+          type: string
+          description: Recommendation source V2
+          example: AWS-compute-optimizer
+          enum:
+          - AWS-compute-optimizer
+          - AWS-ec2-compute-optimizer
+          - AWS-lambda-compute-optimizer
+          - AWS_advisor
+          - Corestack-Profiler
+          - Custom
+          - GCP_advisor
+          - OCI_advisor
+          - activity_log
+          - azure_advisor
+          - azure_microsoft_defender_for_cloud
+          - policy
+          - security_threats
+          - AHB
+          - Scheduled_Recommendation
+          x-cs-enum-type: RecommendationSourceV2
+        savings_amount:
+          type: number
+          description: Savings amount for the resource.
+        workflow_history:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkFlowEventHistory'
+        recommendation_sys_id:
+          type: string
+          description: Unique Id for the Recommendation.
+        workflow_status:
+          type: string
+          description: over all status of the workflow.
+          example: Approved
+          enum:
+          - Approved
+          - Auto Approved
+          - Pending Approval
+          - Rejected
+          x-cs-enum-type: WorkFlowImpactStatus
+        workflow_id:
+          type: string
+          description: Sys Id of the workflow belongs to
+        tenant_id:
+          type: string
+          description: Sys Id of the tenant where the resource belongs to
+          x-cs-type: ObjectId
+      type: object
+    RecommendationV2BatchRequest:
+      properties:
+        recommendation_ids:
+          description: ids for the recommendation
+          $ref: '#/components/schemas/BatchRequest'
+        for_open_recommendation:
+          type: boolean
+          description: Bool determines whether the requested ids are retrieved from open or realized
+          default: false
+        workflow_sys_id:
+          type: string
+          description: workflow sys id for which the rules are required
+        workflow_status:
+          type: string
+          description: over all status of the workflow.
+          example: Approved
+          enum:
+          - Approved
+          - Auto Approved
+          - Pending Approval
+          - Rejected
+          x-cs-enum-type: WorkFlowImpactStatus
+      type: object
+    ListResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
     RealizationSavingsListRequest:
       properties:
         list_context:
@@ -870,45 +1070,6 @@ components:
             type: string
             description: Search based on resource id, location, hierarchical metadata
         type: object
-    RecommendationV2BatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/RealizedSavingDashboard'
-      type: object
-    RecommendationV2BatchRequest:
-      properties:
-        recommendation_ids:
-          description: ids for the recommendation
-          $ref: '#/components/schemas/BatchRequest'
-        for_open_recommendation:
-          type: boolean
-          description: Bool determines whether the requested ids are retrieved from open or realized
-          default: false
-        workflow_sys_id:
-          type: string
-          description: workflow sys id for which the rules are required
-        workflow_status:
-          type: string
-          description: over all status of the workflow.
-          example: Approved
-          enum:
-          - Approved
-          - Auto Approved
-          - Pending Approval
-          - Rejected
-          x-cs-enum-type: WorkFlowImpactStatus
-      type: object
-    RecommendationStatisticsRequest:
-      allOf:
-      - $ref: '#/components/schemas/RecommendationsFilterBase'
-      - properties:
-          workflow_sys_id:
-            type: string
-            description: workflow sys id for which the rules are required
-        type: object
     RealizationSavingDashboardSortCriteria:
       required:
       - column
@@ -921,6 +1082,14 @@ components:
           x-cs-enum-type: RealizationSavingDashboardSortColumn
         ascending:
           type: boolean
+      type: object
+    BatchRequest:
+      properties:
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
       type: object
     ModelError:
       required:
@@ -959,14 +1128,6 @@ components:
         is_preidentified:
           type: boolean
           description: Boolean to determine whether the recommendation is pre-identified or not.
-      type: object
-    BatchRequest:
-      properties:
-        ids:
-          type: array
-          description: Identifiers to fetch
-          items:
-            type: string
       type: object
   securitySchemes:
     auth_token:

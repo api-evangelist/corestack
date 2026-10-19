@@ -265,14 +265,35 @@ paths:
         required: true
 components:
   schemas:
-    CustomMetricConfigurationSyncRequest:
+    CustomMetricConfigurationListRequestSortCriteria:
       required:
-      - service_account_id
+      - column
       properties:
-        service_account_id:
+        column:
           type: string
-          description: Cloud Account ID for which the sync to be triggered.
-          x-cs-type: ObjectId
+          example: CreatedAt
+          enum:
+          - CreatedAt
+          x-cs-enum-type: CustomMetricConfigurationListRequestSortColumn
+        ascending:
+          type: boolean
+      type: object
+    CustomMetricConfigurationBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/CustomMetricConfigurationDetails'
+      type: object
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
       type: object
     RecordIdentity:
       properties:
@@ -287,18 +308,28 @@ components:
           type: string
           description: Context of the tracked item
       type: object
-    CustomMetricConfigurationListRequestSortCriteria:
+    CustomMetricConfigurationSyncRequest:
       required:
-      - column
+      - service_account_id
       properties:
-        column:
+        service_account_id:
           type: string
-          example: CreatedAt
-          enum:
-          - CreatedAt
-          x-cs-enum-type: CustomMetricConfigurationListRequestSortColumn
-        ascending:
-          type: boolean
+          description: Cloud Account ID for which the sync to be triggered.
+          x-cs-type: ObjectId
+      type: object
+    CustomMetricConfigurationListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/CustomMetricConfigurationListRequestSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/CustomMetricConfigurationListRequestContext'
       type: object
     ListResponse:
       properties:
@@ -322,37 +353,6 @@ components:
         total:
           type: integer
           description: Total number of results
-      type: object
-    KeyValuePair:
-      properties:
-        key:
-          type: string
-          description: Key of the pair
-        value:
-          type: string
-          description: Value of the pair
-      type: object
-    CustomMetricConfigurationBatchResponse:
-      properties:
-        results:
-          type: object
-          description: Map from identifier to response model
-          additionalProperties:
-            $ref: '#/components/schemas/CustomMetricConfigurationDetails'
-      type: object
-    CustomMetricConfigurationListRequest:
-      properties:
-        list_context:
-          description: Optional list context
-          $ref: '#/components/schemas/ListContext'
-        sort:
-          type: array
-          description: Sort criteria
-          items:
-            $ref: '#/components/schemas/CustomMetricConfigurationListRequestSortCriteria'
-        filters:
-          description: Filters for the request
-          $ref: '#/components/schemas/CustomMetricConfigurationListRequestContext'
       type: object
     CustomMetricConfigurationListRequestContext:
       properties:
@@ -385,13 +385,6 @@ components:
           - in_progress
           - error
           x-cs-enum-type: CustomMetricConfigurationStatus
-      type: object
-    RecordIdentityBatchRequest:
-      properties:
-        ids:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecordIdentity'
       type: object
     CustomMetricConfigurationDetails:
       required:
@@ -505,6 +498,13 @@ components:
         message:
           type: string
           description: Error response message.
+      type: object
+    RecordIdentityBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordIdentity'
       type: object
   securitySchemes:
     auth_token:

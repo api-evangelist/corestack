@@ -1,0 +1,12 @@
+{
+ "url": "https://api.corestack.io/swagger.json",
+ "final": "https://api.corestack.io/swagger.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 2693544,
+ "sha256": "6bdddaf2fde91978eb18f34d3a600f3a20d004643f70cfaec91f6a58ba17f501",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}

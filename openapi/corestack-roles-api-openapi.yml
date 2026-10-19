@@ -1,0 +1,839 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Roles API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: Roles Management
+servers:
+- url: /
+tags:
+- name: Roles
+  description: Roles Management
+paths:
+  /tenants/{tenant_id}/roles:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleListResponse'
+      summary: List Roles by Tenant
+      description: This GET method is used to retrieve the list of Roles available within a specific tenant.
+      operationId: ListRoles
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Roles
+  /v1/master_accounts/{master_account_id}/roles:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleListResponse'
+      summary: List Roles by Master Account
+      description: Role List By Master Account
+      operationId: RoleListByMasterAccount
+      parameters:
+      - name: master_account_id
+        in: path
+        required: true
+        description: Specify the master account ID
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - Roles
+  /v1/roles/summary/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleSummaryBatchResponse'
+      summary: Role Batch
+      operationId: RoleBatch
+      security:
+      - auth_token: []
+      tags:
+      - Roles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+        required: true
+  /v2/roles/batch:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleBatchResponse'
+      summary: Roles Batch by ids
+      description: Fetch role details for a list of role IDs including the number of associated users.
+      operationId: RolesBatch
+      security:
+      - auth_token: []
+      tags:
+      - Roles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectIdBatchRequest'
+        required: true
+  /v2/roles/create:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleCreateResponse'
+      summary: Create Role
+      description: Creates a custom role within a tenant with the given permission policies.
+      operationId: CreateRole
+      security:
+      - auth_token: []
+      tags:
+      - Roles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomRoleCreateRequest'
+        required: true
+  /v2/roles/item/{role_id}:
+    parameters:
+    - name: role_id
+      in: path
+      required: true
+      schema:
+        type: string
+    delete:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+      summary: Delete Role
+      description: Delete a role by ID.
+      operationId: DeleteRole
+      security:
+      - auth_token: []
+      tags:
+      - Roles
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleViewResponse'
+      summary: View Role
+      description: View a role by ID.
+      operationId: ViewRole
+      security:
+      - auth_token: []
+      tags:
+      - Roles
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleUpdateResponse'
+      summary: Update Role
+      description: Update a role within a tenant.
+      operationId: UpdateRole
+      security:
+      - auth_token: []
+      tags:
+      - Roles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomRoleUpdateRequest'
+        required: true
+  /v2/roles/list:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleListIdsResponse'
+      summary: List Roles
+      description: List roles with cursor-based pagination and filters. Returns matching role IDs.
+      operationId: ListRoles@@@2
+      security:
+      - auth_token: []
+      tags:
+      - Roles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleListRequest'
+        required: true
+components:
+  schemas:
+    RoleListResponse:
+      required:
+      - roles
+      - total_count
+      properties:
+        total_count:
+          type: integer
+          description: Total number of roles available in the specific tenant
+        roles:
+          type: array
+          description: List of roles available in specific tenant
+          items:
+            $ref: '#/components/schemas/RoleDetails'
+      type: object
+    RoleFilters:
+      properties:
+        search:
+          type: string
+          description: Text search across role name, description and category
+        status:
+          type: string
+          description: Filter by role status
+          example: active
+          enum:
+          - active
+          - inactive
+          x-cs-enum-type: RoleStatus
+        category:
+          type: string
+          description: Filter by role category (default or custom)
+          example: custom
+          enum:
+          - custom
+          - default
+          x-cs-enum-type: RoleCategory
+        master_account_id:
+          type: string
+          description: Filter by master account ID
+          x-cs-type: ObjectId
+        tenant_id:
+          type: string
+          description: Filter by tenant ID
+          x-cs-type: ObjectId
+      type: object
+    ObjectIdBatchRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            x-cs-type: ObjectId
+      type: object
+    RoleViewResponse:
+      allOf:
+      - $ref: '#/components/schemas/RoleBase'
+      - properties:
+          id:
+            type: string
+            description: ID of the Role. Auto generated and unique in the CoreStack system
+            x-cs-type: ObjectId
+          status:
+            type: string
+            description: Status of the role
+            example: active
+            enum:
+            - active
+            - inactive
+            x-cs-enum-type: RoleStatus
+          policy:
+            type: object
+            description: Permission policies for the role, keyed by policy name
+          category:
+            type: string
+            description: Category of the role - default or custom
+          created_by:
+            type: string
+            description: User who created the role
+          created_at:
+            type: string
+            format: date-time
+            description: Date and time when the role was created
+          updated_by:
+            type: string
+            description: User who last updated the role
+          updated_at:
+            type: string
+            format: date-time
+            description: Date and time when the role was last updated
+        type: object
+    RoleSummaryBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/RoleSummary'
+      type: object
+    RoleDetails:
+      required:
+      - access
+      - category
+      - created_at
+      - description
+      - id
+      - name
+      - status
+      - users
+      properties:
+        id:
+          type: string
+          description: ID of the Role. This is an auto generated and unique in the CoreStack system
+        tenant_id:
+          type: string
+          description: Tenant Id for the Role
+        name:
+          type: string
+          description: Name of the role. This is unique in the CoreStack system for a specific tenant
+        status:
+          type: string
+          description: Status of the Role
+        access:
+          type: array
+          description: List of access the role can perform in the tenant
+          items:
+            type: string
+        users:
+          type: integer
+          description: Count of users having the role attached under a tenant
+        description:
+          type: string
+          description: Description of the role
+        created_at:
+          type: string
+          description: Date and time of role creation
+        category:
+          type: string
+          description: Category of the specific role. Either default or custom
+        policies:
+          type: object
+          description: List of policy available for a role
+      type: object
+    RoleSortCriteria:
+      required:
+      - column
+      properties:
+        column:
+          type: string
+          example: name
+          enum:
+          - name
+          - created_at
+          x-cs-enum-type: RoleSortColumn
+        ascending:
+          type: boolean
+      type: object
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
+      type: object
+    RoleUpdateResponse:
+      properties:
+        id:
+          type: string
+          description: ID of the updated role
+      type: object
+    ListContext:
+      properties:
+        batch_size:
+          type: integer
+          description: Max number of ids in the response
+        batch_offset:
+          type: integer
+          description: Offset of batches into the results. First batch is 0
+        total:
+          type: integer
+          description: Total number of results
+      type: object
+    CustomRoleUpdateRequest:
+      allOf:
+      - $ref: '#/components/schemas/RoleBase'
+      - required:
+        - name
+        - policies
+        properties:
+          name:
+            type: string
+            description: Name of the role. This must be unique within the tenant
+          policies:
+            type: object
+            description: Permission policies for the role, keyed by policy name
+          resources:
+            type: array
+            description: Resource IDs the role is scoped to
+            items:
+              type: string
+        type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    RoleView:
+      allOf:
+      - $ref: '#/components/schemas/RoleBase'
+      - required:
+        - id
+        - tenant_id
+        properties:
+          id:
+            type: string
+            description: ID of the Role. Auto generated and unique in the CoreStack system
+            x-cs-type: ObjectId
+          tenant_id:
+            type: string
+            description: ID of the tenant the role belongs to
+            x-cs-type: ObjectId
+          category:
+            type: string
+            description: Category of the role - default or custom
+            example: custom
+            enum:
+            - custom
+            - default
+            x-cs-enum-type: RoleCategory
+          status:
+            type: string
+            description: Status of the role
+            example: active
+            enum:
+            - active
+            - inactive
+            x-cs-enum-type: RoleStatus
+          created_at:
+            type: string
+            format: date-time
+            description: Date and time when the role was created
+          number_of_users:
+            type: integer
+            description: Number of users associated with the role
+        type: object
+    RoleListIdsResponse:
+      properties:
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+            x-cs-type: ObjectId
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
+      type: object
+    RoleBase:
+      properties:
+        name:
+          type: string
+          description: Name of the role. Unique within a tenant
+        description:
+          type: string
+          description: Description of the role
+        metadata:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+        cloud_services:
+          type: array
+          description: Cloud providers the role applies to
+          items:
+            type: string
+            description: Cloud Provider to select
+            example: AWS
+            enum:
+            - AWS
+            - Azure
+            - AzureStack
+            - Azure_CSP
+            - Azure_CSP-Direct
+            - Azure_EA
+            - Azure_MCA
+            - Cloudstack
+            - GCP
+            - MS_VMM
+            - OCI
+            - Openstack
+            - PrivateCloud
+            - Rackspace
+            - VMware
+            - VMware_VCD
+            - vCenter
+            x-cs-enum-type: CloudServiceName
+        integrated_tools:
+          type: array
+          description: Integrated tools the role applies to
+          items:
+            type: string
+            description: Integrated Tool to select
+            example: Anomaly_Detector
+            enum:
+            - Anomaly_Detector
+            - AppDynamics
+            - App_Insights
+            - ArrowSphere
+            - Azure_Devops
+            - Azure_Security_Graph
+            - Azure_Sentinel
+            - Corestack
+            - DockerHub
+            - ElasticSearch
+            - Freshservice
+            - GitHub
+            - JIRA_DataCenter
+            - JIRA_ServiceDesk
+            - JIRA_ServiceManagement
+            - Jenkins
+            - Logstash
+            - Microsoft_Teams
+            - Nagios
+            - Newrelic
+            - Prometheus
+            - Qualys
+            - RedHat_Satellite
+            - ServiceNow
+            - TCL_ITSM
+            - Tenable_Nessus
+            - ZOHO_ServiceDesk
+            - Zabbix
+            x-cs-enum-type: IntegratedToolName
+        resource_elements:
+          type: array
+          description: Resource element IDs the role is scoped to
+          items:
+            type: string
+        service_accounts:
+          type: array
+          description: Service account IDs the role is scoped to
+          items:
+            type: string
+        saas_services:
+          type: array
+          description: SaaS services the role applies to
+          items:
+            type: string
+            description: SaaS Service to select
+            example: OpenAI
+            enum:
+            - OpenAI
+            - Databricks
+            - Snowflake
+            - CircleCI
+            - Datadog
+            - Dropbox
+            - Dynatrace
+            - Elastic
+            - Grafana
+            - IBM_Tencent
+            - Microsoft_Teams
+            - New_Relic
+            - Okta
+            - SaasCustomTool
+            - Salesforce_Sales_Cloud
+            - Splunk
+            x-cs-enum-type: SaasServiceName
+      type: object
+    RoleCreateResponse:
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: ID of the newly created role
+          x-cs-type: ObjectId
+      type: object
+    RoleBatchResponse:
+      properties:
+        results:
+          type: object
+          description: Map from identifier to response model
+          additionalProperties:
+            $ref: '#/components/schemas/RoleView'
+      type: object
+    CustomRoleCreateRequest:
+      allOf:
+      - $ref: '#/components/schemas/RoleBase'
+      - required:
+        - name
+        - policies
+        - tenant_id
+        properties:
+          name:
+            type: string
+            description: Name of the role. This must be unique within the tenant
+          tenant_id:
+            type: string
+            description: ID of the tenant within which the role is created
+            x-cs-type: ObjectId
+          status:
+            type: string
+            description: Status of the role. Defaults to 'active'
+            example: active
+            enum:
+            - active
+            - inactive
+            x-cs-enum-type: RoleStatus
+          policies:
+            type: object
+            description: Permission policies for the role, keyed by policy name
+          resources:
+            type: array
+            description: Resource IDs the role is scoped to
+            items:
+              type: string
+        type: object
+    RoleSummary:
+      properties:
+        name:
+          type: string
+          description: Name of the Role
+        role_type:
+          type: string
+          description: Type of the Role
+        category:
+          type: string
+          description: Role category
+          example: custom
+          enum:
+          - custom
+          - default
+          x-cs-enum-type: RoleCategory
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          x-cs-type: ObjectId
+      type: object
+    BatchRequest:
+      properties:
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
+      type: object
+    RoleListRequest:
+      properties:
+        list_context:
+          description: Optional list context
+          $ref: '#/components/schemas/ListContext'
+        sort:
+          type: array
+          description: Sort criteria
+          items:
+            $ref: '#/components/schemas/RoleSortCriteria'
+        filters:
+          description: Filters for the request
+          $ref: '#/components/schemas/RoleFilters'
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token

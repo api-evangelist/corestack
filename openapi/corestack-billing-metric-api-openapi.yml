@@ -423,56 +423,41 @@ paths:
         required: true
 components:
   schemas:
-    BillingMetrics:
-      required:
-      - billing_metric_type
-      - name
+    ServiceNowCmdbConfigCreateRequest:
+      allOf:
+      - $ref: '#/components/schemas/ServiceNowCmdbConfigBaseRequest'
+      - required:
+        - cmdb_account_id
+        - cmdb_service
+        - configuration
+        properties:
+          cmdb_account_id:
+            type: string
+            description: Id of the ServiceNow Account
+          cmdb_service:
+            type: string
+            description: Name of the Cmdb Service
+          configuration:
+            type: object
+            description: ServiceNow Cmdb Sync Configuration, indexed by CloudServiceName
+            additionalProperties:
+              $ref: '#/components/schemas/ServiceNowCmdbServiceConfig'
+        type: object
+    ServiceNowCmdbConfigBaseRequest:
+      allOf:
+      - $ref: '#/components/schemas/ServiceNowCmdbScopeDetails'
+      - properties: {}
+        type: object
+    ListResponse:
       properties:
-        sys_id:
-          type: string
-          description: The Sys ID of the metric
-        source_sys_id:
-          type: string
-          description: Specifies the source metrics. Only system metrics can have an empty source and cannot be removed.
-        created_on:
-          type: string
-          format: date-time
-          description: Created on
-        created_by:
-          type: string
-          description: Username who created the Billing Metrics.
-        updated_on:
-          type: string
-          format: date-time
-          description: Updated on
-        updated_by:
-          type: string
-          description: Username who updated the Billing Metrics.
-        name:
-          type: string
-          description: Name of the billing metrics
-        billing_metric_type:
-          type: string
-          description: Types of Billing Metric.
-          example: margin_savings
-          enum:
-          - margin_savings
-          - native_cost
-          - rate
-          - system_cost
-          - true_cost
-          - usage
-          x-cs-enum-type: BillingMetricType
-        category:
-          type: string
-          description: Categories of Billing Metric.
-          example: Customer
-          enum:
-          - Customer
-          - Dimension
-          - Distributor
-          - Partner
-          x-cs-enum-type: BillingMetricCategory
+        results:
+          type: array
+          description: List of result identifiers
+          items:
+            type: string
+        next_list_context:
+          description: List context
+          $ref: '#/components/schemas/ListContext'
       type: object
     ServiceAccountNativeDetailsBase:
       required:
@@ -586,6 +571,8 @@ components:
         subtype_name: ServiceAccountNativeDetailsForPrivateCloud
       - subtype_model: ServiceAccountNativeDetailsBaseForIntegratedTool
         subtype_name: ServiceAccountNativeDetailsBaseForIntegratedTool
+      - subtype_model: ServiceAccountNativeDetailsForGithubBase
+        subtype_name: ServiceAccountNativeDetailsForGithubBase
       - subtype_model: ServiceAccountNativeDetailsForAppDynamics
         subtype_name: ServiceAccountNativeDetailsForAppDynamics
       - subtype_model: ServiceAccountNativeDetailsForAppInsights
@@ -610,8 +597,10 @@ components:
         subtype_name: ServiceAccountNativeDetailsForJiraServiceManagementParent
       - subtype_model: ServiceAccountNativeDetailsForJiraServiceManagementProject
         subtype_name: ServiceAccountNativeDetailsForJiraServiceManagementProject
-      - subtype_model: ServiceAccountNativeDetailsForGithub
-        subtype_name: ServiceAccountNativeDetailsForGithub
+      - subtype_model: ServiceAccountNativeDetailsForGithubOrganization
+        subtype_name: ServiceAccountNativeDetailsForGithubOrganization
+      - subtype_model: ServiceAccountNativeDetailsForGithubEnterprise
+        subtype_name: ServiceAccountNativeDetailsForGithubEnterprise
       - subtype_model: ServiceAccountNativeDetailsForJiraDataCenter
         subtype_name: ServiceAccountNativeDetailsForJiraDataCenter
       - subtype_model: ServiceAccountNativeDetailsForJiraServiceDesk
@@ -644,6 +633,10 @@ components:
         subtype_name: ServiceAccountNativeDetailsForZohoServiceDesk
       - subtype_model: ServiceAccountNativeDetailsBaseForResource
         subtype_name: ServiceAccountNativeDetailsBaseForResource
+      - subtype_model: ServiceAccountNativeDetailsBaseForAiPlatform
+        subtype_name: ServiceAccountNativeDetailsBaseForAiPlatform
+      - subtype_model: ServiceAccountNativeDetailsForAnthropicPlatform
+        subtype_name: ServiceAccountNativeDetailsForAnthropicPlatform
       - subtype_model: ServiceAccountNativeDetailsBaseForKubernetesCluster
         subtype_name: ServiceAccountNativeDetailsBaseForKubernetesCluster
       - subtype_model: ServiceAccountNativeDetailsBaseForKubernetesClusterCloud
@@ -666,8 +659,6 @@ components:
         subtype_name: ServiceAccountNativeDetailsBaseForSaasAiServices
       - subtype_model: ServiceAccountNativeDetailsForOpenAI
         subtype_name: ServiceAccountNativeDetailsForOpenAI
-      - subtype_model: ServiceAccountNativeDetailsForAnthropic
-        subtype_name: ServiceAccountNativeDetailsForAnthropic
       - subtype_model: ServiceAccountNativeDetailsBaseForSaasDataServices
         subtype_name: ServiceAccountNativeDetailsBaseForSaasDataServices
       - subtype_model: ServiceAccountNativeDetailsForSnowflake
@@ -704,27 +695,82 @@ components:
         subtype_name: ServiceAccountNativeDetailsForCustomSaasTool
       - subtype_model: ServiceAccountNativeDetailsForZabbix
         subtype_name: ServiceAccountNativeDetailsForZabbix
-    BillingMetricAccessFilters:
+    ServiceNowCmdbAttributeMapping:
+      required:
+      - target_column
       properties:
-        metric_sys_id:
+        target_column:
           type: string
-          description: The Sys ID of the metric
-        native_detail_type:
-          description: Cloud account native details type
-          $ref: '#/components/schemas/ServiceAccountNativeDetailsBaseForCloud'
+          description: Column Name in ServiceNow Cmdb table
+        literal_value:
+          type: string
+          description: Literal Value
+        attribute_id:
+          type: string
+          description: Identifier for the Inventory attribute
       type: object
-    BillingMetricAccess:
-      allOf:
-      - $ref: '#/components/schemas/BillingMetricAccessBase'
-      - required:
-        - denied_identities
-        properties:
-          sys_id:
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+          description: Key of the pair
+        value:
+          type: string
+          description: Value of the pair
+      type: object
+    BillingMetricFilters:
+      properties:
+        service_account_ids:
+          type: array
+          description: Service Account IDs to filter
+          items:
             type: string
-            description: The Sys ID of the access assignment
-          denied_identities:
-            $ref: '#/components/schemas/DeniedRolesAndUserGroups'
-        type: object
+            x-cs-type: ObjectId
+        descendant_service_account_query:
+          description: Descendant service account query filter
+          $ref: '#/components/schemas/DescendantServiceAccountQuery'
+      type: object
+    ServiceNowCmdbScopeDetails:
+      required:
+      - scope
+      properties:
+        scope:
+          type: string
+          description: Scope to Apply
+          example: master_account
+          enum:
+          - master_account
+          - tenant
+          - cloud_account
+          x-cs-enum-type: ServiceNowCmdbScope
+        master_account_id:
+          type: string
+          description: Master Account Id
+        tenant_id:
+          type: string
+          description: Id of the tenants that user has access to
+        cloud_account_id:
+          type: string
+          description: Id of the Cloud Account
+      type: object
+    ServiceNowCmdbActionResourceMapping:
+      properties:
+        create:
+          type: array
+          description: ServiceNow Cmdb CI create attributes mapping
+          items:
+            $ref: '#/components/schemas/ServiceNowCmdbAttributeMapping'
+        update:
+          type: array
+          description: ServiceNow Cmdb CI update attributes mapping
+          items:
+            $ref: '#/components/schemas/ServiceNowCmdbAttributeMapping'
+        delete:
+          type: array
+          description: ServiceNow Cmdb CI delete attributes mapping
+          items:
+            $ref: '#/components/schemas/ServiceNowCmdbAttributeMapping'
+      type: object
     ListContext:
       properties:
         batch_size:
@@ -748,56 +794,6 @@ components:
           description: ServiceNow Cmdb Sync Configuration Rule Details
           $ref: '#/components/schemas/ServiceNowCmdbRuleMapping'
       type: object
-    BillingMetricFilters:
-      properties:
-        service_account_ids:
-          type: array
-          description: Service Account IDs to filter
-          items:
-            type: string
-            x-cs-type: ObjectId
-        descendant_service_account_query:
-          description: Descendant service account query filter
-          $ref: '#/components/schemas/DescendantServiceAccountQuery'
-      type: object
-    ServiceNowCmdbConfigCreateRequest:
-      allOf:
-      - $ref: '#/components/schemas/ServiceNowCmdbConfigBaseRequest'
-      - required:
-        - cmdb_account_id
-        - cmdb_service
-        - configuration
-        properties:
-          cmdb_account_id:
-            type: string
-            description: Id of the ServiceNow Account
-          cmdb_service:
-            type: string
-            description: Name of the Cmdb Service
-          configuration:
-            type: object
-            description: ServiceNow Cmdb Sync Configuration, indexed by CloudServiceName
-            additionalProperties:
-              $ref: '#/components/schemas/ServiceNowCmdbServiceConfig'
-        type: object
-    ServiceNowCmdbActionResourceMapping:
-      properties:
-        create:
-          type: array
-          description: ServiceNow Cmdb CI create attributes mapping
-          items:
-            $ref: '#/components/schemas/ServiceNowCmdbAttributeMapping'
-        update:
-          type: array
-          description: ServiceNow Cmdb CI update attributes mapping
-          items:
-            $ref: '#/components/schemas/ServiceNowCmdbAttributeMapping'
-        delete:
-          type: array
-          description: ServiceNow Cmdb CI delete attributes mapping
-          items:
-            $ref: '#/components/schemas/ServiceNowCmdbAttributeMapping'
-      type: object
     ServiceAccountNativeDetailsBaseForCloud:
       allOf:
       - $ref: '#/components/schemas/ServiceAccountNativeDetailsBase'
@@ -815,31 +811,14 @@ components:
             $ref: '#/components/schemas/ServiceNowCmdbConfigCreateRequest'
         type: object
       x-cs-type-name: ServiceAccountNativeDetailsBaseForCloud
-    ListResponse:
+    BillingMetricAccessFilters:
       properties:
-        results:
-          type: array
-          description: List of result identifiers
-          items:
-            type: string
-        next_list_context:
-          description: List context
-          $ref: '#/components/schemas/ListContext'
-      type: object
-    BillingMetricListRequest:
-      properties:
-        filters:
-          description: Filters for the Billing Metrics
-          $ref: '#/components/schemas/BillingMetricFilters'
-      type: object
-    KeyValuePair:
-      properties:
-        key:
+        metric_sys_id:
           type: string
-          description: Key of the pair
-        value:
-          type: string
-          description: Value of the pair
+          description: The Sys ID of the metric
+        native_detail_type:
+          description: Cloud account native details type
+          $ref: '#/components/schemas/ServiceAccountNativeDetailsBaseForCloud'
       type: object
     ModelError:
       required:
@@ -849,19 +828,74 @@ components:
           type: string
           description: Error response message.
       type: object
-    ServiceNowCmdbAttributeMapping:
+    BillingMetricAccess:
+      allOf:
+      - $ref: '#/components/schemas/BillingMetricAccessBase'
+      - required:
+        - denied_identities
+        properties:
+          sys_id:
+            type: string
+            description: The Sys ID of the access assignment
+          denied_identities:
+            $ref: '#/components/schemas/DeniedRolesAndUserGroups'
+        type: object
+    BillingMetrics:
       required:
-      - target_column
+      - billing_metric_type
+      - name
       properties:
-        target_column:
+        sys_id:
           type: string
-          description: Column Name in ServiceNow Cmdb table
-        literal_value:
+          description: The Sys ID of the metric
+        source_sys_id:
           type: string
-          description: Literal Value
-        attribute_id:
+          description: Specifies the source metrics. Only system metrics can have an empty source and cannot be removed.
+        created_on:
           type: string
-          description: Identifier for the Inventory attribute
+          format: date-time
+          description: Created on
+        created_by:
+          type: string
+          description: Username who created the Billing Metrics.
+        updated_on:
+          type: string
+          format: date-time
+          description: Updated on
+        updated_by:
+          type: string
+          description: Username who updated the Billing Metrics.
+        name:
+          type: string
+          description: Name of the billing metrics
+        billing_metric_type:
+          type: string
+          description: Types of Billing Metric.
+          example: margin_savings
+          enum:
+          - margin_savings
+          - native_cost
+          - rate
+          - system_cost
+          - true_cost
+          - usage
+          x-cs-enum-type: BillingMetricType
+        category:
+          type: string
+          description: Categories of Billing Metric.
+          example: Customer
+          enum:
+          - Customer
+          - Dimension
+          - Distributor
+          - Partner
+          x-cs-enum-type: BillingMetricCategory
+      type: object
+    BillingMetricListRequest:
+      properties:
+        filters:
+          description: Filters for the Billing Metrics
+          $ref: '#/components/schemas/BillingMetricFilters'
       type: object
     DescendantServiceAccountQuery:
       required:
@@ -892,6 +926,41 @@ components:
             type: string
             x-cs-type: ObjectId
       type: object
+    BillingMetricAccessListRequest:
+      allOf:
+      - $ref: '#/components/schemas/BillingMetricAccessBase'
+      - properties:
+          filters:
+            description: Filters for the Billing Metrics
+            $ref: '#/components/schemas/BillingMetricAccessFilters'
+        type: object
+    ServiceNowCmdbRuleMapping:
+      properties:
+        locations:
+          type: array
+          description: List of locations to filter
+          items:
+            type: string
+        cloud_accounts:
+          type: array
+          description: List of Cloud Account to filter
+          items:
+            type: string
+        tags:
+          type: array
+          description: List of tag key/value pairs
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+      type: object
+    BillingMetricAccessBase:
+      properties:
+        metric_sys_id:
+          type: string
+          description: The Sys ID of the metric
+        native_detail_type:
+          description: Cloud account native details type
+          $ref: '#/components/schemas/ServiceAccountNativeDetailsBaseForCloud'
+      type: object
     DeniedRolesAndUserGroups:
       properties:
         role_ids:
@@ -907,50 +976,13 @@ components:
             type: string
             x-cs-type: ObjectId
       type: object
-    ServiceNowCmdbConfigBaseRequest:
-      allOf:
-      - $ref: '#/components/schemas/ServiceNowCmdbScopeDetails'
-      - properties: {}
-        type: object
-    BillingMetricAccessListRequest:
-      allOf:
-      - $ref: '#/components/schemas/BillingMetricAccessBase'
-      - properties:
-          filters:
-            description: Filters for the Billing Metrics
-            $ref: '#/components/schemas/BillingMetricAccessFilters'
-        type: object
-    BillingMetricAccessBase:
+    BatchRequest:
       properties:
-        metric_sys_id:
-          type: string
-          description: The Sys ID of the metric
-        native_detail_type:
-          description: Cloud account native details type
-          $ref: '#/components/schemas/ServiceAccountNativeDetailsBaseForCloud'
-      type: object
-    ServiceNowCmdbScopeDetails:
-      required:
-      - scope
-      properties:
-        scope:
-          type: string
-          description: Scope to Apply
-          example: master_account
-          enum:
-          - master_account
-          - tenant
-          - cloud_account
-          x-cs-enum-type: ServiceNowCmdbScope
-        master_account_id:
-          type: string
-          description: Master Account Id
-        tenant_id:
-          type: string
-          description: Id of the tenants that user has access to
-        cloud_account_id:
-          type: string
-          description: Id of the Cloud Account
+        ids:
+          type: array
+          description: Identifiers to fetch
+          items:
+            type: string
       type: object
     ServiceNowCmdbResourceMapping:
       required:
@@ -973,32 +1005,6 @@ components:
         attribute_mapping:
           description: ServiceNow Cmdb CI attributes mapping
           $ref: '#/components/schemas/ServiceNowCmdbActionResourceMapping'
-      type: object
-    ServiceNowCmdbRuleMapping:
-      properties:
-        locations:
-          type: array
-          description: List of locations to filter
-          items:
-            type: string
-        cloud_accounts:
-          type: array
-          description: List of Cloud Account to filter
-          items:
-            type: string
-        tags:
-          type: array
-          description: List of tag key/value pairs
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-      type: object
-    BatchRequest:
-      properties:
-        ids:
-          type: array
-          description: Identifiers to fetch
-          items:
-            type: string
       type: object
   securitySchemes:
     auth_token:

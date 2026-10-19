@@ -1,0 +1,393 @@
+openapi: 3.2.0
+info:
+  title: CoreStack External Users Profile API
+  version: 1.0.0
+  termsOfService: http://corestack.io/
+  license:
+    name: CoreStack Inc License
+    url: http://corestack.io/licenses/LICENSE-2.0.html
+  description: User Profile and Notifications
+servers:
+- url: /
+tags:
+- name: UsersProfile
+  description: User Profile and Notifications
+paths:
+  /users/notification/report:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationReportResponse'
+      summary: Send notification report email
+      description: Send a notification email for a shared report
+      operationId: NotificationReport
+      security:
+      - auth_token: []
+      tags:
+      - UsersProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationReportRequest'
+        required: true
+  /users/notifications/{user_id}/{tenant_id}:
+    post:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountUserNotificationsResponse'
+      summary: Check notification status
+      description: Check Notification status for user
+      operationId: CountUserNotifications
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: Id of user
+        schema:
+          type: string
+      - name: tenant_id
+        in: path
+        required: true
+        description: Id of active tenant
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - UsersProfile
+  /users/profile/active-tenant:
+    put:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileActiveTenantResponse'
+      summary: Update active tenant for a user
+      description: Sets the active tenant for the user
+      operationId: UserProfileActiveTenant
+      security:
+      - auth_token: []
+      tags:
+      - UsersProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfileActiveTenantRequest'
+        required: true
+  /users/profile/{user_id}:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+      summary: View User Profile
+      description: Describes an User by ID. This provides detailed information about a user profile
+      operationId: UserProfile
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        description: User Id fetched from List User API
+        schema:
+          type: string
+      security:
+      - auth_token: []
+      tags:
+      - UsersProfile
+  /users/{tenant_id}/notification_message:
+    get:
+      responses:
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelError'
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationMessageResponse'
+      summary: List notification message
+      description: This GET method is used to retrieve the Notification, Message a specific tenant.
+      operationId: NotificationMessageResource
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: Specify the tenant ID. This is a unique ID and can be retrieved using the List Tenants API.
+        schema:
+          type: string
+      - description: 'Specify the action name. Allowed values: view_notifications, if require to fetch data with filter wise use view_notifications'
+        name: action
+        in: query
+        schema:
+          type: string
+          enum:
+          - view_notifications
+      - description: Specify value for display, if require to fetch data for filter wise use read, unread,all
+        name: display
+        in: query
+        schema:
+          type: string
+          enum:
+          - read
+          - unread
+          - all
+      security:
+      - auth_token: []
+      tags:
+      - UsersProfile
+components:
+  schemas:
+    NotificationReportRequest:
+      required:
+      - email_details
+      properties:
+        smtp_default:
+          type: boolean
+          description: Use default SMTP config when true
+        master_account_id:
+          type: string
+          description: Master Account ID for org-level SMTP/template override
+        report_name:
+          type: string
+          description: Name of the report being shared (used in audit log)
+        email_details:
+          description: Email addressing and content
+          $ref: '#/components/schemas/NotificationReportEmailDetails'
+      type: object
+    ModelError:
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error response message.
+      type: object
+    NotificationReportEmailDetails:
+      required:
+      - message
+      - to
+      properties:
+        to:
+          type: array
+          description: List of recipient email addresses
+          items:
+            type: string
+        message:
+          type: string
+          description: Email body content
+        subject:
+          type: string
+          description: Email subject line
+      type: object
+    UserProfileActiveTenantRequest:
+      properties:
+        tenant_id:
+          type: string
+          description: Tenant ID to set as active
+      type: object
+    NotificationReportResponse:
+      required:
+      - message
+      properties:
+        status:
+          type: string
+          description: Result status
+        message:
+          type: string
+          description: Result message
+      type: object
+    ProfileResponse:
+      properties:
+        user_id:
+          type: string
+          description: user id
+        source_user_id:
+          type: string
+          description: source user id
+        username:
+          type: string
+          description: username
+        status:
+          type: string
+          description: status
+        email:
+          type: string
+          description: email
+        first_name:
+          type: string
+          description: first name
+        last_name:
+          type: string
+          description: last name
+        timezone:
+          type: string
+          description: timezone
+        mobile:
+          type: string
+          description: mobile number
+        sso_userid:
+          type: string
+          description: sso user id
+        access_key:
+          type: string
+          description: access_key
+        valid_till:
+          type: string
+          description: valid date
+        last_login_time:
+          type: string
+          description: last login time
+        preferred_language:
+          type: string
+          description: Preferred language of the user.
+          example: en
+          enum:
+          - en
+          - ja
+          x-cs-enum-type: PreferredLanguage
+      type: object
+    CountUserNotificationsResponse:
+      required:
+      - messages
+      - notifications
+      properties:
+        notifications:
+          type: integer
+          description: Number of notifications
+        messages:
+          type: integer
+          description: Number of messages
+      type: object
+    NotificationMessageResponse:
+      required:
+      - data
+      - message
+      - status
+      properties:
+        status:
+          type: string
+          description: Status of the notification & message api
+        message:
+          type: string
+          description: Message of the notification & message api
+        data:
+          type: object
+          description: data for the notification & message api
+      type: object
+    UserProfileActiveTenantResponse:
+      properties:
+        id:
+          type: string
+          description: ID for user that was updated
+        tenant_id:
+          type: string
+          description: ID for the new active tenant
+      type: object
+  securitySchemes:
+    auth_token:
+      type: apiKey
+      in: header
+      name: X-Auth-Token
